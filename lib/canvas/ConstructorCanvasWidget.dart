@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/canvas/ConstructorCanvas.dart';
 import 'package:flutter_app/canvas/WidgetWrapper.dart';
+import 'package:flutter_app/store/tree/ConstructorCanvas.dart';
 
 class ConstructorCanvasWidget extends StatefulWidget {
   final List<WidgetWrapper> components;
