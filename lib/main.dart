@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/canvas/WidgetPosition.dart';
+import 'package:flutter_app/canvas/WidgetWrapper.dart';
+
+import 'canvas/ConstructorCanvasWidget.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,24 +53,6 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class WidgetWrapper {
-  Widget flutterWidget;
-  WidgetPosition position;
-
-  WidgetWrapper({Widget flutterWidget, WidgetPosition position}) {
-    this.flutterWidget = flutterWidget;
-    this.position = position;
-  }
-}
-
-class WidgetPosition {
-  int x, y;
-  WidgetPosition({x, y}) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int buttonX;
@@ -99,19 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              color: Colors.black12,
-              width: 375,
-              height: 500,
-              child: Stack(
-                children: [
-                  ...components.map((component) => Positioned(
-                      child: component.flutterWidget,
-                      left: component.position.x.toDouble(),
-                      top: component.position.y.toDouble()))
-                ],
-              ),
-            ),
+            ConstructorCanvasWidget(components: []),
             Text(
               'You have psdasdasdushed the button this many times:',
             ),
