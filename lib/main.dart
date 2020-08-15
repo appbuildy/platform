@@ -49,8 +49,39 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class WidgetWrapper {
+  Widget flutterWidget;
+  WidgetPosition position;
+
+  WidgetWrapper({Widget flutterWidget, WidgetPosition position}) {
+    this.flutterWidget = flutterWidget;
+    this.position = position;
+  }
+}
+
+class WidgetPosition {
+  int x, y;
+  WidgetPosition({x, y}) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int buttonX;
+  int buttonY;
+  List<WidgetWrapper> components = [];
+
+  void _addButton(String text, Function onPressed) {
+    setState(() {
+      final widgetWrapper = WidgetWrapper(
+          flutterWidget:
+              MaterialButton(onPressed: onPressed, child: Text(text)),
+          position: WidgetPosition(x: buttonX, y: buttonY));
+      components.add(widgetWrapper);
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -68,19 +99,63 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Container(
+              color: Colors.black12,
+              width: 375,
+              height: 500,
+              child: Stack(
+                children: [
+                  ...components.map((component) => Positioned(
+                      child: component.flutterWidget,
+                      left: component.position.x.toDouble(),
+                      top: component.position.y.toDouble()))
+                ],
+              ),
+            ),
             Text(
               'You have psdasdasdushed the button this many times:',
             ),
+            Text('Coord x: $buttonX, coord y: $buttonY'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            Container(
+              width: 50,
+              color: Colors.green,
+              child: TextField(
+                onChanged: (text) {
+                  setState(() {
+                    buttonY = int.tryParse(text);
+                  });
+                },
+              ),
+            ),
+            Container(
+              width: 50,
+              color: Colors.greenAccent,
+              child: TextField(
+                onChanged: (text) {
+                  setState(() {
+                    buttonX = int.tryParse(text);
+                  });
+                },
+              ),
+            ),
+            MaterialButton(
+              child: Text('AddButton'),
+              onPressed: () {
+                setState(() {
+                  _addButton('Button $buttonX ,$buttonY', () {});
+                });
+              },
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        tooltip: 'Add button',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
