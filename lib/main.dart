@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/layout/AppLayout.dart';
 
 import 'features/canvas/AppPreview.dart';
+import 'features/canvas/SchemaNode.dart';
 import 'features/canvas/WidgetPosition.dart';
-import 'features/canvas/WidgetWrapper.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,17 +38,14 @@ class _MyHomePageState extends State<MyHomePage> {
   int buttonX;
   int buttonY;
   AppPreview constructorCanvasWidget = AppPreview(components: [
-    WidgetWrapper(
-        flutterWidget: MaterialButton(
-            color: Colors.greenAccent, onPressed: () {}, child: Text('322')),
-        position: WidgetPosition(x: 22, y: 22))
+    SchemaNode(
+        type: SchemaNodeType.button, position: WidgetPosition(x: 22, y: 22))
   ]);
 
   void _addButton(String text, Function onPressed) {
     setState(() {
-      final widgetWrapper = WidgetWrapper(
-          flutterWidget: MaterialButton(
-              color: Colors.green, onPressed: onPressed, child: Text(text)),
+      final widgetWrapper = SchemaNode(
+          type: SchemaNodeType.button,
           position: WidgetPosition(x: buttonX, y: buttonY));
     });
   }

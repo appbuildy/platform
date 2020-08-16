@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/canvas/WidgetWrapper.dart';
+import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:mobx/mobx.dart';
 
 part 'ConstructorCanvas.g.dart';
@@ -6,15 +6,15 @@ part 'ConstructorCanvas.g.dart';
 class ConstructorCanvas = _ConstructorCanvas with _$ConstructorCanvas;
 
 abstract class _ConstructorCanvas with Store {
-  _ConstructorCanvas({List<WidgetWrapper> components}) {
+  _ConstructorCanvas({List<SchemaNode> components}) {
     this.components = components;
   }
 
   @observable
-  List<WidgetWrapper> components = [];
+  List<SchemaNode> components = [];
 
   @action
-  void add(WidgetWrapper widgetWrapper) {
+  void add(SchemaNode widgetWrapper) {
     components.add(widgetWrapper);
   }
 }

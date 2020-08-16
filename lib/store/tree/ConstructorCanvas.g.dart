@@ -12,13 +12,13 @@ mixin _$ConstructorCanvas on _ConstructorCanvas, Store {
   final _$componentsAtom = Atom(name: '_ConstructorCanvas.components');
 
   @override
-  List<WidgetWrapper> get components {
+  List<SchemaNode> get components {
     _$componentsAtom.reportRead();
     return super.components;
   }
 
   @override
-  set components(List<WidgetWrapper> value) {
+  set components(List<SchemaNode> value) {
     _$componentsAtom.reportWrite(value, super.components, () {
       super.components = value;
     });
@@ -28,7 +28,7 @@ mixin _$ConstructorCanvas on _ConstructorCanvas, Store {
       ActionController(name: '_ConstructorCanvas');
 
   @override
-  void add(WidgetWrapper widgetWrapper) {
+  void add(SchemaNode widgetWrapper) {
     final _$actionInfo = _$_ConstructorCanvasActionController.startAction(
         name: '_ConstructorCanvas.add');
     try {
