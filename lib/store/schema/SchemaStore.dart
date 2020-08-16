@@ -14,7 +14,7 @@ abstract class _SchemaStore with Store {
   List<SchemaNode> components = [];
 
   @action
-  void add(SchemaNode widgetWrapper) {
-    components.add(widgetWrapper);
+  void add(SchemaNode schemaNode) {
+    components.add(schemaNode);
   }
 }

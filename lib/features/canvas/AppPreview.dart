@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppPreview extends StatefulWidget {
   final List<SchemaNode> components;
@@ -14,20 +15,26 @@ class AppPreview extends StatefulWidget {
 }
 
 class _AppPreviewState extends State<AppPreview> {
-  SchemaStore canvas;
+  SchemaStore schemaStore;
+  int counter;
 
   @override
   void initState() {
     super.initState();
-    canvas = SchemaStore(components: widget.components);
+    schemaStore = SchemaStore(components: widget.components);
   }
 
   Widget _buildWidgetBySchemaNode(SchemaNodeType type) {
     switch (type) {
       case SchemaNodeType.button:
-        return MaterialButton(
-          onPressed: () {},
-          child: Text('Button'),
+        return Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(width: 1, color: Colors.tealAccent)),
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text('Button'),
+          ),
         );
       case SchemaNodeType.text:
         return Text('Text');
@@ -38,26 +45,35 @@ class _AppPreviewState extends State<AppPreview> {
 
   @override
   Widget build(BuildContext context) {
-    return DragTarget(
-      onAccept: (SchemaNodeType value) {
-        log('value $value');
+    return DragTarget<SchemaNodeType>(
+      onAcceptWithDetails: (details) {
+        log('dx ${details.offset.dx - 375.0} dy ${details.offset.dy - 500.0}');
+        schemaStore.add(SchemaNode(
+            type: details.data,
+            position:
+                Offset(details.offset.dx - 375.0, details.offset.dy - 500.0)));
       },
-      builder: (context, List<String> CandidateData, rejectedData) {
+      builder: (context, candidateData, rejectedData) {
         return (Container(
           color: Colors.black12,
           width: 375,
           height: 500,
-          child: Stack(
-            children: [
-              ...canvas.components.map((node) => Positioned(
-                  child: Draggable(
-                      data: 'Test',
-                      childWhenDragging: _buildWidgetBySchemaNode(node.type),
-                      feedback: _buildWidgetBySchemaNode(node.type),
-                      child: _buildWidgetBySchemaNode(node.type)),
-                  top: node.position.x.toDouble(),
-                  left: node.position.y.toDouble()))
-            ],
+          child: Observer(
+            builder: (context) {
+              return Stack(
+                children: [
+                  ...schemaStore.components.map((node) => Positioned(
+                      child: Draggable(
+                          data: 'Test',
+                          childWhenDragging:
+                              _buildWidgetBySchemaNode(node.type),
+                          feedback: _buildWidgetBySchemaNode(node.type),
+                          child: _buildWidgetBySchemaNode(node.type)),
+                      top: node.position.dy,
+                      left: node.position.dx))
+                ],
+              );
+            },
           ),
         ));
       },

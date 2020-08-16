@@ -27,11 +27,11 @@ mixin _$SchemaStore on _SchemaStore, Store {
   final _$_SchemaStoreActionController = ActionController(name: '_SchemaStore');
 
   @override
-  void add(SchemaNode widgetWrapper) {
+  void add(SchemaNode schemaNode) {
     final _$actionInfo =
         _$_SchemaStoreActionController.startAction(name: '_SchemaStore.add');
     try {
-      return super.add(widgetWrapper);
+      return super.add(schemaNode);
     } finally {
       _$_SchemaStoreActionController.endAction(_$actionInfo);
     }
