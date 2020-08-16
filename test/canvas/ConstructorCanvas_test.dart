@@ -1,11 +1,11 @@
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/canvas/WidgetPosition.dart';
-import 'package:flutter_app/store/tree/ConstructorCanvas.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('it adds components to state', () {
-    final canvas = ConstructorCanvas(components: []);
+    final canvas = SchemaStore(components: []);
     canvas.components = [
       SchemaNode(
           type: SchemaNodeType.button, position: WidgetPosition(x: 1, y: 1))

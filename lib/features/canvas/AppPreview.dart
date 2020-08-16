@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
-import 'package:flutter_app/store/tree/ConstructorCanvas.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 
 class AppPreview extends StatefulWidget {
   final List<SchemaNode> components;
@@ -14,12 +14,12 @@ class AppPreview extends StatefulWidget {
 }
 
 class _AppPreviewState extends State<AppPreview> {
-  ConstructorCanvas canvas;
+  SchemaStore canvas;
 
   @override
   void initState() {
     super.initState();
-    canvas = ConstructorCanvas(components: widget.components);
+    canvas = SchemaStore(components: widget.components);
   }
 
   Widget _buildWidgetBySchemaNode(SchemaNodeType type) {
@@ -39,7 +39,7 @@ class _AppPreviewState extends State<AppPreview> {
   @override
   Widget build(BuildContext context) {
     return DragTarget(
-      onAccept: (value) {
+      onAccept: (SchemaNodeType value) {
         log('value $value');
       },
       builder: (context, List<String> CandidateData, rejectedData) {

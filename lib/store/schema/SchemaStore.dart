@@ -1,12 +1,12 @@
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:mobx/mobx.dart';
 
-part 'ConstructorCanvas.g.dart';
+part 'SchemaStore.g.dart';
 
-class ConstructorCanvas = _ConstructorCanvas with _$ConstructorCanvas;
+class SchemaStore = _SchemaStore with _$SchemaStore;
 
-abstract class _ConstructorCanvas with Store {
-  _ConstructorCanvas({List<SchemaNode> components}) {
+abstract class _SchemaStore with Store {
+  _SchemaStore({List<SchemaNode> components}) {
     this.components = components;
   }
 

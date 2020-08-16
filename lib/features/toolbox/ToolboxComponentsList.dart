@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/canvas/SchemaNode.dart';
 
 class ToolboxComponentsList extends StatelessWidget {
   @override
@@ -18,31 +19,28 @@ class ToolboxComponentsList extends StatelessWidget {
 }
 
 class ToolboxComponent extends StatelessWidget {
+  Widget _buildToolbox() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(width: 1, color: Colors.tealAccent)),
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Text('Button'),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: Draggable(
-        data: 'test data',
-        feedback: Container(
-          color: Colors.red,
-          width: 50,
-          height: 50,
-        ),
-        childWhenDragging: Container(
-          color: Colors.green,
-          width: 50,
-          height: 50,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1, color: Colors.tealAccent)),
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text('Button'),
-          ),
-        ),
+      child: Draggable<SchemaNodeType>(
+        data: SchemaNodeType.button,
+        feedback:
+            Material(child: Opacity(opacity: 0.5, child: _buildToolbox())),
+        childWhenDragging: Opacity(opacity: 0.5, child: _buildToolbox()),
+        child: _buildToolbox(),
       ),
     );
   }

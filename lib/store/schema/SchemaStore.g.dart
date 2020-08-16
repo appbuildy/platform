@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'ConstructorCanvas.dart';
+part of 'SchemaStore.dart';
 
 // **************************************************************************
 // StoreGenerator
@@ -8,8 +8,8 @@ part of 'ConstructorCanvas.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$ConstructorCanvas on _ConstructorCanvas, Store {
-  final _$componentsAtom = Atom(name: '_ConstructorCanvas.components');
+mixin _$SchemaStore on _SchemaStore, Store {
+  final _$componentsAtom = Atom(name: '_SchemaStore.components');
 
   @override
   List<SchemaNode> get components {
@@ -24,17 +24,16 @@ mixin _$ConstructorCanvas on _ConstructorCanvas, Store {
     });
   }
 
-  final _$_ConstructorCanvasActionController =
-      ActionController(name: '_ConstructorCanvas');
+  final _$_SchemaStoreActionController = ActionController(name: '_SchemaStore');
 
   @override
   void add(SchemaNode widgetWrapper) {
-    final _$actionInfo = _$_ConstructorCanvasActionController.startAction(
-        name: '_ConstructorCanvas.add');
+    final _$actionInfo =
+        _$_SchemaStoreActionController.startAction(name: '_SchemaStore.add');
     try {
       return super.add(widgetWrapper);
     } finally {
-      _$_ConstructorCanvasActionController.endAction(_$actionInfo);
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
     }
   }
 
