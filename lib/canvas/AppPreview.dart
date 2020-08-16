@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/canvas/WidgetWrapper.dart';
 import 'package:flutter_app/store/tree/ConstructorCanvas.dart';
 
-class ConstructorCanvasWidget extends StatefulWidget {
+class AppPreview extends StatefulWidget {
   final List<WidgetWrapper> components;
 
-  const ConstructorCanvasWidget({Key key, @required this.components})
-      : super(key: key);
+  const AppPreview({Key key, @required this.components}) : super(key: key);
 
   @override
-  _ConstructorCanvasWidgetState createState() =>
-      _ConstructorCanvasWidgetState();
+  _AppPreviewState createState() => _AppPreviewState();
 }
 
-class _ConstructorCanvasWidgetState extends State<ConstructorCanvasWidget> {
+class _AppPreviewState extends State<AppPreview> {
   ConstructorCanvas canvas;
 
   @override

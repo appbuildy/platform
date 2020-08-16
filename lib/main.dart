@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/canvas/WidgetPosition.dart';
 import 'package:flutter_app/canvas/WidgetWrapper.dart';
 
-import 'canvas/ConstructorCanvasWidget.dart';
+import 'canvas/AppPreview.dart';
 
 void main() {
   runApp(MyApp());
@@ -57,8 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int buttonX;
   int buttonY;
-  ConstructorCanvasWidget constructorCanvasWidget =
-      ConstructorCanvasWidget(components: [
+  AppPreview constructorCanvasWidget = AppPreview(components: [
     WidgetWrapper(
         flutterWidget: MaterialButton(
             color: Colors.greenAccent, onPressed: () {}, child: Text('322')),
