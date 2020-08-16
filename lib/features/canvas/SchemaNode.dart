@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 enum SchemaNodeType { button, text }
 
 abstract class SchemaNode {
+  UniqueKey id;
   SchemaNodeType type;
   Offset position;
 
-  SchemaNode({Offset position}) {
+  SchemaNode({
+    Offset position,
+  }) {
     this.position = position;
+    this.id = UniqueKey();
   }
 
   Widget toWidget();

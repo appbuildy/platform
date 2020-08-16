@@ -15,6 +15,15 @@ abstract class _SchemaStore with Store {
 
   @action
   void add(SchemaNode schemaNode) {
-    components.add(schemaNode);
+    components = [...components, schemaNode];
+  }
+
+  @action
+  void update(SchemaNode schemaNode) {
+    final modified = [...components];
+    final index = modified.indexWhere((element) => element.id == schemaNode.id);
+    modified.replaceRange(index, index + 1, [schemaNode]);
+
+    components = [...modified];
   }
 }

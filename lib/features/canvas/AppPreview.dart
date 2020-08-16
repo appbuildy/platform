@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -44,13 +46,18 @@ class _AppPreviewState extends State<AppPreview> {
           height: 750,
           child: Observer(
             builder: (context) {
+              log('i rerendered');
               return Stack(
                 children: [
                   ...schemaStore.components.map((node) => Positioned(
-                      child: Draggable(
-                          data: 'Test',
-                          childWhenDragging: node.toWidget(),
-                          feedback: node.toWidget(),
+                      child: GestureDetector(
+                          onPanUpdate: (details) {
+                            node.position = Offset(
+                              node.position.dx + details.delta.dx,
+                              node.position.dy + details.delta.dy,
+                            );
+                            schemaStore.update(node);
+                          },
                           child: node.toWidget()),
                       top: node.position.dy,
                       left: node.position.dx))
