@@ -1,4 +1,4 @@
-import 'package:flutter_app/canvas/WidgetWrapper.dart';
+import 'package:flutter_app/features/canvas/WidgetWrapper.dart';
 import 'package:mobx/mobx.dart';
 
 part 'ConstructorCanvas.g.dart';

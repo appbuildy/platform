@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/canvas/WidgetPosition.dart';
+import 'package:flutter_app/features/canvas/WidgetPosition.dart';
 
 class WidgetWrapper {
   Widget flutterWidget;

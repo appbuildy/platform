@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/canvas/WidgetWrapper.dart';
+import 'package:flutter_app/features/canvas/WidgetWrapper.dart';
 import 'package:flutter_app/store/tree/ConstructorCanvas.dart';
 
 class AppPreview extends StatefulWidget {
