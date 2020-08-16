@@ -1,5 +1,5 @@
 abstract class BaseAction {
-  void execute() {}
-  void undo() {}
-  void redo() {}
+  void execute();
+  void undo();
+  void redo();
 }
