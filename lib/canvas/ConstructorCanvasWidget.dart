@@ -30,12 +30,14 @@ class _ConstructorCanvasWidgetState extends State<ConstructorCanvasWidget> {
       height: 500,
       child: Stack(
         children: [
-          ...canvas.components.map((component) => Draggable(
-                child: Positioned(
-                    child: component.flutterWidget,
-                    left: component.position.x.toDouble(),
-                    top: component.position.y.toDouble()),
-              ))
+          ...canvas.components.map((component) => Positioned(
+              child: Draggable(
+                  data: 'Test',
+                  childWhenDragging: component.flutterWidget,
+                  feedback: component.flutterWidget,
+                  child: component.flutterWidget),
+              top: component.position.x.toDouble(),
+              left: component.position.y.toDouble()))
         ],
       ),
     ));

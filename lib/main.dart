@@ -57,15 +57,20 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   int buttonX;
   int buttonY;
-  List<WidgetWrapper> components = [];
+  ConstructorCanvasWidget constructorCanvasWidget =
+      ConstructorCanvasWidget(components: [
+    WidgetWrapper(
+        flutterWidget: MaterialButton(
+            color: Colors.greenAccent, onPressed: () {}, child: Text('322')),
+        position: WidgetPosition(x: 22, y: 22))
+  ]);
 
   void _addButton(String text, Function onPressed) {
     setState(() {
       final widgetWrapper = WidgetWrapper(
-          flutterWidget:
-              MaterialButton(onPressed: onPressed, child: Text(text)),
+          flutterWidget: MaterialButton(
+              color: Colors.green, onPressed: onPressed, child: Text(text)),
           position: WidgetPosition(x: buttonX, y: buttonY));
-      components.add(widgetWrapper);
     });
   }
 
@@ -85,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ConstructorCanvasWidget(components: []),
+            constructorCanvasWidget,
             Text(
               'You have psdasdasdushed the button this many times:',
             ),
