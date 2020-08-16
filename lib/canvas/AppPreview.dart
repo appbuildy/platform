@@ -22,22 +22,26 @@ class _AppPreviewState extends State<AppPreview> {
 
   @override
   Widget build(BuildContext context) {
-    return (Container(
-      color: Colors.black12,
-      width: 375,
-      height: 500,
-      child: Stack(
-        children: [
-          ...canvas.components.map((component) => Positioned(
-              child: Draggable(
-                  data: 'Test',
-                  childWhenDragging: component.flutterWidget,
-                  feedback: component.flutterWidget,
-                  child: component.flutterWidget),
-              top: component.position.x.toDouble(),
-              left: component.position.y.toDouble()))
-        ],
-      ),
-    ));
+    return DragTarget(
+      builder: (context, List<String> CandidateData, rejectedData) {
+        return (Container(
+          color: Colors.black12,
+          width: 375,
+          height: 500,
+          child: Stack(
+            children: [
+              ...canvas.components.map((component) => Positioned(
+                  child: Draggable(
+                      data: 'Test',
+                      childWhenDragging: component.flutterWidget,
+                      feedback: component.flutterWidget,
+                      child: component.flutterWidget),
+                  top: component.position.x.toDouble(),
+                  left: component.position.y.toDouble()))
+            ],
+          ),
+        ));
+      },
+    );
   }
 }
