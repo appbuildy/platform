@@ -2,13 +2,16 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppPreview extends StatefulWidget {
-  final List<SchemaNode> components;
+  final SchemaStore schemaStore;
+  final UserActions userActions;
 
-  const AppPreview({Key key, @required this.components}) : super(key: key);
+  const AppPreview({Key key, @required this.schemaStore, this.userActions})
+      : super(key: key);
 
   @override
   _AppPreviewState createState() => _AppPreviewState();
@@ -16,12 +19,14 @@ class AppPreview extends StatefulWidget {
 
 class _AppPreviewState extends State<AppPreview> {
   SchemaStore schemaStore;
+  UserActions userActions;
   int counter;
 
   @override
   void initState() {
     super.initState();
-    schemaStore = SchemaStore(components: widget.components);
+    schemaStore = widget.schemaStore;
+    userActions = widget.userActions;
   }
 
   @override
@@ -37,7 +42,7 @@ class _AppPreviewState extends State<AppPreview> {
         details.data.position =
             Offset(details.offset.dx - x, details.offset.dy - y);
 
-        schemaStore.add(details.data);
+        userActions.placeWidget(SchemaNode.clone, schemaStore);
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(

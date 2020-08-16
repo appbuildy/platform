@@ -26,4 +26,9 @@ abstract class _SchemaStore with Store {
 
     components = [...modified];
   }
+
+  @action
+  void remove(SchemaNode schemaNode) {
+    components.remove(schemaNode);
+  }
 }

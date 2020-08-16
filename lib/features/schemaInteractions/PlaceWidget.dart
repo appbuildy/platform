@@ -13,6 +13,7 @@ class PlaceWidget extends BaseAction {
 
   @override
   void execute() {
+    executed = true;
     _schemaStore.add(_widget);
   }
 
@@ -23,6 +24,7 @@ class PlaceWidget extends BaseAction {
 
   @override
   void undo() {
-    // TODO: implement undo
+    if (!executed) return;
+    _schemaStore.remove(_widget);
   }
 }

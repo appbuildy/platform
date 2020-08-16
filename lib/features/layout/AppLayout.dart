@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/AppPreview.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 
-class AppLayout extends StatelessWidget {
+class AppLayout extends StatefulWidget {
+  @override
+  _AppLayoutState createState() => _AppLayoutState();
+}
+
+class _AppLayoutState extends State<AppLayout> {
+  SchemaStore schemaStore;
+  UserActions userActions;
+
+  @override
+  void initState() {
+    super.initState();
+    schemaStore = SchemaStore(components: []);
+    userActions = UserActions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,7 +46,10 @@ class AppLayout extends StatelessWidget {
                         Row(
                           children: [
                             MaterialButton(
-                                onPressed: () {}, child: Text('Undo')),
+                                onPressed: () {
+                                  userActions.undo();
+                                },
+                                child: Text('Undo')),
                             MaterialButton(
                               onPressed: () {},
                               child: Text('Redo'),
@@ -40,7 +60,8 @@ class AppLayout extends StatelessWidget {
                           height: 100,
                         ),
                         AppPreview(
-                          components: [],
+                          schemaStore: schemaStore,
+                          userActions: userActions,
                         ),
                       ],
                     ),
