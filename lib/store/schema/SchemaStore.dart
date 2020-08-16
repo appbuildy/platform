@@ -7,7 +7,8 @@ class SchemaStore = _SchemaStore with _$SchemaStore;
 
 abstract class _SchemaStore with Store {
   _SchemaStore({List<SchemaNode> components}) {
-    this.components = components;
+    this.components = ObservableList<SchemaNode>();
+    this.components.addAll(components);
   }
 
   @observable
@@ -15,16 +16,16 @@ abstract class _SchemaStore with Store {
 
   @action
   void add(SchemaNode schemaNode) {
-    components = [...components, schemaNode];
+    components.add(schemaNode);
   }
 
   @action
   void update(SchemaNode schemaNode) {
     final modified = [...components];
     final index = modified.indexWhere((element) => element.id == schemaNode.id);
-    modified.replaceRange(index, index + 1, [schemaNode]);
+    components.replaceRange(index, index + 1, [schemaNode]);
 
-    components = [...modified];
+    //components = [...modified];
   }
 
   @action
