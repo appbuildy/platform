@@ -12,9 +12,9 @@ class UserActions {
   }
 
   void undo() {
-    if (_latestAction() == null) return;
+    if (lastAction() == null) return;
 
-    _latestAction().undo();
+    lastAction().undo();
     // TODO: Move to redostack
   }
 
@@ -26,8 +26,8 @@ class UserActions {
     _actionsDone.add(action);
   }
 
-  BaseAction _latestAction() {
+  BaseAction lastAction() {
     // ignore: unnecessary_statements
-    _actionsDone.actions[_actionsDone.actions.length - 1];
+    return _actionsDone.actions.last;
   }
 }

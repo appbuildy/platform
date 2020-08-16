@@ -12,6 +12,7 @@ void main() {
 
       userActions.placeWidget(button, schemaStore);
       expect(schemaStore.components.length, 1);
+      expect(userActions.lastAction(), isNotNull);
       userActions.undo();
       expect(schemaStore.components.length, 0);
     });
