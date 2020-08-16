@@ -24,8 +24,25 @@ class AppLayout extends StatelessWidget {
                 flex: 2,
                 child: Center(
                   child: Container(
-                    child: AppPreview(
-                      components: [],
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            MaterialButton(
+                                onPressed: () {}, child: Text('Undo')),
+                            MaterialButton(
+                              onPressed: () {},
+                              child: Text('Redo'),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 100,
+                        ),
+                        AppPreview(
+                          components: [],
+                        ),
+                      ],
                     ),
                   ),
                 ),
