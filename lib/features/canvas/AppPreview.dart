@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -47,17 +45,21 @@ class _AppPreviewState extends State<AppPreview> {
   Widget build(BuildContext context) {
     return DragTarget<SchemaNodeType>(
       onAcceptWithDetails: (details) {
-        log('dx ${details.offset.dx - 375.0} dy ${details.offset.dy - 500.0}');
+        RenderBox box = context.findRenderObject();
+        Offset position =
+            box.localToGlobal(Offset.zero); //this is global position
+        double x = position.dx;
+        double y = position.dy;
+
         schemaStore.add(SchemaNode(
             type: details.data,
-            position:
-                Offset(details.offset.dx - 375.0, details.offset.dy - 500.0)));
+            position: Offset(details.offset.dx - x, details.offset.dy - y)));
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
           color: Colors.black12,
           width: 375,
-          height: 500,
+          height: 750,
           child: Observer(
             builder: (context) {
               return Stack(
