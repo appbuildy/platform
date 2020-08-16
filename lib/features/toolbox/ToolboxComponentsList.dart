@@ -35,8 +35,8 @@ class ToolboxComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: Draggable<SchemaNodeType>(
-        data: SchemaNodeType.button,
+      child: Draggable<SchemaNode>(
+        data: SchemaNodeButton(position: null),
         feedback:
             Material(child: Opacity(opacity: 0.5, child: _buildToolbox())),
         childWhenDragging: Opacity(opacity: 0.5, child: _buildToolbox()),

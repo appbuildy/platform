@@ -28,13 +28,14 @@ class _AppPreviewState extends State<AppPreview> {
       onAcceptWithDetails: (details) {
         RenderBox box = context.findRenderObject();
         Offset position =
-        box.localToGlobal(Offset.zero); //this is global position
+            box.localToGlobal(Offset.zero); //this is global position
         double x = position.dx;
         double y = position.dy;
 
-        schemaStore.add(SchemaNodeButton(
-            position:
-            Offset(details.offset.dx - x, details.offset.dy - y));
+        details.data.position =
+            Offset(details.offset.dx - x, details.offset.dy - y);
+
+        schemaStore.add(details.data);
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
