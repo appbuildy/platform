@@ -12,6 +12,8 @@ class UserActions {
   }
 
   void undo() {
+    if (_latestAction() == null) return;
+
     _latestAction().undo();
     // TODO: Move to redostack
   }

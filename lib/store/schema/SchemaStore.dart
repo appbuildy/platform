@@ -17,4 +17,9 @@ abstract class _SchemaStore with Store {
   void add(SchemaNode schemaNode) {
     components.add(schemaNode);
   }
+
+  @action
+  void remove(SchemaNode schemaNode) {
+    components.remove(schemaNode);
+  }
 }

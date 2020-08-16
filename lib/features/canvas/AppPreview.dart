@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -14,12 +15,14 @@ class AppPreview extends StatefulWidget {
 
 class _AppPreviewState extends State<AppPreview> {
   SchemaStore schemaStore;
+  UserActions userActions;
   int counter;
 
   @override
   void initState() {
     super.initState();
     schemaStore = SchemaStore(components: widget.components);
+    userActions = UserActions();
   }
 
   @override
@@ -35,7 +38,7 @@ class _AppPreviewState extends State<AppPreview> {
         details.data.position =
             Offset(details.offset.dx - x, details.offset.dy - y);
 
-        schemaStore.add(details.data);
+        userActions.placeWidget(details.data, schemaStore);
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
