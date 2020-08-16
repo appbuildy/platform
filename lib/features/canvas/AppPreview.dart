@@ -42,7 +42,7 @@ class _AppPreviewState extends State<AppPreview> {
         details.data.position =
             Offset(details.offset.dx - x, details.offset.dy - y);
 
-        userActions.placeWidget(SchemaNode.clone, schemaStore);
+        userActions.placeWidget(details.data, schemaStore);
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(

@@ -11,7 +11,7 @@ abstract class _SchemaStore with Store {
   }
 
   @observable
-  List<SchemaNode> components = [];
+  ObservableList<SchemaNode> components = ObservableList<SchemaNode>();
 
   @action
   void add(SchemaNode schemaNode) {

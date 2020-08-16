@@ -12,13 +12,13 @@ mixin _$SchemaStore on _SchemaStore, Store {
   final _$componentsAtom = Atom(name: '_SchemaStore.components');
 
   @override
-  List<SchemaNode> get components {
+  ObservableList<SchemaNode> get components {
     _$componentsAtom.reportRead();
     return super.components;
   }
 
   @override
-  set components(List<SchemaNode> value) {
+  set components(ObservableList<SchemaNode> value) {
     _$componentsAtom.reportWrite(value, super.components, () {
       super.components = value;
     });
@@ -32,6 +32,17 @@ mixin _$SchemaStore on _SchemaStore, Store {
         _$_SchemaStoreActionController.startAction(name: '_SchemaStore.add');
     try {
       return super.add(schemaNode);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void remove(SchemaNode schemaNode) {
+    final _$actionInfo =
+        _$_SchemaStoreActionController.startAction(name: '_SchemaStore.remove');
+    try {
+      return super.remove(schemaNode);
     } finally {
       _$_SchemaStoreActionController.endAction(_$actionInfo);
     }
