@@ -24,32 +24,12 @@ class _AppPreviewState extends State<AppPreview> {
     schemaStore = SchemaStore(components: widget.components);
   }
 
-  Widget _buildWidgetBySchemaNode(SchemaNodeType type) {
-    switch (type) {
-      case SchemaNodeType.button:
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(width: 1, color: Colors.tealAccent)),
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Text('Button'),
-          ),
-        );
-      case SchemaNodeType.text:
-        return Text('Text');
-      default:
-        return Container();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return DragTarget<SchemaNodeType>(
+    return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         log('dx ${details.offset.dx - 375.0} dy ${details.offset.dy - 500.0}');
-        schemaStore.add(SchemaNode(
-            type: details.data,
+        schemaStore.add(SchemaNodeButton(
             position:
                 Offset(details.offset.dx - 375.0, details.offset.dy - 500.0)));
       },
@@ -65,10 +45,9 @@ class _AppPreviewState extends State<AppPreview> {
                   ...schemaStore.components.map((node) => Positioned(
                       child: Draggable(
                           data: 'Test',
-                          childWhenDragging:
-                              _buildWidgetBySchemaNode(node.type),
-                          feedback: _buildWidgetBySchemaNode(node.type),
-                          child: _buildWidgetBySchemaNode(node.type)),
+                          childWhenDragging: node.toWidget(),
+                          feedback: node.toWidget(),
+                          child: node.toWidget()),
                       top: node.position.dy,
                       left: node.position.dx))
                 ],
