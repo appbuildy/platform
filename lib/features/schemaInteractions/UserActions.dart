@@ -4,19 +4,23 @@ import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
+import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
+  ActionsUndone _actionsUndone;
 
   UserActions() {
     _actionsDone = new ActionsDone(actions: []);
+    _actionsUndone = new ActionsUndone(actions: []);
   }
 
   void undo() {
     if (lastAction() == null) return;
 
-    lastAction().undo();
-    // TODO: Move to redostack
+    final removedAction = _actionsDone.actions.removeLast();
+    removedAction.undo();
+    _actionsUndone.add((removedAction));
   }
 
   void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore,
