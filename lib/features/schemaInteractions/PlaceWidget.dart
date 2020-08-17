@@ -6,7 +6,7 @@ class PlaceWidget extends BaseAction {
   SchemaNode _widget;
   SchemaStore _schemaStore;
 
-  PlaceWidget({ToolboxSchemaNode widget, SchemaStore schemaStore}) {
+  PlaceWidget({SchemaNode widget, SchemaStore schemaStore}) {
     _widget = widget;
     _schemaStore = schemaStore;
   }
@@ -14,7 +14,7 @@ class PlaceWidget extends BaseAction {
   @override
   void execute() {
     executed = true;
-    _schemaStore.add(_toolboxWidget.produceAppPreviewWidget());
+    _schemaStore.add(_widget);
   }
 
   @override

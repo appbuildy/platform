@@ -38,6 +38,17 @@ mixin _$SchemaStore on _SchemaStore, Store {
   }
 
   @override
+  void update(SchemaNode schemaNode) {
+    final _$actionInfo =
+        _$_SchemaStoreActionController.startAction(name: '_SchemaStore.update');
+    try {
+      return super.update(schemaNode);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void remove(SchemaNode schemaNode) {
     final _$actionInfo =
         _$_SchemaStoreActionController.startAction(name: '_SchemaStore.remove');
