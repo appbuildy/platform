@@ -21,11 +21,9 @@ abstract class _SchemaStore with Store {
 
   @action
   void update(SchemaNode schemaNode) {
-    final modified = [...components];
-    final index = modified.indexWhere((element) => element.id == schemaNode.id);
+    final index =
+        components.indexWhere((element) => element.id == schemaNode.id);
     components.replaceRange(index, index + 1, [schemaNode]);
-
-    //components = [...modified];
   }
 
   @action

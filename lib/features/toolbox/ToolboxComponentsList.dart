@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
+import 'package:flutter_app/features/toolbox/components/ButtonComponent.dart';
+import 'package:flutter_app/features/toolbox/components/ShapeComponent.dart';
+import 'package:flutter_app/features/toolbox/components/TextComponent.dart';
 
 class ToolboxComponentsList extends StatelessWidget {
   @override
@@ -9,38 +12,35 @@ class ToolboxComponentsList extends StatelessWidget {
         SizedBox(
           height: 50,
         ),
-        ToolboxComponent(),
-        ToolboxComponent(),
-        ToolboxComponent(),
-        ToolboxComponent(),
+        ToolboxComponent(
+          child: ToolboxButtonComponent(),
+          schemaNode: SchemaNodeButton(),
+        ),
+        ToolboxComponent(
+            child: ToolboxTextComponent(), schemaNode: SchemaNodeText()),
+        ToolboxComponent(
+            child: ToolboxShapeComponent(), schemaNode: SchemaNodeShape()),
       ],
     );
   }
 }
 
 class ToolboxComponent extends StatelessWidget {
-  Widget _buildToolbox() {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(width: 1, color: Colors.tealAccent)),
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Text('Button'),
-      ),
-    );
-  }
+  final Widget child;
+  final SchemaNode schemaNode;
+
+  const ToolboxComponent({Key key, this.child, this.schemaNode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Draggable<SchemaNode>(
-        data: SchemaNodeButton(position: null),
-        feedback:
-            Material(child: Opacity(opacity: 0.5, child: _buildToolbox())),
-        childWhenDragging: Opacity(opacity: 0.5, child: _buildToolbox()),
-        child: _buildToolbox(),
+        data: schemaNode,
+        feedback: Material(child: Opacity(opacity: 0.5, child: child)),
+        childWhenDragging: Opacity(opacity: 0.5, child: child),
+        child: child,
       ),
     );
   }
