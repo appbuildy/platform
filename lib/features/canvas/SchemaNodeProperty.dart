@@ -20,8 +20,8 @@ abstract class SchemaNodeProperty<T> {
 }
 
 // типа Text
-class SchemaSimpleProperty extends SchemaNodeProperty<String> {
-  SchemaSimpleProperty(String name, String value) : super(name, value);
+class SchemaStringProperty extends SchemaNodeProperty<String> {
+  SchemaStringProperty(String name, String value) : super(name, value);
 }
 
 class SchemaColorProperty extends SchemaNodeProperty<Color> {

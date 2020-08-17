@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 
@@ -9,7 +7,7 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
-  HashMap<String, SchemaNodeProperty> properties;
+  Map<String, SchemaNodeProperty> properties;
 
   SchemaNode({
     Offset position,
@@ -20,13 +18,13 @@ abstract class SchemaNode {
 
   SchemaNode copy({Offset position});
   Widget toWidget();
+  Widget toPropsEdit();
 }
 
 class SchemaNodeText extends SchemaNode {
   SchemaNodeText({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
-    this.properties = {'Text': SchemaSimpleProperty('Text', 'Text')}
-        as HashMap<String, SchemaNodeProperty>;
+    this.properties = {'Text': SchemaStringProperty('Text', 'Text')};
   }
 
   @override
@@ -37,8 +35,17 @@ class SchemaNodeText extends SchemaNode {
   @override
   Widget toWidget() {
     return Text(
-      'Text',
+      properties['Text'].value,
       style: TextStyle(fontSize: 16.0),
+    );
+  }
+
+  @override
+  Widget toPropsEdit() {
+    return TextField(
+      onChanged: (newText) {
+        properties['Text'] = SchemaStringProperty('Text', newText);
+      },
     );
   }
 }
@@ -48,7 +55,7 @@ class SchemaNodeShape extends SchemaNode {
     this.type = SchemaNodeType.button;
     this.properties = {
       'Color': SchemaColorProperty('Color', Colors.red),
-    } as HashMap<String, SchemaNodeProperty>;
+    };
   }
 
   @override
@@ -64,15 +71,23 @@ class SchemaNodeShape extends SchemaNode {
       color: Colors.white,
     );
   }
+
+  @override
+  Widget toPropsEdit() {
+    return Text(
+      'Text',
+      style: TextStyle(fontSize: 16.0),
+    );
+  }
 }
 
 class SchemaNodeButton extends SchemaNode {
   SchemaNodeButton({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
     this.properties = {
-      'Text': SchemaSimpleProperty('Text', 'Button'),
+      'Text': SchemaStringProperty('Text', 'Button'),
       'Background': SchemaColorProperty('Background', Colors.indigo)
-    } as HashMap<String, SchemaNodeProperty>;
+    };
   }
 
   @override
@@ -88,8 +103,17 @@ class SchemaNodeButton extends SchemaNode {
           border: Border.all(width: 1, color: Colors.tealAccent)),
       child: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: Text('Button'),
+        child: Text(properties['Text'].value),
       ),
+    );
+  }
+
+  @override
+  Widget toPropsEdit() {
+    return TextField(
+      onChanged: (newText) {
+        properties['Text'] = SchemaStringProperty('Text', newText);
+      },
     );
   }
 }
