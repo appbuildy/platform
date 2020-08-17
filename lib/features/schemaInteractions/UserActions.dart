@@ -11,12 +11,12 @@ import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 class UserActions {
   ActionsDone _actionsDone;
   ActionsUndone _actionsUndone;
-  CurrentEditingElement _currentElement;
+  CurrentEditingNode _currentNode;
 
   UserActions() {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
-    _currentElement = CurrentEditingElement();
+    _currentNode = CurrentEditingNode();
   }
 
   void undo() {
@@ -28,7 +28,7 @@ class UserActions {
   }
 
   void selectNodeForEdit(SchemaNode node) {
-    SelectNodeForPropsEdit(node, _currentElement).execute();
+    SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
   void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore,
@@ -40,8 +40,8 @@ class UserActions {
     _actionsDone.add(action);
   }
 
-  SchemaNode selectedElement() {
-    return _currentElement.selectedElement;
+  SchemaNode selectedNode() {
+    return _currentNode.selectedNode;
   }
 
   BaseAction lastAction() {

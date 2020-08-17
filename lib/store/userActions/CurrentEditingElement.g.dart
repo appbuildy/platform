@@ -8,20 +8,20 @@ part of 'CurrentEditingElement.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$CurrentEditingElement on _CurrentEditingElement, Store {
+mixin _$CurrentEditingNode on _CurrentEditingNode, Store {
   final _$selectedElementAtom =
       Atom(name: '_CurrentEditingElement.selectedElement');
 
   @override
-  SchemaNode get selectedElement {
+  SchemaNode get selectedNode {
     _$selectedElementAtom.reportRead();
-    return super.selectedElement;
+    return super.selectedNode;
   }
 
   @override
-  set selectedElement(SchemaNode value) {
-    _$selectedElementAtom.reportWrite(value, super.selectedElement, () {
-      super.selectedElement = value;
+  set selectedNode(SchemaNode value) {
+    _$selectedElementAtom.reportWrite(value, super.selectedNode, () {
+      super.selectedNode = value;
     });
   }
 
@@ -42,7 +42,7 @@ mixin _$CurrentEditingElement on _CurrentEditingElement, Store {
   @override
   String toString() {
     return '''
-selectedElement: ${selectedElement}
+selectedElement: ${selectedNode}
     ''';
   }
 }

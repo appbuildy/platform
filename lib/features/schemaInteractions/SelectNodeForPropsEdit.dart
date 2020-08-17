@@ -3,7 +3,7 @@ import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 
 class SelectNodeForPropsEdit {
   SchemaNode node;
-  CurrentEditingElement currentElement;
+  CurrentEditingNode currentElement;
   SelectNodeForPropsEdit(this.node, this.currentElement);
 
   void execute() {

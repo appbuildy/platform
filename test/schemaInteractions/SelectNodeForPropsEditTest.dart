@@ -5,12 +5,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('it selects node for props edit', () {
-    CurrentEditingElement currentElement = CurrentEditingElement();
+    CurrentEditingNode currentElement = CurrentEditingNode();
     final SchemaNodeButton node = SchemaNodeButton(position: Offset(1, 3));
     final SelectNodeForPropsEdit action =
         SelectNodeForPropsEdit(node, currentElement);
     action.execute();
 
-    expect(currentElement.selectedElement, isNotNull);
+    expect(currentElement.selectedNode, isNotNull);
   });
 }

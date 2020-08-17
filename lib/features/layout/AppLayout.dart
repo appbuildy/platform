@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/AppPreview.dart';
+import 'package:flutter_app/features/editProps/EditProps.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppLayout extends StatefulWidget {
   @override
@@ -71,6 +73,12 @@ class _AppLayoutState extends State<AppLayout> {
               Flexible(
                 flex: 1,
                 child: Container(
+                  child: Center(
+                    child: Observer(
+                      builder: (context) =>
+                          EditProps(selectedNode: userActions.selectedNode()),
+                    ),
+                  ),
                   decoration: BoxDecoration(
                       color: Color(0xFFEAEAEA),
                       border: Border(

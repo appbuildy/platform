@@ -3,15 +3,14 @@ import 'package:mobx/mobx.dart';
 
 part 'CurrentEditingElement.g.dart';
 
-class CurrentEditingElement = _CurrentEditingElement
-    with _$CurrentEditingElement;
+class CurrentEditingNode = _CurrentEditingNode with _$CurrentEditingNode;
 
-abstract class _CurrentEditingElement with Store {
+abstract class _CurrentEditingNode with Store {
   @observable
-  SchemaNode selectedElement;
+  SchemaNode selectedNode;
 
   @action
   void select(SchemaNode node) {
-    selectedElement = node;
+    selectedNode = node;
   }
 }
