@@ -16,6 +16,7 @@ class ChangeNodeProperty extends BaseAction {
   void execute() {
     oldProperty = node.properties[property.name];
     if (oldProperty == null) return;
+    executed = true;
     node.properties[property.name] = property;
   }
 
@@ -26,6 +27,7 @@ class ChangeNodeProperty extends BaseAction {
 
   @override
   void undo() {
-    // TODO: implement undo
+    if (!executed) return;
+    node.properties[property.name] = oldProperty;
   }
 }
