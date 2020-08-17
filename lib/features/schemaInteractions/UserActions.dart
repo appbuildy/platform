@@ -30,7 +30,10 @@ class UserActions {
   }
 
   void changePropertyTo(SchemaNodeProperty prop) {
-    ChangeNodeProperty(node: selectedNode(), setProperty: prop);
+    final action = ChangeNodeProperty(node: selectedNode(), setProperty: prop);
+    action.execute();
+
+    _actionsDone.add(action);
   }
 
   void selectNodeForEdit(SchemaNode node) {
