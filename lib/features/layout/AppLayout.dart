@@ -40,7 +40,7 @@ class _AppLayoutState extends State<AppLayout> {
               Flexible(
                 flex: 2,
                 child: Center(
-                  child: Container(
+                  child: SingleChildScrollView(
                     child: Column(
                       children: [
                         Row(

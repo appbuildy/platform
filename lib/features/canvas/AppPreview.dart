@@ -51,6 +51,7 @@ class _AppPreviewState extends State<AppPreview> {
                 builder: (context) {
                   log('i rerendered');
                   return Stack(
+                    textDirection: TextDirection.ltr,
                     children: [
                       ...schemaStore.components.map((node) => Positioned(
                           child: GestureDetector(
