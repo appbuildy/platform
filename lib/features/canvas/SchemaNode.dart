@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum SchemaNodeType { button, text }
@@ -15,12 +14,16 @@ abstract class SchemaNode {
     this.id = UniqueKey();
   }
 
+  SchemaNode copy({Offset position});
   Widget toWidget();
 }
 
 class SchemaNodeButton extends SchemaNode {
-  SchemaNodeButton({Offset position}) {
-    type = SchemaNodeType.button;
+  SchemaNodeButton({Offset position}) : super(position: position);
+
+  @override
+  SchemaNode copy({Offset position}) {
+    return SchemaNodeButton(position: position);
   }
 
   @override

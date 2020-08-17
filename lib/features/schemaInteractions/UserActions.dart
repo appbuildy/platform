@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
@@ -18,9 +19,10 @@ class UserActions {
     // TODO: Move to redostack
   }
 
-  void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore) {
-    final action =
-        new PlaceWidget(widget: schemaNode, schemaStore: schemaStore);
+  void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore,
+      @required Offset position) {
+    final action = new PlaceWidget(
+        widget: schemaNode, schemaStore: schemaStore, position: position);
 
     action.execute();
     _actionsDone.add(action);

@@ -10,7 +10,7 @@ void main() {
       final SchemaStore schemaStore = new SchemaStore(components: []);
       final button = new SchemaNodeButton();
 
-      userActions.placeWidget(button, schemaStore);
+      userActions.placeWidget(button, schemaStore, Offset(1, 2));
       expect(schemaStore.components.length, 1);
       expect(userActions.lastAction(), isNotNull);
       userActions.undo();

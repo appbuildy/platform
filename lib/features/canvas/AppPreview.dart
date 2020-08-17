@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -33,16 +34,9 @@ class _AppPreviewState extends State<AppPreview> {
   Widget build(BuildContext context) {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
-        RenderBox box = context.findRenderObject();
-        Offset position =
-            box.localToGlobal(Offset.zero); //this is global position
-        double x = position.dx;
-        double y = position.dy;
-
-        details.data.position =
-            Offset(details.offset.dx - x, details.offset.dy - y);
-
-        userActions.placeWidget(details.data, schemaStore);
+        final newPosition =
+            WidgetPositionAfterDropOnPreview(context, details).calculate();
+        userActions.placeWidget(details.data, schemaStore, newPosition);
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
