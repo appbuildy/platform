@@ -5,6 +5,7 @@ void main() {
   group('execute()', () {
     test('it changes node property to given', () {
       final text = SchemaNodeText();
+      final prop = text.properties;
     });
   });
 }
