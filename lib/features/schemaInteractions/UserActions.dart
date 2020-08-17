@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
+import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
+import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -25,6 +27,10 @@ class UserActions {
     final removedAction = _actionsDone.actions.removeLast();
     removedAction.undo();
     _actionsUndone.add((removedAction));
+  }
+
+  void changePropertyTo(SchemaNodeProperty prop) {
+    ChangeNodeProperty(node: selectedNode(), setProperty: prop);
   }
 
   void selectNodeForEdit(SchemaNode node) {
