@@ -17,6 +17,7 @@ abstract class SchemaNode {
   }
 
   SchemaNode copy({Offset position});
+  SchemaNode copyForPropsEdit({Map<String, SchemaNodeProperty> properties});
   Widget toWidget();
   Widget toEditProps(Function changePropertyTo);
 }
@@ -50,6 +51,13 @@ class SchemaNodeText extends SchemaNode {
       ),
     );
   }
+
+  @override
+  SchemaNode copyForPropsEdit({Map<String, SchemaNodeProperty> properties}) {
+    final newNode = SchemaNodeText(position: this.position);
+    newNode.properties = properties;
+    return newNode;
+  }
 }
 
 class SchemaNodeShape extends SchemaNode {
@@ -58,6 +66,13 @@ class SchemaNodeShape extends SchemaNode {
     this.properties = {
       'Color': SchemaColorProperty('Color', Colors.red),
     };
+  }
+
+  @override
+  SchemaNode copyForPropsEdit({Map<String, SchemaNodeProperty> properties}) {
+    final newNode = SchemaNodeShape(position: this.position);
+    newNode.properties = properties;
+    return newNode;
   }
 
   @override
@@ -90,6 +105,13 @@ class SchemaNodeButton extends SchemaNode {
       'Text': SchemaStringProperty('Text', 'Button'),
       'Background': SchemaColorProperty('Background', Colors.indigo)
     };
+  }
+
+  @override
+  SchemaNode copyForPropsEdit({Map<String, SchemaNodeProperty> properties}) {
+    final newNode = SchemaNodeButton(position: this.position);
+    newNode.properties = properties;
+    return newNode;
   }
 
   @override

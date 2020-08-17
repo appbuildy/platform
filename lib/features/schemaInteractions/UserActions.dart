@@ -14,11 +14,13 @@ class UserActions {
   ActionsDone _actionsDone;
   ActionsUndone _actionsUndone;
   CurrentEditingNode _currentNode;
+  SchemaStore _schemaStore;
 
-  UserActions() {
+  UserActions({SchemaStore schemaStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
+    _schemaStore = schemaStore;
   }
 
   void undo() {
@@ -30,9 +32,10 @@ class UserActions {
   }
 
   void changePropertyTo(SchemaNodeProperty prop) {
-    final action = ChangeNodeProperty(node: selectedNode(), setProperty: prop);
-    action.execute();
+    final action = ChangeNodeProperty(
+        schemaStore: _schemaStore, node: selectedNode(), setProperty: prop);
 
+    action.execute();
     _actionsDone.add(action);
   }
 

@@ -1,14 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 
 class ChangeNodeProperty extends BaseAction {
   SchemaNodeProperty property;
   SchemaNode node;
   SchemaNodeProperty oldProperty;
+  SchemaStore schemaStore;
 
-  ChangeNodeProperty({SchemaNode node, SchemaNodeProperty setProperty}) {
+  ChangeNodeProperty(
+      {SchemaStore schemaStore,
+      SchemaNode node,
+      SchemaNodeProperty setProperty}) {
     this.property = setProperty;
+    this.schemaStore = schemaStore;
     this.node = node;
   }
 
@@ -17,7 +25,11 @@ class ChangeNodeProperty extends BaseAction {
     oldProperty = node.properties[property.name];
     if (oldProperty == null) return;
     executed = true;
+
+    log('Change prop called ${property.value}');
+
     node.properties[property.name] = property;
+    schemaStore.update(node);
   }
 
   @override

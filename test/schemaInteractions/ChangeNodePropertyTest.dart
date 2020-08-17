@@ -1,17 +1,23 @@
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   SchemaNode text;
   SchemaNodeProperty newProp;
   ChangeNodeProperty changeProp;
+  SchemaStore schemaStore;
 
   setUp(() {
+    schemaStore = SchemaStore(components: []);
     text = SchemaNodeText();
+    schemaStore.add(text);
+
     newProp = SchemaStringProperty('Text', '33');
-    changeProp = ChangeNodeProperty(node: text, setProperty: newProp);
+    changeProp = ChangeNodeProperty(
+        schemaStore: schemaStore, node: text, setProperty: newProp);
   });
 
   group('undo()', () {

@@ -19,7 +19,7 @@ class _AppLayoutState extends State<AppLayout> {
   void initState() {
     super.initState();
     schemaStore = SchemaStore(components: []);
-    userActions = UserActions();
+    userActions = UserActions(schemaStore: schemaStore);
   }
 
   @override
