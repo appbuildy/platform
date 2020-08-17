@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 
@@ -7,7 +9,7 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
-  List<SchemaNodeProperty> properties;
+  HashMap<String, SchemaNodeProperty> properties;
 
   SchemaNode({
     Offset position,
@@ -23,9 +25,8 @@ abstract class SchemaNode {
 class SchemaNodeText extends SchemaNode {
   SchemaNodeText({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
-    this.properties = [
-      SchemaSimpleProperty('Text', 'Text'),
-    ];
+    this.properties = {'Text': SchemaSimpleProperty('Text', 'Text')}
+        as HashMap<String, SchemaNodeProperty>;
   }
 
   @override
@@ -45,9 +46,9 @@ class SchemaNodeText extends SchemaNode {
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
-    this.properties = [
-      SchemaSimpleProperty('Color', 'red'),
-    ];
+    this.properties = {
+      'Color': SchemaColorProperty('Color', Colors.red),
+    } as HashMap<String, SchemaNodeProperty>;
   }
 
   @override
@@ -68,10 +69,10 @@ class SchemaNodeShape extends SchemaNode {
 class SchemaNodeButton extends SchemaNode {
   SchemaNodeButton({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
-    this.properties = [
-      SchemaSimpleProperty('Text', 'Button'),
-      SchemaColorProperty('Background', Colors.indigo)
-    ];
+    this.properties = {
+      'Text': SchemaSimpleProperty('Text', 'Button'),
+      'Background': SchemaColorProperty('Background', Colors.indigo)
+    } as HashMap<String, SchemaNodeProperty>;
   }
 
   @override
