@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';

@@ -1,5 +1,5 @@
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_test/flutter_test.dart';
 

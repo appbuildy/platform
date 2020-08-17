@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 
 class EditProps extends StatelessWidget {
   final SchemaNode selectedNode;

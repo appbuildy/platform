@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:mobx/mobx.dart';
 
 part 'SchemaStore.g.dart';

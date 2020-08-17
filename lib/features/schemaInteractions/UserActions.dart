@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
-import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';

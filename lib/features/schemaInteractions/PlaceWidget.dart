@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 
 class PlaceWidget extends BaseAction {

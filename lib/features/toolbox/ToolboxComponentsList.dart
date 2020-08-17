@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/components/ButtonComponent.dart';
 import 'package:flutter_app/features/toolbox/components/ShapeComponent.dart';
 import 'package:flutter_app/features/toolbox/components/TextComponent.dart';

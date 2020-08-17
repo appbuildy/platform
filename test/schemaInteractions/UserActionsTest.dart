@@ -1,5 +1,5 @@
-import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/canvas/AppPreview.dart';
+import 'package:flutter_app/features/appPreview/AppPreview.dart';
 import 'package:flutter_app/features/editProps/EditProps.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
