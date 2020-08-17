@@ -18,7 +18,7 @@ abstract class SchemaNode {
 
   SchemaNode copy({Offset position});
   Widget toWidget();
-  Widget toEditProps();
+  Widget toEditProps(Function changePropertyTo);
 }
 
 class SchemaNodeText extends SchemaNode {
@@ -41,14 +41,11 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toEditProps() {
+  Widget toEditProps(changePropTo) {
     return Container(
-      color: Colors.red,
-      width: 150,
-      height: 150,
       child: TextField(
         onChanged: (newText) {
-          properties['Text'] = SchemaStringProperty('Text', newText);
+          changePropTo(SchemaStringProperty('Text', newText));
         },
       ),
     );
@@ -78,7 +75,7 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toEditProps() {
+  Widget toEditProps(onUpdate) {
     return Text(
       'Text',
       style: TextStyle(fontSize: 16.0),
@@ -114,14 +111,11 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toEditProps() {
+  Widget toEditProps(changePropTo) {
     return Container(
-      color: Colors.green,
-      width: 150,
-      height: 150,
       child: TextField(
         onChanged: (newText) {
-          properties['Text'] = SchemaStringProperty('Text', newText);
+          changePropTo(SchemaStringProperty('Text', newText));
         },
       ),
     );

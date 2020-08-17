@@ -75,8 +75,9 @@ class _AppLayoutState extends State<AppLayout> {
                 child: Container(
                   child: Center(
                     child: Observer(
-                      builder: (context) =>
-                          EditProps(selectedNode: userActions.selectedNode()),
+                      builder: (context) => EditProps(
+                          userActions: userActions,
+                          selectedNode: userActions.selectedNode()),
                     ),
                   ),
                   decoration: BoxDecoration(
