@@ -41,7 +41,7 @@ class _AppPreviewState extends State<AppPreview> {
       builder: (context, candidateData, rejectedData) {
         return GestureDetector(
             onTap: () {
-              log('Tapped');
+              log('Canvas Tapped');
             },
             child: (Container(
               color: Colors.black12,
@@ -55,6 +55,9 @@ class _AppPreviewState extends State<AppPreview> {
                     children: [
                       ...schemaStore.components.map((node) => Positioned(
                           child: GestureDetector(
+                              onTap: () {
+                                userActions.selectNodeForEdit(node);
+                              },
                               onPanUpdate: (details) {
                                 node.position = Offset(
                                   node.position.dx + details.delta.dx,
