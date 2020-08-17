@@ -75,7 +75,21 @@ class _AppPreviewState extends State<AppPreview> {
                                 );
                                 schemaStore.update(node);
                               },
-                              child: node.toWidget()),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    boxShadow:
+                                        userActions.selectedNode() != null &&
+                                                userActions.selectedNode().id ==
+                                                    node.id
+                                            ? [
+                                                BoxShadow(
+                                                    offset: Offset.zero,
+                                                    blurRadius: 10,
+                                                    color: Colors.blue)
+                                              ]
+                                            : [],
+                                  ),
+                                  child: node.toWidget())),
                           top: node.position.dy,
                           left: node.position.dx))
                     ],
