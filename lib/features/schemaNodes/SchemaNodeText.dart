@@ -5,7 +5,10 @@ import 'package:flutter_app/ui/MyTextField.dart';
 class SchemaNodeText extends SchemaNode {
   SchemaNodeText({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
-    this.properties = {'Text': SchemaStringProperty('Text', 'Text')};
+    this.properties = {
+      'Text': SchemaStringProperty('Text', 'Text'),
+      'Color': SchemaColorProperty('Color', Colors.black)
+    };
   }
 
   @override
@@ -17,7 +20,7 @@ class SchemaNodeText extends SchemaNode {
   Widget toWidget() {
     return Text(
       properties['Text'].value,
-      style: TextStyle(fontSize: 16.0),
+      style: TextStyle(fontSize: 16.0, color: properties['Color'].value),
     );
   }
 
@@ -36,6 +39,50 @@ class SchemaNodeText extends SchemaNode {
         onChanged: (newText) {
           changePropTo(SchemaStringProperty('Text', newText));
         },
+      ),
+      SizedBox(height: 8),
+      Row(
+        children: [
+          GestureDetector(
+            onTap: () {
+              changePropTo(SchemaColorProperty('Color', Colors.black));
+            },
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(color: Colors.black),
+            ),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          GestureDetector(
+            onTap: () {
+              changePropTo(SchemaColorProperty('Color', Colors.red));
+            },
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(color: Colors.red),
+            ),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          GestureDetector(
+            onTap: () {
+              changePropTo(SchemaColorProperty('Color', Colors.blue));
+            },
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(color: Colors.blue),
+            ),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+        ],
       ),
     ]);
   }

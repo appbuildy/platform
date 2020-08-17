@@ -4,8 +4,8 @@ class ToolboxShapeComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 35,
-      height: 35,
+      width: 50,
+      height: 50,
       color: Colors.white,
     );
   }
