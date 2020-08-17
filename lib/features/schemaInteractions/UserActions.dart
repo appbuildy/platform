@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/canvas/SchemaNode.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
+import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
+import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
@@ -21,6 +23,11 @@ class UserActions {
     final removedAction = _actionsDone.actions.removeLast();
     removedAction.undo();
     _actionsUndone.add((removedAction));
+  }
+
+  void selectNodeForEdit(
+      SchemaNode node, CurrentEditingElement currentElement) {
+    SelectNodeForPropsEdit(node, currentElement).execute();
   }
 
   void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore,
