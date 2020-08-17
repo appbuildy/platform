@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/canvas/SchemaNodeProperty.dart';
 
 enum SchemaNodeType { button, text }
 
@@ -6,6 +7,7 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
+  List<SchemaNodeProperty> properties;
 
   SchemaNode({
     Offset position,
@@ -19,7 +21,13 @@ abstract class SchemaNode {
 }
 
 class SchemaNodeButton extends SchemaNode {
-  SchemaNodeButton({Offset position}) : super(position: position);
+  SchemaNodeButton({Offset position}) : super(position: position) {
+    this.type = SchemaNodeType.button;
+    this.properties = [
+      SchemaSimpleProperty('Text', 'Button'),
+      SchemaSimpleProperty('Background', Colors.indigo.toString())
+    ];
+  }
 
   @override
   SchemaNode copy({Offset position}) {
