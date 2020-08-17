@@ -70,7 +70,7 @@ class SchemaNodeButton extends SchemaNode {
     this.type = SchemaNodeType.button;
     this.properties = [
       SchemaSimpleProperty('Text', 'Button'),
-      SchemaSimpleProperty('Background', Colors.indigo.toString())
+      SchemaColorProperty('Background', Colors.indigo)
     ];
   }
 

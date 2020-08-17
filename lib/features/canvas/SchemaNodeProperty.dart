@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-abstract class SchemaNodeProperty {
+abstract class SchemaNodeProperty<T> {
   String name;
-  String value;
+  T value;
   SchemaNodeProperty properties;
 
-  SchemaNodeProperty(String name, String value) {
+  SchemaNodeProperty(String name, value) {
     name = name;
     value = value;
   }
@@ -19,7 +19,11 @@ abstract class SchemaNodeProperty {
   }
 }
 
-// типа Color, BackgroundColor
-class SchemaSimpleProperty extends SchemaNodeProperty {
+// типа Text
+class SchemaSimpleProperty extends SchemaNodeProperty<String> {
   SchemaSimpleProperty(String name, String value) : super(name, value);
+}
+
+class SchemaColorProperty extends SchemaNodeProperty<Color> {
+  SchemaColorProperty(String name, Color value) : super(name, value);
 }
