@@ -8,11 +8,17 @@ class PlaceWidget extends BaseAction {
   SchemaStore _schemaStore;
   Offset _position;
   SchemaNode _newWidget;
+  Function _selectNodeForEdit;
 
-  PlaceWidget({SchemaNode widget, SchemaStore schemaStore, Offset position}) {
+  PlaceWidget(
+      {SchemaNode widget,
+      SchemaStore schemaStore,
+      Offset position,
+      Function selectNodeForEdit}) {
     _widget = widget;
     _schemaStore = schemaStore;
     _position = position;
+    _selectNodeForEdit = selectNodeForEdit;
   }
 
   @override
@@ -20,6 +26,7 @@ class PlaceWidget extends BaseAction {
     executed = true;
     _newWidget = _widget.copy(position: _position);
     _schemaStore.add(_newWidget);
+    _selectNodeForEdit(_newWidget);
   }
 
   @override
@@ -31,5 +38,6 @@ class PlaceWidget extends BaseAction {
   void undo() {
     if (!executed) return;
     _schemaStore.remove(_newWidget);
+    _selectNodeForEdit(null);
   }
 }

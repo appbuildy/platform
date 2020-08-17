@@ -45,7 +45,10 @@ class UserActions {
   void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore,
       @required Offset position) {
     final action = new PlaceWidget(
-        widget: schemaNode, schemaStore: schemaStore, position: position);
+        widget: schemaNode,
+        schemaStore: schemaStore,
+        position: position,
+        selectNodeForEdit: selectNodeForEdit);
 
     action.execute();
     _actionsDone.add(action);

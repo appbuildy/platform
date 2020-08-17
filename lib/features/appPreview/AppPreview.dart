@@ -61,7 +61,7 @@ class _AppPreviewState extends State<AppPreview> {
                     children: [
                       ...schemaStore.components.map((node) => Positioned(
                           child: GestureDetector(
-                              onTap: () {
+                              onTapDown: (details) {
                                 userActions.selectNodeForEdit(node);
                               },
                               onPanUpdate: (details) {

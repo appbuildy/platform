@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 
 class SchemaNodeText extends SchemaNode {
   SchemaNodeText({Offset position}) : super(position: position) {
@@ -22,12 +23,20 @@ class SchemaNodeText extends SchemaNode {
 
   @override
   Widget toEditProps(changePropTo) {
-    return Container(
-      child: TextField(
+    return Column(children: [
+      Text(
+        'Text Node',
+      ),
+      SizedBox(height: 16),
+      Text('Value'),
+      SizedBox(height: 8),
+      MyTextField(
+        key: id,
+        defaultValue: properties['Text'].value,
         onChanged: (newText) {
           changePropTo(SchemaStringProperty('Text', newText));
         },
       ),
-    );
+    ]);
   }
 }
