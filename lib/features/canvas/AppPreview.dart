@@ -30,6 +30,12 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
+  double constrainPosition(double value, double maxValue) {
+    if (value <= 0) return 0.0;
+    if (value >= maxValue) return maxValue;
+    return value;
+  }
+
   @override
   Widget build(BuildContext context) {
     return DragTarget<SchemaNode>(
@@ -60,8 +66,12 @@ class _AppPreviewState extends State<AppPreview> {
                               },
                               onPanUpdate: (details) {
                                 node.position = Offset(
-                                  node.position.dx + details.delta.dx,
-                                  node.position.dy + details.delta.dy,
+                                  constrainPosition(
+                                      node.position.dx + details.delta.dx,
+                                      375.0),
+                                  constrainPosition(
+                                      node.position.dy + details.delta.dy,
+                                      750.0),
                                 );
                                 schemaStore.update(node);
                               },
