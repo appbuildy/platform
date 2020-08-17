@@ -40,6 +40,10 @@ class UserActions {
     _actionsDone.add(action);
   }
 
+  SchemaNode selectedElement() {
+    return _currentElement.selectedElement;
+  }
+
   BaseAction lastAction() {
     // ignore: unnecessary_statements
     return _actionsDone.actions.last;
