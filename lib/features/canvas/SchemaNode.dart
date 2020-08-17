@@ -21,7 +21,7 @@ abstract class SchemaNode {
   Widget toPropsEdit();
 }
 
-class SchemaNodeText implements SchemaNode {
+class SchemaNodeText extends SchemaNode {
   SchemaNodeText({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
     this.properties = {'Text': SchemaStringProperty('Text', 'Text')};

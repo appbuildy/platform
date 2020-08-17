@@ -7,11 +7,12 @@ void main() {
   group('execute()', () {
     test('it changes node property to given', () {
       final text = SchemaNodeText();
-      final newProp = SchemaSimpleProperty('Text', '33');
+      final newProp = SchemaStringProperty('Text', '33');
       final changeProp = ChangeNodeProperty(node: text, setProperty: newProp);
       changeProp.execute();
+      final textPropValue = text.properties['Text'].value;
 
-      expect(text.properties['Text'].value, equals(newProp.value));
+      expect(textPropValue, equals(newProp.value));
     });
   });
 }

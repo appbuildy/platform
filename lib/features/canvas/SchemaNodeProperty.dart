@@ -6,8 +6,8 @@ abstract class SchemaNodeProperty<T> {
   SchemaNodeProperty properties;
 
   SchemaNodeProperty(String name, value) {
-    name = name;
-    value = value;
+    this.name = name;
+    this.value = value;
   }
 
   StatefulWidget input(Function onChange) {
@@ -20,7 +20,7 @@ abstract class SchemaNodeProperty<T> {
 }
 
 // типа Text
-class SchemaStringProperty extends SchemaNodeProperty<String> {
+class SchemaStringProperty extends SchemaNodeProperty {
   SchemaStringProperty(String name, String value) : super(name, value);
 }
 
