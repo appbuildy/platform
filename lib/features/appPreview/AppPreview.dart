@@ -42,7 +42,7 @@ class _AppPreviewState extends State<AppPreview> {
       onAcceptWithDetails: (details) {
         final newPosition =
             WidgetPositionAfterDropOnPreview(context, details).calculate();
-        userActions.placeWidget(details.data, schemaStore, newPosition);
+        userActions.placeWidget(details.data, newPosition);
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(

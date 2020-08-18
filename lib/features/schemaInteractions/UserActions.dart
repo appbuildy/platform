@@ -45,11 +45,10 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  void placeWidget(SchemaNode schemaNode, SchemaStore schemaStore,
-      @required Offset position) {
+  void placeWidget(SchemaNode schemaNode, @required Offset position) {
     final action = new PlaceWidget(
         widget: schemaNode,
-        schemaStore: schemaStore,
+        schemaStore: _schemaStore,
         position: position,
         selectNodeForEdit: selectNodeForEdit);
 
