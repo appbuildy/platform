@@ -6,6 +6,8 @@ part 'CurrentScreen.g.dart';
 class CurrentScreen = _CurrentScreen with _$CurrentScreen;
 
 abstract class _CurrentScreen with Store {
+  _CurrentScreen(this.currentScreen);
+
   @observable
   SchemaStore currentScreen;
 

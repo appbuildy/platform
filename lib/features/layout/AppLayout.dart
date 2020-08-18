@@ -4,6 +4,8 @@ import 'package:flutter_app/features/editProps/EditProps.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppLayout extends StatefulWidget {
@@ -14,11 +16,16 @@ class AppLayout extends StatefulWidget {
 class _AppLayoutState extends State<AppLayout> {
   SchemaStore schemaStore;
   UserActions userActions;
+  CurrentScreen currentScreen;
+  ScreensStore screensStore;
 
   @override
   void initState() {
     super.initState();
     schemaStore = SchemaStore(components: []);
+    currentScreen = CurrentScreen(schemaStore);
+    screensStore = ScreensStore();
+    screensStore.createScreen(schemaStore);
     userActions = UserActions(schemaStore: schemaStore);
   }
 
