@@ -27,43 +27,33 @@ class _MyTextFieldState extends State<MyTextField> {
   }
 
   @override
+  void didUpdateWidget(MyTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _textEditingController.value = TextEditingValue(
+      text: widget.defaultValue,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: widget.defaultValue.length),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CupertinoTextField(
-      maxLength: 240,
+    return TextField(
       controller: _textEditingController,
       onChanged: (String value) {
         widget.onChanged(value);
       },
       enableInteractiveSelection: true,
-      suffix: Padding(
-        padding: const EdgeInsets.only(right: 20),
-      ),
-      suffixMode: OverlayVisibilityMode.always,
-      placeholder: widget.placeholder,
       textCapitalization: TextCapitalization.sentences,
-      padding: EdgeInsets.only(
-        left: 20,
-        top: 23,
-        bottom: 20,
-        right: 20,
-      ),
       style: TextStyle(
         fontWeight: FontWeight.w500,
         fontSize: 18,
         fontFamily: 'ObjectSans',
         color: Colors.black,
       ),
-      placeholderStyle: TextStyle(
-        fontWeight: FontWeight.w500,
-        fontSize: 18,
-        fontFamily: 'ObjectSans',
-        color: Colors.grey,
-      ),
       cursorColor: Colors.black,
       cursorRadius: Radius.circular(0),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Colors.black, width: 1)),
     );
   }
 }

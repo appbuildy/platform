@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SchemaNodeButton extends SchemaNode {
   SchemaNodeButton({Offset position}) : super(position: position) {
@@ -35,21 +36,23 @@ class SchemaNodeButton extends SchemaNode {
   Widget toEditProps(changePropTo) {
     final debouncer = Debouncer(milliseconds: 500);
 
-    return Column(children: [
-      Text(
-        'Button Node',
-      ),
-      SizedBox(height: 16),
-      Text('Value'),
-      SizedBox(height: 8),
-      MyTextField(
-        key: id,
-        defaultValue: properties['Text'].value,
-        onChanged: (newText) {
-          debouncer
-              .run(() => changePropTo(SchemaStringProperty('Text', newText)));
-        },
-      ),
-    ]);
+    return Observer(
+      builder: (_) => Column(children: [
+        Text(
+          'Button Node',
+        ),
+        SizedBox(height: 16),
+        Text('Value'),
+        SizedBox(height: 8),
+        MyTextField(
+          key: id,
+          defaultValue: properties['Text'].value,
+          onChanged: (newText) {
+            debouncer
+                .run(() => changePropTo(SchemaStringProperty('Text', newText)));
+          },
+        ),
+      ]),
+    );
   }
 }
