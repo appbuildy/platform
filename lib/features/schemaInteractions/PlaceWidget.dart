@@ -18,7 +18,7 @@ class PlaceWidget extends BaseAction {
     _widget = widget;
     _schemaStore = schemaStore;
     _position = position;
-    _selectNodeForEdit = selectNodeForEdit;
+    _selectNodeForEdit = selectNodeForEdit ?? (_arg) {};
   }
 
   @override

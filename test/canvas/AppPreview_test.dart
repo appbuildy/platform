@@ -7,7 +7,7 @@ void main() {
     final appPreview = MyApp();
 
     await tester.pumpWidget(appPreview);
-    expect(find.text('Button'), findsNWidgets(4));
+    expect(find.text('Button'), findsOneWidget);
   });
 
   testWidgets('Drag n drop toolbox component', (WidgetTester tester) async {
@@ -17,6 +17,6 @@ void main() {
     await tester.pumpWidget(appPreview);
     await tester.drag(component, Offset(150, 400));
     await tester.pumpAndSettle();
-    expect(find.text('Button'), 5);
+    expect(find.text('Button'), findsNWidgets(3));
   });
 }
