@@ -26,7 +26,7 @@ class _AppLayoutState extends State<AppLayout> {
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
     screensStore.createScreen(schemaStore);
-    userActions = UserActions(schemaStore: schemaStore);
+    userActions = UserActions(currentScreen: currentScreen);
   }
 
   @override

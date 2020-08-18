@@ -4,22 +4,22 @@ import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart'
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
+import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
   ActionsUndone _actionsUndone;
   CurrentEditingNode _currentNode;
-  SchemaStore _schemaStore;
+  CurrentScreen _currentScreen;
 
-  UserActions({SchemaStore schemaStore}) {
+  UserActions({CurrentScreen currentScreen}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
-    _schemaStore = schemaStore;
+    _currentScreen = currentScreen;
   }
 
   void undo() {
@@ -33,7 +33,7 @@ class UserActions {
   void changePropertyTo(SchemaNodeProperty prop) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
-        schemaStore: _schemaStore,
+        schemaStore: _currentScreen.currentScreen,
         node: selectedNode(),
         setProperty: prop);
 
@@ -48,7 +48,7 @@ class UserActions {
   void placeWidget(SchemaNode schemaNode, @required Offset position) {
     final action = new PlaceWidget(
         widget: schemaNode,
-        schemaStore: _schemaStore,
+        schemaStore: _currentScreen.currentScreen,
         position: position,
         selectNodeForEdit: selectNodeForEdit);
 

@@ -1,17 +1,19 @@
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('undo()', () {
     test('it places given widget to schemaStore', () {
-      final userActions = new UserActions();
       final SchemaStore schemaStore = new SchemaStore(components: []);
+      final CurrentScreen screen = CurrentScreen(schemaStore);
       final button = new SchemaNodeButton();
+      final userActions = new UserActions(currentScreen: screen);
 
-      userActions.placeWidget(button, schemaStore, Offset(1, 2));
-      userActions.placeWidget(button, schemaStore, Offset(1, 5));
+      userActions.placeWidget(button, Offset(1, 2));
+      userActions.placeWidget(button, Offset(1, 5));
 
       expect(schemaStore.components.length, 2);
       expect(userActions.lastAction(), isNotNull);
