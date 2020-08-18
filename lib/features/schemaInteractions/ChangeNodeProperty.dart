@@ -2,7 +2,7 @@ import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 
-class angeNodeProperty extends BaseAction {
+class ChangeNodeProperty extends BaseAction {
   SchemaNodeProperty property;
   Function selectNodeForEdit;
   SchemaNode node;

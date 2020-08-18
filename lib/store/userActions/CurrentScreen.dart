@@ -1,7 +1,7 @@
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:mobx/mobx.dart';
 
-part 'CurrentScren.g.dart';
+part 'CurrentScreen.g.dart';
 
 class CurrentScreen = _CurrentScreen with _$CurrentScreen;
 
