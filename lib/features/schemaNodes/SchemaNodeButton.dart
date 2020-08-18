@@ -8,6 +8,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 class SchemaNodeButton extends SchemaNode {
   SchemaNodeButton({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
+    this.size = Offset(150.0, 100.0);
     this.properties = {
       'Text': SchemaStringProperty('Text', 'Button'),
       'Background': SchemaColorProperty('Background', Colors.indigo)
@@ -22,6 +23,8 @@ class SchemaNodeButton extends SchemaNode {
   @override
   Widget toWidget() {
     return Container(
+      width: size.dx,
+      height: size.dy,
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(width: 1, color: Colors.tealAccent)),

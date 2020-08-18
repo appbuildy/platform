@@ -4,6 +4,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
+    this.size = Offset(100.0, 100.0);
     this.properties = {'Color': SchemaColorProperty('Color', Colors.white)};
   }
 
@@ -15,8 +16,8 @@ class SchemaNodeShape extends SchemaNode {
   @override
   Widget toWidget() {
     return Container(
-      width: 60,
-      height: 60,
+      width: size.dx,
+      height: size.dy,
       color: properties['Color'].value,
     );
   }

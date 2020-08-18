@@ -12,6 +12,7 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
+  Offset size;
   Map<String, SchemaNodeProperty> properties;
 
   SchemaNode({

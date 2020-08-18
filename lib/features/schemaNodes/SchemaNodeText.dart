@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/MyTextField.dart';
 class SchemaNodeText extends SchemaNode {
   SchemaNodeText({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
+    this.size = Offset(100.0, 100.0);
     this.properties = {
       'Text': SchemaStringProperty('Text', 'Text'),
       'Color': SchemaColorProperty('Color', Colors.black)
@@ -18,9 +19,13 @@ class SchemaNodeText extends SchemaNode {
 
   @override
   Widget toWidget() {
-    return Text(
-      properties['Text'].value,
-      style: TextStyle(fontSize: 16.0, color: properties['Color'].value),
+    return Container(
+      width: size.dx,
+      height: size.dy,
+      child: Text(
+        properties['Text'].value,
+        style: TextStyle(fontSize: 16.0, color: properties['Color'].value),
+      ),
     );
   }
 

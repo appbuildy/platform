@@ -36,6 +36,89 @@ class _AppPreviewState extends State<AppPreview> {
     return value;
   }
 
+  Widget renderWithSelected({SchemaNode node}) {
+    final isSelected = userActions.selectedNode() != null &&
+        userActions.selectedNode().id == node.id;
+
+    final List<Widget> dots = isSelected
+        ? [
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          ]
+        : [Container()];
+
+    return Container(
+      width: node.size.dx + 8,
+      height: node.size.dy + 8,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          isSelected
+              ? Container(
+                  width: node.size.dx + 4,
+                  height: node.size.dy + 4,
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.red)),
+                )
+              : Container(
+                  width: node.size.dx + 6,
+                  height: node.size.dy + 6,
+                ),
+          Container(
+            child: node.toWidget(),
+          ),
+          ...dots,
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DragTarget<SchemaNode>(
@@ -69,19 +152,9 @@ class _AppPreviewState extends State<AppPreview> {
                             );
                             schemaStore.update(node);
                           },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                boxShadow: userActions.selectedNode() != null &&
-                                        userActions.selectedNode().id == node.id
-                                    ? [
-                                        BoxShadow(
-                                            offset: Offset.zero,
-                                            blurRadius: 10,
-                                            color: Colors.blue)
-                                      ]
-                                    : [],
-                              ),
-                              child: node.toWidget())),
+                          child: renderWithSelected(
+                            node: node,
+                          )),
                       top: node.position.dy,
                       left: node.position.dx))
                 ],
