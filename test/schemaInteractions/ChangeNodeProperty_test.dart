@@ -8,15 +8,20 @@ void main() {
   SchemaNodeProperty newProp;
   ChangeNodeProperty changeProp;
   SchemaStore schemaStore;
+  Function selectNodeForEdit;
 
   setUp(() {
     schemaStore = SchemaStore(components: []);
     text = SchemaNodeText();
     schemaStore.add(text);
+    selectNodeForEdit = (SchemaNode node) {};
 
     newProp = SchemaStringProperty('Text', '33');
     changeProp = ChangeNodeProperty(
-        schemaStore: schemaStore, node: text, setProperty: newProp);
+        selectNodeForEdit: selectNodeForEdit,
+        schemaStore: schemaStore,
+        node: text,
+        setProperty: newProp);
   });
 
   group('undo()', () {
