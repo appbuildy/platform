@@ -7,6 +7,9 @@ import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDro
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+const SCREEN_WIDTH = 375.0;
+const SCREEN_HEIGHT = 750.0;
+
 class AppPreview extends StatefulWidget {
   final SchemaStore schemaStore;
   final UserActions userActions;
@@ -30,10 +33,42 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
-  double constrainPosition(double value, double maxValue) {
-    if (value <= 0) return 0.0;
-    if (value >= maxValue) return maxValue;
+  double constrainPosition(double value, double sideSize, double maxValue) {
+    if (value <= 0) return -1.0;
+    if (value + sideSize >= maxValue) return maxValue - sideSize;
+
     return value;
+  }
+
+  double constrainPosition2({
+    @required double size,
+    @required double value,
+    @required double position,
+    @required double max,
+  }) {
+    if (value + position <= 0.0) {
+      return 0.0;
+    } else if (value + position + size >= max) {
+      return max - size;
+    }
+    ;
+
+    return value + position;
+  }
+
+  double constrainSize({
+    @required double size,
+    @required double value,
+    @required double position,
+    @required double max,
+    bool isSub = false,
+  }) {
+    if (size + value + position >= max) {
+      return (max - position).toInt().toDouble();
+    }
+    return isSub
+        ? (size - value).toInt().toDouble()
+        : (size + value).toInt().toDouble();
   }
 
   Widget renderWithSelected({SchemaNode node}) {
@@ -49,11 +84,26 @@ class _AppPreviewState extends State<AppPreview> {
                 onPanUpdate: (details) {
                   node.position = Offset(
                     node.position.dx,
-                    constrainPosition(
-                        node.position.dy + details.delta.dy, 750.0),
+                    constrainPosition2(
+                        position: node.position.dy,
+                        value: details.delta.dy,
+                        size: node.size.dy,
+                        max: SCREEN_HEIGHT),
                   );
-                  node.size = Offset(node.size.dx + details.delta.dx,
-                      node.size.dy - details.delta.dy);
+                  node.size = Offset(
+                      constrainSize(
+                        size: node.size.dx,
+                        position: node.position.dx,
+                        max: SCREEN_WIDTH,
+                        value: details.delta.dx,
+                      ),
+                      constrainSize(
+                        size: node.size.dy,
+                        position: node.position.dy,
+                        max: SCREEN_HEIGHT,
+                        value: details.delta.dy,
+                        isSub: true,
+                      ));
                   schemaStore.update(node);
                 },
                 child: Container(
@@ -72,13 +122,32 @@ class _AppPreviewState extends State<AppPreview> {
               child: GestureDetector(
                 onPanUpdate: (details) {
                   node.position = Offset(
-                    constrainPosition(
-                        node.position.dx + details.delta.dx, 375.0),
-                    constrainPosition(
-                        node.position.dy + details.delta.dy, 750.0),
+                    constrainPosition2(
+                        position: node.position.dx,
+                        value: details.delta.dx,
+                        size: node.size.dx,
+                        max: SCREEN_WIDTH),
+                    constrainPosition2(
+                        position: node.position.dy,
+                        value: details.delta.dy,
+                        size: node.size.dy,
+                        max: SCREEN_HEIGHT),
                   );
-                  node.size = Offset(node.size.dx - details.delta.dx,
-                      node.size.dy - details.delta.dy);
+                  node.size = Offset(
+                      constrainSize(
+                        size: node.size.dx,
+                        position: node.position.dx,
+                        max: SCREEN_WIDTH,
+                        value: details.delta.dx,
+                        isSub: true,
+                      ),
+                      constrainSize(
+                        size: node.size.dy,
+                        position: node.position.dy,
+                        max: SCREEN_HEIGHT,
+                        value: details.delta.dy,
+                        isSub: true,
+                      ));
                   schemaStore.update(node);
                 },
                 child: Container(
@@ -97,12 +166,27 @@ class _AppPreviewState extends State<AppPreview> {
               child: GestureDetector(
                 onPanUpdate: (details) {
                   node.position = Offset(
-                    constrainPosition(
-                        node.position.dx + details.delta.dx, 375.0),
+                    constrainPosition2(
+                        position: node.position.dx,
+                        value: details.delta.dx,
+                        size: node.size.dx,
+                        max: SCREEN_WIDTH),
                     node.position.dy,
                   );
-                  node.size = Offset(node.size.dx - details.delta.dx,
-                      node.size.dy + details.delta.dy);
+                  node.size = Offset(
+                      constrainSize(
+                        size: node.size.dx,
+                        position: node.position.dx,
+                        max: SCREEN_WIDTH,
+                        value: details.delta.dx,
+                        isSub: true,
+                      ),
+                      constrainSize(
+                        size: node.size.dy,
+                        position: node.position.dy,
+                        max: SCREEN_HEIGHT,
+                        value: details.delta.dy,
+                      ));
                   schemaStore.update(node);
                 },
                 child: Container(
@@ -124,8 +208,19 @@ class _AppPreviewState extends State<AppPreview> {
                     node.position.dx,
                     node.position.dy,
                   );
-                  node.size = Offset(node.size.dx + details.delta.dx,
-                      node.size.dy + details.delta.dy);
+                  node.size = Offset(
+                      constrainSize(
+                        size: node.size.dx,
+                        position: node.position.dx,
+                        max: SCREEN_WIDTH,
+                        value: details.delta.dx,
+                      ),
+                      constrainSize(
+                        size: node.size.dy,
+                        position: node.position.dy,
+                        max: SCREEN_HEIGHT,
+                        value: details.delta.dy,
+                      ));
                   schemaStore.update(node);
                 },
                 child: Container(
@@ -142,31 +237,41 @@ class _AppPreviewState extends State<AppPreview> {
         : [Container()];
 
     return Container(
-      width: node.size.dx + 8,
-      height: node.size.dy + 8,
+      width: node.size.dx,
+      height: node.size.dy,
       child: Stack(
         alignment: Alignment.center,
         children: [
           isSelected
               ? Container(
-                  width: node.size.dx + 4,
-                  height: node.size.dy + 4,
+                  width: node.size.dx,
+                  height: node.size.dy,
                   decoration: BoxDecoration(
                       border: Border.all(width: 1, color: Colors.red)),
                 )
               : Container(
-                  width: node.size.dx + 6,
-                  height: node.size.dy + 6,
+                  width: node.size.dx,
+                  height: node.size.dy,
                 ),
           GestureDetector(
             onPanUpdate: (details) {
               node.position = Offset(
-                constrainPosition(node.position.dx + details.delta.dx, 375.0),
-                constrainPosition(node.position.dy + details.delta.dy, 750.0),
+                constrainPosition2(
+                    position: node.position.dx,
+                    value: details.delta.dx,
+                    size: node.size.dx,
+                    max: SCREEN_WIDTH),
+                constrainPosition2(
+                    position: node.position.dy,
+                    value: details.delta.dy,
+                    size: node.size.dy,
+                    max: SCREEN_HEIGHT),
               );
               schemaStore.update(node);
             },
             child: Container(
+              width: isSelected ? node.size.dx - 2 : node.size.dx,
+              height: isSelected ? node.size.dy - 2 : node.size.dy,
               child: node.toWidget(),
             ),
           ),
@@ -187,8 +292,8 @@ class _AppPreviewState extends State<AppPreview> {
       builder: (context, candidateData, rejectedData) {
         return (Container(
           color: Colors.black12,
-          width: 375,
-          height: 750,
+          width: SCREEN_WIDTH,
+          height: SCREEN_HEIGHT,
           child: Observer(
             builder: (context) {
               log('i rerendered');
