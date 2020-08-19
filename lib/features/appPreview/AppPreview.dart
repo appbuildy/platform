@@ -45,48 +45,96 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: 0,
               right: 0,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red,
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    node.position.dx,
+                    constrainPosition(
+                        node.position.dy + details.delta.dy, 750.0),
+                  );
+                  node.size = Offset(node.size.dx + details.delta.dx,
+                      node.size.dy - details.delta.dy);
+                  schemaStore.update(node);
+                },
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
             Positioned(
               top: 0,
               left: 0,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red,
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    constrainPosition(
+                        node.position.dx + details.delta.dx, 375.0),
+                    constrainPosition(
+                        node.position.dy + details.delta.dy, 750.0),
+                  );
+                  node.size = Offset(node.size.dx - details.delta.dx,
+                      node.size.dy - details.delta.dy);
+                  schemaStore.update(node);
+                },
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
             Positioned(
               bottom: 0,
               left: 0,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red,
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    constrainPosition(
+                        node.position.dx + details.delta.dx, 375.0),
+                    node.position.dy,
+                  );
+                  node.size = Offset(node.size.dx - details.delta.dx,
+                      node.size.dy + details.delta.dy);
+                  schemaStore.update(node);
+                },
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
             Positioned(
               bottom: 0,
               right: 0,
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.red,
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    node.position.dx,
+                    node.position.dy,
+                  );
+                  node.size = Offset(node.size.dx + details.delta.dx,
+                      node.size.dy + details.delta.dy);
+                  schemaStore.update(node);
+                },
+                child: Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),
@@ -110,8 +158,17 @@ class _AppPreviewState extends State<AppPreview> {
                   width: node.size.dx + 6,
                   height: node.size.dy + 6,
                 ),
-          Container(
-            child: node.toWidget(),
+          GestureDetector(
+            onPanUpdate: (details) {
+              node.position = Offset(
+                constrainPosition(node.position.dx + details.delta.dx, 375.0),
+                constrainPosition(node.position.dy + details.delta.dy, 750.0),
+              );
+              schemaStore.update(node);
+            },
+            child: Container(
+              child: node.toWidget(),
+            ),
           ),
           ...dots,
         ],
@@ -142,15 +199,6 @@ class _AppPreviewState extends State<AppPreview> {
                       child: GestureDetector(
                           onTapDown: (details) {
                             userActions.selectNodeForEdit(node);
-                          },
-                          onPanUpdate: (details) {
-                            node.position = Offset(
-                              constrainPosition(
-                                  node.position.dx + details.delta.dx, 375.0),
-                              constrainPosition(
-                                  node.position.dy + details.delta.dy, 750.0),
-                            );
-                            schemaStore.update(node);
                           },
                           child: renderWithSelected(
                             node: node,
