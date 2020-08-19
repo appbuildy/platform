@@ -28,10 +28,9 @@ class SchemaNodeButton extends SchemaNode {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(width: 1, color: Colors.tealAccent)),
-      child: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Text(properties['Text'].value),
-      ),
+      child: Center(
+          child: Text(
+              'position dx: ${position.dx.toString()} position dy: ${position.dy.toString()} size dx: ${size.dx.toString()} size dy: ${size.dy.toString()}')),
     );
   }
 
