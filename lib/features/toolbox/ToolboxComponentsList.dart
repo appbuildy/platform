@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/components/ButtonComponent.dart';
 import 'package:flutter_app/features/toolbox/components/ShapeComponent.dart';
 import 'package:flutter_app/features/toolbox/components/TextComponent.dart';
+import 'package:flutter_app/ui/Cursor.dart';
 
 class ToolboxComponentsList extends StatelessWidget {
   @override
@@ -36,11 +37,14 @@ class ToolboxComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: Draggable<SchemaNode>(
-        data: schemaNode,
-        feedback: Material(child: Opacity(opacity: 0.5, child: child)),
-        childWhenDragging: Opacity(opacity: 0.5, child: child),
-        child: child,
+      child: Cursor(
+        cursor: CursorEnum.pointer,
+        child: Draggable<SchemaNode>(
+          data: schemaNode,
+          feedback: Material(child: Opacity(opacity: 0.5, child: child)),
+          childWhenDragging: Opacity(opacity: 0.5, child: child),
+          child: child,
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -218,7 +219,7 @@ class _AppPreviewState extends State<AppPreview> {
                       node: node, delta: details.delta, side: SideEnum.topLeft);
                   schemaStore.update(updatedNode);
                 },
-                child: redCircle,
+                child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
               ),
             ),
             Positioned(
@@ -232,7 +233,7 @@ class _AppPreviewState extends State<AppPreview> {
                       side: SideEnum.topRight);
                   schemaStore.update(updatedNode);
                 },
-                child: redCircle,
+                child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
               ),
             ),
             Positioned(
@@ -246,7 +247,7 @@ class _AppPreviewState extends State<AppPreview> {
                       side: SideEnum.bottomRight);
                   schemaStore.update(updatedNode);
                 },
-                child: redCircle,
+                child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
               ),
             ),
             Positioned(
@@ -260,7 +261,7 @@ class _AppPreviewState extends State<AppPreview> {
                       side: SideEnum.bottomLeft);
                   schemaStore.update(updatedNode);
                 },
-                child: redCircle,
+                child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
               ),
             ),
           ]
