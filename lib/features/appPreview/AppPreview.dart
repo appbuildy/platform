@@ -180,6 +180,9 @@ class _AppPreviewState extends State<AppPreview> {
     final int maxInt = max.round();
 
     if (isSub && positionInt <= 0) {
+      if (valueInt < 0) {
+        return (sizeInt + valueInt).toDouble();
+      }
       return sizeInt.toDouble();
     }
 
