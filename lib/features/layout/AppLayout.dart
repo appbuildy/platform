@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
 import 'package:flutter_app/features/editProps/EditProps.dart';
+import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -26,7 +27,8 @@ class _AppLayoutState extends State<AppLayout> {
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
     screensStore.createScreen(schemaStore);
-    userActions = UserActions(currentScreen: currentScreen);
+    final screens = Screens(screensStore, currentScreen);
+    userActions = UserActions(screens: screens);
   }
 
   @override

@@ -17,8 +17,17 @@ class Screens {
   }
 
   SchemaStore nextScreen() {
-    all.screens.indexOf(current);
-    final possibleNextScreen = all.screens[_currentIndex + 1];
+    return _screenByIndex(1);
+  }
+
+  SchemaStore previousScreen() {
+    return _screenByIndex(-2);
+  }
+
+  void select(screen) {}
+
+  SchemaStore _screenByIndex(indexDiff) {
+    final possibleNextScreen = all.screens[_currentIndex + indexDiff];
 
     if (possibleNextScreen != null) {
       _current.select(possibleNextScreen);
@@ -27,12 +36,6 @@ class Screens {
       return current;
     }
   }
-
-  SchemaStore previousScreen() {
-    all.screens.indexOf(current);
-  }
-
-  void select(screen) {}
 
   int get _currentIndex => all.screens.indexOf(current);
   SchemaStore get current => _current.currentScreen;

@@ -1,6 +1,8 @@
+import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,7 +12,8 @@ void main() {
       final SchemaStore schemaStore = new SchemaStore(components: []);
       final CurrentScreen screen = CurrentScreen(schemaStore);
       final button = new SchemaNodeButton();
-      final userActions = new UserActions(currentScreen: screen);
+      final userActions =
+          new UserActions(screens: Screens(ScreensStore(), screen));
 
       userActions.placeWidget(button, Offset(1, 2));
       userActions.placeWidget(button, Offset(1, 5));

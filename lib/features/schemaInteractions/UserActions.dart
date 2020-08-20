@@ -2,28 +2,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
+import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
-import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
   ActionsUndone _actionsUndone;
   CurrentEditingNode _currentNode;
-  CurrentScreen _currentScreen;
+  Screens _screens;
 
-  UserActions({CurrentScreen currentScreen}) {
+  UserActions({Screens screens}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
-    _currentScreen = currentScreen;
+    _screens = screens;
   }
 
-  SchemaStore get currentScreen => _currentScreen.currentScreen;
+  SchemaStore get currentScreen => _screens.current;
+  Screens get screens => _screens;
 
   void undo() {
     if (lastAction() == null) return;
@@ -33,12 +34,10 @@ class UserActions {
     _actionsUndone.add((removedAction));
   }
 
-  void createScreen() {}
-
   void changePropertyTo(SchemaNodeProperty prop) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
-        schemaStore: _currentScreen.currentScreen,
+        schemaStore: currentScreen,
         node: selectedNode(),
         setProperty: prop);
 
@@ -53,7 +52,7 @@ class UserActions {
   void placeWidget(SchemaNode schemaNode, Offset position) {
     final action = new PlaceWidget(
         widget: schemaNode,
-        schemaStore: _currentScreen.currentScreen,
+        schemaStore: currentScreen,
         position: position,
         selectNodeForEdit: selectNodeForEdit);
 

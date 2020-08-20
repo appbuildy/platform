@@ -30,4 +30,11 @@ void main() {
 
     expect(screens.current, equals(screens.all.screens.last));
   });
+
+  test('prevScreen()', () {
+    screens.create();
+    screens.nextScreen();
+
+    expect(screens.current, equals(screens.all.screens.last));
+  });
 }
