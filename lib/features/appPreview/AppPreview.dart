@@ -300,10 +300,13 @@ class _AppPreviewState extends State<AppPreview> {
               );
               schemaStore.update(node);
             },
-            child: Container(
-              width: isSelected ? node.size.dx - 2 : node.size.dx,
-              height: isSelected ? node.size.dy - 2 : node.size.dy,
-              child: node.toWidget(),
+            child: Cursor(
+              cursor: CursorEnum.move,
+              child: Container(
+                width: isSelected ? node.size.dx - 2 : node.size.dx,
+                height: isSelected ? node.size.dy - 2 : node.size.dy,
+                child: node.toWidget(),
+              ),
             ),
           ),
           ...dots,

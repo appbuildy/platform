@@ -14,7 +14,7 @@ const CursorMap = {
 class Cursor extends MouseRegion {
   static final appContainer =
       html.window.document.querySelectorAll('flt-glass-pane')[0];
-  Cursor({Widget child, CursorEnum cursor})
+  Cursor({@required Widget child, @required CursorEnum cursor})
       : super(
             onHover: (PointerHoverEvent evt) {
               appContainer.style.cursor = CursorMap[cursor];
