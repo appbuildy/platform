@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
@@ -10,21 +12,27 @@ class Screens {
   Screens(this.all, this._current);
 
   BaseAction create({moveToNextAfterCreated = false}) {
+    log('Create screen');
     final action = AddScreen(screensStore: all);
-
     action.execute();
+
+    if (moveToNextAfterCreated) nextScreen();
     return action;
   }
 
   SchemaStore nextScreen() {
-    return _screenByIndex(1);
+    log('Move to next screen');
+    return select(_screenByIndex(1));
   }
 
   SchemaStore previousScreen() {
-    return _screenByIndex(-2);
+    return select(_screenByIndex(-1));
   }
 
-  void select(screen) {}
+  SchemaStore select(screen) {
+    _current.select(screen);
+    return screen;
+  }
 
   SchemaStore _screenByIndex(indexDiff) {
     final possibleNextScreen = all.screens[_currentIndex + indexDiff];

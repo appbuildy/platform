@@ -64,11 +64,31 @@ class _AppLayoutState extends State<AppLayout> {
                             MaterialButton(
                               onPressed: () {},
                               child: Text('Redo'),
-                            )
+                            ),
+                            MaterialButton(
+                                onPressed: () {
+                                  userActions.screens
+                                      .create(moveToNextAfterCreated: true);
+                                },
+                                child: Text('Add Screen')),
+                            MaterialButton(
+                                onPressed: () {
+                                  userActions.screens.previousScreen();
+                                },
+                                child: Text('Previous Screen')),
+                            MaterialButton(
+                                onPressed: () {
+                                  userActions.screens.nextScreen();
+                                },
+                                child: Text('Next screen')),
                           ],
                         ),
                         SizedBox(
                           height: 100,
+                        ),
+                        Observer(
+                          builder: (context) =>
+                              Text(userActions.screens.current.name),
                         ),
                         AppPreview(
                           userActions: userActions,

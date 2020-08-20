@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
-import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -14,18 +13,15 @@ const SCREEN_WIDTH = 375.0;
 const SCREEN_HEIGHT = 750.0;
 
 class AppPreview extends StatefulWidget {
-  final SchemaStore schemaStore;
   final UserActions userActions;
 
-  const AppPreview({Key key, @required this.schemaStore, this.userActions})
-      : super(key: key);
+  const AppPreview({Key key, this.userActions}) : super(key: key);
 
   @override
   _AppPreviewState createState() => _AppPreviewState();
 }
 
 class _AppPreviewState extends State<AppPreview> {
-  SchemaStore schemaStore;
   UserActions userActions;
   int counter;
 
@@ -33,7 +29,6 @@ class _AppPreviewState extends State<AppPreview> {
   void initState() {
     super.initState();
     userActions = widget.userActions;
-    schemaStore = userActions.currentScreen;
   }
 
   double constrainPosition(double value, double sideSize, double maxValue) {
@@ -217,7 +212,7 @@ class _AppPreviewState extends State<AppPreview> {
                 onPanUpdate: (details) {
                   final updatedNode = handleSizeChange(
                       node: node, delta: details.delta, side: SideEnum.topLeft);
-                  schemaStore.update(updatedNode);
+                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
               ),
@@ -231,7 +226,7 @@ class _AppPreviewState extends State<AppPreview> {
                       node: node,
                       delta: details.delta,
                       side: SideEnum.topRight);
-                  schemaStore.update(updatedNode);
+                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
               ),
@@ -245,7 +240,7 @@ class _AppPreviewState extends State<AppPreview> {
                       node: node,
                       delta: details.delta,
                       side: SideEnum.bottomRight);
-                  schemaStore.update(updatedNode);
+                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
               ),
@@ -259,7 +254,7 @@ class _AppPreviewState extends State<AppPreview> {
                       node: node,
                       delta: details.delta,
                       side: SideEnum.bottomLeft);
-                  schemaStore.update(updatedNode);
+                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
               ),
@@ -298,7 +293,7 @@ class _AppPreviewState extends State<AppPreview> {
                     size: node.size.dy,
                     max: SCREEN_HEIGHT),
               );
-              schemaStore.update(node);
+              userActions.screens.current.update(node);
             },
             child: Cursor(
               cursor: CursorEnum.move,
@@ -334,16 +329,17 @@ class _AppPreviewState extends State<AppPreview> {
               return Stack(
                 textDirection: TextDirection.ltr,
                 children: [
-                  ...schemaStore.components.map((node) => Positioned(
-                      child: GestureDetector(
-                          onTapDown: (details) {
-                            userActions.selectNodeForEdit(node);
-                          },
-                          child: renderWithSelected(
-                            node: node,
-                          )),
-                      top: node.position.dy,
-                      left: node.position.dx))
+                  ...userActions.screens.current.components
+                      .map((node) => Positioned(
+                          child: GestureDetector(
+                              onTapDown: (details) {
+                                userActions.selectNodeForEdit(node);
+                              },
+                              child: renderWithSelected(
+                                node: node,
+                              )),
+                          top: node.position.dy,
+                          left: node.position.dx)),
                 ],
               );
             },
