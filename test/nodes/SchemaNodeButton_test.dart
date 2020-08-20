@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('toWidget() renders', (WidgetTester tester) async {
-    final nodeButton = SchemaNodeButton(position: null);
+    final nodeButton = SchemaNodeButton(position: Offset(1, 2));
 
     final testWidget = MaterialApp(
         title: 'Test',
@@ -14,6 +14,6 @@ void main() {
         )));
 
     await tester.pumpWidget(testWidget);
-    expect(find.text('Button'), findsNWidgets(1));
+    expect(find.byType(Container), findsNWidgets(1));
   });
 }

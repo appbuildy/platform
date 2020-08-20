@@ -6,13 +6,17 @@ part 'SchemaStore.g.dart';
 class SchemaStore = _SchemaStore with _$SchemaStore;
 
 abstract class _SchemaStore with Store {
-  _SchemaStore({List<SchemaNode> components}) {
+  _SchemaStore({List<SchemaNode> components, name = 'Main'}) {
     this.components = ObservableList<SchemaNode>();
     this.components.addAll(components);
+    this.name = name;
   }
 
   @observable
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();
+
+  @observable
+  String name;
 
   @action
   void add(SchemaNode schemaNode) {
