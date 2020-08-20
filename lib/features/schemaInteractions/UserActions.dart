@@ -4,6 +4,7 @@ import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart'
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
@@ -22,6 +23,8 @@ class UserActions {
     _currentScreen = currentScreen;
   }
 
+  SchemaStore get currentScreen => _currentScreen.currentScreen;
+
   void undo() {
     if (lastAction() == null) return;
 
@@ -29,6 +32,8 @@ class UserActions {
     removedAction.undo();
     _actionsUndone.add((removedAction));
   }
+
+  void createScreen() {}
 
   void changePropertyTo(SchemaNodeProperty prop) {
     final action = ChangeNodeProperty(
@@ -45,7 +50,7 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  void placeWidget(SchemaNode schemaNode, @required Offset position) {
+  void placeWidget(SchemaNode schemaNode, Offset position) {
     final action = new PlaceWidget(
         widget: schemaNode,
         schemaStore: _currentScreen.currentScreen,

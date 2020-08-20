@@ -69,7 +69,6 @@ class _AppLayoutState extends State<AppLayout> {
                           height: 100,
                         ),
                         AppPreview(
-                          schemaStore: schemaStore,
                           userActions: userActions,
                         ),
                       ],

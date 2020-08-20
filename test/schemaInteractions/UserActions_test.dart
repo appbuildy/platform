@@ -22,4 +22,8 @@ void main() {
       expect(schemaStore.components.length, 0);
     });
   });
+
+  group('screens.createScreen()', () {
+    test('it creates new screen()', () {});
+  });
 }

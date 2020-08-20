@@ -32,8 +32,8 @@ class _AppPreviewState extends State<AppPreview> {
   @override
   void initState() {
     super.initState();
-    schemaStore = widget.schemaStore;
     userActions = widget.userActions;
+    schemaStore = userActions.currentScreen;
   }
 
   double constrainPosition(double value, double sideSize, double maxValue) {
