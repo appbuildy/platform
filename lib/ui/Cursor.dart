@@ -2,13 +2,15 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 
-enum CursorEnum { pointer, move, neswResize, nwseResize }
+enum CursorEnum { pointer, move, neswResize, nwseResize, nsResize, ewResize }
 
 const CursorMap = {
   CursorEnum.pointer: 'pointer',
   CursorEnum.move: 'move',
   CursorEnum.neswResize: 'nesw-resize',
   CursorEnum.nwseResize: 'nwse-resize',
+  CursorEnum.nsResize: 'ns-resize',
+  CursorEnum.ewResize: 'ew-resize',
 };
 
 class Cursor extends MouseRegion {

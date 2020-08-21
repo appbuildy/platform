@@ -43,12 +43,16 @@ class _AppPreviewState extends State<AppPreview> {
     @required double value,
     @required double position,
     @required double max,
-    bool isSub = false,
+    bool isDisableWhenMin = false,
   }) {
     final int sizeInt = size.round();
     final int valueInt = value.round();
     final int positionInt = position.round();
     final int maxInt = max.round();
+
+    if (isDisableWhenMin && sizeInt <= 80.0) {
+      return positionInt.toDouble();
+    }
 
     if (valueInt + positionInt <= 0) {
       return 0;
@@ -59,21 +63,37 @@ class _AppPreviewState extends State<AppPreview> {
     return valueInt + positionInt.toDouble();
   }
 
+  double constrainSize({
+    @required double size,
+    @required double value,
+    @required double position,
+    @required double max,
+    bool isSub = false,
+  }) {
+    final int sizeInt = size.round();
+    final int valueInt = isSub ? value.round() * -1 : value.round();
+    final int positionInt = position.round();
+    final int maxInt = max.round();
+
+//    if (isSub && positionInt <= 0) {
+//      if (valueInt < 0) {
+//        return (sizeInt + valueInt).toDouble();
+//      }
+//
+//      return sizeInt.toDouble(); прыжок происходит потому что position уже поменялся и равен 0, а для сайза в таком случае value не прикладывается
+//    }
+
+    if (sizeInt + valueInt + positionInt > maxInt) {
+      return (maxInt - positionInt).toDouble();
+    } else if (sizeInt + valueInt < 80) {
+      return 80.0;
+    }
+    return (sizeInt + valueInt).toDouble();
+  }
+
   SchemaNode handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
     if (side == SideEnum.topLeft) {
-      node.position = Offset(
-        constrainPosition2(
-            position: node.position.dx,
-            value: delta.dx,
-            size: node.size.dx,
-            max: SCREEN_WIDTH),
-        constrainPosition2(
-            position: node.position.dy,
-            value: delta.dy,
-            size: node.size.dy,
-            max: SCREEN_HEIGHT),
-      );
       node.size = Offset(
           constrainSize(
             size: node.size.dx,
@@ -89,6 +109,21 @@ class _AppPreviewState extends State<AppPreview> {
             value: delta.dy,
             isSub: true,
           ));
+
+      node.position = Offset(
+        constrainPosition2(
+            position: node.position.dx,
+            value: delta.dx,
+            size: node.size.dx,
+            max: SCREEN_WIDTH,
+            isDisableWhenMin: true),
+        constrainPosition2(
+            position: node.position.dy,
+            value: delta.dy,
+            size: node.size.dy,
+            max: SCREEN_HEIGHT,
+            isDisableWhenMin: true),
+      );
     } else if (side == SideEnum.topRight) {
       node.position = Offset(
         node.position.dx,
@@ -96,7 +131,8 @@ class _AppPreviewState extends State<AppPreview> {
             position: node.position.dy,
             value: delta.dy,
             size: node.size.dy,
-            max: SCREEN_HEIGHT),
+            max: SCREEN_HEIGHT,
+            isDisableWhenMin: true),
       );
       node.size = Offset(
           constrainSize(
@@ -119,7 +155,7 @@ class _AppPreviewState extends State<AppPreview> {
           value: delta.dx,
           size: node.size.dx,
           max: SCREEN_WIDTH,
-          isSub: true,
+          isDisableWhenMin: true,
         ),
         node.position.dy,
       );
@@ -161,33 +197,6 @@ class _AppPreviewState extends State<AppPreview> {
     }
 
     return node;
-  }
-
-  double constrainSize({
-    @required double size,
-    @required double value,
-    @required double position,
-    @required double max,
-    bool isSub = false,
-  }) {
-    final int sizeInt = size.round();
-    final int valueInt = isSub ? value.round() * -1 : value.round();
-    final int positionInt = position.round();
-    final int maxInt = max.round();
-
-    if (isSub && positionInt <= 0) {
-      if (valueInt < 0) {
-        return (sizeInt + valueInt).toDouble();
-      }
-      return sizeInt.toDouble();
-    }
-
-    if (sizeInt + valueInt + positionInt > maxInt) {
-      return (maxInt - positionInt).toDouble();
-    } else if (sizeInt + valueInt < 80) {
-      return 80.0;
-    }
-    return (sizeInt + valueInt).toDouble();
   }
 
   Widget renderWithSelected({SchemaNode node}) {
@@ -262,51 +271,95 @@ class _AppPreviewState extends State<AppPreview> {
           ]
         : [Container()];
 
-    return Container(
-      width: node.size.dx,
-      height: node.size.dy,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          isSelected
-              ? Container(
+    final lines = isSelected
+        ? [
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Cursor(
+                cursor: CursorEnum.nsResize,
+                child: Container(
                   width: node.size.dx,
-                  height: node.size.dy,
+                  height: 10,
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.red)),
-                )
-              : Container(
-                  width: node.size.dx,
-                  height: node.size.dy,
+                      border:
+                          Border(top: BorderSide(width: 1, color: Colors.red))),
                 ),
-          GestureDetector(
-            onPanUpdate: (details) {
-              node.position = Offset(
-                constrainPosition2(
-                    position: node.position.dx,
-                    value: details.delta.dx,
-                    size: node.size.dx,
-                    max: SCREEN_WIDTH),
-                constrainPosition2(
-                    position: node.position.dy,
-                    value: details.delta.dy,
-                    size: node.size.dy,
-                    max: SCREEN_HEIGHT),
-              );
-              userActions.screens.current.update(node);
-            },
-            child: Cursor(
-              cursor: CursorEnum.move,
-              child: Container(
-                width: isSelected ? node.size.dx - 2 : node.size.dx,
-                height: isSelected ? node.size.dy - 2 : node.size.dy,
-                child: node.toWidget(),
               ),
             ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Cursor(
+                cursor: CursorEnum.ewResize,
+                child: Container(
+                    width: 10,
+                    height: node.size.dy,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            right: BorderSide(width: 1, color: Colors.red)))),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              bottom: 0,
+              child: Cursor(
+                cursor: CursorEnum.nsResize,
+                child: Container(
+                    width: node.size.dx,
+                    height: 10,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(width: 1, color: Colors.red)))),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Cursor(
+                cursor: CursorEnum.ewResize,
+                child: Container(
+                    width: 10,
+                    height: node.size.dy,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            left: BorderSide(width: 1, color: Colors.red)))),
+              ),
+            ),
+          ]
+        : [Container()];
+
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        GestureDetector(
+          onPanUpdate: (details) {
+            node.position = Offset(
+              constrainPosition2(
+                  position: node.position.dx,
+                  value: details.delta.dx,
+                  size: node.size.dx,
+                  max: SCREEN_WIDTH),
+              constrainPosition2(
+                  position: node.position.dy,
+                  value: details.delta.dy,
+                  size: node.size.dy,
+                  max: SCREEN_HEIGHT),
+            );
+            userActions.screens.current.update(node);
+          },
+          child: Cursor(
+            cursor: CursorEnum.move,
+            child: Container(
+              width: isSelected ? node.size.dx - 2 : node.size.dx,
+              height: isSelected ? node.size.dy - 2 : node.size.dy,
+              child: node.toWidget(),
+            ),
           ),
-          ...dots,
-        ],
-      ),
+        ),
+        ...lines,
+        ...dots,
+      ],
     );
   }
 
@@ -325,7 +378,6 @@ class _AppPreviewState extends State<AppPreview> {
           height: SCREEN_HEIGHT,
           child: Observer(
             builder: (context) {
-              log('i rerendered');
               return Stack(
                 textDirection: TextDirection.ltr,
                 children: [
