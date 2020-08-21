@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -94,6 +92,21 @@ class _AppPreviewState extends State<AppPreview> {
   SchemaNode handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
     if (side == SideEnum.topLeft) {
+      node.position = Offset(
+        constrainPosition2(
+            position: node.position.dx,
+            value: delta.dx,
+            size: node.size.dx,
+            max: SCREEN_WIDTH,
+            isDisableWhenMin: true),
+        constrainPosition2(
+            position: node.position.dy,
+            value: delta.dy,
+            size: node.size.dy,
+            max: SCREEN_HEIGHT,
+            isDisableWhenMin: true),
+      );
+
       node.size = Offset(
           constrainSize(
             size: node.size.dx,
@@ -109,21 +122,6 @@ class _AppPreviewState extends State<AppPreview> {
             value: delta.dy,
             isSub: true,
           ));
-
-      node.position = Offset(
-        constrainPosition2(
-            position: node.position.dx,
-            value: delta.dx,
-            size: node.size.dx,
-            max: SCREEN_WIDTH,
-            isDisableWhenMin: true),
-        constrainPosition2(
-            position: node.position.dy,
-            value: delta.dy,
-            size: node.size.dy,
-            max: SCREEN_HEIGHT,
-            isDisableWhenMin: true),
-      );
     } else if (side == SideEnum.topRight) {
       node.position = Offset(
         node.position.dx,
@@ -160,8 +158,6 @@ class _AppPreviewState extends State<AppPreview> {
         node.position.dy,
       );
 
-      log(' node.position.dy + node.size.dy + delta.dy ${node.position.dy + node.size.dy + delta.dy}');
-      log(' position.dy, size.dy, delta.dy ${node.position.dy} ${node.size.dy}  ${delta.dy}');
       node.size = Offset(
           constrainSize(
             size: node.size.dx,
@@ -276,54 +272,137 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: 0,
               left: 0,
-              child: Cursor(
-                cursor: CursorEnum.nsResize,
-                child: Container(
-                  width: node.size.dx,
-                  height: 10,
-                  decoration: BoxDecoration(
-                      border:
-                          Border(top: BorderSide(width: 1, color: Colors.red))),
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    node.position.dx,
+                    constrainPosition2(
+                        position: node.position.dy,
+                        value: details.delta.dy,
+                        size: node.size.dy,
+                        max: SCREEN_HEIGHT,
+                        isDisableWhenMin: true),
+                  );
+
+                  node.size = Offset(
+                      node.size.dx,
+                      constrainSize(
+                        size: node.size.dy,
+                        position: node.position.dy,
+                        max: SCREEN_HEIGHT,
+                        value: details.delta.dy,
+                        isSub: true,
+                      ));
+                  userActions.screens.current.update(node);
+                },
+                child: Cursor(
+                  cursor: CursorEnum.nsResize,
+                  child: Container(
+                    width: node.size.dx,
+                    height: 10,
+                    decoration: BoxDecoration(
+                        border: Border(
+                            top: BorderSide(width: 1, color: Colors.red))),
+                  ),
                 ),
               ),
             ),
             Positioned(
               top: 0,
               right: 0,
-              child: Cursor(
-                cursor: CursorEnum.ewResize,
-                child: Container(
-                    width: 10,
-                    height: node.size.dy,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            right: BorderSide(width: 1, color: Colors.red)))),
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    node.position.dx,
+                    node.position.dy,
+                  );
+                  node.size = Offset(
+                    constrainSize(
+                      size: node.size.dx,
+                      position: node.position.dx,
+                      max: SCREEN_WIDTH,
+                      value: details.delta.dx,
+                    ),
+                    node.size.dy,
+                  );
+                  userActions.screens.current.update(node);
+                },
+                child: Cursor(
+                  cursor: CursorEnum.ewResize,
+                  child: Container(
+                      width: 10,
+                      height: node.size.dy,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              right: BorderSide(width: 1, color: Colors.red)))),
+                ),
               ),
             ),
             Positioned(
               left: 0,
               bottom: 0,
-              child: Cursor(
-                cursor: CursorEnum.nsResize,
-                child: Container(
-                    width: node.size.dx,
-                    height: 10,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width: 1, color: Colors.red)))),
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                    node.position.dx,
+                    node.position.dy,
+                  );
+                  node.size = Offset(
+                      node.size.dx,
+                      constrainSize(
+                        size: node.size.dy,
+                        position: node.position.dy,
+                        max: SCREEN_HEIGHT,
+                        value: details.delta.dy,
+                      ));
+                  userActions.screens.current.update(node);
+                },
+                child: Cursor(
+                  cursor: CursorEnum.nsResize,
+                  child: Container(
+                      width: node.size.dx,
+                      height: 10,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(width: 1, color: Colors.red)))),
+                ),
               ),
             ),
             Positioned(
               top: 0,
               left: 0,
-              child: Cursor(
-                cursor: CursorEnum.ewResize,
-                child: Container(
-                    width: 10,
-                    height: node.size.dy,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(width: 1, color: Colors.red)))),
+              child: GestureDetector(
+                onPanUpdate: (details) {
+                  node.position = Offset(
+                      constrainPosition2(
+                          position: node.position.dx,
+                          value: details.delta.dx,
+                          size: node.size.dx,
+                          max: SCREEN_WIDTH,
+                          isDisableWhenMin: true),
+                      node.position.dy);
+
+                  node.size = Offset(
+                      constrainSize(
+                        size: node.size.dx,
+                        position: node.position.dx,
+                        max: SCREEN_WIDTH,
+                        value: details.delta.dx,
+                        isSub: true,
+                      ),
+                      node.size.dy);
+                  userActions.screens.current.update(node);
+                },
+                child: Cursor(
+                  cursor: CursorEnum.ewResize,
+                  child: Container(
+                      width: 10,
+                      height: node.size.dy,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              left: BorderSide(width: 1, color: Colors.red)))),
+                ),
               ),
             ),
           ]
