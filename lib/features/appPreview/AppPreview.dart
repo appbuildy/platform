@@ -43,22 +43,17 @@ class _AppPreviewState extends State<AppPreview> {
     @required double max,
     bool isDisableWhenMin = false,
   }) {
-    final int sizeInt = size.round();
-    final int valueInt = value.round();
-    final int positionInt = position.round();
-    final int maxInt = max.round();
-
-    if (isDisableWhenMin && sizeInt <= 80.0) {
-      return positionInt.toDouble();
+    if (isDisableWhenMin && size <= 80.0) {
+      return position;
     }
 
-    if (valueInt + positionInt <= 0) {
+    if (value + position <= 0) {
       return 0;
-    } else if (valueInt + positionInt + sizeInt > maxInt) {
-      return (maxInt - sizeInt).toDouble();
+    } else if (value + position + size > max) {
+      return (max - size);
     }
 
-    return valueInt + positionInt.toDouble();
+    return value + position;
   }
 
   double constrainSize({
@@ -67,31 +62,34 @@ class _AppPreviewState extends State<AppPreview> {
     @required double position,
     @required double max,
     bool isSub = false,
+    double prevPosition,
   }) {
-    final int sizeInt = size.round();
-    final int valueInt = isSub ? value.round() * -1 : value.round();
-    final int positionInt = position.round();
+    final double realValue = isSub ? value * -1 : value;
     final int maxInt = max.round();
 
-//    if (isSub && positionInt <= 0) {
-//      if (valueInt < 0) {
-//        return (sizeInt + valueInt).toDouble();
-//      }
-//
-//      return sizeInt.toDouble(); прыжок происходит потому что position уже поменялся и равен 0, а для сайза в таком случае value не прикладывается
-//    }
+    if (isSub && position <= 0) {
+      if (realValue < 0) {
+        return size + realValue + prevPosition;
+      }
 
-    if (sizeInt + valueInt + positionInt > maxInt) {
-      return (maxInt - positionInt).toDouble();
-    } else if (sizeInt + valueInt < 80) {
+      return size +
+          prevPosition; // прыжок происходит потому что position уже поменялся и равен 0, а для сайза в таком случае value не прикладывается
+    }
+
+    if (size + realValue + position > maxInt) {
+      return max - position;
+    } else if (size + realValue < 80.0) {
       return 80.0;
     }
-    return (sizeInt + valueInt).toDouble();
+    return size + realValue;
   }
 
   SchemaNode handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
     if (side == SideEnum.topLeft) {
+      final posX = node.position.dx;
+      final posY = node.position.dy;
+
       node.position = Offset(
         constrainPosition2(
             position: node.position.dx,
@@ -106,7 +104,6 @@ class _AppPreviewState extends State<AppPreview> {
             max: SCREEN_HEIGHT,
             isDisableWhenMin: true),
       );
-
       node.size = Offset(
           constrainSize(
             size: node.size.dx,
@@ -114,6 +111,7 @@ class _AppPreviewState extends State<AppPreview> {
             max: SCREEN_WIDTH,
             value: delta.dx,
             isSub: true,
+            prevPosition: posX,
           ),
           constrainSize(
             size: node.size.dy,
@@ -121,8 +119,11 @@ class _AppPreviewState extends State<AppPreview> {
             max: SCREEN_HEIGHT,
             value: delta.dy,
             isSub: true,
+            prevPosition: posY,
           ));
     } else if (side == SideEnum.topRight) {
+      final posY = node.position.dy;
+
       node.position = Offset(
         node.position.dx,
         constrainPosition2(
@@ -145,8 +146,11 @@ class _AppPreviewState extends State<AppPreview> {
             max: SCREEN_HEIGHT,
             value: delta.dy,
             isSub: true,
+            prevPosition: posY,
           ));
     } else if (side == SideEnum.bottomLeft) {
+      final posX = node.position.dx;
+
       node.position = Offset(
         constrainPosition2(
           position: node.position.dx,
@@ -160,12 +164,12 @@ class _AppPreviewState extends State<AppPreview> {
 
       node.size = Offset(
           constrainSize(
-            size: node.size.dx,
-            position: node.position.dx,
-            max: SCREEN_WIDTH,
-            value: delta.dx,
-            isSub: true,
-          ),
+              size: node.size.dx,
+              position: node.position.dx,
+              max: SCREEN_WIDTH,
+              value: delta.dx,
+              isSub: true,
+              prevPosition: posX),
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
@@ -274,6 +278,8 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
+                  final posY = node.position.dy;
+
                   node.position = Offset(
                     node.position.dx,
                     constrainPosition2(
@@ -292,6 +298,7 @@ class _AppPreviewState extends State<AppPreview> {
                         max: SCREEN_HEIGHT,
                         value: details.delta.dy,
                         isSub: true,
+                        prevPosition: posY,
                       ));
                   userActions.screens.current.update(node);
                 },
@@ -312,6 +319,8 @@ class _AppPreviewState extends State<AppPreview> {
               right: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
+                  final posX = node.position.dx;
+
                   node.position = Offset(
                     node.position.dx,
                     node.position.dy,
@@ -322,6 +331,7 @@ class _AppPreviewState extends State<AppPreview> {
                       position: node.position.dx,
                       max: SCREEN_WIDTH,
                       value: details.delta.dx,
+                      prevPosition: posX,
                     ),
                     node.size.dy,
                   );
@@ -374,6 +384,8 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
+                  final posX = node.position.dx;
+
                   node.position = Offset(
                       constrainPosition2(
                           position: node.position.dx,
@@ -390,6 +402,7 @@ class _AppPreviewState extends State<AppPreview> {
                         max: SCREEN_WIDTH,
                         value: details.delta.dx,
                         isSub: true,
+                        prevPosition: posX,
                       ),
                       node.size.dy);
                   userActions.screens.current.update(node);
