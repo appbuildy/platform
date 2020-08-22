@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
-import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SchemaNodeButton extends SchemaNode {
@@ -36,7 +35,7 @@ class SchemaNodeButton extends SchemaNode {
 
   @override
   Widget toEditProps(changePropTo) {
-    final debouncer = Debouncer(milliseconds: 500);
+//    final debouncer = Debouncer(milliseconds: 700);
 
     return Observer(
       builder: (_) => Column(children: [
@@ -50,8 +49,9 @@ class SchemaNodeButton extends SchemaNode {
           key: id,
           defaultValue: properties['Text'].value,
           onChanged: (newText) {
-            debouncer
-                .run(() => changePropTo(SchemaStringProperty('Text', newText)));
+            changePropTo(SchemaStringProperty('Text', newText));
+//            debouncer
+//                .run(() => changePropTo(SchemaStringProperty('Text', newText)));
           },
         ),
       ]),

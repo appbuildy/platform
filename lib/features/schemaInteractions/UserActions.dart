@@ -34,15 +34,18 @@ class UserActions {
     _actionsUndone.add((removedAction));
   }
 
-  void changePropertyTo(SchemaNodeProperty prop) {
+  void changePropertyTo(SchemaNodeProperty prop,
+      [bool isAddedToDoneActions = true, prevValue]) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
         schemaStore: currentScreen,
         node: selectedNode(),
         setProperty: prop);
 
-    action.execute();
-    _actionsDone.add(action);
+    action.execute(prevValue);
+    if (isAddedToDoneActions) {
+      _actionsDone.add(action);
+    }
   }
 
   void selectNodeForEdit(SchemaNode node) {

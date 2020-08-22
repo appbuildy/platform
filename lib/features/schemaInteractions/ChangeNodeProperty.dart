@@ -22,8 +22,13 @@ class ChangeNodeProperty extends BaseAction {
   }
 
   @override
-  void execute() {
-    oldValue = node.properties[property.name].value;
+  void execute([String prevValue]) {
+    if (prevValue != null) {
+      oldValue = prevValue;
+    } else {
+      oldValue = node.properties[property.name].value;
+    }
+
     if (oldValue == null) return;
     executed = true;
     node.properties[property.name].value = property.value;

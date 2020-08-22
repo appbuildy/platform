@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
+import 'package:flutter_app/utils/Debouncer.dart';
 
 class SchemaNodeText extends SchemaNode {
+  Debouncer textDebouncer;
+
   SchemaNodeText({Offset position}) : super(position: position) {
     this.type = SchemaNodeType.button;
     this.size = Offset(100.0, 100.0);
     this.properties = {
-      'Text': SchemaStringProperty('Text', 'Text'),
+      'Text': SchemaStringProperty('Text', 'Te xt'),
       'Color': SchemaColorProperty('Color', Colors.black)
     };
+    textDebouncer =
+        Debouncer(milliseconds: 500, prevValue: properties['Text'].value);
   }
 
   @override
@@ -42,7 +47,14 @@ class SchemaNodeText extends SchemaNode {
         key: id,
         defaultValue: properties['Text'].value,
         onChanged: (newText) {
-          changePropTo(SchemaStringProperty('Text', newText));
+          if (properties['Text'].value != newText) {
+            changePropTo(SchemaStringProperty('Text', newText), false);
+          }
+
+          textDebouncer.run(
+              () => changePropTo(SchemaStringProperty('Text', newText), true,
+                  textDebouncer.prevValue),
+              newText);
         },
       ),
       SizedBox(height: 8),
