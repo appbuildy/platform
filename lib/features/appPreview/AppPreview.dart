@@ -69,7 +69,7 @@ class _AppPreviewState extends State<AppPreview> {
 
     if (isSub && position <= 0) {
       if (realValue < 0) {
-        return size + realValue + prevPosition;
+        return size + realValue;
       }
 
       return size +
@@ -78,7 +78,7 @@ class _AppPreviewState extends State<AppPreview> {
 
     if (size + realValue + position > maxInt) {
       return max - position;
-    } else if (size + realValue < 80.0) {
+    } else if (size + realValue <= 80.0) {
       return 80.0;
     }
     return size + realValue;
