@@ -15,14 +15,7 @@ abstract class SchemaNode {
   Offset size;
   Map<String, SchemaNodeProperty> properties;
 
-  SchemaNode({
-    Offset position,
-  }) {
-    this.position = position;
-    this.id = UniqueKey();
-  }
-
-  SchemaNode copy({Offset position});
+  SchemaNode copy({Offset position, Offset size, UniqueKey id});
   Widget toWidget();
   Widget toEditProps(Function changePropertyTo);
 }

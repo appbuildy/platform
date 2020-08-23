@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 
 class SchemaNodeShape extends SchemaNode {
-  SchemaNodeShape({Offset position}) : super(position: position) {
-    this.type = SchemaNodeType.button;
-    this.size = Offset(100.0, 100.0);
-    this.properties = {'Color': SchemaColorProperty('Color', Colors.white)};
+  SchemaNodeShape(
+      {Offset position,
+      Offset size,
+      Map<String, SchemaNodeProperty> properties,
+      UniqueKey id})
+      : super() {
+    this.type = SchemaNodeType.shape;
+    this.position = position ?? Offset(0, 0);
+    this.size = size ?? Offset(150.0, 100.0);
+    this.id = id ?? UniqueKey();
+    this.properties =
+        properties ?? {'Color': SchemaColorProperty('Color', Colors.red)};
   }
 
   @override
-  SchemaNode copy({Offset position}) {
+  SchemaNode copy({Offset position, Offset size, UniqueKey id}) {
     return SchemaNodeShape(position: position);
   }
 

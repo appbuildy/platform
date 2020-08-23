@@ -7,17 +7,17 @@ class ChangeNodeProperty extends BaseAction {
   Function selectNodeForEdit;
   SchemaNode node;
   SchemaStore schemaStore;
-  var oldValue;
+  String oldValue;
 
   ChangeNodeProperty(
       {SchemaStore schemaStore,
       SchemaNode node,
-      SchemaNodeProperty setProperty,
+      SchemaNodeProperty newProp,
       Function selectNodeForEdit}) {
-    this.property = setProperty;
+    this.property = newProp;
     this.schemaStore = schemaStore;
     this.node = node;
-    this.oldValue = setProperty.value;
+    this.oldValue = newProp.value;
     this.selectNodeForEdit = selectNodeForEdit;
   }
 
@@ -32,7 +32,8 @@ class ChangeNodeProperty extends BaseAction {
     if (oldValue == null) return;
     executed = true;
     node.properties[property.name].value = property.value;
-    selectNodeForEdit(node);
+    selectNodeForEdit(
+        node); // reselect node to updates be applied on the right bar
     schemaStore.update(node);
   }
 

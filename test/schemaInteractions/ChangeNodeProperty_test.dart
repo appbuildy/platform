@@ -21,7 +21,7 @@ void main() {
         selectNodeForEdit: selectNodeForEdit,
         schemaStore: schemaStore,
         node: text,
-        setProperty: newProp);
+        newProp: newProp);
   });
 
   group('undo()', () {

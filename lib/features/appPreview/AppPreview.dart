@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/ui/Cursor.dart';
+import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -21,7 +22,7 @@ class AppPreview extends StatefulWidget {
 
 class _AppPreviewState extends State<AppPreview> {
   UserActions userActions;
-  int counter;
+  Debouncer<SchemaNode> debouncer;
 
   @override
   void initState() {
@@ -77,7 +78,7 @@ class _AppPreviewState extends State<AppPreview> {
     return size + realValue;
   }
 
-  SchemaNode handleSizeChange(
+  void handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
     if (side == SideEnum.topLeft) {
       final posX = node.position.dx;
@@ -189,7 +190,11 @@ class _AppPreviewState extends State<AppPreview> {
           ));
     }
 
-    return node;
+    userActions.repositionAndResize(node, false);
+
+    debouncer.run(
+        () => userActions.repositionAndResize(node, true, debouncer.prevValue),
+        node.copy());
   }
 
   Widget renderWithSelected({SchemaNode node}) {
@@ -212,9 +217,8 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final updatedNode = handleSizeChange(
+                  handleSizeChange(
                       node: node, delta: details.delta, side: SideEnum.topLeft);
-                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
               ),
@@ -224,11 +228,10 @@ class _AppPreviewState extends State<AppPreview> {
               right: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final updatedNode = handleSizeChange(
+                  handleSizeChange(
                       node: node,
                       delta: details.delta,
                       side: SideEnum.topRight);
-                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
               ),
@@ -238,11 +241,10 @@ class _AppPreviewState extends State<AppPreview> {
               right: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final updatedNode = handleSizeChange(
+                  handleSizeChange(
                       node: node,
                       delta: details.delta,
                       side: SideEnum.bottomRight);
-                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
               ),
@@ -252,11 +254,10 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final updatedNode = handleSizeChange(
+                  handleSizeChange(
                       node: node,
                       delta: details.delta,
                       side: SideEnum.bottomLeft);
-                  userActions.screens.current.update(updatedNode);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
               ),
@@ -294,7 +295,12 @@ class _AppPreviewState extends State<AppPreview> {
                         prevPosition: posY,
                       ));
 
-                  userActions.screens.current.update(node);
+                  userActions.repositionAndResize(node, false);
+
+                  debouncer.run(
+                      () => userActions.repositionAndResize(
+                          node, true, debouncer.prevValue),
+                      node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -329,7 +335,12 @@ class _AppPreviewState extends State<AppPreview> {
                     ),
                     node.size.dy,
                   );
-                  userActions.screens.current.update(node);
+                  userActions.repositionAndResize(node, false);
+
+                  debouncer.run(
+                      () => userActions.repositionAndResize(
+                          node, true, debouncer.prevValue),
+                      node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -359,7 +370,12 @@ class _AppPreviewState extends State<AppPreview> {
                         max: SCREEN_HEIGHT,
                         value: details.delta.dy,
                       ));
-                  userActions.screens.current.update(node);
+                  userActions.repositionAndResize(node, false);
+
+                  debouncer.run(
+                      () => userActions.repositionAndResize(
+                          node, true, debouncer.prevValue),
+                      node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -399,7 +415,12 @@ class _AppPreviewState extends State<AppPreview> {
                         prevPosition: posX,
                       ),
                       node.size.dy);
-                  userActions.screens.current.update(node);
+                  userActions.repositionAndResize(node, false);
+
+                  debouncer.run(
+                      () => userActions.repositionAndResize(
+                          node, true, debouncer.prevValue),
+                      node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -432,7 +453,12 @@ class _AppPreviewState extends State<AppPreview> {
                   size: node.size.dy,
                   max: SCREEN_HEIGHT),
             );
-            userActions.screens.current.update(node);
+            userActions.repositionAndResize(node, false);
+
+            debouncer.run(
+                () => userActions.repositionAndResize(
+                    node, true, debouncer.prevValue),
+                node.copy());
           },
           child: Cursor(
             cursor: CursorEnum.move,
@@ -455,7 +481,10 @@ class _AppPreviewState extends State<AppPreview> {
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
             .calculate(SCREEN_WIDTH, SCREEN_HEIGHT, details.data.size);
-        userActions.placeWidget(details.data, newPosition);
+        final placedSchemaNode =
+            userActions.placeWidget(details.data, newPosition);
+        debouncer =
+            Debouncer(milliseconds: 500, prevValue: placedSchemaNode.copy());
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
@@ -472,6 +501,8 @@ class _AppPreviewState extends State<AppPreview> {
                           child: GestureDetector(
                               onTapDown: (details) {
                                 userActions.selectNodeForEdit(node);
+                                debouncer = Debouncer(
+                                    milliseconds: 500, prevValue: node.copy());
                               },
                               child: renderWithSelected(
                                 node: node,

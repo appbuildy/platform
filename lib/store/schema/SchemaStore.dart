@@ -32,6 +32,6 @@ abstract class _SchemaStore with Store {
 
   @action
   void remove(SchemaNode schemaNode) {
-    components.remove(schemaNode);
+    components.removeWhere((element) => element.id == schemaNode.id);
   }
 }

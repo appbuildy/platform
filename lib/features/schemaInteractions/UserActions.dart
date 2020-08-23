@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
+import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -40,7 +41,18 @@ class UserActions {
         selectNodeForEdit: selectNodeForEdit,
         schemaStore: currentScreen,
         node: selectedNode(),
-        setProperty: prop);
+        newProp: prop);
+
+    action.execute(prevValue);
+    if (isAddedToDoneActions) {
+      _actionsDone.add(action);
+    }
+  }
+
+  void repositionAndResize(SchemaNode updatedNode,
+      [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
+    final action =
+        RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
 
     action.execute(prevValue);
     if (isAddedToDoneActions) {
@@ -52,15 +64,17 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  void placeWidget(SchemaNode schemaNode, Offset position) {
+  SchemaNode placeWidget(SchemaNode schemaNode, Offset position) {
     final action = new PlaceWidget(
-        widget: schemaNode,
+        node: schemaNode,
         schemaStore: currentScreen,
         position: position,
         selectNodeForEdit: selectNodeForEdit);
 
     action.execute();
     _actionsDone.add(action);
+
+    return action.newNode;
   }
 
   SchemaNode selectedNode() {

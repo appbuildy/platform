@@ -5,18 +5,30 @@ import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SchemaNodeButton extends SchemaNode {
-  SchemaNodeButton({Offset position}) : super(position: position) {
+  SchemaNodeButton(
+      {Offset position,
+      Offset size,
+      Map<String, SchemaNodeProperty> properties,
+      UniqueKey id})
+      : super() {
     this.type = SchemaNodeType.button;
-    this.size = Offset(150.0, 100.0);
-    this.properties = {
-      'Text': SchemaStringProperty('Text', 'Button'),
-      'Background': SchemaColorProperty('Background', Colors.indigo)
-    };
+    this.position = position ?? Offset(0, 0);
+    this.size = size ?? Offset(150.0, 100.0);
+    this.id = id ?? UniqueKey();
+    this.properties = properties ??
+        {
+          'Text': SchemaStringProperty('Text', 'Button'),
+          'Background': SchemaColorProperty('Background', Colors.indigo)
+        };
   }
 
   @override
-  SchemaNode copy({Offset position}) {
-    return SchemaNodeButton(position: position);
+  SchemaNode copy({Offset position, Offset size, UniqueKey id}) {
+    return SchemaNodeButton(
+        position: position ?? this.position,
+        id: id ?? this.id,
+        size: size ?? this.size,
+        properties: this.properties);
   }
 
   @override

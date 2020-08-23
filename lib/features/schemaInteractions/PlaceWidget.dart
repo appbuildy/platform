@@ -1,21 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 
 class PlaceWidget extends BaseAction {
-  SchemaNode _widget;
+  SchemaNode _node;
   SchemaStore _schemaStore;
   Offset _position;
-  SchemaNode _newWidget;
+  SchemaNode newNode;
   Function _selectNodeForEdit;
 
   PlaceWidget(
-      {SchemaNode widget,
+      {SchemaNode node,
       SchemaStore schemaStore,
       Offset position,
       Function selectNodeForEdit}) {
-    _widget = widget;
+    this._node = node;
     _schemaStore = schemaStore;
     _position = position;
     _selectNodeForEdit = selectNodeForEdit ?? (_arg) {};
@@ -24,9 +26,9 @@ class PlaceWidget extends BaseAction {
   @override
   void execute() {
     executed = true;
-    _newWidget = _widget.copy(position: _position);
-    _schemaStore.add(_newWidget);
-    _selectNodeForEdit(_newWidget);
+    newNode = _node.copy(position: _position, id: UniqueKey());
+    _schemaStore.add(newNode);
+    _selectNodeForEdit(newNode);
   }
 
   @override
@@ -36,8 +38,10 @@ class PlaceWidget extends BaseAction {
 
   @override
   void undo() {
+    log('new Node ${newNode.id}');
+
     if (!executed) return;
-    _schemaStore.remove(_newWidget);
+    _schemaStore.remove(newNode);
     _selectNodeForEdit(null);
   }
 }

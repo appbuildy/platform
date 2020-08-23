@@ -8,7 +8,7 @@ void main() {
     test('it removes given widget from store', () {
       final schemaStore = new SchemaStore(components: []);
       final button = new SchemaNodeButton();
-      final action = new PlaceWidget(widget: button, schemaStore: schemaStore);
+      final action = new PlaceWidget(node: button, schemaStore: schemaStore);
       action.execute();
       action.undo();
       expect(schemaStore.components.length, 0);
@@ -19,7 +19,7 @@ void main() {
     test('it places given widget to schemaStore', () {
       final schemaStore = new SchemaStore(components: []);
       final button = new SchemaNodeButton();
-      final action = new PlaceWidget(widget: button, schemaStore: schemaStore);
+      final action = new PlaceWidget(node: button, schemaStore: schemaStore);
       action.execute();
       expect(schemaStore.components.length, 1);
     });

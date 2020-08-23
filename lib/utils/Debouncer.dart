@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
-class Debouncer {
+class Debouncer<T> {
   final int milliseconds;
   VoidCallback action;
   Timer _timer;
-  dynamic prevValue;
+  T prevValue;
 
   Debouncer({this.milliseconds, this.prevValue});
 
