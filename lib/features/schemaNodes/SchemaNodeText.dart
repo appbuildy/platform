@@ -27,12 +27,16 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  SchemaNode copy({Offset position, Offset size, UniqueKey id}) {
+  SchemaNode copy(
+      {Offset position,
+      Offset size,
+      UniqueKey id,
+      bool saveProperties = true}) {
     return SchemaNodeText(
         position: position ?? this.position,
         id: id ?? this.id,
         size: size ?? this.size,
-        properties: this.properties);
+        properties: saveProperties ? this.properties : null);
   }
 
   @override

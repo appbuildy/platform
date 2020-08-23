@@ -17,7 +17,11 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  SchemaNode copy({Offset position, Offset size, UniqueKey id}) {
+  SchemaNode copy(
+      {Offset position,
+      Offset size,
+      UniqueKey id,
+      bool saveProperties = true}) {
     return SchemaNodeShape(position: position);
   }
 

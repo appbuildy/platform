@@ -26,7 +26,11 @@ class PlaceWidget extends BaseAction {
   @override
   void execute() {
     executed = true;
-    newNode = _node.copy(position: _position, id: UniqueKey());
+    newNode = _node.copy(
+      position: _position,
+      id: UniqueKey(),
+      saveProperties: false,
+    );
     _schemaStore.add(newNode);
     _selectNodeForEdit(newNode);
   }

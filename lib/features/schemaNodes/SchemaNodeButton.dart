@@ -5,12 +5,12 @@ import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SchemaNodeButton extends SchemaNode {
-  SchemaNodeButton(
-      {Offset position,
-      Offset size,
-      Map<String, SchemaNodeProperty> properties,
-      UniqueKey id})
-      : super() {
+  SchemaNodeButton({
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    UniqueKey id,
+  }) : super() {
     this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(150.0, 100.0);
@@ -23,12 +23,16 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  SchemaNode copy({Offset position, Offset size, UniqueKey id}) {
+  SchemaNode copy(
+      {Offset position,
+      Offset size,
+      UniqueKey id,
+      bool saveProperties = true}) {
     return SchemaNodeButton(
         position: position ?? this.position,
         id: id ?? this.id,
         size: size ?? this.size,
-        properties: this.properties);
+        properties: properties ?? this.properties);
   }
 
   @override
