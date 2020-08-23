@@ -29,13 +29,6 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
-  double constrainPosition(double value, double sideSize, double maxValue) {
-    if (value <= 0) return -1.0;
-    if (value + sideSize >= maxValue) return maxValue - sideSize;
-
-    return value;
-  }
-
   double constrainPosition2({
     @required double size,
     @required double value,
@@ -300,6 +293,7 @@ class _AppPreviewState extends State<AppPreview> {
                         isSub: true,
                         prevPosition: posY,
                       ));
+
                   userActions.screens.current.update(node);
                 },
                 child: Cursor(
@@ -459,8 +453,8 @@ class _AppPreviewState extends State<AppPreview> {
   Widget build(BuildContext context) {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
-        final newPosition =
-            WidgetPositionAfterDropOnPreview(context, details).calculate();
+        final newPosition = WidgetPositionAfterDropOnPreview(context, details)
+            .calculate(SCREEN_WIDTH, SCREEN_HEIGHT, details.data.size);
         userActions.placeWidget(details.data, newPosition);
       },
       builder: (context, candidateData, rejectedData) {
