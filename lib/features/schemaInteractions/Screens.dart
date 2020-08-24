@@ -34,6 +34,12 @@ class Screens {
     return screen;
   }
 
+  SchemaStore selectByName(String name) {
+    final screen = all.screens.where((screen) => screen.name == name).first;
+    _current.select(screen);
+    return screen;
+  }
+
   SchemaStore _screenByIndex(indexDiff) {
     final possibleNextScreen = all.screens[_currentIndex + indexDiff];
 
