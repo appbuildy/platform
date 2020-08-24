@@ -5,12 +5,13 @@ enum SchemaActionType { goToScreen }
 abstract class SchemaAction {
   SchemaActionType type;
   String value;
+  SchemaAction(this.value);
 
   Function toFunction(UserActions userActions);
 }
 
 class GoToScreenAction extends SchemaAction {
-  GoToScreenAction() : super() {
+  GoToScreenAction(String value) : super(value) {
     this.type = SchemaActionType.goToScreen;
   }
 
