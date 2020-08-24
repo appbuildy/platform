@@ -71,6 +71,7 @@ class _AppLayoutState extends State<AppLayout> {
                                 color: isPlayMode ? Colors.red : Colors.white,
                                 onPressed: () {
                                   setState(() {
+                                    userActions.selectNodeForEdit(null);
                                     isPlayMode = true;
                                   });
                                 },
