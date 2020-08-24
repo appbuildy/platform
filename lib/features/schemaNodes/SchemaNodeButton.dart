@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -9,12 +10,14 @@ class SchemaNodeButton extends SchemaNode {
     Offset position,
     Offset size,
     Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaAction> actions,
     UniqueKey id,
   }) : super() {
     this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(150.0, 100.0);
     this.id = id ?? UniqueKey();
+    this.actions = actions ?? {};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Button'),
