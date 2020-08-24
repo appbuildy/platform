@@ -22,6 +22,11 @@ abstract class SchemaNode {
     bool saveProperties,
   });
 
+  Map<String, dynamic> toJson() => {
+        'position': {'x': position.dx, 'y': position.dy},
+        'size': {'x': size.dx, 'y': size.dy},
+        'type': SchemaNodeType.button
+      };
   Widget toWidget();
   Widget toEditProps(Function changePropertyTo);
 }

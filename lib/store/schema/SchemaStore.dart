@@ -34,4 +34,7 @@ abstract class _SchemaStore with Store {
   void remove(SchemaNode schemaNode) {
     components.removeWhere((element) => element.id == schemaNode.id);
   }
+
+  Map<String, dynamic> toJson() =>
+      {'components': components.map((comp) => comp.toJson()).toList()};
 }
