@@ -12,7 +12,7 @@ abstract class _ScreensStore with Store {
   }
 
   @observable
-  List<SchemaStore> screens = [];
+  ObservableList<SchemaStore> screens = ObservableList<SchemaStore>();
 
   @action
   void createScreen(SchemaStore screen) {

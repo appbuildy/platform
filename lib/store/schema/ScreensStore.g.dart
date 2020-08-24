@@ -12,13 +12,13 @@ mixin _$ScreensStore on _ScreensStore, Store {
   final _$screensAtom = Atom(name: '_ScreensStore.screens');
 
   @override
-  List<SchemaStore> get screens {
+  ObservableList<SchemaStore> get screens {
     _$screensAtom.reportRead();
     return super.screens;
   }
 
   @override
-  set screens(List<SchemaStore> value) {
+  set screens(ObservableList<SchemaStore> value) {
     _$screensAtom.reportWrite(value, super.screens, () {
       super.screens = value;
     });

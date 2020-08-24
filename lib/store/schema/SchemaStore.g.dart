@@ -24,6 +24,21 @@ mixin _$SchemaStore on _SchemaStore, Store {
     });
   }
 
+  final _$nameAtom = Atom(name: '_SchemaStore.name');
+
+  @override
+  String get name {
+    _$nameAtom.reportRead();
+    return super.name;
+  }
+
+  @override
+  set name(String value) {
+    _$nameAtom.reportWrite(value, super.name, () {
+      super.name = value;
+    });
+  }
+
   final _$_SchemaStoreActionController = ActionController(name: '_SchemaStore');
 
   @override
@@ -62,7 +77,8 @@ mixin _$SchemaStore on _SchemaStore, Store {
   @override
   String toString() {
     return '''
-components: ${components}
+components: ${components},
+name: ${name}
     ''';
   }
 }

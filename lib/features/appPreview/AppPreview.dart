@@ -503,6 +503,7 @@ class _AppPreviewState extends State<AppPreview> {
                           child: GestureDetector(
                               onTapDown: (details) {
                                 if (widget.isPlayMode) {
+                                  node.actions['Tap'].toFunction(userActions)();
                                 } else {
                                   userActions.selectNodeForEdit(node);
                                   debouncer = Debouncer(

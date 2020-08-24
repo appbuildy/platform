@@ -1,6 +1,6 @@
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 
-enum SchemaActionType { goToScreen }
+enum SchemaActionType { doNothing, goToScreen }
 
 abstract class SchemaAction {
   SchemaActionType type;
@@ -17,5 +17,15 @@ class GoToScreenAction extends SchemaAction {
 
   Function toFunction(UserActions userActions) {
     return () => userActions.screens.selectByName(this.value);
+  }
+}
+
+class MyDoNothingAction extends SchemaAction {
+  MyDoNothingAction() : super('myDoNothingAction') {
+    this.type = SchemaActionType.doNothing;
+  }
+
+  Function toFunction(UserActions userActions) {
+    return () {};
   }
 }
