@@ -22,6 +22,7 @@ void main() {
       final screensJson = json['canvas']['screens'];
       final component = screensJson[0]['components'][0];
 
+      print(json);
       expect(component['position']['x'], equals(btn.position.dx));
     });
   });
