@@ -36,7 +36,7 @@ class SchemaNodeText extends SchemaNode {
         position: position ?? this.position,
         id: id ?? this.id,
         size: size ?? this.size,
-        properties: saveProperties ? this.properties : null);
+        properties: saveProperties ? this.properties : {...this.properties});
   }
 
   @override

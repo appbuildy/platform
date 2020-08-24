@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
+import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
 import 'package:flutter_app/features/schemaInteractions/DeleteNode.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
@@ -82,6 +83,18 @@ class UserActions {
     SchemaNode node,
   ) {
     final action = new DeleteNode(
+        node: node,
+        schemaStore: currentScreen,
+        selectNodeForEdit: selectNodeForEdit);
+
+    action.execute();
+    _actionsDone.add(action);
+  }
+
+  void copyNode(
+    SchemaNode node,
+  ) {
+    final action = new CopyNode(
         node: node,
         schemaStore: currentScreen,
         selectNodeForEdit: selectNodeForEdit);
