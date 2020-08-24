@@ -19,6 +19,7 @@ class _AppLayoutState extends State<AppLayout> {
   UserActions userActions;
   CurrentScreen currentScreen;
   ScreensStore screensStore;
+  bool isPlayMode;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _AppLayoutState extends State<AppLayout> {
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
     userActions = UserActions(screens: screens);
+    isPlayMode = false;
   }
 
   @override
@@ -55,6 +57,26 @@ class _AppLayoutState extends State<AppLayout> {
                     scrollDirection: Axis.horizontal,
                     child: Column(
                       children: [
+                        Row(
+                          children: [
+                            MaterialButton(
+                                color: isPlayMode ? Colors.white : Colors.red,
+                                onPressed: () {
+                                  setState(() {
+                                    isPlayMode = false;
+                                  });
+                                },
+                                child: Text('Interactive mode')),
+                            MaterialButton(
+                                color: isPlayMode ? Colors.red : Colors.white,
+                                onPressed: () {
+                                  setState(() {
+                                    isPlayMode = true;
+                                  });
+                                },
+                                child: Text('Play mode')),
+                          ],
+                        ),
                         Row(
                           children: [
                             MaterialButton(
@@ -92,6 +114,7 @@ class _AppLayoutState extends State<AppLayout> {
                               Text(userActions.screens.current.name),
                         ),
                         AppPreview(
+                          isPlayMode: isPlayMode,
                           userActions: userActions,
                         ),
                       ],

@@ -13,8 +13,10 @@ const SCREEN_HEIGHT = 750.0;
 
 class AppPreview extends StatefulWidget {
   final UserActions userActions;
+  final bool isPlayMode;
 
-  const AppPreview({Key key, this.userActions}) : super(key: key);
+  const AppPreview({Key key, this.userActions, this.isPlayMode})
+      : super(key: key);
 
   @override
   _AppPreviewState createState() => _AppPreviewState();
@@ -500,13 +502,19 @@ class _AppPreviewState extends State<AppPreview> {
                       .map((node) => Positioned(
                           child: GestureDetector(
                               onTapDown: (details) {
-                                userActions.selectNodeForEdit(node);
-                                debouncer = Debouncer(
-                                    milliseconds: 500, prevValue: node.copy());
+                                if (widget.isPlayMode) {
+                                } else {
+                                  userActions.selectNodeForEdit(node);
+                                  debouncer = Debouncer(
+                                      milliseconds: 500,
+                                      prevValue: node.copy());
+                                }
                               },
-                              child: renderWithSelected(
-                                node: node,
-                              )),
+                              child: widget.isPlayMode
+                                  ? node.toWidget()
+                                  : renderWithSelected(
+                                      node: node,
+                                    )),
                           top: node.position.dy,
                           left: node.position.dx)),
                 ],
