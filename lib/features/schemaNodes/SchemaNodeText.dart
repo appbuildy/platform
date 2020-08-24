@@ -36,7 +36,16 @@ class SchemaNodeText extends SchemaNode {
         position: position ?? this.position,
         id: id ?? this.id,
         size: size ?? this.size,
-        properties: saveProperties ? this.properties : {...this.properties});
+        properties: saveProperties ? this._copyProperties() : null);
+  }
+
+  Map<String, SchemaNodeProperty> _copyProperties() {
+    final newProps = Map<String, SchemaNodeProperty>();
+    this.properties.forEach((key, value) {
+      newProps[key] = value.copy();
+    });
+
+    return newProps;
   }
 
   @override

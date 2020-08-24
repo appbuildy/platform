@@ -21,7 +21,7 @@ class CopyNode extends BaseAction {
     executed = true;
     newNode = _node.copy(
       id: UniqueKey(),
-      saveProperties: false,
+      saveProperties: true,
     );
     _schemaStore.add(newNode);
     _selectNodeForEdit(newNode);
