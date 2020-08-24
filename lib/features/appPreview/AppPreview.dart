@@ -463,8 +463,8 @@ class _AppPreviewState extends State<AppPreview> {
           child: Cursor(
             cursor: CursorEnum.move,
             child: Container(
-              width: isSelected ? node.size.dx - 2 : node.size.dx,
-              height: isSelected ? node.size.dy - 2 : node.size.dy,
+              width: node.size.dx,
+              height: node.size.dy,
               child: node.toWidget(),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
+import 'package:flutter_app/features/schemaInteractions/DeleteNode.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
@@ -64,9 +65,9 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  SchemaNode placeWidget(SchemaNode schemaNode, Offset position) {
+  SchemaNode placeWidget(SchemaNode node, Offset position) {
     final action = new PlaceWidget(
-        node: schemaNode,
+        node: node,
         schemaStore: currentScreen,
         position: position,
         selectNodeForEdit: selectNodeForEdit);
@@ -75,6 +76,18 @@ class UserActions {
     _actionsDone.add(action);
 
     return action.newNode;
+  }
+
+  void deleteNode(
+    SchemaNode node,
+  ) {
+    final action = new DeleteNode(
+        node: node,
+        schemaStore: currentScreen,
+        selectNodeForEdit: selectNodeForEdit);
+
+    action.execute();
+    _actionsDone.add(action);
   }
 
   SchemaNode selectedNode() {

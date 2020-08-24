@@ -52,6 +52,7 @@ class _AppLayoutState extends State<AppLayout> {
                 flex: 2,
                 child: Center(
                   child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Column(
                       children: [
                         Row(

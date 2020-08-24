@@ -13,7 +13,21 @@ class EditProps extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: selectedNode != null
-          ? selectedNode.toEditProps(userActions.changePropertyTo)
+          ? Column(children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24.0),
+                child: Container(
+                  child: MaterialButton(
+                    color: Colors.red,
+                    onPressed: () {
+                      userActions.deleteNode(selectedNode);
+                    },
+                    child: Text('DELETE'),
+                  ),
+                ),
+              ),
+              selectedNode.toEditProps(userActions.changePropertyTo)
+            ])
           : Container(),
     );
   }
