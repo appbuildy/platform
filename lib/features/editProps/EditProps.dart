@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/ui/AllActions.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 
 class EditProps extends StatelessWidget {
   final UserActions userActions;
   final SchemaNode selectedNode;
+  final ObservableList<SchemaStore> screens;
 
   const EditProps({
     Key key,
     @required this.userActions,
     @required this.selectedNode,
+    this.screens,
   }) : super(key: key);
 
   @override
@@ -42,13 +45,8 @@ class EditProps extends StatelessWidget {
               ),
               selectedNode.toEditProps(userActions.changePropertyTo),
               Text('ACTIONS'),
-              Observer(
-                builder: (_) => AllActions(
-                  screens: userActions.screens.all.screens,
-                ),
-//                child: AllActions(
-//                  screens: userActions.screens.all.screens,
-//                ),
+              AllActions(
+                screens: screens,
               ),
             ])
           : Container(),

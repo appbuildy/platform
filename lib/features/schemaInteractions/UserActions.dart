@@ -107,8 +107,6 @@ class UserActions {
     return _currentNode.selectedNode;
   }
 
-  SchemaNode get getSelectedNode => _currentNode.selectedNode;
-
   BaseAction lastAction() {
     // ignore: unnecessary_statements
     return _actionsDone.actions.last;

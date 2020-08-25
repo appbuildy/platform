@@ -93,16 +93,19 @@ class _AppLayoutState extends State<AppLayout> {
                                 onPressed: () {
                                   userActions.screens
                                       .create(moveToNextAfterCreated: true);
+                                  userActions.selectNodeForEdit(null);
                                 },
                                 child: Text('Add Screen')),
                             MaterialButton(
                                 onPressed: () {
                                   userActions.screens.previousScreen();
+                                  userActions.selectNodeForEdit(null);
                                 },
                                 child: Text('Previous Screen')),
                             MaterialButton(
                                 onPressed: () {
                                   userActions.screens.nextScreen();
+                                  userActions.selectNodeForEdit(null);
                                 },
                                 child: Text('Next screen')),
                           ],
@@ -131,6 +134,7 @@ class _AppLayoutState extends State<AppLayout> {
                       builder: (context) => EditProps(
                         userActions: userActions,
                         selectedNode: userActions.selectedNode(),
+                        screens: userActions.screens.all.screens,
                       ),
                     ),
                   ),

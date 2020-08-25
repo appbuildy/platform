@@ -19,6 +19,7 @@ abstract class _ScreensStore with Store {
     screens.add(screen);
   }
 
+  @action
   void deleteScreen(SchemaStore screen) {
     screens.remove(screen);
   }
