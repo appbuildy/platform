@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 
-abstract class SchemaNodeProperty<T> {
+abstract class SchemaNodeProperty<T> implements ChangeableProperty<T> {
   String name;
   T value;
   SchemaNodeProperty properties;

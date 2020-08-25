@@ -1,6 +1,7 @@
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 
 class ChangeNodeProperty extends BaseAction {
   SchemaNodeProperty property;
@@ -12,7 +13,7 @@ class ChangeNodeProperty extends BaseAction {
   ChangeNodeProperty(
       {SchemaStore schemaStore,
       SchemaNode node,
-      SchemaNodeProperty newProp,
+      ChangeableProperty newProp,
       Function selectNodeForEdit}) {
     this.property = newProp;
     this.schemaStore = schemaStore;

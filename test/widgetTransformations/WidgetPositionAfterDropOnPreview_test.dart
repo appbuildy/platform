@@ -24,7 +24,8 @@ void main() {
       when(box.localToGlobal(Offset.zero)).thenAnswer((_) => positionOffset);
 
       final Offset oldOffset = Offset(1, 2);
-      final DragTargetDetails details = DragTargetDetails(offset: oldOffset);
+      final DragTargetDetails details =
+          DragTargetDetails(offset: oldOffset, data: null);
       final WidgetPositionAfterDropOnPreview newPosition =
           WidgetPositionAfterDropOnPreview(context, details);
       final newCalculatedOffset =

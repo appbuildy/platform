@@ -7,6 +7,7 @@ import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
+import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
@@ -29,15 +30,7 @@ class UserActions {
   SchemaStore get currentScreen => _screens.current;
   Screens get screens => _screens;
 
-  void undo() {
-    if (lastAction() == null) return;
-
-    final removedAction = _actionsDone.actions.removeLast();
-    removedAction.undo();
-    _actionsUndone.add((removedAction));
-  }
-
-  void changePropertyTo(SchemaNodeProperty prop,
+  void changePropertyTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
@@ -51,19 +44,33 @@ class UserActions {
     }
   }
 
-  void repositionAndResize(SchemaNode updatedNode,
-      [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
-    final action =
-        RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
+  void copyNode(
+    SchemaNode node,
+  ) {
+    final action = new CopyNode(
+        node: node,
+        schemaStore: currentScreen,
+        selectNodeForEdit: selectNodeForEdit);
 
-    action.execute(prevValue);
-    if (isAddedToDoneActions) {
-      _actionsDone.add(action);
-    }
+    action.execute();
+    _actionsDone.add(action);
   }
 
-  void selectNodeForEdit(SchemaNode node) {
-    SelectNodeForPropsEdit(node, _currentNode).execute();
+  void deleteNode(
+    SchemaNode node,
+  ) {
+    final action = new DeleteNode(
+        node: node,
+        schemaStore: currentScreen,
+        selectNodeForEdit: selectNodeForEdit);
+
+    action.execute();
+    _actionsDone.add(action);
+  }
+
+  BaseAction lastAction() {
+    // ignore: unnecessary_statements
+    return _actionsDone.actions.last;
   }
 
   SchemaNode placeWidget(SchemaNode node, Offset position) {
@@ -79,36 +86,30 @@ class UserActions {
     return action.newNode;
   }
 
-  void deleteNode(
-    SchemaNode node,
-  ) {
-    final action = new DeleteNode(
-        node: node,
-        schemaStore: currentScreen,
-        selectNodeForEdit: selectNodeForEdit);
+  void repositionAndResize(SchemaNode updatedNode,
+      [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
+    final action =
+        RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
 
-    action.execute();
-    _actionsDone.add(action);
-  }
-
-  void copyNode(
-    SchemaNode node,
-  ) {
-    final action = new CopyNode(
-        node: node,
-        schemaStore: currentScreen,
-        selectNodeForEdit: selectNodeForEdit);
-
-    action.execute();
-    _actionsDone.add(action);
+    action.execute(prevValue);
+    if (isAddedToDoneActions) {
+      _actionsDone.add(action);
+    }
   }
 
   SchemaNode selectedNode() {
     return _currentNode.selectedNode;
   }
 
-  BaseAction lastAction() {
-    // ignore: unnecessary_statements
-    return _actionsDone.actions.last;
+  void selectNodeForEdit(SchemaNode node) {
+    SelectNodeForPropsEdit(node, _currentNode).execute();
+  }
+
+  void undo() {
+    if (lastAction() == null) return;
+
+    final removedAction = _actionsDone.actions.removeLast();
+    removedAction.undo();
+    _actionsUndone.add((removedAction));
   }
 }

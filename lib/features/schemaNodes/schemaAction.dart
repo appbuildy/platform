@@ -1,8 +1,9 @@
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 
 enum SchemaActionType { doNothing, goToScreen }
 
-abstract class SchemaAction {
+abstract class SchemaAction implements ChangeableProperty<String> {
   SchemaActionType type;
   String value;
   SchemaAction(this.value);
