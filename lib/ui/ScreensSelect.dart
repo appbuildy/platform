@@ -1,15 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:mobx/mobx.dart';
 
 class ScreensSelect extends StatelessWidget {
   final ObservableList<SchemaStore> screens;
-  GoToScreenAction action;
+  final GoToScreenAction action;
+  final UserActions userActions;
 
-  ScreensSelect({Key key, @required action, @required this.screens})
+  const ScreensSelect(
+      {Key key,
+      @required this.userActions,
+      @required this.action,
+      @required this.screens})
       : super(key: key);
 
   @override
@@ -23,7 +29,18 @@ class ScreensSelect extends StatelessWidget {
 
   List<Widget> buildActions() {
     return screens
-        .map((schemaStore) => Container(child: Text(schemaStore.name)))
+        .map((schemaStore) => GestureDetector(
+            onTap: () => {
+                  log('Screen ${schemaStore.name}'),
+                  action.value = schemaStore.name,
+                  log('Action ${action.value}'),
+                },
+            child: Container(
+                child: Text(schemaStore.name,
+                    style: TextStyle(
+                        color: action.value == schemaStore.name
+                            ? Colors.red
+                            : Colors.black)))))
         .toList();
   }
 }
