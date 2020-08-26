@@ -1,5 +1,6 @@
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
@@ -17,7 +18,7 @@ void main() {
           ScreensStore(screens: [screen1, screen2]), CurrentScreen(screen1));
 
       final actions = UserActions(screens: screens);
-      final SchemaAction chgScren = GoToScreenAction(screen2.name);
+      final Functionable chgScren = GoToScreenAction('Tap', screen2.name);
 
       final changeScreenFn = chgScren.toFunction(actions);
 

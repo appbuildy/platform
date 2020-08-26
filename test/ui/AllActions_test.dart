@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockAction extends Mock implements SchemaAction {
+class MockAction extends Mock implements SchemaNodeProperty<String> {
   String value;
   bool isCalled = false;
   MockAction(this.value);
-
-  @override
-  Function toFunction(UserActions userActions) {
-    return () => {isCalled = true};
-  }
 }
 
 void main() {
@@ -26,7 +22,11 @@ void main() {
     final ScreensStore screens =
         ScreensStore(screens: [schemaStore, anotherScreen]);
     final action = MockAction('val1');
-    final allActions = AllActions(screens: screens.screens);
+
+    final userActions =
+        UserActions(screens: Screens(screens, CurrentScreen(schemaStore)));
+    final allActions =
+        AllActions(userActions: userActions, screens: screens.screens);
 
     final SchemaNodeButton btn = SchemaNodeButton(
         actions: {'Tap': action},
