@@ -10,14 +10,14 @@ class SchemaNodeButton extends SchemaNode {
     Offset position,
     Offset size,
     Map<String, SchemaNodeProperty> properties,
-    Map<String, SchemaAction> actions,
+    Map<String, SchemaNodeProperty> actions,
     UniqueKey id,
   }) : super() {
     this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(150.0, 100.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('main')};
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', 'main')};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Button'),
