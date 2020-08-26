@@ -23,10 +23,6 @@ class SchemaNodeButton extends SchemaNode {
           'Text': SchemaStringProperty('Text', 'Button'),
           'Background': SchemaColorProperty('Background', Colors.indigo)
         };
-
-    this.changeableProperties = Map<String, SchemaNodeProperty>();
-
-    this.changeableProperties.addAll(this.properties);
   }
 
   @override

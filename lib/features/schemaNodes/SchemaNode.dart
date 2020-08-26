@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 export 'SchemaNodeButton.dart';
@@ -16,7 +15,7 @@ abstract class SchemaNode {
   Offset size;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> changeableProperties;
-  Map<String, Functionable> actions;
+  Map<String, SchemaNodeProperty> actions;
 
   SchemaNode copy({
     Offset position,

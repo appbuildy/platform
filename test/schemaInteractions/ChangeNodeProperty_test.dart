@@ -1,5 +1,6 @@
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,10 +11,17 @@ void main() {
   SchemaStore schemaStore;
   Function selectNodeForEdit;
 
+  ChangeNodeProperty changeBtnAction;
+  SchemaNodeProperty goToScreen;
+  SchemaNode btn;
+
   setUp(() {
     schemaStore = SchemaStore(components: []);
     text = SchemaNodeText();
+    btn = SchemaNodeButton(position: Offset(1, 2));
     schemaStore.add(text);
+    schemaStore.add(btn);
+
     selectNodeForEdit = (SchemaNode node) {};
 
     newProp = SchemaStringProperty('Text', '33');
@@ -22,6 +30,14 @@ void main() {
         schemaStore: schemaStore,
         node: text,
         newProp: newProp);
+
+    goToScreen = GoToScreenAction('Tap', 'Screen2');
+    changeBtnAction = ChangeNodeProperty(
+        selectNodeForEdit: selectNodeForEdit,
+        schemaStore: schemaStore,
+        changeAction: ChangeAction.actions,
+        node: btn,
+        newProp: goToScreen);
   });
 
   group('undo()', () {
@@ -35,6 +51,10 @@ void main() {
   });
 
   group('execute()', () {
+    test('it changes action', () {
+      changeBtnAction.execute();
+    });
+
     test('it changes node property to given', () {
       changeProp.execute();
       final textPropValue = text.properties['Text'].value;

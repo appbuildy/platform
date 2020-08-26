@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/ui/Cursor.dart';
@@ -503,7 +504,8 @@ class _AppPreviewState extends State<AppPreview> {
                           child: GestureDetector(
                               onTapDown: (details) {
                                 if (widget.isPlayMode) {
-                                  node.actions['Tap'].toFunction(userActions)();
+                                  (node.actions['Tap'] as Functionable)
+                                      .toFunction(userActions)();
                                 } else {
                                   userActions.selectNodeForEdit(node);
                                   debouncer = Debouncer(
