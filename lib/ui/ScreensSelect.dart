@@ -1,13 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:mobx/mobx.dart';
 
 class ScreensSelect extends StatelessWidget {
   final ObservableList<SchemaStore> screens;
+  GoToScreenAction action;
 
-  const ScreensSelect({Key key, @required this.screens}) : super(key: key);
+  ScreensSelect({Key key, @required action, @required this.screens})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
