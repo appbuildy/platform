@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
-import 'package:mobx/mobx.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ScreensSelect extends StatelessWidget {
-  final ObservableList<SchemaStore> screens;
+  final List<SchemaStore> screens;
   final GoToScreenAction action;
   final UserActions userActions;
 
@@ -30,18 +30,21 @@ class ScreensSelect extends StatelessWidget {
   List<Widget> buildActions() {
     return screens
         .map((schemaStore) => GestureDetector(
-            onTap: () => {
-                  log('Screen ${schemaStore.name}'),
-                  userActions.changeActionTo(
-                      GoToScreenAction('Tap', schemaStore.name)),
-                  log('Action ${action.value}'),
-                },
-            child: Container(
-                child: Text(schemaStore.name,
-                    style: TextStyle(
-                        color: action.value == schemaStore.name
-                            ? Colors.red
-                            : Colors.black)))))
+              onTap: () => {
+                log('Screen ${schemaStore.name}'),
+                userActions
+                    .changeActionTo(GoToScreenAction('Tap', schemaStore.name)),
+                action.value = schemaStore.name,
+                log('Action ${action.value}'),
+              },
+              child: Container(
+                  child: Observer(
+                      builder: (context) => Text(schemaStore.name,
+                          style: TextStyle(
+                              color: action.value == schemaStore.name
+                                  ? Colors.red
+                                  : Colors.black)))),
+            ))
         .toList();
   }
 }
