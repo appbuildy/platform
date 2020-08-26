@@ -32,7 +32,7 @@ class ScreensSelect extends StatelessWidget {
         .map((schemaStore) => GestureDetector(
             onTap: () => {
                   log('Screen ${schemaStore.name}'),
-                  userActions.changePropertyTo(
+                  userActions.changeActionTo(
                       GoToScreenAction('Tap', schemaStore.name)),
                   log('Action ${action.value}'),
                 },

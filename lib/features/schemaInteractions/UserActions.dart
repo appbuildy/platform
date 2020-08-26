@@ -30,6 +30,21 @@ class UserActions {
   SchemaStore get currentScreen => _screens.current;
   Screens get screens => _screens;
 
+  void changeActionTo(ChangeableProperty prop,
+      [bool isAddedToDoneActions = true, prevValue]) {
+    final action = ChangeNodeProperty(
+        selectNodeForEdit: selectNodeForEdit,
+        schemaStore: currentScreen,
+        changeAction: ChangeAction.actions,
+        node: selectedNode(),
+        newProp: prop);
+
+    action.execute(prevValue);
+    if (isAddedToDoneActions) {
+      _actionsDone.add(action);
+    }
+  }
+
   void changePropertyTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {
     final action = ChangeNodeProperty(
