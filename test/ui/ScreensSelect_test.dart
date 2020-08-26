@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
@@ -24,11 +25,15 @@ class MockAction extends Mock implements Functionable {
 void main() {
   testWidgets('Widget() renders', (WidgetTester tester) async {
     //TODO: Move setup to helper
+
     final schemaStore = SchemaStore(name: 'nam1', components: []);
     final anotherScreen = SchemaStore(name: 'name2', components: []);
     final ScreensStore screens =
         ScreensStore(screens: [schemaStore, anotherScreen]);
     final action = GoToScreenAction('Tap', 'val');
+
+    final btn =
+        SchemaNodeButton(position: Offset(0, 0), actions: {'Tap': action});
     final userActions =
         UserActions(screens: Screens(screens, CurrentScreen(schemaStore)));
     final allActions = ScreensSelect(
@@ -41,11 +46,13 @@ void main() {
           child: allActions,
         )));
 
+    schemaStore.add(btn);
+    userActions.selectNodeForEdit(btn);
     await tester.pumpWidget(testWidget);
     await tester.tap(find.text(schemaStore.name));
     await tester.pump();
 
-    //expect(action.value, equals(schemaStore.name));
+    expect(action.value, equals(schemaStore.name));
     expect(find.text(schemaStore.name), findsNWidgets(1));
   });
 }

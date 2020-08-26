@@ -19,6 +19,7 @@ void main() {
     schemaStore = SchemaStore(components: []);
     text = SchemaNodeText();
     btn = SchemaNodeButton(position: Offset(1, 2));
+
     schemaStore.add(text);
     schemaStore.add(btn);
 
