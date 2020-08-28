@@ -7,6 +7,7 @@ import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
+import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppLayout extends StatefulWidget {
@@ -108,6 +109,15 @@ class _AppLayoutState extends State<AppLayout> {
                                   userActions.selectNodeForEdit(null);
                                 },
                                 child: Text('Next screen')),
+                            MaterialButton(
+                                onPressed: () {
+                                  final json =
+                                      SchemaConverter(userActions.screens.all)
+                                          .toJson()
+                                          .toString();
+                                  print(json);
+                                },
+                                child: Text('Print Schema')),
                           ],
                         ),
                         SizedBox(
