@@ -10,7 +10,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
 
 const SCREEN_WIDTH = 375.0;
-const SCREEN_HEIGHT = 750.0;
+const SCREEN_HEIGHT = 812.0;
 
 class AppPreview extends StatefulWidget {
   final UserActions userActions;

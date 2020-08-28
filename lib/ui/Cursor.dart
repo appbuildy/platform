@@ -2,9 +2,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:universal_html/html.dart' as html;
 
-enum CursorEnum { pointer, move, neswResize, nwseResize, nsResize, ewResize }
+enum CursorEnum {
+  defaultCursor,
+  pointer,
+  move,
+  neswResize,
+  nwseResize,
+  nsResize,
+  ewResize
+}
 
 const CursorMap = {
+  CursorEnum.defaultCursor: 'default',
   CursorEnum.pointer: 'pointer',
   CursorEnum.move: 'move',
   CursorEnum.neswResize: 'nesw-resize',
