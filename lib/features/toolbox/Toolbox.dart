@@ -45,12 +45,17 @@ class _ToolboxState extends State<Toolbox> {
     return Container(
       color: MyColors.white,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ToolboxMenu(state: state, selectState: selectState),
+          SingleChildScrollView(
+              child: ToolboxMenu(state: state, selectState: selectState)),
           SizedBox(
             width: 20,
           ),
-          buildWidgetOnState()
+          SingleChildScrollView(child: buildWidgetOnState()),
+          Column(
+            children: [],
+          ), // to align the CihnleChildScrollViews
         ],
       ),
     );

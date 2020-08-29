@@ -4,6 +4,7 @@ class MyColors {
   static const Color black = const Color(0xFF111111);
   static const Color white = const Color(0xFFFFFFFF);
   static const Color gray = const Color(0xFFD8D8D8);
+  static const Color lightGray = const Color(0xFFE7E8ED);
   static const Color mainBlue = const Color(0xFF239dff);
   static const Color textBlue = const Color(0xFF007aff);
 

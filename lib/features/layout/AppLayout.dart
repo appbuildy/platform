@@ -9,6 +9,7 @@ import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
+import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -87,6 +88,7 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNodeAttachment.reparent();
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
           child: Row(
@@ -99,9 +101,6 @@ class _AppLayoutState extends State<AppLayout> {
                 },
                 child: Toolbox(),
               ),
-              SizedBox(
-                width: 13,
-              ),
               Flexible(
                 flex: 3,
                 child: GestureDetector(
@@ -110,83 +109,97 @@ class _AppLayoutState extends State<AppLayout> {
                       _focusNode.requestFocus();
                     }
                   },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          MaterialButton(
-                              onPressed: () {
-                                userActions.undo();
-                              },
-                              child: Text('Undo')),
-                          MaterialButton(
-                            onPressed: () {},
-                            child: Text('Redo'),
-                          ),
-                          MaterialButton(
-                              onPressed: () {
-                                userActions.screens
-                                    .create(moveToNextAfterCreated: true);
-                                userActions.selectNodeForEdit(null);
-                              },
-                              child: Text('Add Screen')),
-                          MaterialButton(
-                              onPressed: () {
-                                userActions.screens.previousScreen();
-                                userActions.selectNodeForEdit(null);
-                              },
-                              child: Text('Previous Screen')),
-                          MaterialButton(
-                              onPressed: () {
-                                userActions.screens.nextScreen();
-                                userActions.selectNodeForEdit(null);
-                              },
-                              child: Text('Next screen')),
-                          MaterialButton(
-                              onPressed: () {
-                                final json =
-                                    SchemaConverter(userActions.screens.all)
-                                        .toJson()
-                                        .toString();
-                                print(json);
-                              },
-                              child: Text('Print Schema')),
-                        ],
-                      ),
-                      Observer(
-                        builder: (context) =>
-                            Text(userActions.screens.current.name),
-                      ),
-                      SingleChildScrollView(
-                        // SINGLE CHILD FOR PERFORMANCE
-                        child: AppPreview(
-                          isPlayMode: isPlayMode,
-                          userActions: userActions,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Container(
-                            width: 196,
-                            child: PlayModeSwitch(
-                                isPlayMode: isPlayMode,
-                                selectPlayMode: (bool newIsPlayMode) {
-                                  setState(() {
-                                    isPlayMode = newIsPlayMode;
+                  child: Container(
+                    color: MyColors.lightGray,
+                    child: Column(
+                      children: [
+                        Container(),
+                        SingleChildScrollView(
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 13.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      MaterialButton(
+                                          onPressed: () {
+                                            userActions.undo();
+                                          },
+                                          child: Text('Undo')),
+                                      MaterialButton(
+                                        onPressed: () {},
+                                        child: Text('Redo'),
+                                      ),
+                                      MaterialButton(
+                                          onPressed: () {
+                                            userActions.screens.create(
+                                                moveToNextAfterCreated: true);
+                                            userActions.selectNodeForEdit(null);
+                                          },
+                                          child: Text('Add Screen')),
+                                      MaterialButton(
+                                          onPressed: () {
+                                            userActions.screens
+                                                .previousScreen();
+                                            userActions.selectNodeForEdit(null);
+                                          },
+                                          child: Text('Previous Screen')),
+                                      MaterialButton(
+                                          onPressed: () {
+                                            userActions.screens.nextScreen();
+                                            userActions.selectNodeForEdit(null);
+                                          },
+                                          child: Text('Next screen')),
+                                      MaterialButton(
+                                          onPressed: () {
+                                            final json = SchemaConverter(
+                                                    userActions.screens.all)
+                                                .toJson()
+                                                .toString();
+                                            print(json);
+                                          },
+                                          child: Text('Print Schema')),
+                                    ],
+                                  ),
+                                  Observer(
+                                    builder: (context) =>
+                                        Text(userActions.screens.current.name),
+                                  ),
+                                  AppPreview(
+                                    isPlayMode: isPlayMode,
+                                    userActions: userActions,
+                                  ),
+                                  SizedBox(
+                                    height: 36.0,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        width: 196,
+                                        child: PlayModeSwitch(
+                                            isPlayMode: isPlayMode,
+                                            selectPlayMode:
+                                                (bool newIsPlayMode) {
+                                              setState(() {
+                                                isPlayMode = newIsPlayMode;
 
-                                    if (newIsPlayMode) {
-                                      userActions.selectNodeForEdit(null);
-                                    }
-                                  });
-                                }),
+                                                if (newIsPlayMode) {
+                                                  userActions
+                                                      .selectNodeForEdit(null);
+                                                }
+                                              });
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 13,
-                      )
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
