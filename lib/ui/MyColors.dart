@@ -27,7 +27,7 @@ class MyGradients {
     ],
   );
 
-  static LinearGradient lightBlue = LinearGradient(
+  static LinearGradient mediumBlue = LinearGradient(
     begin: AlignmentDirectional.topCenter,
     end: AlignmentDirectional.bottomCenter,
     colors: [
@@ -35,4 +35,20 @@ class MyGradients {
       Color(0xFF00A0FF).withOpacity(0.35)
     ],
   );
+
+  static LinearGradient lightBlue = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [Color(0xFFe9fbff), Color(0xFFc5eaff)],
+  );
+}
+
+class MyTextStyle {
+  static TextStyle regularTitle = TextStyle(
+    color: MyColors.black,
+    fontSize: 16,
+  );
+
+  static TextStyle mediumTitle = TextStyle(
+      color: MyColors.black, fontSize: 16, fontWeight: FontWeight.w500);
 }

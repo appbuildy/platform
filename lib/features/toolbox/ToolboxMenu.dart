@@ -36,7 +36,7 @@ class ToolboxMenu extends StatelessWidget {
         topRight: const Radius.circular(8));
 
     final activeDecoration = BoxDecoration(
-        borderRadius: borderRadius, gradient: MyGradients.lightBlue);
+        borderRadius: borderRadius, gradient: MyGradients.mediumBlue);
 
     return GestureDetector(
       onTap: () {
@@ -62,7 +62,11 @@ class ToolboxMenu extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.network('assets/icons/menu/layout-active.svg'),
+                  Image.network(
+                    isActive
+                        ? 'assets/icons/menu/layout-active.svg'
+                        : 'assets/icons/menu/layout-active.svg',
+                  ),
                   SizedBox(
                     height: 11,
                   ),

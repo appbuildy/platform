@@ -4,12 +4,14 @@ class HoverDecoration extends StatefulWidget {
   final Widget child;
   final BoxDecoration defaultDecoration;
   final BoxDecoration hoverDecoration;
+  final Duration duration;
 
   const HoverDecoration(
       {Key key,
       @required this.child,
       @required this.defaultDecoration,
-      @required this.hoverDecoration})
+      @required this.hoverDecoration,
+      this.duration})
       : super(key: key);
   @override
   _HoverDecorationState createState() => _HoverDecorationState();
@@ -56,7 +58,7 @@ class _HoverDecorationState extends State<HoverDecoration>
       child: AnimatedContainer(
         child: widget.child,
         decoration: _decoration,
-        duration: Duration(milliseconds: 200),
+        duration: widget.duration ?? Duration(milliseconds: 200),
       ),
     );
   }
