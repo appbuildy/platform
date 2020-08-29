@@ -28,10 +28,17 @@ abstract class SchemaNode {
         'position': {'x': position.dx, 'y': position.dy},
         'size': {'x': size.dx, 'y': size.dy},
         'properties': _jsonProperties(),
+        'actions': _jsonActions(),
         'type': SchemaNodeType.button
       };
   Widget toWidget();
   Widget toEditProps(Function changePropertyTo);
+
+  Map<String, dynamic> _jsonActions() {
+    final map = {};
+    actions.forEach((k, v) => map[k] = v.toJson());
+    return map;
+  }
 
   Map<String, dynamic> _jsonProperties() {
     final map = {};
