@@ -90,16 +90,13 @@ class _AppLayoutState extends State<AppLayout> {
         Expanded(
           child: Row(
             children: [
-              Flexible(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: () {
-                    if (_focused) {
-                      _focusNode.unfocus();
-                    }
-                  },
-                  child: Toolbox(),
-                ),
+              GestureDetector(
+                onTap: () {
+                  if (_focused) {
+                    _focusNode.unfocus();
+                  }
+                },
+                child: Toolbox(),
               ),
               Flexible(
                 flex: 2,

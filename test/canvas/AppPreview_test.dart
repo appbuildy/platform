@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/toolbox/ToolboxComponentsList.dart';
+import 'package:flutter_app/features/toolbox/ToolboxComponents.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_test/flutter_test.dart';
 

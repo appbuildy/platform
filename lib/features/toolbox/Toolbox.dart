@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/toolbox/ToolboxComponentsList.dart';
+import 'package:flutter_app/features/toolbox/ToolboxComponents.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
@@ -25,6 +25,21 @@ class _ToolboxState extends State<Toolbox> {
     }
   }
 
+  Widget buildWidgetOnState() {
+    switch (state) {
+      case MenuStates.general:
+        return Container();
+      case MenuStates.layout:
+        return ToolboxLayout();
+      case MenuStates.pages:
+        return Container();
+      case MenuStates.data:
+        return Container();
+    }
+
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -35,7 +50,7 @@ class _ToolboxState extends State<Toolbox> {
           SizedBox(
             width: 20,
           ),
-          ToolboxComponentsList()
+          buildWidgetOnState()
         ],
       ),
     );

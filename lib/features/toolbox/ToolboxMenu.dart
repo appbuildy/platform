@@ -1,14 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
-enum MenuStates { layout, general, data }
+enum MenuStates { layout, general, pages, data }
 
 const TitleToStateMap = {
   MenuStates.layout: 'Layout',
+  MenuStates.pages: 'Pages',
   MenuStates.general: 'General',
   MenuStates.data: 'Data',
 };
@@ -31,8 +30,6 @@ class ToolboxMenu extends StatelessWidget {
 //            color: isActive ? MyColors.textBlue : MyColors.black),
 //      ),
 //    );
-
-    log('I rerendered isACTIVE $isActive');
 
     const borderRadius = BorderRadius.only(
         bottomRight: const Radius.circular(8),
@@ -61,14 +58,22 @@ class ToolboxMenu extends StatelessWidget {
                   : BoxDecoration(
                       borderRadius: borderRadius,
                       gradient: MyGradients.lightGray),
-              child: Center(
-                child: Text(
-                  TitleToStateMap[option],
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: isActive ? MyColors.textBlue : MyColors.black),
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.network('assets/icons/menu/layout-active.svg'),
+                  SizedBox(
+                    height: 11,
+                  ),
+                  Text(
+                    TitleToStateMap[option],
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: isActive ? MyColors.textBlue : MyColors.black),
+                  ),
+                ],
               )),
         ),
       ),
@@ -80,6 +85,7 @@ class ToolboxMenu extends StatelessWidget {
     return Column(
       children: [
         buildOption(MenuStates.general),
+        buildOption(MenuStates.pages),
         buildOption(MenuStates.layout),
         buildOption(MenuStates.data),
       ],
