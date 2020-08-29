@@ -4,6 +4,7 @@ import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/ui/Cursor.dart';
+import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -491,14 +492,28 @@ class _AppPreviewState extends State<AppPreview> {
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
-          color: Colors.black12,
           width: SCREEN_WIDTH,
           height: SCREEN_HEIGHT,
+          decoration: BoxDecoration(
+              color: MyColors.white,
+              borderRadius: BorderRadius.circular(40.0),
+              boxShadow: [
+                BoxShadow(
+                    spreadRadius: 0,
+                    blurRadius: 30,
+                    offset: Offset(0, 2),
+                    color: MyColors.black.withOpacity(0.15))
+              ],
+              border: Border.all(width: 2, color: MyColors.black)),
           child: Observer(
             builder: (context) {
               return Stack(
                 textDirection: TextDirection.ltr,
                 children: [
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Image.network('assets/icons/meta/status-bar.svg')),
                   ...userActions.screens.current.components
                       .map((node) => Positioned(
                           child: GestureDetector(

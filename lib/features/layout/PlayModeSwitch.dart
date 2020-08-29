@@ -19,13 +19,15 @@ class _PlayModeSwitchState extends State<PlayModeSwitch>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation _animation;
-  final animationDuration = Duration(milliseconds: 200);
+
+  final animationDuration = Duration(milliseconds: 300);
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(vsync: this, duration: animationDuration);
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.ease);
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOutQuad);
   }
 
   @override
@@ -54,7 +56,7 @@ class _PlayModeSwitchState extends State<PlayModeSwitch>
                     padding: const EdgeInsets.all(2.0),
                     child: Transform(
                       transform: Matrix4.identity()
-                        ..translate(_controller.value * 96),
+                        ..translate(_animation.value * 96),
                       child: Container(
                           decoration: BoxDecoration(
                               color: MyColors.white,
