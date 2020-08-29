@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
+import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 
-abstract class SchemaNodeProperty<T> implements ChangeableProperty<T> {
+abstract class SchemaNodeProperty<T>
+    implements ChangeableProperty<T>, JsonConvertable {
   String name;
   T value;
   SchemaNodeProperty properties;
@@ -12,6 +14,11 @@ abstract class SchemaNodeProperty<T> implements ChangeableProperty<T> {
   }
 
   SchemaNodeProperty copy();
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {'name': value.toString()};
+  }
 
   StatefulWidget input(Function onChange) {
     return TextField(
