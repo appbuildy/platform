@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="20px" viewBox="0 0 18 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>btn-mode-play</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="btn-mode-play" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M9,1 C13.9705627,1 18,5.02943725 18,10 C18,14.9705627 13.9705627,19 9,19 C4.02943725,19 0,14.9705627 0,10 C0,5.02943725 4.02943725,1 9,1 Z M7.09735811,6.45728486 C7.0341144,6.54318473 7,6.64705933 7,6.75372965 L7,13.2462704 C7,13.5224127 7.22385763,13.7462704 7.5,13.7462704 C7.60667031,13.7462704 7.71054491,13.712156 7.79644479,13.6489122 L12.205645,10.4026419 C12.428018,10.23892 12.475564,9.92592819 12.3118421,9.70355521 C12.2819917,9.66301134 12.2461889,9.62720851 12.205645,9.59735811 L7.79644479,6.35108776 C7.57407181,6.18736583 7.26108005,6.23491189 7.09735811,6.45728486 Z" id="Combined-Shape" fill="url(#linearGradient-1)"></path>
+    </g>
+</svg>

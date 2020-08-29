@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
 import 'package:flutter_app/features/editProps/EditProps.dart';
+import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
@@ -98,100 +99,98 @@ class _AppLayoutState extends State<AppLayout> {
                 },
                 child: Toolbox(),
               ),
+              SizedBox(
+                width: 13,
+              ),
               Flexible(
-                flex: 2,
+                flex: 3,
                 child: GestureDetector(
                   onTap: () {
                     if (!_focused) {
                       _focusNode.requestFocus();
                     }
                   },
-                  child: Center(
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              MaterialButton(
-                                  color: isPlayMode ? Colors.white : Colors.red,
-                                  onPressed: () {
-                                    setState(() {
-                                      isPlayMode = false;
-                                    });
-                                  },
-                                  child: Text('Interactive mode')),
-                              MaterialButton(
-                                  color: isPlayMode ? Colors.red : Colors.white,
-                                  onPressed: () {
-                                    setState(() {
+                          MaterialButton(
+                              onPressed: () {
+                                userActions.undo();
+                              },
+                              child: Text('Undo')),
+                          MaterialButton(
+                            onPressed: () {},
+                            child: Text('Redo'),
+                          ),
+                          MaterialButton(
+                              onPressed: () {
+                                userActions.screens
+                                    .create(moveToNextAfterCreated: true);
+                                userActions.selectNodeForEdit(null);
+                              },
+                              child: Text('Add Screen')),
+                          MaterialButton(
+                              onPressed: () {
+                                userActions.screens.previousScreen();
+                                userActions.selectNodeForEdit(null);
+                              },
+                              child: Text('Previous Screen')),
+                          MaterialButton(
+                              onPressed: () {
+                                userActions.screens.nextScreen();
+                                userActions.selectNodeForEdit(null);
+                              },
+                              child: Text('Next screen')),
+                          MaterialButton(
+                              onPressed: () {
+                                final json =
+                                    SchemaConverter(userActions.screens.all)
+                                        .toJson()
+                                        .toString();
+                                print(json);
+                              },
+                              child: Text('Print Schema')),
+                        ],
+                      ),
+                      Observer(
+                        builder: (context) =>
+                            Text(userActions.screens.current.name),
+                      ),
+                      SingleChildScrollView(
+                        // SINGLE CHILD FOR PERFORMANCE
+                        child: AppPreview(
+                          isPlayMode: isPlayMode,
+                          userActions: userActions,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 196,
+                            child: PlayModeSwitch(
+                                isPlayMode: isPlayMode,
+                                selectPlayMode: (bool newIsPlayMode) {
+                                  setState(() {
+                                    isPlayMode = newIsPlayMode;
+
+                                    if (newIsPlayMode) {
                                       userActions.selectNodeForEdit(null);
-                                      isPlayMode = true;
-                                    });
-                                  },
-                                  child: Text('Play mode')),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              MaterialButton(
-                                  onPressed: () {
-                                    userActions.undo();
-                                  },
-                                  child: Text('Undo')),
-                              MaterialButton(
-                                onPressed: () {},
-                                child: Text('Redo'),
-                              ),
-                              MaterialButton(
-                                  onPressed: () {
-                                    userActions.screens
-                                        .create(moveToNextAfterCreated: true);
-                                    userActions.selectNodeForEdit(null);
-                                  },
-                                  child: Text('Add Screen')),
-                              MaterialButton(
-                                  onPressed: () {
-                                    userActions.screens.previousScreen();
-                                    userActions.selectNodeForEdit(null);
-                                  },
-                                  child: Text('Previous Screen')),
-                              MaterialButton(
-                                  onPressed: () {
-                                    userActions.screens.nextScreen();
-                                    userActions.selectNodeForEdit(null);
-                                  },
-                                  child: Text('Next screen')),
-                              MaterialButton(
-                                  onPressed: () {
-                                    final json =
-                                        SchemaConverter(userActions.screens.all)
-                                            .toJson()
-                                            .toString();
-                                    print(json);
-                                  },
-                                  child: Text('Print Schema')),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 100,
-                          ),
-                          Observer(
-                            builder: (context) =>
-                                Text(userActions.screens.current.name),
-                          ),
-                          AppPreview(
-                            isPlayMode: isPlayMode,
-                            userActions: userActions,
+                                    }
+                                  });
+                                }),
                           ),
                         ],
                       ),
-                    ),
+                      SizedBox(
+                        height: 13,
+                      )
+                    ],
                   ),
                 ),
               ),
               Flexible(
-                flex: 1,
                 child: GestureDetector(
                   onTap: () {
                     if (_focused) {

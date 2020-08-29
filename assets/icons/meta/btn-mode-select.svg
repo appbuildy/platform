@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="20px" viewBox="0 0 18 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>btn-mode-select</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="btn-mode-select" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path-7" fill="url(#linearGradient-1)" points="7.84697591 19.4674941 -1.11910481e-13 2.27 17.3361716 7.5245894 9.62246653 11.3332173"></polygon>
+    </g>
+</svg>
