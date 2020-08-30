@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="42px" viewBox="0 0 60 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>layout-list-tiles</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="layout-list-tiles" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M55,24 C56.6568542,24 58,25.3431458 58,27 L58,32 C58,33.6568542 56.6568542,35 55,35 L5,35 C3.34314575,35 2,33.6568542 2,32 L2,27 C2,25.3431458 3.34314575,24 5,24 L55,24 Z M55,0 C56.6568542,-3.04359188e-16 58,1.34314575 58,3 L58,8 C58,9.65685425 56.6568542,11 55,11 L5,11 C3.34314575,11 2,9.65685425 2,8 L2,3 C2,1.34314575 3.34314575,3.04359188e-16 5,0 L55,0 Z" id="Combined-Shape" fill="url(#linearGradient-1)"></path>
+        <rect id="Rectangle" fill="#00AEFF" opacity="0.5" x="2" y="14" width="56" height="4" rx="2"></rect>
+        <rect id="Rectangle" fill="#00AEFF" opacity="0.5" x="2" y="38" width="56" height="4" rx="2"></rect>
+    </g>
+</svg>

@@ -16,8 +16,10 @@ const SCREEN_HEIGHT = 812.0;
 class AppPreview extends StatefulWidget {
   final UserActions userActions;
   final bool isPlayMode;
+  final Function selectPlayModeToFalse;
 
-  const AppPreview({Key key, this.userActions, this.isPlayMode})
+  const AppPreview(
+      {Key key, this.userActions, this.isPlayMode, this.selectPlayModeToFalse})
       : super(key: key);
 
   @override
@@ -205,31 +207,31 @@ class _AppPreviewState extends State<AppPreview> {
     final isSelected = userActions.selectedNode() != null &&
         userActions.selectedNode().id == node.id;
 
-    final Widget redCircle = Container(
-      width: 10,
-      height: 10,
+    final Widget circle = Container(
+      width: 12,
+      height: 12,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.red,
-      ),
+          shape: BoxShape.circle,
+          color: MyColors.white,
+          border: Border.all(width: 2, color: MyColors.mainBlue)),
     );
 
     final List<Widget> dots = isSelected
         ? [
             Positioned(
-              top: 0,
-              left: 0,
+              top: -2,
+              left: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
                   handleSizeChange(
                       node: node, delta: details.delta, side: SideEnum.topLeft);
                 },
-                child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
+                child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
             ),
             Positioned(
-              top: 0,
-              right: 0,
+              top: -2,
+              right: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
                   handleSizeChange(
@@ -237,12 +239,12 @@ class _AppPreviewState extends State<AppPreview> {
                       delta: details.delta,
                       side: SideEnum.topRight);
                 },
-                child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
+                child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
             ),
             Positioned(
-              bottom: 0,
-              right: 0,
+              bottom: -2,
+              right: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
                   handleSizeChange(
@@ -250,12 +252,12 @@ class _AppPreviewState extends State<AppPreview> {
                       delta: details.delta,
                       side: SideEnum.bottomRight);
                 },
-                child: Cursor(cursor: CursorEnum.nwseResize, child: redCircle),
+                child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
             ),
             Positioned(
-              bottom: 0,
-              left: 0,
+              bottom: -2,
+              left: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
                   handleSizeChange(
@@ -263,7 +265,7 @@ class _AppPreviewState extends State<AppPreview> {
                       delta: details.delta,
                       side: SideEnum.bottomLeft);
                 },
-                child: Cursor(cursor: CursorEnum.neswResize, child: redCircle),
+                child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
             ),
           ]
@@ -313,7 +315,8 @@ class _AppPreviewState extends State<AppPreview> {
                     height: 10,
                     decoration: BoxDecoration(
                         border: Border(
-                            top: BorderSide(width: 1, color: Colors.red))),
+                            top: BorderSide(
+                                width: 1, color: MyColors.mainBlue))),
                   ),
                 ),
               ),
@@ -353,7 +356,8 @@ class _AppPreviewState extends State<AppPreview> {
                       height: node.size.dy,
                       decoration: BoxDecoration(
                           border: Border(
-                              right: BorderSide(width: 1, color: Colors.red)))),
+                              right: BorderSide(
+                                  width: 1, color: MyColors.mainBlue)))),
                 ),
               ),
             ),
@@ -388,8 +392,8 @@ class _AppPreviewState extends State<AppPreview> {
                       height: 10,
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(width: 1, color: Colors.red)))),
+                              bottom: BorderSide(
+                                  width: 1, color: MyColors.mainBlue)))),
                 ),
               ),
             ),
@@ -433,7 +437,8 @@ class _AppPreviewState extends State<AppPreview> {
                       height: node.size.dy,
                       decoration: BoxDecoration(
                           border: Border(
-                              left: BorderSide(width: 1, color: Colors.red)))),
+                              left: BorderSide(
+                                  width: 1, color: MyColors.mainBlue)))),
                 ),
               ),
             ),
@@ -441,6 +446,7 @@ class _AppPreviewState extends State<AppPreview> {
         : [Container()];
 
     return Stack(
+      overflow: Overflow.visible,
       alignment: Alignment.center,
       children: [
         GestureDetector(
@@ -489,11 +495,12 @@ class _AppPreviewState extends State<AppPreview> {
             userActions.placeWidget(details.data, newPosition);
         debouncer =
             Debouncer(milliseconds: 500, prevValue: placedSchemaNode.copy());
+        widget.selectPlayModeToFalse();
       },
       builder: (context, candidateData, rejectedData) {
         return (Container(
-          width: SCREEN_WIDTH,
-          height: SCREEN_HEIGHT,
+          width: SCREEN_WIDTH + 4, // 4px is for border (2 px on both sides)
+          height: SCREEN_HEIGHT + 4, // 4px is for border (2 px on both sides)
           decoration: BoxDecoration(
               color: MyColors.white,
               borderRadius: BorderRadius.circular(40.0),
@@ -510,10 +517,6 @@ class _AppPreviewState extends State<AppPreview> {
               return Stack(
                 textDirection: TextDirection.ltr,
                 children: [
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Image.network('assets/icons/meta/status-bar.svg')),
                   ...userActions.screens.current.components
                       .map((node) => Positioned(
                           child: GestureDetector(
@@ -535,6 +538,10 @@ class _AppPreviewState extends State<AppPreview> {
                                     )),
                           top: node.position.dy,
                           left: node.position.dx)),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Image.network('assets/icons/meta/status-bar.svg')),
                 ],
               );
             },

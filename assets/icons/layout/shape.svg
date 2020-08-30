@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="42px" viewBox="0 0 60 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>layout-rectangle</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="99.6525691%" id="linearGradient-1">
+            <stop stop-color="#00B1FF" offset="0%"></stop>
+            <stop stop-color="#007BFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="layout-rectangle" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-11" transform="translate(6.951667, 5.000000)" fill="url(#linearGradient-1)" fill-rule="nonzero">
+            <g id="Group-9">
+                <path d="M41.0483327,0 C43.8097565,0 46.0483327,2.23857625 46.0483327,5 L46.0483327,27 C46.0483327,29.7614237 43.8097565,32 41.0483327,32 L5.04833272,32 C2.28690897,32 0.0483327203,29.7614237 0.0483327203,27 L0.0483327203,5 C0.0483327203,2.23857625 2.28690897,0 5.04833272,0 L41.0483327,0 Z M41.0483327,3 L5.04833272,3 C3.99397093,3 3.1301676,3.81587779 3.05381846,4.85073766 L3.04833272,5 L3.04833272,27 C3.04833272,28.0543618 3.86421051,28.9181651 4.89907038,28.9945143 L5.04833272,29 L41.0483327,29 C42.1026945,29 42.9664978,28.1841222 43.042847,27.1492623 L43.0483327,27 L43.0483327,5 C43.0483327,3.9456382 42.2324549,3.08183488 41.1975951,3.00548574 L41.0483327,3 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

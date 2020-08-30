@@ -169,6 +169,13 @@ class _AppLayoutState extends State<AppLayout> {
                                   AppPreview(
                                     isPlayMode: isPlayMode,
                                     userActions: userActions,
+                                    selectPlayModeToFalse: () {
+                                      if (isPlayMode == true) {
+                                        setState(() {
+                                          isPlayMode = false;
+                                        });
+                                      }
+                                    },
                                   ),
                                   SizedBox(
                                     height: 36.0,

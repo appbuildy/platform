@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/CapitalizeString.dart';
 
 class ToolboxLayout extends StatelessWidget {
   Widget buildTitle(String title) {
@@ -45,7 +46,7 @@ class ToolboxLayout extends StatelessWidget {
                 schemaNode: SchemaNodeButton(),
               ),
               ToolboxComponent(schemaNode: SchemaNodeText()),
-              ToolboxComponent(schemaNode: SchemaNodeShape())
+              ToolboxComponent(schemaNode: SchemaNodeImage()),
             ],
           ),
           Row(
@@ -74,11 +75,9 @@ class ToolboxLayout extends StatelessWidget {
 }
 
 class ToolboxComponent extends StatelessWidget {
-  final Widget child;
   final SchemaNode schemaNode;
 
-  const ToolboxComponent({Key key, this.child, this.schemaNode})
-      : super(key: key);
+  const ToolboxComponent({Key key, this.schemaNode}) : super(key: key);
 
   Widget buildComponent() {
     final defaultDecoration = BoxDecoration(
@@ -91,6 +90,9 @@ class ToolboxComponent extends StatelessWidget {
       borderRadius: BorderRadius.circular(6),
       border: Border.all(width: 1, color: MyColors.mainBlue),
     );
+
+    final type = schemaNode.type.toString().split('.')[1];
+    final name = type.capitalize();
 
     return Cursor(
       cursor: CursorEnum.pointer,
@@ -106,10 +108,10 @@ class ToolboxComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.network(
-                  'assets/icons/components/text.svg',
+                  'assets/icons/layout/$type.svg',
                   height: 56.0,
                 ),
-                Text('Text'),
+                Text(name),
                 SizedBox(
                   height: 10,
                 ),
