@@ -498,56 +498,64 @@ class _AppPreviewState extends State<AppPreview> {
         widget.selectPlayModeToFalse();
       },
       builder: (context, candidateData, rejectedData) {
-        return (Container(
-          width: SCREEN_WIDTH + 4, // 4px is for border (2 px on both sides)
-          height: SCREEN_HEIGHT + 4, // 4px is for border (2 px on both sides)
-          decoration: BoxDecoration(
-              color: MyColors.white,
-              borderRadius: BorderRadius.circular(40.0),
-              boxShadow: [
-                BoxShadow(
-                    spreadRadius: 0,
-                    blurRadius: 20,
-                    offset: Offset(0, 2),
-                    color: MyColors.black.withOpacity(0.15))
-              ],
-              border: Border.all(width: 2, color: MyColors.black)),
-          child: Observer(
-            builder: (context) {
-              return Stack(
-                overflow: Overflow.clip,
-                textDirection: TextDirection.ltr,
-                children: [
-                  ...userActions.screens.current.components
-                      .map((node) => Positioned(
-                          child: GestureDetector(
-                              onTapDown: (details) {
-                                if (widget.isPlayMode) {
-                                  (node.actions['Tap'] as Functionable)
-                                      .toFunction(userActions)();
-                                } else {
-                                  userActions.selectNodeForEdit(node);
-                                  debouncer = Debouncer(
-                                      milliseconds: 500,
-                                      prevValue: node.copy());
-                                }
-                              },
-                              child: widget.isPlayMode
-                                  ? node.toWidget()
-                                  : renderWithSelected(
-                                      node: node,
-                                    )),
-                          top: node.position.dy,
-                          left: node.position.dx)),
-                  Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Image.network('assets/icons/meta/status-bar.svg')),
+        final height = MediaQuery.of(context).size.height;
+        final scale = height <= 899 ? ((height) / 1000) : 1;
+
+        return Transform.scale(
+          scale: scale,
+          alignment: Alignment.topCenter,
+          child: (Container(
+            width: SCREEN_WIDTH + 4, // 4px is for border (2 px on both sides)
+            height: SCREEN_HEIGHT + 4, // 4px is for border (2 px on both sides)
+            decoration: BoxDecoration(
+                color: MyColors.white,
+                borderRadius: BorderRadius.circular(40.0),
+                boxShadow: [
+                  BoxShadow(
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: Offset(0, 2),
+                      color: MyColors.black.withOpacity(0.15))
                 ],
-              );
-            },
-          ),
-        ));
+                border: Border.all(width: 2, color: MyColors.black)),
+            child: Observer(
+              builder: (context) {
+                return Stack(
+                  overflow: Overflow.clip,
+                  textDirection: TextDirection.ltr,
+                  children: [
+                    ...userActions.screens.current.components
+                        .map((node) => Positioned(
+                            child: GestureDetector(
+                                onTapDown: (details) {
+                                  if (widget.isPlayMode) {
+                                    (node.actions['Tap'] as Functionable)
+                                        .toFunction(userActions)();
+                                  } else {
+                                    userActions.selectNodeForEdit(node);
+                                    debouncer = Debouncer(
+                                        milliseconds: 500,
+                                        prevValue: node.copy());
+                                  }
+                                },
+                                child: widget.isPlayMode
+                                    ? node.toWidget()
+                                    : renderWithSelected(
+                                        node: node,
+                                      )),
+                            top: node.position.dy,
+                            left: node.position.dx)),
+                    Positioned(
+                        top: 0,
+                        left: 0,
+                        child:
+                            Image.network('assets/icons/meta/status-bar.svg')),
+                  ],
+                );
+              },
+            ),
+          )),
+        );
       },
     );
   }

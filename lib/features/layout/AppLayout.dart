@@ -1,4 +1,4 @@
-import 'package:flutter/gestures.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
@@ -111,7 +111,7 @@ class _AppLayoutState extends State<AppLayout> {
                     }
                   },
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       AppActions(userActions: userActions),
                       Expanded(
@@ -120,28 +120,35 @@ class _AppLayoutState extends State<AppLayout> {
                           child: Stack(
                             overflow: Overflow.visible,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SingleChildScrollView(
-                                    dragStartBehavior: DragStartBehavior.down,
-                                    primary: false,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: AppPreview(
-                                        isPlayMode: isPlayMode,
-                                        userActions: userActions,
-                                        selectPlayModeToFalse: () {
-                                          if (isPlayMode == true) {
-                                            setState(() {
-                                              isPlayMode = false;
-                                            });
-                                          }
-                                        },
+                              Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SingleChildScrollView(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 20.0,
+                                            bottom: 20,
+                                            left: 30,
+                                            right: 30),
+                                        child: AppPreview(
+                                          isPlayMode: isPlayMode,
+                                          userActions: userActions,
+                                          selectPlayModeToFalse: () {
+                                            if (isPlayMode == true) {
+                                              setState(() {
+                                                isPlayMode = false;
+                                              });
+                                            }
+                                          },
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Positioned(
                                   bottom: 13.0,
