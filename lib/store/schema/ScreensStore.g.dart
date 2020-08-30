@@ -39,6 +39,17 @@ mixin _$ScreensStore on _ScreensStore, Store {
   }
 
   @override
+  void deleteScreen(SchemaStore screen) {
+    final _$actionInfo = _$_ScreensStoreActionController.startAction(
+        name: '_ScreensStore.deleteScreen');
+    try {
+      return super.deleteScreen(screen);
+    } finally {
+      _$_ScreensStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 screens: ${screens}

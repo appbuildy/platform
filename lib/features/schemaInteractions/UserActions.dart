@@ -85,8 +85,10 @@ class UserActions {
 
   BaseAction lastAction() {
     // ignore: unnecessary_statements
-    return _actionsDone.actions.last;
+    return _actionsDone.isActionsEmpty ? null : _actionsDone.actions.last;
   }
+
+  bool get isActionsDoneEmpty => _actionsDone.isActionsEmpty;
 
   SchemaNode placeWidget(SchemaNode node, Offset position) {
     final action = new PlaceWidget(

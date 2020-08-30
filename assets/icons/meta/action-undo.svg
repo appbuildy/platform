@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>action-undo-highlghted</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="action-undo-highlghted" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M11,15 L14.2577794,18.2576858 C16.0393337,16.8094135 18.1478557,16.0783542 20.5471142,16.0783542 C23.4557867,16.0783542 26.0984016,17.8003821 28.4614955,21.1251913 C28.7814484,21.5753564 28.6758905,22.1996604 28.2257255,22.5196133 C27.7755604,22.8395661 27.1512564,22.7340083 26.8313035,22.2838432 C24.8103634,19.440435 22.7201213,18.0783542 20.5471142,18.0783542 C18.6814595,18.0783542 17.0701702,18.6085801 15.6811904,19.6812825 L19,23 L11,23 L11,15 Z" id="Combined-Shape" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+    </g>
+</svg>

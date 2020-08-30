@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
 import 'package:flutter_app/features/editProps/EditProps.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppLayout extends StatefulWidget {
@@ -112,98 +112,41 @@ class _AppLayoutState extends State<AppLayout> {
                   child: Container(
                     color: MyColors.lightGray,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(),
+                        AppActions(userActions: userActions),
                         SingleChildScrollView(
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 13.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      MaterialButton(
-                                          onPressed: () {
-                                            userActions.undo();
-                                          },
-                                          child: Text('Undo')),
-                                      MaterialButton(
-                                        onPressed: () {},
-                                        child: Text('Redo'),
-                                      ),
-                                      MaterialButton(
-                                          onPressed: () {
-                                            userActions.screens.create(
-                                                moveToNextAfterCreated: true);
-                                            userActions.selectNodeForEdit(null);
-                                          },
-                                          child: Text('Add Screen')),
-                                      MaterialButton(
-                                          onPressed: () {
-                                            userActions.screens
-                                                .previousScreen();
-                                            userActions.selectNodeForEdit(null);
-                                          },
-                                          child: Text('Previous Screen')),
-                                      MaterialButton(
-                                          onPressed: () {
-                                            userActions.screens.nextScreen();
-                                            userActions.selectNodeForEdit(null);
-                                          },
-                                          child: Text('Next screen')),
-                                      MaterialButton(
-                                          onPressed: () {
-                                            final json = SchemaConverter(
-                                                    userActions.screens.all)
-                                                .toJson()
-                                                .toString();
-                                            print(json);
-                                          },
-                                          child: Text('Print Schema')),
-                                    ],
-                                  ),
-                                  Observer(
-                                    builder: (context) =>
-                                        Text(userActions.screens.current.name),
-                                  ),
-                                  AppPreview(
+                          child: AppPreview(
+                            isPlayMode: isPlayMode,
+                            userActions: userActions,
+                            selectPlayModeToFalse: () {
+                              if (isPlayMode == true) {
+                                setState(() {
+                                  isPlayMode = false;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 196,
+                              child: SingleChildScrollView(
+                                child: PlayModeSwitch(
                                     isPlayMode: isPlayMode,
-                                    userActions: userActions,
-                                    selectPlayModeToFalse: () {
-                                      if (isPlayMode == true) {
-                                        setState(() {
-                                          isPlayMode = false;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 36.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Container(
-                                        width: 196,
-                                        child: PlayModeSwitch(
-                                            isPlayMode: isPlayMode,
-                                            selectPlayMode:
-                                                (bool newIsPlayMode) {
-                                              setState(() {
-                                                isPlayMode = newIsPlayMode;
+                                    selectPlayMode: (bool newIsPlayMode) {
+                                      setState(() {
+                                        isPlayMode = newIsPlayMode;
 
-                                                if (newIsPlayMode) {
-                                                  userActions
-                                                      .selectNodeForEdit(null);
-                                                }
-                                              });
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        if (newIsPlayMode) {
+                                          userActions.selectNodeForEdit(null);
+                                        }
+                                      });
+                                    }),
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),

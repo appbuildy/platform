@@ -58,7 +58,7 @@ class _HoverDecorationState extends State<HoverDecoration>
       child: AnimatedContainer(
         child: widget.child,
         decoration: _decoration,
-        duration: widget.duration ?? Duration(milliseconds: 200),
+        duration: widget.duration ?? Duration(milliseconds: 0),
       ),
     );
   }

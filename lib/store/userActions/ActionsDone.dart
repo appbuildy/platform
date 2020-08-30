@@ -7,11 +7,14 @@ class ActionsDone = _ActionsDone with _$ActionsDone;
 
 abstract class _ActionsDone with Store {
   _ActionsDone({List<BaseAction> actions}) {
-    this.actions = actions;
+    this.actions.addAll(actions);
   }
 
   @observable
-  List<BaseAction> actions = [];
+  ObservableList<BaseAction> actions = ObservableList<BaseAction>();
+
+  @computed
+  bool get isActionsEmpty => actions.length <= 0;
 
   @action
   void add(BaseAction action) {

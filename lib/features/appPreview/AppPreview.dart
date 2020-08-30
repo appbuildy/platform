@@ -208,8 +208,8 @@ class _AppPreviewState extends State<AppPreview> {
         userActions.selectedNode().id == node.id;
 
     final Widget circle = Container(
-      width: 12,
-      height: 12,
+      width: 11,
+      height: 11,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: MyColors.white,
@@ -515,6 +515,7 @@ class _AppPreviewState extends State<AppPreview> {
           child: Observer(
             builder: (context) {
               return Stack(
+                overflow: Overflow.clip,
                 textDirection: TextDirection.ltr,
                 children: [
                   ...userActions.screens.current.components

@@ -9,16 +9,24 @@ part of 'ActionsDone.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ActionsDone on _ActionsDone, Store {
+  Computed<bool> _$isActionsEmptyComputed;
+
+  @override
+  bool get isActionsEmpty =>
+      (_$isActionsEmptyComputed ??= Computed<bool>(() => super.isActionsEmpty,
+              name: '_ActionsDone.isActionsEmpty'))
+          .value;
+
   final _$actionsAtom = Atom(name: '_ActionsDone.actions');
 
   @override
-  List<BaseAction> get actions {
+  ObservableList<BaseAction> get actions {
     _$actionsAtom.reportRead();
     return super.actions;
   }
 
   @override
-  set actions(List<BaseAction> value) {
+  set actions(ObservableList<BaseAction> value) {
     _$actionsAtom.reportWrite(value, super.actions, () {
       super.actions = value;
     });
@@ -40,7 +48,8 @@ mixin _$ActionsDone on _ActionsDone, Store {
   @override
   String toString() {
     return '''
-actions: ${actions}
+actions: ${actions},
+isActionsEmpty: ${isActionsEmpty}
     ''';
   }
 }
