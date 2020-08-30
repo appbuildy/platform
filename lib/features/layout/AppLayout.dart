@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
@@ -109,47 +110,64 @@ class _AppLayoutState extends State<AppLayout> {
                       _focusNode.requestFocus();
                     }
                   },
-                  child: Container(
-                    color: MyColors.lightGray,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppActions(userActions: userActions),
-                        SingleChildScrollView(
-                          child: AppPreview(
-                            isPlayMode: isPlayMode,
-                            userActions: userActions,
-                            selectPlayModeToFalse: () {
-                              if (isPlayMode == true) {
-                                setState(() {
-                                  isPlayMode = false;
-                                });
-                              }
-                            },
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppActions(userActions: userActions),
+                      Expanded(
+                        child: Container(
+                          color: MyColors.lightGray,
+                          child: Stack(
+                            overflow: Overflow.visible,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SingleChildScrollView(
+                                    dragStartBehavior: DragStartBehavior.down,
+                                    primary: false,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: AppPreview(
+                                        isPlayMode: isPlayMode,
+                                        userActions: userActions,
+                                        selectPlayModeToFalse: () {
+                                          if (isPlayMode == true) {
+                                            setState(() {
+                                              isPlayMode = false;
+                                            });
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                  bottom: 13.0,
+                                  left: 13.0,
+                                  child: Container(
+                                    width: 196,
+                                    child: SingleChildScrollView(
+                                      child: PlayModeSwitch(
+                                          isPlayMode: isPlayMode,
+                                          selectPlayMode: (bool newIsPlayMode) {
+                                            setState(() {
+                                              isPlayMode = newIsPlayMode;
+
+                                              if (newIsPlayMode) {
+                                                userActions
+                                                    .selectNodeForEdit(null);
+                                              }
+                                            });
+                                          }),
+                                    ),
+                                  ))
+                            ],
                           ),
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 196,
-                              child: SingleChildScrollView(
-                                child: PlayModeSwitch(
-                                    isPlayMode: isPlayMode,
-                                    selectPlayMode: (bool newIsPlayMode) {
-                                      setState(() {
-                                        isPlayMode = newIsPlayMode;
-
-                                        if (newIsPlayMode) {
-                                          userActions.selectNodeForEdit(null);
-                                        }
-                                      });
-                                    }),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -507,7 +507,7 @@ class _AppPreviewState extends State<AppPreview> {
               boxShadow: [
                 BoxShadow(
                     spreadRadius: 0,
-                    blurRadius: 30,
+                    blurRadius: 20,
                     offset: Offset(0, 2),
                     color: MyColors.black.withOpacity(0.15))
               ],
