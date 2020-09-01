@@ -51,7 +51,7 @@ class ToolboxMenu extends StatelessWidget {
                 children: [
                   Image.network(
                     'assets/icons/menu/$asset-active.svg',
-                    color: isActive ? null : MyColors.iconGray,
+                    color: isActive ? null : Color(0XFFAABAD2),
                   ),
                   SizedBox(
                     height: 11,

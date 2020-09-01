@@ -24,11 +24,12 @@ class ToolboxLayout extends StatelessWidget {
             'Layout',
           ),
           Padding(
-            padding: toolboxPadding,
+            padding: const EdgeInsets.only(left: 20.0, right: 10),
             child: Column(
               children: [
                 ToolBoxCaption('Basics'),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(
                       schemaNode: SchemaNodeButton(),
@@ -38,10 +39,12 @@ class ToolboxLayout extends StatelessWidget {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [ToolboxComponent(schemaNode: SchemaNodeShape())],
                 ),
                 ToolBoxCaption('Listing'),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(
                       schemaNode: SchemaNodeButton(),
@@ -51,6 +54,7 @@ class ToolboxLayout extends StatelessWidget {
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(schemaNode: SchemaNodeShape()),
                     ToolboxComponent(schemaNode: SchemaNodeText()),
@@ -124,11 +128,11 @@ class ToolboxComponent extends StatelessWidget {
       childWhenDragging: Opacity(
           opacity: 0.5,
           child: Padding(
-            padding: const EdgeInsets.only(right: 11.0, bottom: 11.0),
+            padding: const EdgeInsets.only(bottom: 11.0),
             child: component,
           )),
       child: Padding(
-        padding: const EdgeInsets.only(right: 11.0, bottom: 11.0),
+        padding: const EdgeInsets.only(bottom: 11.0),
         child: component,
       ),
     );

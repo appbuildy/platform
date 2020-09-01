@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 const toolboxWidth = 311.0;
-const toolboxPaddingValue = 20.0;
-const toolboxPadding = const EdgeInsets.only(
-  left: 20.0,
-);
 
 class ToolboxTitle extends StatelessWidget {
   final String title;
@@ -27,9 +23,15 @@ class ToolboxTitle extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: Center(
-                child: Text(
-                  title,
-                  style: MyTextStyle.mediumTitle,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 10,
+                  ),
+                  child: Text(
+                    title,
+                    style: MyTextStyle.mediumTitle,
+                  ),
                 ),
               ),
             ),
@@ -48,7 +50,7 @@ class ToolBoxCaption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20.0, bottom: 11.0, right: 20.0),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 11.0),
       child: Text(title, style: MyTextStyle.regularTitle),
     );
   }

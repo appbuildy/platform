@@ -14,7 +14,7 @@ class _ToolboxState extends State<Toolbox> {
 
   @override
   void initState() {
-    state = MenuStates.layout;
+    state = MenuStates.pages;
     super.initState();
   }
 

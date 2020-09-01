@@ -41,6 +41,12 @@ class MyGradients {
     end: AlignmentDirectional.bottomCenter,
     colors: [Color(0xFFe9fbff), Color(0xFFc5eaff)],
   );
+
+  static LinearGradient mainBlue = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [Color(0xFF00b1ff), Color(0xFF0077f5)],
+  );
 }
 
 class MyTextStyle {
