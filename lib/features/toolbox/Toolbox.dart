@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/toolbox/ToolboxLayout.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
+import 'package:flutter_app/features/toolbox/ToolboxPages.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class Toolbox extends StatefulWidget {
@@ -27,12 +28,12 @@ class _ToolboxState extends State<Toolbox> {
 
   Widget buildWidgetOnState() {
     switch (state) {
-      case MenuStates.general:
+      case MenuStates.settings:
         return Container();
       case MenuStates.layout:
         return ToolboxLayout();
       case MenuStates.pages:
-        return Container();
+        return ToolboxPages();
       case MenuStates.data:
         return Container();
     }
@@ -49,9 +50,6 @@ class _ToolboxState extends State<Toolbox> {
         children: [
           SingleChildScrollView(
               child: ToolboxMenu(state: state, selectState: selectState)),
-          SizedBox(
-            width: 20,
-          ),
           SingleChildScrollView(child: buildWidgetOnState()),
           Column(
             children: [],

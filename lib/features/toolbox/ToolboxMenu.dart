@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/CapitalizeString.dart';
 
-enum MenuStates { layout, general, pages, data }
-
-const TitleToStateMap = {
-  MenuStates.layout: 'Layout',
-  MenuStates.pages: 'Pages',
-  MenuStates.general: 'General',
-  MenuStates.data: 'Data',
-};
+enum MenuStates { layout, settings, pages, data }
 
 class ToolboxMenu extends StatelessWidget {
   final MenuStates state;
@@ -21,15 +15,8 @@ class ToolboxMenu extends StatelessWidget {
   Widget buildOption(MenuStates option) {
     final isActive = option == state;
 
-//    final textWidget = Center(
-//      child: Text(
-//        TitleToStateMap[option],
-//        style: TextStyle(
-//            fontSize: 12,
-//            fontWeight: FontWeight.bold,
-//            color: isActive ? MyColors.textBlue : MyColors.black),
-//      ),
-//    );
+    final asset = option.toString().split('.')[1];
+    final name = asset.capitalize();
 
     const borderRadius = BorderRadius.only(
         bottomRight: const Radius.circular(8),
@@ -63,15 +50,14 @@ class ToolboxMenu extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.network(
-                    isActive
-                        ? 'assets/icons/menu/layout-active.svg'
-                        : 'assets/icons/menu/layout-active.svg',
+                    'assets/icons/menu/$asset-active.svg',
+                    color: isActive ? null : MyColors.iconGray,
                   ),
                   SizedBox(
                     height: 11,
                   ),
                   Text(
-                    TitleToStateMap[option],
+                    name,
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
@@ -88,10 +74,18 @@ class ToolboxMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        buildOption(MenuStates.general),
+        Container(
+          width: 80,
+          height: 59,
+          child: Image.network('assets/icons/meta/logo.svg'),
+          decoration: BoxDecoration(
+              border:
+                  Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
+        ),
         buildOption(MenuStates.pages),
         buildOption(MenuStates.layout),
         buildOption(MenuStates.data),
+        buildOption(MenuStates.settings),
       ],
     );
   }

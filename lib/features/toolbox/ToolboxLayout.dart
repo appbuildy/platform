@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -16,57 +17,47 @@ class ToolboxLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 291, // 280 (3 components width) + 11 = padding right
+      width: toolboxWidth,
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(width: 1, color: MyColors.gray))),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                    child: Center(
-                      child: Text(
-                        'Drag Components',
-                        style: MyTextStyle.mediumTitle,
-                      ),
+          ToolboxTitle(
+            'Layout',
+          ),
+          Padding(
+            padding: toolboxPadding,
+            child: Column(
+              children: [
+                ToolBoxCaption('Basics'),
+                Row(
+                  children: [
+                    ToolboxComponent(
+                      schemaNode: SchemaNodeButton(),
                     ),
-                  ),
+                    ToolboxComponent(schemaNode: SchemaNodeText()),
+                    ToolboxComponent(schemaNode: SchemaNodeImage()),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          buildTitle('Basics'),
-          Row(
-            children: [
-              ToolboxComponent(
-                schemaNode: SchemaNodeButton(),
-              ),
-              ToolboxComponent(schemaNode: SchemaNodeText()),
-              ToolboxComponent(schemaNode: SchemaNodeImage()),
-            ],
-          ),
-          Row(
-            children: [ToolboxComponent(schemaNode: SchemaNodeShape())],
-          ),
-          buildTitle('Listings'),
-          Row(
-            children: [
-              ToolboxComponent(
-                schemaNode: SchemaNodeButton(),
-              ),
-              ToolboxComponent(schemaNode: SchemaNodeText()),
-              ToolboxComponent(schemaNode: SchemaNodeShape())
-            ],
-          ),
-          Row(
-            children: [
-              ToolboxComponent(schemaNode: SchemaNodeShape()),
-              ToolboxComponent(schemaNode: SchemaNodeText()),
-            ],
+                Row(
+                  children: [ToolboxComponent(schemaNode: SchemaNodeShape())],
+                ),
+                ToolBoxCaption('Listing'),
+                Row(
+                  children: [
+                    ToolboxComponent(
+                      schemaNode: SchemaNodeButton(),
+                    ),
+                    ToolboxComponent(schemaNode: SchemaNodeText()),
+                    ToolboxComponent(schemaNode: SchemaNodeShape())
+                  ],
+                ),
+                Row(
+                  children: [
+                    ToolboxComponent(schemaNode: SchemaNodeShape()),
+                    ToolboxComponent(schemaNode: SchemaNodeText()),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
