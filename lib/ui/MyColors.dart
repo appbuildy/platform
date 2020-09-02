@@ -12,6 +12,15 @@ class MyColors {
 
 //75a2bc
 class MyGradients {
+  static LinearGradient transparent = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [
+      Color(0xFFFFFFFF).withOpacity(0),
+      Color(0xFFFFFFFF).withOpacity(0)
+    ],
+  );
+
   static LinearGradient plainWhite = LinearGradient(
     begin: AlignmentDirectional.topCenter,
     end: AlignmentDirectional.bottomCenter,

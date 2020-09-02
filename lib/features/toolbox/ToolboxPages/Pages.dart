@@ -73,7 +73,7 @@ class PageItem extends StatelessWidget {
                       left: 20, top: 13, bottom: 12, right: 20),
                   child: Text(
                     title,
-                    style: TextStyle(color: MyColors.black),
+                    style: MyTextStyle.regularTitle,
                   ),
                 ),
               ),

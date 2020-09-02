@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppActions/UndoRedo.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySelect.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -28,10 +29,17 @@ class AppActions extends StatelessWidget {
               userActions: userActions,
             ),
             Observer(
-              builder: (context) => Text(
-                userActions.screens.current.name,
-                style: TextStyle(color: MyColors.mainBlue),
-              ),
+              builder: (_) => Container(
+                  width: 200,
+                  child: MySelect(
+                      selectedValue: userActions.screens.current.name,
+                      onChange: (option) {
+                        userActions.screens.selectByName(option.value);
+                      },
+                      options: userActions.screens.all.screens
+                          .map((element) =>
+                              SelectOption(element.name, element.name))
+                          .toList())),
             ),
             MaterialButton(
                 onPressed: () {
