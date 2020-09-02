@@ -25,7 +25,7 @@ class Screens {
     return select(_screenByIndex(1));
   }
 
-  SchemaStore previousScreen() {
+  SchemaStore _previousScreen() {
     return select(_screenByIndex(-1));
   }
 

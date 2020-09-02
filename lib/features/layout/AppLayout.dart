@@ -100,7 +100,7 @@ class _AppLayoutState extends State<AppLayout> {
                     _focusNode.unfocus();
                   }
                 },
-                child: Toolbox(),
+                child: Toolbox(userActions: userActions),
               ),
               Flexible(
                 flex: 3,

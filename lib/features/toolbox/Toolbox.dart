@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxLayout.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
-import 'package:flutter_app/features/toolbox/ToolboxPages.dart';
+import 'package:flutter_app/features/toolbox/ToolboxPages/ToolboxPages.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class Toolbox extends StatefulWidget {
+  final UserActions userActions;
+
+  const Toolbox({Key key, this.userActions}) : super(key: key);
+
   @override
   _ToolboxState createState() => _ToolboxState();
 }
@@ -33,7 +38,9 @@ class _ToolboxState extends State<Toolbox> {
       case MenuStates.layout:
         return ToolboxLayout();
       case MenuStates.pages:
-        return ToolboxPages();
+        return ToolboxPages(
+          userActions: widget.userActions,
+        );
       case MenuStates.data:
         return Container();
     }

@@ -12,9 +12,6 @@ class AppActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isUndoDisabled = userActions.lastAction() == null;
-    final isRedoDisabled = true;
-
     return Container(
       decoration: BoxDecoration(
           color: MyColors.white,
@@ -29,30 +26,12 @@ class AppActions extends StatelessWidget {
             UndoRedo(
               userActions: userActions,
             ),
-            MaterialButton(
-                onPressed: () {
-                  userActions.screens.create(moveToNextAfterCreated: true);
-                  userActions.selectNodeForEdit(null);
-                },
-                child: Text('Add')),
-            MaterialButton(
-                onPressed: () {
-                  userActions.screens.previousScreen();
-                  userActions.selectNodeForEdit(null);
-                },
-                child: Text('Previous')),
             Observer(
               builder: (context) => Text(
                 userActions.screens.current.name,
                 style: TextStyle(color: MyColors.mainBlue),
               ),
             ),
-            MaterialButton(
-                onPressed: () {
-                  userActions.screens.nextScreen();
-                  userActions.selectNodeForEdit(null);
-                },
-                child: Text('Next ')),
             MaterialButton(
                 onPressed: () {
                   final json = SchemaConverter(userActions.screens.all)
