@@ -11,13 +11,17 @@ class Screens {
   ScreensStore all;
   Screens(this.all, this._current);
 
-  BaseAction create({moveToNextAfterCreated = false}) {
-    log('Create screen');
+  BaseAction create({moveToLastAfterCreated = false}) {
     final action = AddScreen(screensStore: all);
     action.execute();
 
-    if (moveToNextAfterCreated) nextScreen();
+    if (moveToLastAfterCreated) lastScreen();
     return action;
+  }
+
+  void lastScreen() {
+    final lastScreen = all.screens.last;
+    select(lastScreen);
   }
 
   SchemaStore nextScreen() {

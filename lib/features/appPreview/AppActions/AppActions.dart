@@ -22,6 +22,7 @@ class AppActions extends StatelessWidget {
         padding: const EdgeInsets.only(
             left: 13.0, right: 13.0, top: 10.0, bottom: 8.0),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             UndoRedo(
               userActions: userActions,
@@ -39,7 +40,7 @@ class AppActions extends StatelessWidget {
                       .toString();
                   print(json);
                 },
-                child: Text('Print')),
+                child: Text('Share')),
           ],
         ),
       ),

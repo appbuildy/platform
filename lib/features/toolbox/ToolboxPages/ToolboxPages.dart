@@ -36,7 +36,7 @@ class ToolboxPages extends StatelessWidget {
                     text: 'Add Page',
                     icon: Image.network('assets/icons/meta/btn-plus.svg'),
                     onTap: () {
-                      userActions.screens.create(moveToNextAfterCreated: true);
+                      userActions.screens.create(moveToLastAfterCreated: true);
                       userActions.selectNodeForEdit(null);
                     },
                   ),

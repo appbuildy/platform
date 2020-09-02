@@ -28,6 +28,6 @@ class AddScreen extends BaseAction {
 
   _generatedNameForNewScreen() {
     final number = screensStore.screens.length + 1;
-    return 'screen_$number';
+    return 'Page $number';
   }
 }
