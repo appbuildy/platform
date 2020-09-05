@@ -55,6 +55,8 @@ class SchemaRemoteProperty extends SchemaNodeProperty<SchemaNodeProperty> {
     this.remoteId = remoteId;
   }
 
+  SchemaNodeProperty get value => value;
+
   @override
   SchemaRemoteProperty copy() {
     return SchemaRemoteProperty(this.name, value, remoteId);
