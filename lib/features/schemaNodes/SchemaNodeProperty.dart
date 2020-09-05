@@ -47,3 +47,16 @@ class SchemaColorProperty extends SchemaNodeProperty<Color> {
     return SchemaColorProperty(this.name, value);
   }
 }
+
+class SchemaRemoteProperty extends SchemaNodeProperty<SchemaNodeProperty> {
+  String remoteId;
+
+  SchemaRemoteProperty(String name, value, remoteId) : super(name, value) {
+    this.remoteId = remoteId;
+  }
+
+  @override
+  SchemaRemoteProperty copy() {
+    return SchemaRemoteProperty(this.name, value, remoteId);
+  }
+}
