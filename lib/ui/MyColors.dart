@@ -4,6 +4,7 @@ class MyColors {
   static const Color black = const Color(0xFF111111);
   static const Color white = const Color(0xFFFFFFFF);
   static Color iconGray = const Color(0xFF7f89a1).withOpacity(0.5);
+  static Color borderGray = const Color(0xFF787878).withOpacity(0.35);
   static const Color gray = const Color(0xFFD8D8D8);
   static const Color lightGray = const Color(0xFFE7E8ED);
   static const Color mainBlue = const Color(0xFF239dff);
@@ -25,6 +26,18 @@ class MyGradients {
     begin: AlignmentDirectional.topCenter,
     end: AlignmentDirectional.bottomCenter,
     colors: [Color(0xFFFFFFFF), Color(0xFFFFFFFF)],
+  );
+
+  static LinearGradient buttonLightGray = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [Color(0xFFFFFFFF), Color(0xFFf1f2f9)],
+  );
+
+  static LinearGradient buttonLightWhite = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [Color(0xFFFFFFFF), Color(0xFFfafbff)],
   );
 
   static LinearGradient lightGray = LinearGradient(

@@ -9,6 +9,7 @@ import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
@@ -19,16 +20,19 @@ class UserActions {
   ActionsUndone _actionsUndone;
   CurrentEditingNode _currentNode;
   Screens _screens;
+  BottomNavigationStore _bottomNavigation;
 
-  UserActions({Screens screens}) {
+  UserActions({Screens screens, BottomNavigationStore bottomNavigationStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
+    _bottomNavigation = bottomNavigationStore;
     _screens = screens;
   }
 
   SchemaStore get currentScreen => _screens.current;
   Screens get screens => _screens;
+  BottomNavigationStore get bottomNavigation => _bottomNavigation;
 
   void changeActionTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {

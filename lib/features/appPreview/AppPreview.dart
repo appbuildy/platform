@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/appPreview/AppTabs.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -499,7 +500,15 @@ class _AppPreviewState extends State<AppPreview> {
       },
       builder: (context, candidateData, rejectedData) {
         final height = MediaQuery.of(context).size.height;
-        final scale = height <= 899 ? ((height) / 1000) : 1;
+        final width = MediaQuery.of(context).size.width;
+        double scale = 1;
+
+        final heightScaled = height / 1000;
+        final widthScaled = width / 1400;
+
+        if (height <= 899 || width <= 1140) {
+          scale = heightScaled < widthScaled ? heightScaled : widthScaled;
+        }
 
         return Transform.scale(
           scale: scale,
@@ -550,6 +559,33 @@ class _AppPreviewState extends State<AppPreview> {
                         left: 0,
                         child:
                             Image.network('assets/icons/meta/status-bar.svg')),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: Container(
+                        child: AppTabs(userActions: userActions),
+                        width: SCREEN_WIDTH,
+                        height: 84,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(37.0),
+                              bottomRight: Radius.circular(37.0)),
+                        ),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 7.0),
+                          child: Container(
+                            width: 134,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                color: Color(0xFF000000),
+                                borderRadius: BorderRadius.circular(100)),
+                          ),
+                        )),
                   ],
                 );
               },

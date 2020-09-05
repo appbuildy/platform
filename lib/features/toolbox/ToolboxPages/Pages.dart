@@ -5,10 +5,10 @@ import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-class ToolboxPagesWidget extends StatelessWidget {
+class Pages extends StatelessWidget {
   final UserActions userActions;
 
-  const ToolboxPagesWidget({Key key, this.userActions}) : super(key: key);
+  const Pages({Key key, @required this.userActions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

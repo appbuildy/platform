@@ -8,6 +8,7 @@ import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
+import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
@@ -24,6 +25,7 @@ class _AppLayoutState extends State<AppLayout> {
   UserActions userActions;
   CurrentScreen currentScreen;
   ScreensStore screensStore;
+  BottomNavigationStore bottomNavigationStore;
   bool isPlayMode;
   FocusNode _focusNode;
   FocusAttachment _focusNodeAttachment;
@@ -35,9 +37,11 @@ class _AppLayoutState extends State<AppLayout> {
     schemaStore = SchemaStore(components: []);
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
+    bottomNavigationStore = BottomNavigationStore();
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
-    userActions = UserActions(screens: screens);
+    userActions = UserActions(
+        screens: screens, bottomNavigationStore: bottomNavigationStore);
     isPlayMode = false;
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
@@ -103,7 +107,6 @@ class _AppLayoutState extends State<AppLayout> {
                 child: Toolbox(userActions: userActions),
               ),
               Flexible(
-                flex: 3,
                 child: GestureDetector(
                   onTap: () {
                     if (!_focused) {
@@ -178,7 +181,8 @@ class _AppLayoutState extends State<AppLayout> {
                   ),
                 ),
               ),
-              Flexible(
+              Container(
+                width: 300,
                 child: GestureDetector(
                   onTap: () {
                     if (_focused) {
@@ -196,9 +200,8 @@ class _AppLayoutState extends State<AppLayout> {
                       ),
                     ),
                     decoration: BoxDecoration(
-                        color: Color(0xFFEAEAEA),
-                        border: Border(
-                            left: BorderSide(width: 1, color: Colors.black))),
+                      color: MyColors.white,
+                    ),
                   ),
                 ),
               )
