@@ -14,6 +14,7 @@ abstract class SchemaNodeProperty<T>
   }
 
   SchemaNodeProperty copy();
+  Future<T> get remoteValue async => value;
 
   @override
   Map<String, dynamic> toJson() {
@@ -55,7 +56,7 @@ class SchemaRemoteProperty extends SchemaNodeProperty<SchemaNodeProperty> {
     this.remoteId = remoteId;
   }
 
-  SchemaNodeProperty get value => value;
+  Future<SchemaNodeProperty> get remoteValue async => value;
 
   @override
   SchemaRemoteProperty copy() {

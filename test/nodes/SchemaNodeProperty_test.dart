@@ -2,6 +2,10 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  group('SchemaRemoteProperty remoteValue', () {
+    test('it fetches from remote', () {});
+  });
+
   group('copy()', () {
     test('performs deep copy', () {
       final textProp = SchemaStringProperty('Name', 'Value');
