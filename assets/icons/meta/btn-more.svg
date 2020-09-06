@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>action-more-highlighted</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="action-more-highlighted" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="1" fill="url(#linearGradient-1)" fill-rule="nonzero" cx="10" cy="18" r="3"></circle>
+        <circle id="2" fill="url(#linearGradient-1)" fill-rule="nonzero" cx="18" cy="18" r="3"></circle>
+        <circle id="3" fill="url(#linearGradient-1)" fill-rule="nonzero" cx="26" cy="18" r="3"></circle>
+    </g>
+</svg>

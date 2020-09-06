@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Tabs extends StatelessWidget {
@@ -34,13 +36,24 @@ class TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final defaultDecoration = BoxDecoration(
+        gradient: MyGradients.buttonLightWhite,
+        borderRadius: BorderRadius.circular(6.0),
+        border: Border.all(width: 1, color: MyColors.gray));
+
+    final hoverDecoration = BoxDecoration(
+        gradient: MyGradients.lightBlue,
+        borderRadius: BorderRadius.circular(6.0),
+        border: Border.all(width: 1, color: MyColors.mainBlue));
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
-      child: Container(
-          decoration: BoxDecoration(
-              gradient: MyGradients.buttonLightWhite,
-              borderRadius: BorderRadius.circular(6.0),
-              border: Border.all(width: 1, color: MyColors.gray)),
+      child: Cursor(
+        cursor: CursorEnum.pointer,
+        child: WithInfo(
+          withDuplicateAndDelete: true,
+          defaultDecoration: defaultDecoration,
+          hoverDecoration: hoverDecoration,
           child: Padding(
             padding: const EdgeInsets.only(left: 12.0, top: 9.0, bottom: 8.0),
             child: Row(
@@ -53,7 +66,9 @@ class TabItem extends StatelessWidget {
                 Text(tab.label)
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

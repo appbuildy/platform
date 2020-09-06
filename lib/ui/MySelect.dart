@@ -150,7 +150,7 @@ class _MySelectState extends State<MySelect> {
                                     isLast: lastValue == option.value))
                                 .toList()),
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: Colors.transparent,
                             borderRadius: BorderRadius.circular(7),
                             boxShadow: [
                               BoxShadow(

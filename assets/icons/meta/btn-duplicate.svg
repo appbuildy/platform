@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>btn-duplicate-highlighted</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="btn-duplicate-highlighted" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M22,5 C24.209139,5 26,6.790861 26,9 L26,17 C26,19.209139 24.209139,21 22,21 L21,21 L21,22 C21,24.1421954 19.3160315,25.8910789 17.1996403,25.9951047 L17,26 L9,26 C6.790861,26 5,24.209139 5,22 L5,22 L5,14 C5,11.790861 6.790861,10 9,10 L9,10 L10,10 L10,9 C10,6.790861 11.790861,5 14,5 L22,5 Z M10,12 L9,12 C7.8954305,12 7,12.8954305 7,14 L7,14 L7,22 C7,23.1045695 7.8954305,24 9,24 L9,24 L17,24 C18.1045695,24 19,23.1045695 19,22 L19,22 L19,21 L14,21 C11.790861,21 10,19.209139 10,17 L10,12 Z" id="Combined-Shape" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+    </g>
+</svg>

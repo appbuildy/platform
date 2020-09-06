@@ -24,9 +24,9 @@ abstract class _BottomNavigationStore with Store {
   _BottomNavigationStore() {
     this.tabs.addAll([
       TabNavigation(label: 'Home', icon: 'home', target: 'Main'),
-      TabNavigation(label: 'Search', icon: 'search', target: 'Page 1'),
-      TabNavigation(label: 'Calendar', icon: 'stats', target: 'Page 2'),
-      TabNavigation(label: 'Settings', icon: 'home', target: 'Page 3')
+      TabNavigation(label: 'Search', icon: 'search', target: 'Page 2'),
+      TabNavigation(label: 'Calendar', icon: 'stats', target: 'Page 3'),
+      TabNavigation(label: 'Settings', icon: 'home', target: 'Page 4')
     ]);
   }
 

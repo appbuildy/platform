@@ -97,7 +97,6 @@ class ToolboxComponent extends StatelessWidget {
           child: HoverDecoration(
             defaultDecoration: defaultDecoration,
             hoverDecoration: hoverDecoration,
-//            duration: Duration.zero,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
