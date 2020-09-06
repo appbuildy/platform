@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/ui/MyColors.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppTabs extends StatelessWidget {
   final UserActions userActions;
@@ -9,15 +11,18 @@ class AppTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: userActions.bottomNavigation.tabs
-          .map((tab) => AppTabItem(
-                tab: tab,
-                bottomNavigation: userActions.bottomNavigation,
-                isActive: tab.target == userActions.currentScreen.name,
-              ))
-          .toList(),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: userActions.bottomNavigation.tabs
+            .map((tab) => AppTabItem(
+                  tab: tab,
+                  bottomNavigation: userActions.bottomNavigation,
+                  isActive: tab.target == userActions.currentScreen.name,
+                ))
+            .toList(),
+      ),
     );
   }
 }
@@ -35,11 +40,19 @@ class AppTabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(tab.icon),
+        FaIcon(
+          tab.icon,
+          color: isActive ? bottomNavigation.color : MyColors.iconGray,
+          size: 28,
+        ),
+        SizedBox(
+          height: 2,
+        ),
         Text(
           tab.label,
           style: TextStyle(
-              fontSize: 10, color: isActive ? bottomNavigation.color : null),
+              fontSize: 10,
+              color: isActive ? bottomNavigation.color : MyColors.iconGray),
         )
       ],
     );

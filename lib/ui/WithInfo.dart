@@ -167,9 +167,11 @@ class _WithInfoState extends State<WithInfo> {
                                         },
                                         child: buildOption(
                                           icon: Image.network(
-                                              'assets/icons/meta/btn-delete.svg',
-                                              width: 26,
-                                              height: 26),
+                                            'assets/icons/meta/btn-delete.svg',
+                                            width: 26,
+                                            height: 26,
+                                            color: MyColors.iconDarkGray,
+                                          ),
                                           title: 'Delete',
                                           isLast: true,
                                         )),
