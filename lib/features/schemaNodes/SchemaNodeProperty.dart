@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 
@@ -49,17 +50,18 @@ class SchemaColorProperty extends SchemaNodeProperty<Color> {
   }
 }
 
-class SchemaRemoteProperty extends SchemaNodeProperty<SchemaNodeProperty> {
-  String remoteId;
+class SchemaRemoteStringProperty extends SchemaNodeProperty<String> {
+  RemoteTextValue remoteWrapper;
 
-  SchemaRemoteProperty(String name, value, remoteId) : super(name, value) {
-    this.remoteId = remoteId;
+  SchemaRemoteStringProperty(String name, value, remoteWrapper)
+      : super(name, value) {
+    this.remoteWrapper = remoteWrapper;
   }
 
-  Future<SchemaNodeProperty> get remoteValue async => value;
+  Future<String> get remoteValue async => await remoteWrapper.fetch();
 
   @override
-  SchemaRemoteProperty copy() {
-    return SchemaRemoteProperty(this.name, value, remoteId);
+  SchemaRemoteStringProperty copy() {
+    return SchemaRemoteStringProperty(this.name, value, remoteWrapper);
   }
 }
