@@ -10,6 +10,8 @@ class WithInfo extends StatefulWidget {
   final BoxDecoration defaultDecoration;
   final BoxDecoration hoverDecoration;
   final bool withDuplicateAndDelete;
+  final Function onDuplicate;
+  final Function onDelete;
 
   const WithInfo({
     Key key,
@@ -18,6 +20,8 @@ class WithInfo extends StatefulWidget {
     this.defaultDecoration,
     this.hoverDecoration,
     this.withDuplicateAndDelete = false,
+    this.onDuplicate,
+    this.onDelete,
   }) : super(key: key);
 
   @override
@@ -31,7 +35,11 @@ class _WithInfoState extends State<WithInfo> {
   bool isInfoIconActive;
 
   Widget buildOption(
-      {String title, Widget icon, bool isFirst = false, bool isLast = false}) {
+      {String title,
+      Function onTap,
+      Widget icon,
+      bool isFirst = false,
+      bool isLast = false}) {
     BorderRadius borderRadius = BorderRadius.zero;
 
     if (isFirst || isLast) {
@@ -143,6 +151,7 @@ class _WithInfoState extends State<WithInfo> {
                                 ? [
                                     GestureDetector(
                                         onTap: () {
+                                          widget.onDuplicate();
                                           this._overlayEntry.remove();
                                           setState(() {
                                             isOverlayOpen = false;
@@ -160,6 +169,7 @@ class _WithInfoState extends State<WithInfo> {
                                         )),
                                     GestureDetector(
                                         onTap: () {
+                                          widget.onDelete();
                                           this._overlayEntry.remove();
                                           setState(() {
                                             isOverlayOpen = false;

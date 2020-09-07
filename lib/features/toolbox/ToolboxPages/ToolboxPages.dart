@@ -3,8 +3,10 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/Tabs.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/Pages.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
+import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ToolboxPages extends StatelessWidget {
   final UserActions userActions;
@@ -53,6 +55,12 @@ class ToolboxPages extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: MyButton(
                       text: 'Add Tab',
+                      onTap: () {
+                        final currentScreenName = userActions.currentScreen.name;
+                        final newTab = TabNavigation(icon: FontAwesomeIcons.home, target: currentScreenName,label: currentScreenName);
+
+                        userActions.bottomNavigation.addTab(newTab);
+                      },
                       icon: Image.network('assets/icons/meta/btn-plus.svg')),
                 ),
                 SizedBox(

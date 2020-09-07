@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -44,7 +45,9 @@ abstract class _BottomNavigationStore with Store {
 
   @action
   void deleteTab(TabNavigation tab) {
-    tabs.remove(tab);
+    log('delete tab');
+    final index = tabs.indexWhere((element) => element.id == tab.id);
+    tabs.removeAt(index);
   }
 
   @action

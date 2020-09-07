@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AppTabs extends StatelessWidget {
@@ -11,18 +12,22 @@ class AppTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 5.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: userActions.bottomNavigation.tabs
-            .map((tab) => AppTabItem(
-                  tab: tab,
-                  bottomNavigation: userActions.bottomNavigation,
-                  isActive: tab.target == userActions.currentScreen.name,
-                ))
-            .toList(),
-      ),
+    return Observer(
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 5.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: userActions.bottomNavigation.tabs
+                .map((tab) => AppTabItem(
+                      tab: tab,
+                      bottomNavigation: userActions.bottomNavigation,
+                      isActive: tab.target == userActions.currentScreen.name,
+                    ))
+                .toList(),
+          ),
+        );
+      },
     );
   }
 }

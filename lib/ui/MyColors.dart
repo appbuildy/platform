@@ -12,7 +12,6 @@ class MyColors {
   static const Color textBlue = const Color(0xFF007aff);
 }
 
-//75a2bc
 class MyGradients {
   static LinearGradient transparent = LinearGradient(
     begin: AlignmentDirectional.topCenter,

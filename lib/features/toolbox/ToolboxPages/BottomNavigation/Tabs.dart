@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Tabs extends StatelessWidget {
   final UserActions userActions;
@@ -20,7 +21,10 @@ class Tabs extends StatelessWidget {
           child: Container(
               child: Column(
             children: userActions.bottomNavigation.tabs
-                .map((tab) => TabItem(tab: tab))
+                .map((tab) => TabItem(
+                      tab: tab,
+                      userActions: userActions,
+                    ))
                 .toList(),
           )),
         );
@@ -31,8 +35,9 @@ class Tabs extends StatelessWidget {
 
 class TabItem extends StatelessWidget {
   final TabNavigation tab;
+  final UserActions userActions;
 
-  const TabItem({Key key, this.tab}) : super(key: key);
+  const TabItem({Key key, this.tab, this.userActions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +57,35 @@ class TabItem extends StatelessWidget {
         cursor: CursorEnum.pointer,
         child: WithInfo(
           withDuplicateAndDelete: true,
+          onDuplicate: () {
+            userActions.bottomNavigation.addTab(TabNavigation(
+                icon: tab.icon, label: tab.label, target: tab.target));
+          },
+          onDelete: () {
+            userActions.bottomNavigation.deleteTab(tab);
+          },
           defaultDecoration: defaultDecoration,
           hoverDecoration: hoverDecoration,
           child: Padding(
             padding: const EdgeInsets.only(left: 12.0, top: 9.0, bottom: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(child: Text('icon')),
+                Container(
+                  child: FaIcon(
+                    tab.icon,
+                    color: MyColors.iconDarkGray,
+                    size: 16,
+                  ),
+                ),
                 SizedBox(
                   width: 8,
                 ),
-                Text(tab.label)
+                Text(
+                  tab.label,
+                  style: MyTextStyle.regularTitle,
+                )
               ],
             ),
           ),
