@@ -61,7 +61,7 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(changePropTo) {
+  Widget toEditProps(userActions) {
     return Column(children: [
       Text(
         'Text Node',
@@ -69,16 +69,38 @@ class SchemaNodeText extends SchemaNode {
       SizedBox(height: 16),
       Text('Value'),
       SizedBox(height: 8),
+      DropdownButton<String>(
+          value: 'One',
+          icon: Icon(Icons.arrow_downward),
+          iconSize: 24,
+          elevation: 16,
+          underline: Container(
+            height: 2,
+            color: Colors.deepPurpleAccent,
+          ),
+          onChanged: (String newValue) {
+            print('42');
+          },
+          items: <String>['One', 'Two', 'Free', 'Four']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList()),
       MyTextField(
         key: id,
         defaultValue: properties['Text'].value,
         onChanged: (newText) {
           if (properties['Text'].value != newText) {
-            changePropTo(SchemaStringProperty('Text', newText), false);
+            userActions.changePropertyTo(
+                SchemaStringProperty('Text', newText), false);
           }
 
           textDebouncer.run(
-              () => changePropTo(SchemaStringProperty('Text', newText), true,
+              () => userActions.changePropertyTo(
+                  SchemaStringProperty('Text', newText),
+                  true,
                   textDebouncer.prevValue),
               newText);
         },
@@ -88,7 +110,8 @@ class SchemaNodeText extends SchemaNode {
         children: [
           GestureDetector(
             onTap: () {
-              changePropTo(SchemaColorProperty('Color', Colors.black));
+              userActions
+                  .changePropertyTo(SchemaColorProperty('Color', Colors.black));
             },
             child: Container(
               width: 32,
@@ -101,7 +124,8 @@ class SchemaNodeText extends SchemaNode {
           ),
           GestureDetector(
             onTap: () {
-              changePropTo(SchemaColorProperty('Color', Colors.red));
+              userActions
+                  .changePropertyTo(SchemaColorProperty('Color', Colors.red));
             },
             child: Container(
               width: 32,
@@ -114,7 +138,8 @@ class SchemaNodeText extends SchemaNode {
           ),
           GestureDetector(
             onTap: () {
-              changePropTo(SchemaColorProperty('Color', Colors.blue));
+              userActions
+                  .changePropertyTo(SchemaColorProperty('Color', Colors.blue));
             },
             child: Container(
               width: 32,

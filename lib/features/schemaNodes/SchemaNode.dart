@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 export 'SchemaNodeButton.dart';
@@ -33,7 +34,7 @@ abstract class SchemaNode {
         'type': SchemaNodeType.button
       };
   Widget toWidget();
-  Widget toEditProps(Function changePropertyTo);
+  Widget toEditProps(UserActions userActions);
 
   Map<String, dynamic> _jsonActions() {
     final map = {};

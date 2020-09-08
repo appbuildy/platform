@@ -53,7 +53,7 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(changePropTo) {
+  Widget toEditProps(userActions) {
 //    final debouncer = Debouncer(milliseconds: 700);
 
     return Observer(
@@ -68,7 +68,7 @@ class SchemaNodeButton extends SchemaNode {
           key: id,
           defaultValue: properties['Text'].value,
           onChanged: (newText) {
-            changePropTo(SchemaStringProperty('Text', newText));
+            userActions.changePropertyTo(SchemaStringProperty('Text', newText));
 //            debouncer
 //                .run(() => changePropTo(SchemaStringProperty('Text', newText)));
           },

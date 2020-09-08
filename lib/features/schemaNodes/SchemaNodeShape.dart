@@ -35,12 +35,13 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(changePropTo) {
+  Widget toEditProps(userActions) {
     return Row(
       children: [
         GestureDetector(
           onTap: () {
-            changePropTo(SchemaColorProperty('Color', Colors.black));
+            userActions
+                .changePropertyTo(SchemaColorProperty('Color', Colors.black));
           },
           child: Container(
             width: 32,
@@ -53,7 +54,8 @@ class SchemaNodeShape extends SchemaNode {
         ),
         GestureDetector(
           onTap: () {
-            changePropTo(SchemaColorProperty('Color', Colors.red));
+            userActions
+                .changePropertyTo(SchemaColorProperty('Color', Colors.red));
           },
           child: Container(
             width: 32,
@@ -66,7 +68,8 @@ class SchemaNodeShape extends SchemaNode {
         ),
         GestureDetector(
           onTap: () {
-            changePropTo(SchemaColorProperty('Color', Colors.blue));
+            userActions
+                .changePropertyTo(SchemaColorProperty('Color', Colors.blue));
           },
           child: Container(
             width: 32,

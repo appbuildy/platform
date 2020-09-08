@@ -43,7 +43,7 @@ class EditProps extends StatelessWidget {
                   ],
                 ),
               ),
-              selectedNode.toEditProps(userActions.changePropertyTo),
+              selectedNode.toEditProps(userActions),
               Text('ACTIONS'),
               AllActions(
                 userActions: userActions,
