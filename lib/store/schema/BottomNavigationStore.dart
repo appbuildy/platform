@@ -9,13 +9,13 @@ import 'package:mobx/mobx.dart';
 part 'BottomNavigationStore.g.dart';
 
 class TabNavigation {
-  final String label;
-  final IconData icon;
-  final String target;
+  String label;
+  IconData icon;
+  String target;
   UniqueKey id;
 
-  TabNavigation({this.target, this.label, this.icon}) {
-    this.id = UniqueKey();
+  TabNavigation({this.target, this.label, this.icon, this.id}) {
+    this.id = id ?? UniqueKey();
   }
 }
 

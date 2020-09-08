@@ -22,14 +22,14 @@ class UndoRedo extends StatelessWidget {
             IconCircleButton(
                 onTap: userActions.undo,
                 isDisabled: userActions.isActionsDoneEmpty,
-                image: Image.network(
+                icon: Image.network(
                   'assets/icons/meta/action-undo.svg',
                   color:
                       userActions.isActionsDoneEmpty ? MyColors.iconGray : null,
                 )),
             IconCircleButton(
                 isDisabled: isRedoDisabled,
-                image: Transform(
+                icon: Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.rotationY(math.pi),
                     child: Image.network(

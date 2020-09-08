@@ -4,12 +4,13 @@ import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class IconCircleButton extends StatelessWidget {
-  final Widget image;
+  final Widget icon;
+  final String assetPath;
   final Function onTap;
   final bool isDisabled;
 
   const IconCircleButton(
-      {Key key, this.image, this.onTap, this.isDisabled = false})
+      {Key key, this.icon, this.onTap, this.isDisabled = false, this.assetPath})
       : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class IconCircleButton extends StatelessWidget {
         width: 38,
         height: 38,
         decoration: defaultDecoration,
-        child: image,
+        child: icon,
       );
     }
 
@@ -35,12 +36,53 @@ class IconCircleButton extends StatelessWidget {
         child: HoverDecoration(
           hoverDecoration: hoverDecoration,
           defaultDecoration: defaultDecoration,
-          child: Container(
-            width: 38,
-            height: 38,
-            child: image,
-          ),
+          child: assetPath != null
+              ? IconHover(assetPath: assetPath)
+              : Container(
+                  width: 38,
+                  height: 38,
+                  child: icon,
+                ),
         ),
+      ),
+    );
+  }
+}
+
+class IconHover extends StatefulWidget {
+  final String assetPath;
+
+  const IconHover({Key key, this.assetPath}) : super(key: key);
+
+  @override
+  _IconHoverState createState() => _IconHoverState();
+}
+
+class _IconHoverState extends State<IconHover> {
+  bool isHover;
+
+  @override
+  void initState() {
+    super.initState();
+    isHover = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onHover: (e) {
+        setState(() {
+          isHover = true;
+        });
+      },
+      onExit: (e) {
+        setState(() {
+          isHover = false;
+        });
+      },
+      child: Image.network(
+        widget.assetPath,
+        color: isHover ? null : MyColors.iconDarkGray,
       ),
     );
   }
