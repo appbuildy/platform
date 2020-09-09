@@ -38,7 +38,12 @@ class _ToolboxPagesState extends State<ToolboxPages>
   }
 
   void selectTabNavigation(TabNavigation tab) {
-    widget.userActions.screens.selectByName(tab.target);
+    // check if there a screen before navigation
+//    if (widget.userActions.screens.all.screens
+//            .where((element) => element.name == tab.target) !=
+//        null) {
+//      widget.userActions.screens.selectByName(tab.target);
+//    }
     _controller.reverse();
     setState(() {
       selectedTab = tab;
@@ -155,7 +160,13 @@ class _ToolboxPagesState extends State<ToolboxPages>
                     ),
                   ),
                 ),
-                IconCircleButton(assetPath: 'assets/icons/meta/btn-delete.svg'),
+                IconCircleButton(
+                    onTap: () {
+                      widget.userActions.bottomNavigation
+                          .deleteTab(selectedTab);
+                      goBack();
+                    },
+                    assetPath: 'assets/icons/meta/btn-delete.svg'),
               ],
             ),
           ),
