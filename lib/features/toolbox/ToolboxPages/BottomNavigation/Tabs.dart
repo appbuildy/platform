@@ -75,20 +75,23 @@ class TabItem extends StatelessWidget {
             defaultDecoration: defaultDecoration,
             hoverDecoration: hoverDecoration,
             child: Padding(
-              padding: const EdgeInsets.only(left: 12.0, top: 9.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                left: 12.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 7, bottom: 2),
                     child: FaIcon(
                       tab.icon,
                       color: MyColors.iconDarkGray,
-                      size: 16,
+                      size: 22,
                     ),
                   ),
                   SizedBox(
-                    width: 8,
+                    width: 12,
                   ),
                   Text(
                     tab.label,

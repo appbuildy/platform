@@ -79,4 +79,7 @@ class MyTextStyle {
 
   static TextStyle mediumTitle = TextStyle(
       color: MyColors.black, fontSize: 16, fontWeight: FontWeight.w500);
+
+  static TextStyle regularCaption =
+      TextStyle(color: Color(0xFF777777), fontSize: 14);
 }

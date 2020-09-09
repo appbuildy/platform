@@ -6,6 +6,7 @@ import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelect.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -22,7 +23,7 @@ class TabSelected extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 7, top: 17),
       child: Text(
         text,
-        style: TextStyle(fontSize: 14, color: Color(0xff777777)),
+        style: MyTextStyle.regularCaption,
       ),
     );
   }
@@ -100,12 +101,35 @@ class TabSelected extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(
+            'Label',
+            style: MyTextStyle.regularCaption,
+          ),
+          Container(
+            width: 170,
+            child: MyTextField(
+              onChanged: (text) {
+                tab.label = text;
+                userActions.bottomNavigation.updateTab(tab);
+                rerender();
+              },
+              defaultValue: tab.label,
+            ),
+          )
+        ]),
+        SizedBox(
+          height: 10,
+        ),
         Observer(
           builder: (BuildContext context) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Navigate to'),
+                Text(
+                  'Navigate to',
+                  style: MyTextStyle.regularCaption,
+                ),
                 Container(
                   width: 170,
                   child: MySelect(
@@ -123,6 +147,23 @@ class TabSelected extends StatelessWidget {
               ],
             );
           },
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        Text(
+          'Tab Icon',
+          style: MyTextStyle.regularTitle,
+        ),
+        SizedBox(
+          height: 14,
+        ),
+        Container(
+          child: FaIcon(
+            tab.icon,
+            color: MyColors.iconDarkGray,
+            size: 54,
+          ),
         ),
         Container(
           width: 300,

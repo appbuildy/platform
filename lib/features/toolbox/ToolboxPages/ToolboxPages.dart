@@ -38,6 +38,7 @@ class _ToolboxPagesState extends State<ToolboxPages>
   }
 
   void selectTabNavigation(TabNavigation tab) {
+    widget.userActions.screens.selectByName(tab.target);
     _controller.reverse();
     setState(() {
       selectedTab = tab;
@@ -46,7 +47,7 @@ class _ToolboxPagesState extends State<ToolboxPages>
 
   void goBack() {
     _controller.forward();
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(Duration(milliseconds: 50), () {
       setState(() {
         selectedTab = null;
       });
