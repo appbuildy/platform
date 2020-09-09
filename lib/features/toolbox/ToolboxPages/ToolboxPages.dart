@@ -32,8 +32,8 @@ class _ToolboxPagesState extends State<ToolboxPages>
         value: 1, vsync: this, duration: Duration(milliseconds: 250));
     _animation = CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeIn,
-      reverseCurve: Curves.easeOut,
+      curve: Curves.easeInOutQuad,
+      reverseCurve: Curves.easeInOutQuad,
     );
   }
 
@@ -46,8 +46,10 @@ class _ToolboxPagesState extends State<ToolboxPages>
 
   void goBack() {
     _controller.forward();
-    setState(() {
-      selectedTab = null;
+    Future.delayed(Duration(milliseconds: 100), () {
+      setState(() {
+        selectedTab = null;
+      });
     });
   }
 
@@ -123,58 +125,53 @@ class _ToolboxPagesState extends State<ToolboxPages>
       return Container();
     }
 
-    return Container(
-      height: 800,
-      child: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: Row(
-                children: [
-                  IconCircleButton(
-                      onTap: goBack,
-                      assetPath: 'assets/icons/meta/btn-delete.svg'),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 10,
-                          ),
-                          child: Text(
-                            selectedTab.label,
-                            style: MyTextStyle.mediumTitle,
-                          ),
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              border:
+                  Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20, right: 10),
+            child: Row(
+              children: [
+                IconCircleButton(
+                    onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 10,
+                        ),
+                        child: Text(
+                          selectedTab.label,
+                          style: MyTextStyle.mediumTitle,
                         ),
                       ),
                     ),
                   ),
-                  IconCircleButton(
-                      assetPath: 'assets/icons/meta/btn-delete.svg'),
-                ],
-              ),
+                ),
+                IconCircleButton(assetPath: 'assets/icons/meta/btn-delete.svg'),
+              ],
             ),
           ),
-          SizedBox(
-            height: 24,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 10),
-            child: TabSelected(
-                rerender: () {
-                  setState(() {});
-                },
-                tab: selectedTab,
-                userActions: widget.userActions),
-          )
-        ],
-      ),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 30, right: 20),
+          child: TabSelected(
+              rerender: () {
+                setState(() {});
+              },
+              tab: selectedTab,
+              userActions: widget.userActions),
+        )
+      ],
     );
   }
 

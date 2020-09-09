@@ -20,7 +20,7 @@ class _PlayModeSwitchState extends State<PlayModeSwitch>
   AnimationController _controller;
   Animation _animation;
 
-  final animationDuration = Duration(milliseconds: 200);
+  final animationDuration = Duration(milliseconds: 250);
 
   @override
   void initState() {
