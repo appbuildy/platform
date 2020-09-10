@@ -217,9 +217,9 @@ packages:
   font_awesome_flutter:
     dependency: "direct main"
     description:
-      name: font_awesome_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "lib/font_awesome_flutter"
+      relative: true
+    source: path
     version: "8.8.1"
   glob:
     dependency: transitive
