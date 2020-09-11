@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
-import 'package:flutter_app/features/editProps/EditProps.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
+import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
+import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppLayout extends StatefulWidget {
   @override
@@ -30,6 +30,7 @@ class _AppLayoutState extends State<AppLayout> {
   FocusNode _focusNode;
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
+  ToolboxStates toolboxState;
 
   @override
   void initState() {
@@ -46,12 +47,21 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
+    toolboxState = ToolboxStates.layout;
   }
 
   void _handleFocusChange() {
     if (_focusNode.hasFocus != _focused) {
       setState(() {
         _focused = _focusNode.hasFocus;
+      });
+    }
+  }
+
+  void selectState(ToolboxStates newState) {
+    if (newState != toolboxState) {
+      setState(() {
+        toolboxState = newState;
       });
     }
   }
@@ -104,7 +114,10 @@ class _AppLayoutState extends State<AppLayout> {
                     _focusNode.unfocus();
                   }
                 },
-                child: Toolbox(userActions: userActions),
+                child: Toolbox(
+                    toolboxState: toolboxState,
+                    selectState: selectState,
+                    userActions: userActions),
               ),
               Flexible(
                 child: GestureDetector(
@@ -189,20 +202,10 @@ class _AppLayoutState extends State<AppLayout> {
                       _focusNode.unfocus();
                     }
                   },
-                  child: Container(
-                    child: Center(
-                      child: Observer(
-                        builder: (context) => EditProps(
-                          userActions: userActions,
-                          selectedNode: userActions.selectedNode(),
-                          screens: userActions.screens.all.screens,
-                        ),
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                      color: MyColors.white,
-                    ),
-                  ),
+                  child: RightToolbox(
+                      toolboxState: toolboxState,
+                      selectState: selectState,
+                      userActions: userActions),
                 ),
               )
             ],

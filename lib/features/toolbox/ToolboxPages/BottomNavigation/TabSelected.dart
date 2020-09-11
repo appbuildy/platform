@@ -166,8 +166,8 @@ class TabSelected extends StatelessWidget {
           ),
         ),
         Container(
-          width: 300,
-          height: MediaQuery.of(context).size.height - 200,
+          width: 310,
+          height: MediaQuery.of(context).size.height - 290,
           child: ListView.builder(
               itemCount: allIconsList.length,
               itemBuilder: (context, index) {
@@ -182,13 +182,3 @@ class TabSelected extends StatelessWidget {
     );
   }
 }
-
-//MySelect(
-//selectedValue: userActions.screens.current.name,
-//onChange: (option) {
-//userActions.screens.selectByName(option.value);
-//},
-//options: userActions.screens.all.screens
-//    .map((element) =>
-//SelectOption(element.name, element.name))
-//.toList())

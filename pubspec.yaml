@@ -44,8 +44,6 @@ dev_dependencies:
 
 dependency_overrides:
   analyzer: 0.39.14
-  font_awesome_flutter:
-    path: lib/font_awesome_flutter
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

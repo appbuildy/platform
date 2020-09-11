@@ -4,15 +4,15 @@ import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
 
-enum MenuStates { layout, settings, pages, data }
+enum ToolboxStates { layout, settings, pages, data }
 
 class ToolboxMenu extends StatelessWidget {
-  final MenuStates state;
-  final Function(MenuStates) selectState;
+  final ToolboxStates state;
+  final Function(ToolboxStates) selectState;
 
   const ToolboxMenu({Key key, this.state, this.selectState}) : super(key: key);
 
-  Widget buildOption(MenuStates option) {
+  Widget buildOption(ToolboxStates option) {
     final isActive = option == state;
 
     final asset = option.toString().split('.')[1];
@@ -82,10 +82,10 @@ class ToolboxMenu extends StatelessWidget {
               border:
                   Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
         ),
-        buildOption(MenuStates.pages),
-        buildOption(MenuStates.layout),
-        buildOption(MenuStates.data),
-        buildOption(MenuStates.settings),
+        buildOption(ToolboxStates.pages),
+        buildOption(ToolboxStates.layout),
+        buildOption(ToolboxStates.data),
+        buildOption(ToolboxStates.settings),
       ],
     );
   }

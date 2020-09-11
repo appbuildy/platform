@@ -8,6 +8,7 @@ import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ToolboxPages extends StatefulWidget {
@@ -133,44 +134,16 @@ class _ToolboxPagesState extends State<ToolboxPages>
 
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            child: Row(
-              children: [
-                IconCircleButton(
-                    onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                          right: 10,
-                        ),
-                        child: Text(
-                          selectedTab.label,
-                          style: MyTextStyle.mediumTitle,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                IconCircleButton(
-                    onTap: () {
-                      widget.userActions.bottomNavigation
-                          .deleteTab(selectedTab);
-                      goBack();
-                    },
-                    assetPath: 'assets/icons/meta/btn-delete.svg'),
-              ],
-            ),
-          ),
-        ),
+        ToolboxHeader(
+            leftWidget: IconCircleButton(
+                onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
+            rightWidget: IconCircleButton(
+                onTap: () {
+                  widget.userActions.bottomNavigation.deleteTab(selectedTab);
+                  goBack();
+                },
+                assetPath: 'assets/icons/meta/btn-delete.svg'),
+            title: selectedTab.label),
         SizedBox(
           height: 24,
         ),
