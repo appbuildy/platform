@@ -562,17 +562,19 @@ class _AppPreviewState extends State<AppPreview> {
                     Positioned(
                       bottom: 0,
                       left: 0,
-                      child: Container(
-                        child: AppTabs(userActions: userActions),
-                        width: SCREEN_WIDTH,
-                        height: 84,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(37.0),
-                              bottomRight: Radius.circular(37.0)),
-                        ),
-                      ),
+                      child: userActions.screens.current.bottomTabsVisible
+                          ? Container(
+                              child: AppTabs(userActions: userActions),
+                              width: SCREEN_WIDTH,
+                              height: 84,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(37.0),
+                                    bottomRight: Radius.circular(37.0)),
+                              ),
+                            )
+                          : Container(),
                     ),
                     Align(
                         alignment: Alignment.bottomCenter,

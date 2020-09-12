@@ -16,6 +16,14 @@ abstract class _SchemaStore with Store {
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();
 
   @observable
+  bool bottomTabsVisible = true;
+
+  @action
+  void setBottomTabs(bool newValue) {
+    bottomTabsVisible = newValue;
+  }
+
+  @observable
   String name;
 
   @action

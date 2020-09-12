@@ -24,6 +24,20 @@ mixin _$RemoteAttributes on _RemoteAttributes, Store {
     });
   }
 
+  final _$_RemoteAttributesActionController =
+      ActionController(name: '_RemoteAttributes');
+
+  @override
+  void updateAttributes(ObservableList<String> list) {
+    final _$actionInfo = _$_RemoteAttributesActionController.startAction(
+        name: '_RemoteAttributes.updateAttributes');
+    try {
+      return super.updateAttributes(list);
+    } finally {
+      _$_RemoteAttributesActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

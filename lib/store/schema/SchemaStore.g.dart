@@ -24,6 +24,21 @@ mixin _$SchemaStore on _SchemaStore, Store {
     });
   }
 
+  final _$bottomTabsVisibleAtom = Atom(name: '_SchemaStore.bottomTabsVisible');
+
+  @override
+  bool get bottomTabsVisible {
+    _$bottomTabsVisibleAtom.reportRead();
+    return super.bottomTabsVisible;
+  }
+
+  @override
+  set bottomTabsVisible(bool value) {
+    _$bottomTabsVisibleAtom.reportWrite(value, super.bottomTabsVisible, () {
+      super.bottomTabsVisible = value;
+    });
+  }
+
   final _$nameAtom = Atom(name: '_SchemaStore.name');
 
   @override
@@ -40,6 +55,17 @@ mixin _$SchemaStore on _SchemaStore, Store {
   }
 
   final _$_SchemaStoreActionController = ActionController(name: '_SchemaStore');
+
+  @override
+  void setBottomTabs(bool newValue) {
+    final _$actionInfo = _$_SchemaStoreActionController.startAction(
+        name: '_SchemaStore.setBottomTabs');
+    try {
+      return super.setBottomTabs(newValue);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void add(SchemaNode schemaNode) {
@@ -78,6 +104,7 @@ mixin _$SchemaStore on _SchemaStore, Store {
   String toString() {
     return '''
 components: ${components},
+bottomTabsVisible: ${bottomTabsVisible},
 name: ${name}
     ''';
   }
