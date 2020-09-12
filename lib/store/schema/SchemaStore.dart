@@ -36,6 +36,11 @@ abstract class _SchemaStore with Store {
   String name;
 
   @action
+  void setName(String newName) {
+    name = newName;
+  }
+
+  @action
   void add(SchemaNode schemaNode) {
     components.add(schemaNode);
   }

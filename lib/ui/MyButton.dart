@@ -19,14 +19,8 @@ class MyButton extends StatelessWidget {
         boxShadow: []);
     final hoverDecoration = BoxDecoration(
         borderRadius: BorderRadius.circular(6),
-        gradient: MyGradients.mainBlue,
-        boxShadow: [
-//          BoxShadow(
-//              spreadRadius: 5,
-//              blurRadius: 10,
-//              offset: Offset(0, 2),
-//              color: MyColors.black.withOpacity(0.15))
-        ]);
+        gradient: MyGradients.mainLightBlue,
+        boxShadow: []);
 
     return GestureDetector(
       onTap: onTap,

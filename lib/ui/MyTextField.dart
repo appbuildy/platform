@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 class MyTextField extends StatefulWidget {
   final String placeholder;
   final String defaultValue;
+  final String value;
   final Function onChanged;
 
   const MyTextField({
@@ -12,6 +13,7 @@ class MyTextField extends StatefulWidget {
     this.placeholder,
     @required this.onChanged,
     this.defaultValue,
+    this.value,
   }) : super(key: key);
 
   @override
