@@ -46,9 +46,7 @@ class SchemaNodeButton extends SchemaNode {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(width: 1, color: Colors.tealAccent)),
-      child: Center(
-          child: Text(
-              'position dx: ${position.dx.toString()} position dy: ${position.dy.toString()} size dx: ${size.dx.toString()} size dy: ${size.dy.toString()}')),
+      child: Center(child: Text(properties['Text'].value)),
     );
   }
 
@@ -58,12 +56,6 @@ class SchemaNodeButton extends SchemaNode {
 
     return Observer(
       builder: (_) => Column(children: [
-        Text(
-          'Button Node',
-        ),
-        SizedBox(height: 16),
-        Text('Value'),
-        SizedBox(height: 8),
         MyTextField(
           key: id,
           defaultValue: properties['Text'].value,

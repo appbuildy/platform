@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -16,7 +14,6 @@ class AllActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('length screens ${screens.length}');
     return ScreensSelect(
         userActions: userActions,
         action: userActions.selectedNode().actions['Tap'],

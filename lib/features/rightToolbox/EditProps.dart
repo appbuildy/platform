@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/AllActions.dart';
+import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -26,33 +27,30 @@ class EditProps extends StatelessWidget {
 
         return Column(children: [
           ToolboxHeader(
-              title: selectedNode.type.toString().split('.')[1].capitalize()),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 24.0),
-            child: Row(
-              children: [
-                MaterialButton(
-                  color: Colors.red,
-                  onPressed: () {
-                    userActions.deleteNode(selectedNode);
-                  },
-                  child: Text('DELETE'),
-                ),
-                MaterialButton(
-                  color: Colors.indigo,
-                  onPressed: () {
+              leftWidget: IconCircleButton(
+                  onTap: () {
                     userActions.copyNode(selectedNode);
                   },
-                  child: Text('COPY'),
-                )
+                  assetPath: 'assets/icons/meta/btn-duplicate.svg'),
+              rightWidget: IconCircleButton(
+                onTap: () {
+                  userActions.deleteNode(selectedNode);
+                },
+                assetPath: 'assets/icons/meta/btn-delete.svg',
+              ),
+              title: selectedNode.type.toString().split('.')[1].capitalize()),
+          Padding(
+            padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: [
+                selectedNode.toEditProps(userActions),
+                Text('ACTIONS'),
+                AllActions(
+                  userActions: userActions,
+                  screens: screens,
+                ),
               ],
             ),
-          ),
-          selectedNode.toEditProps(userActions),
-          Text('ACTIONS'),
-          AllActions(
-            userActions: userActions,
-            screens: screens,
           ),
         ]);
       },
