@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:mobx/mobx.dart';
 
@@ -6,11 +7,14 @@ part 'SchemaStore.g.dart';
 class SchemaStore = _SchemaStore with _$SchemaStore;
 
 abstract class _SchemaStore with Store {
-  _SchemaStore({List<SchemaNode> components, name = 'Main'}) {
+  _SchemaStore({List<SchemaNode> components, name = 'Main', id}) {
     this.components = ObservableList<SchemaNode>();
     this.components.addAll(components);
     this.name = name;
+    this.id = id ?? UniqueKey();
   }
+  @observable
+  UniqueKey id;
 
   @observable
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();

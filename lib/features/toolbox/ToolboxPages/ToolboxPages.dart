@@ -101,12 +101,10 @@ class _ToolboxPagesState extends State<ToolboxPages>
                 child: MyButton(
                     text: 'Add Tab',
                     onTap: () {
-                      final currentScreenName =
-                          widget.userActions.currentScreen.name;
                       final newTab = TabNavigation(
                           icon: FontAwesomeIcons.home,
-                          target: currentScreenName,
-                          label: currentScreenName);
+                          target: widget.userActions.currentScreen.id,
+                          label: widget.userActions.currentScreen.name);
 
                       widget.userActions.bottomNavigation.addTab(newTab);
                       selectTabNavigation(newTab);

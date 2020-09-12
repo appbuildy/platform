@@ -9,6 +9,21 @@ part of 'SchemaStore.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$SchemaStore on _SchemaStore, Store {
+  final _$idAtom = Atom(name: '_SchemaStore.id');
+
+  @override
+  UniqueKey get id {
+    _$idAtom.reportRead();
+    return super.id;
+  }
+
+  @override
+  set id(UniqueKey value) {
+    _$idAtom.reportWrite(value, super.id, () {
+      super.id = value;
+    });
+  }
+
   final _$componentsAtom = Atom(name: '_SchemaStore.components');
 
   @override
@@ -103,6 +118,7 @@ mixin _$SchemaStore on _SchemaStore, Store {
   @override
   String toString() {
     return '''
+id: ${id},
 components: ${components},
 bottomTabsVisible: ${bottomTabsVisible},
 name: ${name}

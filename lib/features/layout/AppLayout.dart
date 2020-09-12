@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
+import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
@@ -35,7 +36,7 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   void initState() {
     super.initState();
-    schemaStore = SchemaStore(components: []);
+    schemaStore = SchemaStore(components: [], id: MAIN_UNIQUE_KEY);
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
     bottomNavigationStore = BottomNavigationStore();

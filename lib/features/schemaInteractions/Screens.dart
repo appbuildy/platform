@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
@@ -49,6 +50,12 @@ class Screens {
 
   SchemaStore selectByName(String name) {
     final screen = all.screens.where((screen) => screen.name == name).first;
+    _current.select(screen);
+    return screen;
+  }
+
+  SchemaStore selectById(UniqueKey id) {
+    final screen = all.screens.where((screen) => screen.id == id).first;
     _current.select(screen);
     return screen;
   }

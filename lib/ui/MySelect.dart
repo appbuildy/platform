@@ -5,13 +5,13 @@ import 'package:flutter_app/ui/MyColors.dart';
 
 class SelectOption {
   final String name;
-  final String value;
+  final dynamic value;
 
   SelectOption(this.name, this.value);
 }
 
 class MySelect extends StatefulWidget {
-  final String selectedValue;
+  final dynamic selectedValue;
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
 

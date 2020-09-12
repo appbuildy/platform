@@ -141,7 +141,7 @@ class TabSelected extends StatelessWidget {
                       },
                       options: userActions.screens.all.screens
                           .map((element) =>
-                              SelectOption(element.name, element.name))
+                              SelectOption(element.name, element.id))
                           .toList()),
                 )
               ],

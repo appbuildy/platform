@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -19,10 +20,21 @@ class AppTabs extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: userActions.bottomNavigation.tabs
-                .map((tab) => AppTabItem(
-                      tab: tab,
-                      bottomNavigation: userActions.bottomNavigation,
-                      isActive: tab.target == userActions.currentScreen.name,
+                .map((tab) => Expanded(
+                      child: Cursor(
+                        cursor: CursorEnum.pointer,
+                        child: GestureDetector(
+                          onTap: () {
+                            userActions.screens.selectById(tab.target);
+                          },
+                          child: AppTabItem(
+                            tab: tab,
+                            bottomNavigation: userActions.bottomNavigation,
+                            isActive:
+                                tab.target == userActions.currentScreen.id,
+                          ),
+                        ),
+                      ),
                     ))
                 .toList(),
           ),

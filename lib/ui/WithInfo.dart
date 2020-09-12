@@ -261,14 +261,17 @@ class _WithInfoState extends State<WithInfo> {
                           isInfoIconActive = false;
                         });
                       },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Image.network(
-                          'assets/icons/meta/btn-more.svg',
-                          fit: BoxFit.none,
-                          color: isInfoIconActive || isOverlayOpen
-                              ? null
-                              : MyColors.iconDarkGray,
+                      child: Cursor(
+                        cursor: CursorEnum.pointer,
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Image.network(
+                            'assets/icons/meta/btn-more.svg',
+                            fit: BoxFit.none,
+                            color: isInfoIconActive || isOverlayOpen
+                                ? null
+                                : MyColors.iconDarkGray,
+                          ),
                         ),
                       ),
                     ),

@@ -72,6 +72,7 @@ class TabItem extends StatelessWidget {
             onDelete: () {
               userActions.bottomNavigation.deleteTab(tab);
             },
+            position: Offset(10.0, 1.0),
             defaultDecoration: defaultDecoration,
             hoverDecoration: hoverDecoration,
             child: Padding(

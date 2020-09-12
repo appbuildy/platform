@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
@@ -11,7 +12,7 @@ part 'BottomNavigationStore.g.dart';
 class TabNavigation {
   String label;
   IconData icon;
-  String target;
+  UniqueKey target;
   UniqueKey id;
 
   TabNavigation({this.target, this.label, this.icon, this.id}) {
@@ -25,13 +26,8 @@ class BottomNavigationStore = _BottomNavigationStore
 abstract class _BottomNavigationStore with Store {
   _BottomNavigationStore() {
     this.tabs.addAll([
-      TabNavigation(label: 'Home', icon: FontAwesomeIcons.home, target: 'Main'),
       TabNavigation(
-          label: 'Search', icon: FontAwesomeIcons.search, target: 'Page 2'),
-      TabNavigation(
-          label: 'Calendar', icon: FontAwesomeIcons.calendar, target: 'Page 3'),
-      TabNavigation(
-          label: 'Settings', icon: FontAwesomeIcons.cog, target: 'Page 4')
+          label: 'Home', icon: FontAwesomeIcons.home, target: MAIN_UNIQUE_KEY),
     ]);
   }
 

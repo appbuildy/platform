@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/Cursor.dart';
-import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Pages extends StatelessWidget {
@@ -17,9 +17,15 @@ class Pages extends StatelessWidget {
         children: userActions.screens.all.screens
             .map((element) => PageItem(
                   title: element.name,
-                  isActive: element.name == userActions.screens.current.name,
+                  isActive: element.id == userActions.screens.current.id,
                   onTap: () {
-                    userActions.screens.selectByName(element.name);
+                    userActions.screens.selectById(element.id);
+                  },
+                  onDelete: () {
+                    userActions.screens.delete(element);
+                  },
+                  onDuplicate: () {
+                    userActions.screens.delete(element);
                   },
                 ))
             .toList(),
@@ -32,8 +38,16 @@ class PageItem extends StatelessWidget {
   final bool isActive;
   final String title;
   final Function onTap;
+  final Function onDelete;
+  final Function onDuplicate;
 
-  const PageItem({Key key, this.isActive, this.title, this.onTap})
+  const PageItem(
+      {Key key,
+      this.isActive,
+      this.title,
+      this.onTap,
+      this.onDelete,
+      this.onDuplicate})
       : super(key: key);
 
   @override
@@ -60,26 +74,30 @@ class PageItem extends StatelessWidget {
           onTap();
         }
       },
-      child: Row(
-        children: [
-          Expanded(
-            child: Cursor(
-              cursor: isActive ? CursorEnum.defaultCursor : CursorEnum.pointer,
-              child: HoverDecoration(
-                hoverDecoration: hoverDecoration,
-                defaultDecoration: defaultDecoration,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20, top: 13, bottom: 12, right: 20),
+      child: Cursor(
+        cursor: isActive ? CursorEnum.defaultCursor : CursorEnum.pointer,
+        child: WithInfo(
+          hoverDecoration: hoverDecoration,
+          defaultDecoration: defaultDecoration,
+          withDuplicateAndDelete: true,
+          position: Offset(10.0, 4.5),
+          onDuplicate: onDuplicate,
+          onDelete: onDelete,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, top: 13, bottom: 12, right: 20),
+            child: Row(
+              children: [
+                Expanded(
                   child: Text(
                     title,
                     style: MyTextStyle.regularTitle,
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

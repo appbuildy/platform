@@ -32,13 +32,13 @@ class AppActions extends StatelessWidget {
               builder: (_) => Container(
                   width: 200,
                   child: MySelect(
-                      selectedValue: userActions.screens.current.name,
+                      selectedValue: userActions.screens.current.id,
                       onChange: (option) {
-                        userActions.screens.selectByName(option.value);
+                        userActions.screens.selectById(option.value);
                       },
                       options: userActions.screens.all.screens
                           .map((element) =>
-                              SelectOption(element.name, element.name))
+                              SelectOption(element.name, element.id))
                           .toList())),
             ),
             MaterialButton(
