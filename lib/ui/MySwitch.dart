@@ -39,7 +39,7 @@ class _MySwitchState extends State<MySwitch>
   @override
   void didUpdateWidget(MySwitch oldWidget) {
     if (oldWidget.value != widget.value) {
-      widget.value == true
+      _animationController.isCompleted
           ? _animationController.reverse()
           : _animationController.forward();
     }

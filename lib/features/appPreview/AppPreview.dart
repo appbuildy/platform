@@ -13,6 +13,7 @@ enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
 
 const SCREEN_WIDTH = 375.0;
 const SCREEN_HEIGHT = 812.0;
+const SCREEN_HEIGHT_WITH_TABS = SCREEN_HEIGHT - 84;
 
 class AppPreview extends StatefulWidget {
   final UserActions userActions;
@@ -37,7 +38,7 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
-  double constrainPosition2({
+  double constrainPosition({
     @required double size,
     @required double value,
     @required double position,
@@ -85,6 +86,10 @@ class _AppPreviewState extends State<AppPreview> {
     return size + realValue;
   }
 
+  double get maxHeight => userActions.currentScreen.bottomTabsVisible
+      ? SCREEN_HEIGHT_WITH_TABS
+      : SCREEN_HEIGHT;
+
   void handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
     if (side == SideEnum.topLeft) {
@@ -92,17 +97,17 @@ class _AppPreviewState extends State<AppPreview> {
       final posY = node.position.dy;
 
       node.position = Offset(
-        constrainPosition2(
+        constrainPosition(
             position: node.position.dx,
             value: delta.dx,
             size: node.size.dx,
             max: SCREEN_WIDTH,
             isDisableWhenMin: true),
-        constrainPosition2(
+        constrainPosition(
             position: node.position.dy,
             value: delta.dy,
             size: node.size.dy,
-            max: SCREEN_HEIGHT,
+            max: maxHeight,
             isDisableWhenMin: true),
       );
       node.size = Offset(
@@ -117,7 +122,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: SCREEN_HEIGHT,
+            max: maxHeight,
             value: delta.dy,
             isSub: true,
             prevPosition: posY,
@@ -127,11 +132,11 @@ class _AppPreviewState extends State<AppPreview> {
 
       node.position = Offset(
         node.position.dx,
-        constrainPosition2(
+        constrainPosition(
             position: node.position.dy,
             value: delta.dy,
             size: node.size.dy,
-            max: SCREEN_HEIGHT,
+            max: maxHeight,
             isDisableWhenMin: true),
       );
       node.size = Offset(
@@ -144,7 +149,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: SCREEN_HEIGHT,
+            max: maxHeight,
             value: delta.dy,
             isSub: true,
             prevPosition: posY,
@@ -153,7 +158,7 @@ class _AppPreviewState extends State<AppPreview> {
       final posX = node.position.dx;
 
       node.position = Offset(
-        constrainPosition2(
+        constrainPosition(
           position: node.position.dx,
           value: delta.dx,
           size: node.size.dx,
@@ -174,7 +179,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: SCREEN_HEIGHT,
+            max: maxHeight,
             value: delta.dy,
           ));
     } else if (side == SideEnum.bottomRight) {
@@ -192,7 +197,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: SCREEN_HEIGHT,
+            max: maxHeight,
             value: delta.dy,
           ));
     }
@@ -283,11 +288,11 @@ class _AppPreviewState extends State<AppPreview> {
 
                   node.position = Offset(
                     node.position.dx,
-                    constrainPosition2(
+                    constrainPosition(
                         position: node.position.dy,
                         value: details.delta.dy,
                         size: node.size.dy,
-                        max: SCREEN_HEIGHT,
+                        max: maxHeight,
                         isDisableWhenMin: true),
                   );
 
@@ -296,7 +301,7 @@ class _AppPreviewState extends State<AppPreview> {
                       constrainSize(
                         size: node.size.dy,
                         position: node.position.dy,
-                        max: SCREEN_HEIGHT,
+                        max: maxHeight,
                         value: details.delta.dy,
                         isSub: true,
                         prevPosition: posY,
@@ -376,7 +381,7 @@ class _AppPreviewState extends State<AppPreview> {
                       constrainSize(
                         size: node.size.dy,
                         position: node.position.dy,
-                        max: SCREEN_HEIGHT,
+                        max: maxHeight,
                         value: details.delta.dy,
                       ));
                   userActions.repositionAndResize(node, false);
@@ -406,7 +411,7 @@ class _AppPreviewState extends State<AppPreview> {
                   final posX = node.position.dx;
 
                   node.position = Offset(
-                      constrainPosition2(
+                      constrainPosition(
                           position: node.position.dx,
                           value: details.delta.dx,
                           size: node.size.dx,
@@ -453,16 +458,16 @@ class _AppPreviewState extends State<AppPreview> {
         GestureDetector(
           onPanUpdate: (details) {
             node.position = Offset(
-              constrainPosition2(
+              constrainPosition(
                   position: node.position.dx,
                   value: details.delta.dx,
                   size: node.size.dx,
                   max: SCREEN_WIDTH),
-              constrainPosition2(
+              constrainPosition(
                   position: node.position.dy,
                   value: details.delta.dy,
                   size: node.size.dy,
-                  max: SCREEN_HEIGHT),
+                  max: maxHeight),
             );
             userActions.repositionAndResize(node, false);
 
@@ -491,7 +496,7 @@ class _AppPreviewState extends State<AppPreview> {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(SCREEN_WIDTH, SCREEN_HEIGHT, details.data.size);
+            .calculate(SCREEN_WIDTH, maxHeight, details.data.size);
         final placedSchemaNode =
             userActions.placeWidget(details.data, newPosition);
         debouncer =
