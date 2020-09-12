@@ -5,6 +5,7 @@ import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AddScreen.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
+import 'package:flutter_app/store/userActions/DeleteScreen.dart';
 
 class Screens {
   CurrentScreen _current;
@@ -16,6 +17,14 @@ class Screens {
     action.execute();
 
     if (moveToLastAfterCreated) lastScreen();
+    return action;
+  }
+
+  BaseAction delete(SchemaStore deletingScreen) {
+    final action = DeleteScreen(screensStore: all);
+    action.execute(deletingScreen: deletingScreen);
+
+//    if (moveToLastAfterCreated) lastScreen();
     return action;
   }
 

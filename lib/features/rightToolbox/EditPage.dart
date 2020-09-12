@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 
 class EditPage extends StatelessWidget {
@@ -16,6 +17,11 @@ class EditPage extends StatelessWidget {
         ToolboxHeader(
           title: currentScreen.name,
           isRight: true,
+          rightWidget: IconCircleButton(
+              onTap: () {
+                userActions.screens.delete(currentScreen);
+              },
+              assetPath: 'assets/icons/meta/btn-delete.svg'),
         )
       ],
     );
