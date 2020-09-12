@@ -14,10 +14,21 @@ class Screens {
   Screens(this.all, this._current);
 
   BaseAction create({moveToLastAfterCreated = false}) {
-    final action = AddScreen(screensStore: all);
+    final action = AddScreen(components: [], screensStore: all);
     action.execute();
 
     if (moveToLastAfterCreated) lastScreen();
+    return action;
+  }
+
+  BaseAction duplicate({SchemaStore duplicatingScreen}) {
+    final action = AddScreen(
+        name: '${duplicatingScreen.name} Copy',
+        components: duplicatingScreen.components.toList(),
+        bottomTabsVisible: duplicatingScreen.bottomTabsVisible,
+        screensStore: all);
+    action.execute();
+
     return action;
   }
 
@@ -25,7 +36,7 @@ class Screens {
     final action = DeleteScreen(screensStore: all);
     action.execute(deletingScreen: deletingScreen);
 
-//    if (moveToLastAfterCreated) lastScreen();
+    lastScreen();
     return action;
   }
 

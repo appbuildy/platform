@@ -7,11 +7,16 @@ part 'SchemaStore.g.dart';
 class SchemaStore = _SchemaStore with _$SchemaStore;
 
 abstract class _SchemaStore with Store {
-  _SchemaStore({List<SchemaNode> components, name = 'Main', id}) {
+  _SchemaStore(
+      {List<SchemaNode> components,
+      name = 'Main',
+      bool bottomTabsVisible,
+      id}) {
     this.components = ObservableList<SchemaNode>();
     this.components.addAll(components);
     this.name = name;
     this.id = id ?? UniqueKey();
+    this.bottomTabsVisible = bottomTabsVisible ?? true;
   }
   @observable
   UniqueKey id;
@@ -20,7 +25,7 @@ abstract class _SchemaStore with Store {
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();
 
   @observable
-  bool bottomTabsVisible = true;
+  bool bottomTabsVisible;
 
   @action
   void setBottomTabs(bool newValue) {

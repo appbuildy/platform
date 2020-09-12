@@ -21,12 +21,12 @@ class AppTabs extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: userActions.bottomNavigation.tabs
                 .map((tab) => Expanded(
-                      child: Cursor(
-                        cursor: CursorEnum.pointer,
-                        child: GestureDetector(
-                          onTap: () {
-                            userActions.screens.selectById(tab.target);
-                          },
+                      child: GestureDetector(
+                        onTap: () {
+                          userActions.screens.selectById(tab.target);
+                        },
+                        child: Cursor(
+                          cursor: CursorEnum.pointer,
                           child: AppTabItem(
                             tab: tab,
                             bottomNavigation: userActions.bottomNavigation,

@@ -25,7 +25,7 @@ class Pages extends StatelessWidget {
                     userActions.screens.delete(element);
                   },
                   onDuplicate: () {
-                    userActions.screens.delete(element);
+                    userActions.screens.duplicate(duplicatingScreen: element);
                   },
                 ))
             .toList(),
