@@ -3,9 +3,12 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
+import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SchemaNodeButton extends SchemaNode {
+  Debouncer<String> textDebouncer;
+
   SchemaNodeButton({
     Offset position,
     Offset size,
@@ -23,6 +26,8 @@ class SchemaNodeButton extends SchemaNode {
           'Text': SchemaStringProperty('Text', 'Button'),
           'Background': SchemaColorProperty('Background', Colors.indigo)
         };
+    textDebouncer =
+        Debouncer(milliseconds: 500, prevValue: this.properties['Text'].value);
   }
 
   @override
@@ -35,7 +40,16 @@ class SchemaNodeButton extends SchemaNode {
         position: position ?? this.position,
         id: id ?? this.id,
         size: size ?? this.size,
-        properties: properties ?? this.properties);
+        properties: saveProperties ? this._copyProperties() : null);
+  }
+
+  Map<String, SchemaNodeProperty> _copyProperties() {
+    final newProps = Map<String, SchemaNodeProperty>();
+    this.properties.forEach((key, value) {
+      newProps[key] = value.copy();
+    });
+
+    return newProps;
   }
 
   @override
@@ -52,17 +66,21 @@ class SchemaNodeButton extends SchemaNode {
 
   @override
   Widget toEditProps(userActions) {
-//    final debouncer = Debouncer(milliseconds: 700);
-
     return Observer(
       builder: (_) => Column(children: [
         MyTextField(
           key: id,
           defaultValue: properties['Text'].value,
           onChanged: (newText) {
-            userActions.changePropertyTo(SchemaStringProperty('Text', newText));
-//            debouncer
-//                .run(() => changePropTo(SchemaStringProperty('Text', newText)));
+            userActions.changePropertyTo(
+                SchemaStringProperty('Text', newText), false);
+
+            textDebouncer.run(
+                () => userActions.changePropertyTo(
+                    SchemaStringProperty('Text', newText),
+                    true,
+                    textDebouncer.prevValue),
+                newText);
           },
         ),
       ]),

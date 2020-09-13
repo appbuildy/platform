@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 
 class SchemaNodeImage extends SchemaNode {
   SchemaNodeImage(
@@ -12,6 +13,7 @@ class SchemaNodeImage extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(150.0, 100.0);
     this.id = id ?? UniqueKey();
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', 'main')};
     this.properties =
         properties ?? {'Color': SchemaColorProperty('Color', Colors.red)};
   }

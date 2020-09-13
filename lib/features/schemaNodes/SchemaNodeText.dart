@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
@@ -16,6 +17,7 @@ class SchemaNodeText extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(150.0, 100.0);
     this.id = id ?? UniqueKey();
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', 'main')};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Text'),
@@ -92,10 +94,8 @@ class SchemaNodeText extends SchemaNode {
         key: id,
         defaultValue: properties['Text'].value,
         onChanged: (newText) {
-          if (properties['Text'].value != newText) {
-            userActions.changePropertyTo(
-                SchemaStringProperty('Text', newText), false);
-          }
+          userActions.changePropertyTo(
+              SchemaStringProperty('Text', newText), false);
 
           textDebouncer.run(
               () => userActions.changePropertyTo(
