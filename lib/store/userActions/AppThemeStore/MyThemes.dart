@@ -34,7 +34,7 @@ class MyThemes {
       name: 'Dark blue',
       primary: MyColors.mainBlue,
       secondary: MyColors.black,
-      body: MyColors.white,
+      body: MyColors.iconGray,
       bodySecondary: MyColors.iconDarkGray,
       background: MyColors.white);
 }

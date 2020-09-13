@@ -34,6 +34,12 @@ class MyGradients {
     colors: [Color(0xFFFFFFFF), Color(0xFFf1f2f9)],
   );
 
+  static LinearGradient buttonLightBlue = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [Color(0xFFFFFFFF), Color(0xFFddf3ff)],
+  );
+
   static LinearGradient buttonLightWhite = LinearGradient(
     begin: AlignmentDirectional.topCenter,
     end: AlignmentDirectional.bottomCenter,

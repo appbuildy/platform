@@ -3,26 +3,22 @@ import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
-class SelectOption {
-  final String name;
-  final dynamic value;
+import 'SelectOption.dart';
 
-  SelectOption(this.name, this.value);
-}
-
-class MySelect extends StatefulWidget {
+class MyHoverSelect extends StatefulWidget {
   final dynamic selectedValue;
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
 
-  const MySelect({Key key, this.selectedValue, this.options, this.onChange})
+  const MyHoverSelect(
+      {Key key, this.selectedValue, this.options, this.onChange})
       : super(key: key);
 
   @override
-  _MySelectState createState() => _MySelectState();
+  _MyHoverSelectState createState() => _MyHoverSelectState();
 }
 
-class _MySelectState extends State<MySelect> {
+class _MyHoverSelectState extends State<MyHoverSelect> {
   OverlayEntry _overlayEntry;
   bool isOverlayOpen;
 

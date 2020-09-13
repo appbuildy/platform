@@ -104,7 +104,6 @@ class _WithInfoState extends State<WithInfo> {
         builder: (context) => Stack(
               overflow: Overflow.visible,
               children: [
-                // position a shadow because in main it would be cuted
                 GestureDetector(
                   onTap: () {
                     this._overlayEntry.remove();

@@ -5,7 +5,7 @@ import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/MySelect.dart';
+import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -132,7 +132,7 @@ class TabSelected extends StatelessWidget {
                 ),
                 Container(
                   width: 170,
-                  child: MySelect(
+                  child: MyClickSelect(
                       selectedValue: tab.target,
                       onChange: (screen) {
                         tab.target = screen.value;
