@@ -13,6 +13,7 @@ import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 
 class UserActions {
@@ -21,18 +22,24 @@ class UserActions {
   CurrentEditingNode _currentNode;
   Screens _screens;
   BottomNavigationStore _bottomNavigation;
+  AppThemeStore _theme;
 
-  UserActions({Screens screens, BottomNavigationStore bottomNavigationStore}) {
+  UserActions(
+      {Screens screens,
+      BottomNavigationStore bottomNavigationStore,
+      AppThemeStore themeStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
     _bottomNavigation = bottomNavigationStore;
+    _theme = themeStore;
     _screens = screens;
   }
 
   SchemaStore get currentScreen => _screens.current;
   Screens get screens => _screens;
   BottomNavigationStore get bottomNavigation => _bottomNavigation;
+  AppThemeStore get theme => _theme;
 
   void changeActionTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {

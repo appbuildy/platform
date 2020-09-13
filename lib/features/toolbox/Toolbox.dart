@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/toolbox/TooboxSettings/ToolboxSettings.dart';
 import 'package:flutter_app/features/toolbox/ToolboxLayout.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/ToolboxPages.dart';
@@ -17,7 +18,7 @@ class Toolbox extends StatelessWidget {
   Widget buildWidgetOnState() {
     switch (toolboxState) {
       case ToolboxStates.settings:
-        return Container();
+        return ToolboxSettings(userActions: userActions);
       case ToolboxStates.layout:
         return ToolboxLayout();
       case ToolboxStates.pages:

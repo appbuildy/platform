@@ -13,6 +13,8 @@ import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
@@ -26,6 +28,7 @@ class _AppLayoutState extends State<AppLayout> {
   UserActions userActions;
   CurrentScreen currentScreen;
   ScreensStore screensStore;
+  AppThemeStore themeStore;
   BottomNavigationStore bottomNavigationStore;
   bool isPlayMode;
   FocusNode _focusNode;
@@ -40,15 +43,19 @@ class _AppLayoutState extends State<AppLayout> {
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
     bottomNavigationStore = BottomNavigationStore();
+    themeStore = AppThemeStore();
+    themeStore.setTheme(MyThemes.lightBlue);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
     userActions = UserActions(
-        screens: screens, bottomNavigationStore: bottomNavigationStore);
+        screens: screens,
+        bottomNavigationStore: bottomNavigationStore,
+        themeStore: themeStore);
     isPlayMode = false;
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
-    toolboxState = ToolboxStates.layout;
+    toolboxState = ToolboxStates.settings;
   }
 
   void _handleFocusChange() {
@@ -196,7 +203,6 @@ class _AppLayoutState extends State<AppLayout> {
                 ),
               ),
               Container(
-                width: 300,
                 child: GestureDetector(
                   onTap: () {
                     if (_focused) {

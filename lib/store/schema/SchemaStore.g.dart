@@ -83,6 +83,17 @@ mixin _$SchemaStore on _SchemaStore, Store {
   }
 
   @override
+  void setName(String newName) {
+    final _$actionInfo = _$_SchemaStoreActionController.startAction(
+        name: '_SchemaStore.setName');
+    try {
+      return super.setName(newName);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void add(SchemaNode schemaNode) {
     final _$actionInfo =
         _$_SchemaStoreActionController.startAction(name: '_SchemaStore.add');

@@ -19,11 +19,14 @@ class RightToolbox extends StatelessWidget {
       case ToolboxStates.settings:
         return Container();
       case ToolboxStates.layout:
-        return EditProps(
-          userActions: userActions,
+        return Container(
+          width: 300,
+          child: EditProps(
+            userActions: userActions,
+          ),
         );
       case ToolboxStates.pages:
-        return EditPage(userActions: userActions);
+        return Container(width: 300, child: EditPage(userActions: userActions));
       case ToolboxStates.data:
         return Container();
     }

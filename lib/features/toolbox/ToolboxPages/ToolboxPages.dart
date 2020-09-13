@@ -162,31 +162,28 @@ class _ToolboxPagesState extends State<ToolboxPages>
   Widget build(BuildContext context) {
     final maxSlide = 300;
 
-    return SingleChildScrollView(
-      physics: NeverScrollableScrollPhysics(),
-      child: AnimatedBuilder(
-        builder: (BuildContext context, Widget child) {
-          double reversedValue = (_animation.value - 1) * -1;
-          double slideFirst = (-maxSlide / 2) * reversedValue;
-          double slideSecond = maxSlide * (_animation.value);
+    return AnimatedBuilder(
+      builder: (BuildContext context, Widget child) {
+        double reversedValue = (_animation.value - 1) * -1;
+        double slideFirst = (-maxSlide / 2) * reversedValue;
+        double slideSecond = maxSlide * (_animation.value);
 
-          return Stack(children: [
-            Transform(
-                transform: Matrix4.identity()..translate(slideFirst),
-                child: Container(
-                    color: MyColors.white,
-                    width: toolboxWidth,
-                    child: _buildMain())),
-            Transform(
-                transform: Matrix4.identity()..translate(slideSecond),
-                child: Container(
-                    color: MyColors.white,
-                    width: toolboxWidth,
-                    child: _buildSelectedTab()))
-          ]);
-        },
-        animation: _animation,
-      ),
+        return Stack(children: [
+          Transform(
+              transform: Matrix4.identity()..translate(slideFirst),
+              child: Container(
+                  color: MyColors.white,
+                  width: toolboxWidth,
+                  child: _buildMain())),
+          Transform(
+              transform: Matrix4.identity()..translate(slideSecond),
+              child: Container(
+                  color: MyColors.white,
+                  width: toolboxWidth,
+                  child: _buildSelectedTab()))
+        ]);
+      },
+      animation: _animation,
     );
   }
 }

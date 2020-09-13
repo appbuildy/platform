@@ -31,25 +31,26 @@ class ToolboxHeader extends StatelessWidget {
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 10),
+        padding: padding,
         child: Row(
           children: [
-            leftWidget ?? Container(),
+            leftWidget ?? Container(height: 38, width: 38),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: Center(
-                  child: Padding(
-                    padding: padding,
-                    child: Text(
-                      title,
-                      style: MyTextStyle.mediumTitle,
-                    ),
+                  child: Text(
+                    title,
+                    style: MyTextStyle.mediumTitle,
                   ),
                 ),
               ),
             ),
-            rightWidget ?? Container(),
+            rightWidget ??
+                Container(
+                  height: 38,
+                  width: 38,
+                ),
           ],
         ),
       ),
