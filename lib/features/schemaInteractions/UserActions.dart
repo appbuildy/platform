@@ -15,6 +15,7 @@ import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
+import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
@@ -23,6 +24,7 @@ class UserActions {
   Screens _screens;
   BottomNavigationStore _bottomNavigation;
   AppThemeStore _theme;
+  RemoteAttributes _remoteAttributes;
 
   UserActions(
       {Screens screens,
@@ -32,8 +34,11 @@ class UserActions {
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
     _bottomNavigation = bottomNavigationStore;
+    _remoteAttributes = RemoteAttributes();
     _theme = themeStore;
     _screens = screens;
+
+    _remoteAttributes.update();
   }
 
   SchemaStore get currentScreen => _screens.current;
@@ -131,6 +136,10 @@ class UserActions {
 
   void selectNodeForEdit(SchemaNode node) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
+  }
+
+  List<String> remoteAttributeList() {
+    return _remoteAttributes.attributes;
   }
 
   void undo() {

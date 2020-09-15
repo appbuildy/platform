@@ -25,6 +25,10 @@ abstract class _RemoteAttributes with Store {
         base: 'apphUx0izMa4P5pzQ',
         httpClient: http.Client());
     final records = await client.records();
-    print(records);
+    records['records'].forEach((record) {
+      record['fields'].forEach((key, val) {
+        attributes.add("${record['id']}/${key}: ${val}");
+      });
+    });
   }
 }

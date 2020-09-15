@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
@@ -64,6 +66,7 @@ class SchemaNodeText extends SchemaNode {
 
   @override
   Widget toEditProps(userActions) {
+    log(userActions.remoteAttributeList().toString());
     return Column(children: [
       Text(
         'Text Node',
@@ -72,7 +75,7 @@ class SchemaNodeText extends SchemaNode {
       Text('Value'),
       SizedBox(height: 8),
       DropdownButton<String>(
-          value: 'One',
+          value: userActions.remoteAttributeList().first,
           icon: Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
@@ -83,7 +86,8 @@ class SchemaNodeText extends SchemaNode {
           onChanged: (String newValue) {
             print('42');
           },
-          items: <String>['One', 'Two', 'Free', 'Four']
+          items: userActions
+              .remoteAttributeList()
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
