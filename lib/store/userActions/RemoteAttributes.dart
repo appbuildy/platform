@@ -8,7 +8,9 @@ part 'RemoteAttributes.g.dart';
 class RemoteAttributes = _RemoteAttributes with _$RemoteAttributes;
 
 abstract class _RemoteAttributes with Store {
-  _RemoteAttributes(this.attributes);
+  _RemoteAttributes({List<String> attributes = const []}) {
+    this.attributes.addAll(attributes);
+  }
 
   @observable
   ObservableList<String> attributes = ObservableList<String>();

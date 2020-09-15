@@ -16,6 +16,7 @@ import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
+import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class AppLayout extends StatefulWidget {
@@ -35,10 +36,12 @@ class _AppLayoutState extends State<AppLayout> {
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
   ToolboxStates toolboxState;
+  RemoteAttributes remoteAttributes;
 
   @override
   void initState() {
     super.initState();
+    remoteAttributes = RemoteAttributes();
     schemaStore = SchemaStore(components: [], id: MAIN_UNIQUE_KEY);
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
