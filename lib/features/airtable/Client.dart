@@ -1,5 +1,6 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:http/http.dart' as http;
@@ -19,8 +20,9 @@ class Client implements IRemoteTable {
 
   @override
   Future<Map<String, dynamic>> records() async {
-    final response =
-        await this.httpClient.get('${this.apiUrl}${this.base}/${this.table}');
+    final response = await this.httpClient.get(
+        '${this.apiUrl}${this.base}/${this.table}',
+        headers: {HttpHeaders.authorizationHeader: "Bearer ${this.apiKey}"});
     return json.decode(response.body);
   }
 
