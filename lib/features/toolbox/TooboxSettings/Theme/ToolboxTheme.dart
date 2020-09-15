@@ -94,7 +94,7 @@ class ToolboxThemeItem extends StatelessWidget {
                       width: 38,
                       height: 48,
                       decoration: BoxDecoration(
-                          color: theme.primary,
+                          color: theme.primary.color,
                           borderRadius: BorderRadius.circular(8)),
                     ),
                     Positioned(
@@ -104,8 +104,9 @@ class ToolboxThemeItem extends StatelessWidget {
                         width: 38,
                         height: 11,
                         decoration: BoxDecoration(
-                            color: theme.secondary,
-                            border: Border.all(width: 1, color: theme.body),
+                            color: theme.secondary.color,
+                            border:
+                                Border.all(width: 1, color: theme.body.color),
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(6),
                               bottomRight: Radius.circular(6),
@@ -132,14 +133,14 @@ class ToolboxThemeItem extends StatelessWidget {
                       child: Stack(
                         overflow: Overflow.visible,
                         children: [
-                          buildCircle(theme.body),
+                          buildCircle(theme.body.color),
                           Positioned(
                             left: 14,
-                            child: buildCircle(theme.bodySecondary),
+                            child: buildCircle(theme.bodySecondary.color),
                           ),
                           Positioned(
                             left: 28,
-                            child: buildCircle(theme.background),
+                            child: buildCircle(theme.background.color),
                           )
                         ],
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 abstract class SchemaNodeProperty<T>
     implements ChangeableProperty<T>, JsonConvertable {
@@ -47,6 +48,16 @@ class SchemaColorProperty extends SchemaNodeProperty<Color> {
   @override
   SchemaColorProperty copy() {
     return SchemaColorProperty(this.name, value);
+  }
+}
+
+class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
+  SchemaMyThemePropProperty(String name, MyThemeProp value)
+      : super(name, value);
+
+  @override
+  SchemaMyThemePropProperty copy() {
+    return SchemaMyThemePropProperty(this.name, value);
   }
 }
 

@@ -3,13 +3,48 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
+class MyThemeProp {
+  String name;
+  Color color;
+
+  @override
+  bool operator ==(other) {
+    // Dart ensures that operator== isn't called with null
+    // if(other == null) {
+    //   return false;
+    // }
+    if (other is! MyThemeProp) {
+      return false;
+    }
+    return name == (other as MyThemeProp).name;
+  }
+
+  MyThemeProp({this.name, this.color}) : super();
+}
+
 class MyTheme {
   String name;
-  Color primary;
-  Color secondary;
-  Color body;
-  Color bodySecondary;
-  Color background;
+  MyThemeProp primary;
+  MyThemeProp secondary;
+  MyThemeProp body;
+  MyThemeProp bodySecondary;
+  MyThemeProp background;
+
+  MyThemeProp getThemePropByName(String name) {
+    if (name == 'primary') {
+      return primary;
+    } else if (name == 'secondary') {
+      return secondary;
+    } else if (name == 'body') {
+      return body;
+    } else if (name == 'bodySecondary') {
+      return bodySecondary;
+    } else if (name == 'background') {
+      return background;
+    }
+
+    return primary;
+  }
 
   MyTheme(
       {this.name,
@@ -24,17 +59,19 @@ class MyTheme {
 class MyThemes {
   static MyTheme lightBlue = MyTheme(
       name: 'Light Blue',
-      primary: MyColors.mainBlue,
-      secondary: MyColors.white,
-      body: MyColors.gray,
-      bodySecondary: MyColors.iconDarkGray,
-      background: MyColors.black);
+      primary: MyThemeProp(name: 'primary', color: MyColors.mainBlue),
+      secondary: MyThemeProp(name: 'secondary', color: MyColors.white),
+      body: MyThemeProp(name: 'body', color: MyColors.gray),
+      bodySecondary:
+          MyThemeProp(name: 'bodySecondary', color: MyColors.iconDarkGray),
+      background: MyThemeProp(name: 'background', color: MyColors.black));
 
   static MyTheme darkBlue = MyTheme(
       name: 'Dark blue',
-      primary: MyColors.mainBlue,
-      secondary: MyColors.black,
-      body: MyColors.iconGray,
-      bodySecondary: MyColors.iconDarkGray,
-      background: MyColors.white);
+      primary: MyThemeProp(name: 'primary', color: MyColors.black),
+      secondary: MyThemeProp(name: 'secondary', color: MyColors.black),
+      body: MyThemeProp(name: 'body', color: MyColors.gray),
+      bodySecondary:
+          MyThemeProp(name: 'bodySecondary', color: MyColors.iconDarkGray),
+      background: MyThemeProp(name: 'background', color: MyColors.black));
 }

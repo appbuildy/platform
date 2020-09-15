@@ -10,7 +10,7 @@ class ChangeNodeProperty extends BaseAction {
   Function selectNodeForEdit;
   SchemaNode node;
   SchemaStore schemaStore;
-  String oldValue;
+  dynamic oldValue;
   ChangeAction changeAction;
 
   ChangeNodeProperty(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
@@ -7,6 +8,10 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
 
 class ToolboxLayout extends StatelessWidget {
+  final UserActions userActions;
+
+  const ToolboxLayout({Key key, this.userActions}) : super(key: key);
+
   Widget buildTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 11.0),
@@ -16,6 +21,8 @@ class ToolboxLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = userActions.theme;
+
     return Container(
       width: toolboxWidth,
       child: Column(
@@ -40,7 +47,9 @@ class ToolboxLayout extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [ToolboxComponent(schemaNode: SchemaNodeShape())],
+                  children: [
+                    ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme))
+                  ],
                 ),
                 ToolBoxCaption('Listing'),
                 Row(
@@ -50,13 +59,13 @@ class ToolboxLayout extends StatelessWidget {
                       schemaNode: SchemaNodeButton(),
                     ),
                     ToolboxComponent(schemaNode: SchemaNodeText()),
-                    ToolboxComponent(schemaNode: SchemaNodeShape())
+                    ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme))
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ToolboxComponent(schemaNode: SchemaNodeShape()),
+                    ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme)),
                     ToolboxComponent(schemaNode: SchemaNodeText()),
                   ],
                 ),

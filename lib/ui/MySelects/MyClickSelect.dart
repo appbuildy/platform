@@ -102,26 +102,31 @@ class _MyClickSelectState extends State<MyClickSelect> {
             borderRadius: borderRadius,
           );
 
-    return Row(
-      children: [
-        Expanded(
-          child: Cursor(
-            cursor: isActive ? CursorEnum.defaultCursor : CursorEnum.pointer,
-            child: HoverDecoration(
-              hoverDecoration: hoverDecoration,
-              defaultDecoration: defaultDecoration,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 16, top: 9, bottom: 8, right: 16),
+    return Cursor(
+      cursor: isActive ? CursorEnum.defaultCursor : CursorEnum.pointer,
+      child: HoverDecoration(
+        hoverDecoration: hoverDecoration,
+        defaultDecoration: defaultDecoration,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 16, top: 9, bottom: 8, right: 16),
+          child: Row(
+            children: [
+              option.leftWidget != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: option.leftWidget)
+                  : Container(),
+              Expanded(
                 child: Text(
                   option.name,
                   style: MyTextStyle.regularTitle,
                 ),
               ),
-            ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 

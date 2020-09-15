@@ -20,7 +20,7 @@ class Toolbox extends StatelessWidget {
       case ToolboxStates.settings:
         return ToolboxSettings(userActions: userActions);
       case ToolboxStates.layout:
-        return ToolboxLayout();
+        return ToolboxLayout(userActions: userActions);
       case ToolboxStates.pages:
         return ToolboxPages(
           userActions: userActions,
