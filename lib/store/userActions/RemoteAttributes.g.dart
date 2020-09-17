@@ -12,13 +12,13 @@ mixin _$RemoteAttributes on _RemoteAttributes, Store {
   final _$attributesAtom = Atom(name: '_RemoteAttributes.attributes');
 
   @override
-  ObservableList<String> get attributes {
+  ObservableList<IRemoteAttribute> get attributes {
     _$attributesAtom.reportRead();
     return super.attributes;
   }
 
   @override
-  set attributes(ObservableList<String> value) {
+  set attributes(ObservableList<IRemoteAttribute> value) {
     _$attributesAtom.reportWrite(value, super.attributes, () {
       super.attributes = value;
     });
@@ -28,7 +28,7 @@ mixin _$RemoteAttributes on _RemoteAttributes, Store {
       ActionController(name: '_RemoteAttributes');
 
   @override
-  void updateAttributes(ObservableList<String> list) {
+  void updateAttributes(ObservableList<IRemoteAttribute> list) {
     final _$actionInfo = _$_RemoteAttributesActionController.startAction(
         name: '_RemoteAttributes.updateAttributes');
     try {

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
@@ -138,7 +139,7 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  List<String> remoteAttributeList() {
+  List<IRemoteAttribute> remoteAttributeList() {
     return _remoteAttributes.attributes;
   }
 

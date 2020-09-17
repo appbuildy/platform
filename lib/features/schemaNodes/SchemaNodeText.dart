@@ -75,7 +75,7 @@ class SchemaNodeText extends SchemaNode {
       Text('Value'),
       SizedBox(height: 8),
       DropdownButton<String>(
-          value: userActions.remoteAttributeList().first,
+          value: userActions.remoteAttributeList().first.name(),
           icon: Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
@@ -88,6 +88,8 @@ class SchemaNodeText extends SchemaNode {
           },
           items: userActions
               .remoteAttributeList()
+              .map((a) => a.name())
+              .toList()
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
