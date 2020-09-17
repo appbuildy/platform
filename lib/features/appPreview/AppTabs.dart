@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
-import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -30,7 +29,10 @@ class AppTabs extends StatelessWidget {
                           child: AppTabItem(
                             tab: tab,
                             bottomNavigation: userActions.bottomNavigation,
-                            color: userActions.theme.currentTheme.primary.color,
+                            activeColor:
+                                userActions.theme.currentTheme.primary.color,
+                            disabledColor: userActions
+                                .theme.currentTheme.generalSecondary.color,
                             isActive:
                                 tab.target == userActions.currentScreen.id,
                           ),
@@ -49,15 +51,17 @@ class AppTabItem extends StatelessWidget {
   final TabNavigation tab;
   final BottomNavigationStore bottomNavigation;
   final bool isActive;
-  final Color color;
+  final Color activeColor;
+  final Color disabledColor;
 
-  const AppTabItem(
-      {Key key,
-      this.tab,
-      this.isActive = false,
-      this.bottomNavigation,
-      this.color})
-      : super(key: key);
+  const AppTabItem({
+    Key key,
+    this.tab,
+    this.isActive = false,
+    this.bottomNavigation,
+    this.activeColor,
+    this.disabledColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class AppTabItem extends StatelessWidget {
       children: [
         FaIcon(
           tab.icon,
-          color: isActive ? color : MyColors.iconGray,
+          color: isActive ? activeColor : disabledColor,
           size: 28,
         ),
         SizedBox(
@@ -74,7 +78,7 @@ class AppTabItem extends StatelessWidget {
         Text(
           tab.label,
           style: TextStyle(
-              fontSize: 10, color: isActive ? color : MyColors.iconGray),
+              fontSize: 10, color: isActive ? activeColor : disabledColor),
         )
       ],
     );

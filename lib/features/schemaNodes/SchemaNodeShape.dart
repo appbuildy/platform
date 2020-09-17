@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/MySelects/MyColorSelect.dart';
@@ -24,7 +25,8 @@ class SchemaNodeShape extends SchemaNode {
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(
-              'Color', this.theme.currentTheme.primary)
+              'Color', this.theme.currentTheme.primary),
+          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 12),
         };
   }
 
@@ -56,7 +58,13 @@ class SchemaNodeShape extends SchemaNode {
     return Container(
       width: size.dx,
       height: size.dy,
-      color: getThemeColor(theme, properties['Color']),
+      decoration: BoxDecoration(
+          color: getThemeColor(
+            theme,
+            properties['Color'],
+          ),
+          borderRadius:
+              BorderRadius.circular(properties['BorderRadiusValue'].value)),
     );
   }
 
@@ -74,6 +82,13 @@ class SchemaNodeShape extends SchemaNode {
           onChange: (option) {
             userActions.changePropertyTo(
                 SchemaMyThemePropProperty('Color', option.value));
+          },
+        ),
+        EditPropsCorners(
+          value: properties['BorderRadiusValue'].value,
+          onChanged: (int value) {
+            userActions.changePropertyTo(
+                SchemaIntProperty('BorderRadiusValue', value));
           },
         )
       ],

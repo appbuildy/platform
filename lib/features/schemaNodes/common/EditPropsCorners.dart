@@ -32,6 +32,7 @@ class EditPropsCorners extends StatelessWidget {
                       activeTrackColor: MyColors.mainBlue,
                       trackHeight: 3),
                   child: Slider(
+                    max: 0.5,
                     value: value / 100,
                     onChanged: (value) {
                       onChanged((value * 100).toInt());

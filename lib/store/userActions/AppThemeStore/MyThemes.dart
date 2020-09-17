@@ -74,12 +74,12 @@ class MyThemes {
       background: MyThemeProp(name: 'background', color: Color(0xFFffffff)));
 
   static MyTheme darkBlue = MyTheme(
-      name: 'Dark Blue',
+      name: 'Dark',
       primary: MyThemeProp(name: 'primary', color: MyColors.black),
       secondary: MyThemeProp(name: 'secondary', color: MyColors.black),
-      general: MyThemeProp(name: 'general', color: MyColors.black),
+      general: MyThemeProp(name: 'general', color: MyColors.white),
       generalSecondary:
-          MyThemeProp(name: 'generalSecondary', color: MyColors.black),
+          MyThemeProp(name: 'generalSecondary', color: MyColors.gray),
       generalInverted:
           MyThemeProp(name: 'generalInverted', color: MyColors.iconDarkGray),
       separators: MyThemeProp(name: 'separators', color: MyColors.black),
