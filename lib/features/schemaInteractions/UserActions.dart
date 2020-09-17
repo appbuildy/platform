@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
+import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -18,6 +20,8 @@ import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 
+import 'ConnectToRemoteAttribute.dart';
+
 class UserActions {
   ActionsDone _actionsDone;
   ActionsUndone _actionsUndone;
@@ -26,6 +30,7 @@ class UserActions {
   BottomNavigationStore _bottomNavigation;
   AppThemeStore _theme;
   RemoteAttributes _remoteAttributes;
+  RemoteSchemaPropertiesBinding _bindings;
 
   UserActions(
       {Screens screens,
@@ -36,6 +41,7 @@ class UserActions {
     _currentNode = CurrentEditingNode();
     _bottomNavigation = bottomNavigationStore;
     _remoteAttributes = RemoteAttributes();
+    _bindings = RemoteSchemaPropertiesBinding(Client.defaultClient());
     _theme = themeStore;
     _screens = screens;
 
@@ -137,6 +143,13 @@ class UserActions {
 
   void selectNodeForEdit(SchemaNode node) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
+  }
+
+  void bindAttribute(
+      {SchemaNodeProperty property, AirtableAttribute attribute}) {
+    final action = ConnectToRemoteAttribute(_bindings, attribute, property);
+    action.execute();
+    _actionsDone.add(action);
   }
 
   List<IRemoteAttribute> remoteAttributeList() {

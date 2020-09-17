@@ -21,11 +21,7 @@ abstract class _RemoteAttributes with Store {
   void updateAttributes(ObservableList<IRemoteAttribute> list) {}
 
   void update() async {
-    IRemoteTable client = Client(
-        table: 'Table%201',
-        apiKey: 'keyzl1cUgqEpq4zBB',
-        base: 'apphUx0izMa4P5pzQ',
-        httpClient: http.Client());
+    IRemoteTable client = Client.defaultClient();
     final records = await client.records();
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {

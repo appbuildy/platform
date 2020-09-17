@@ -11,6 +11,15 @@ class Client implements IRemoteTable {
   String table;
   String apiUrl;
   http.Client httpClient;
+
+  factory Client.defaultClient() {
+    return Client(
+        table: 'Table%201',
+        apiKey: 'keyzl1cUgqEpq4zBB',
+        base: 'apphUx0izMa4P5pzQ',
+        httpClient: http.Client());
+  }
+
   Client(
       {this.apiUrl = 'https://api.airtable.com/v0/',
       this.table,
