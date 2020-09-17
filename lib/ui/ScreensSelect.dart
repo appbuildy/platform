@@ -20,8 +20,6 @@ class ScreensSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('length screens ${screens.length}');
-    //
     return Column(
       children: buildActions(),
     );

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
-import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/MySelects/MyColorSelect.dart';
+import 'package:flutter_app/utils/getThemeColor.dart';
 
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
@@ -56,9 +56,7 @@ class SchemaNodeShape extends SchemaNode {
     return Container(
       width: size.dx,
       height: size.dy,
-      color: theme.currentTheme
-          .getThemePropByName(properties['Color'].value.name)
-          .color,
+      color: getThemeColor(theme, properties['Color']),
     );
   }
 
@@ -69,62 +67,15 @@ class SchemaNodeShape extends SchemaNode {
 
     return Column(
       children: [
-        Row(children: [
-          GestureDetector(
-            onTap: () {
-              userActions
-                  .changePropertyTo(SchemaColorProperty('Color', Colors.black));
-            },
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(color: Colors.black),
-            ),
-          ),
-        ]),
-        MyClickSelect(
-            selectedValue: properties['Color'].value,
-            onChange: (option) {
-              userActions.changePropertyTo(
-                  SchemaMyThemePropProperty('Color', option.value));
-            },
-            options: [
-              SelectOption(
-                  'Primary',
-                  theme.currentTheme.primary,
-                  Container(
-                      width: 15,
-                      height: 15,
-                      color: theme.currentTheme.primary.color)),
-              SelectOption(
-                  'Secondary',
-                  theme.currentTheme.secondary,
-                  Container(
-                      width: 15,
-                      height: 15,
-                      color: theme.currentTheme.secondary.color)),
-              SelectOption(
-                  'Body',
-                  theme.currentTheme.body,
-                  Container(
-                      width: 15,
-                      height: 15,
-                      color: theme.currentTheme.body.color)),
-              SelectOption(
-                  'Body secondary',
-                  theme.currentTheme.bodySecondary,
-                  Container(
-                      width: 15,
-                      height: 15,
-                      color: theme.currentTheme.bodySecondary.color)),
-              SelectOption(
-                  'Background',
-                  theme.currentTheme.background,
-                  Container(
-                      width: 15,
-                      height: 15,
-                      color: theme.currentTheme.background.color))
-            ])
+        Row(children: []),
+        MyColorSelect(
+          theme: theme,
+          selectedValue: properties['Color'].value,
+          onChange: (option) {
+            userActions.changePropertyTo(
+                SchemaMyThemePropProperty('Color', option.value));
+          },
+        )
       ],
     );
   }

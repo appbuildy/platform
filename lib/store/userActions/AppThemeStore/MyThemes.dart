@@ -9,10 +9,6 @@ class MyThemeProp {
 
   @override
   bool operator ==(other) {
-    // Dart ensures that operator== isn't called with null
-    // if(other == null) {
-    //   return false;
-    // }
     if (other is! MyThemeProp) {
       return false;
     }
@@ -26,8 +22,10 @@ class MyTheme {
   String name;
   MyThemeProp primary;
   MyThemeProp secondary;
-  MyThemeProp body;
-  MyThemeProp bodySecondary;
+  MyThemeProp general;
+  MyThemeProp generalSecondary;
+  MyThemeProp generalInverted;
+  MyThemeProp separators;
   MyThemeProp background;
 
   MyThemeProp getThemePropByName(String name) {
@@ -35,10 +33,14 @@ class MyTheme {
       return primary;
     } else if (name == 'secondary') {
       return secondary;
-    } else if (name == 'body') {
-      return body;
-    } else if (name == 'bodySecondary') {
-      return bodySecondary;
+    } else if (name == 'general') {
+      return general;
+    } else if (name == 'generalSecondary') {
+      return generalSecondary;
+    } else if (name == 'generalInverted') {
+      return generalInverted;
+    } else if (name == 'separators') {
+      return separators;
     } else if (name == 'background') {
       return background;
     }
@@ -50,8 +52,10 @@ class MyTheme {
       {this.name,
       this.primary,
       this.secondary,
-      this.body,
-      this.bodySecondary,
+      this.general,
+      this.generalSecondary,
+      this.generalInverted,
+      this.separators,
       this.background})
       : super();
 }
@@ -59,19 +63,25 @@ class MyTheme {
 class MyThemes {
   static MyTheme lightBlue = MyTheme(
       name: 'Light Blue',
-      primary: MyThemeProp(name: 'primary', color: MyColors.mainBlue),
-      secondary: MyThemeProp(name: 'secondary', color: MyColors.white),
-      body: MyThemeProp(name: 'body', color: MyColors.gray),
-      bodySecondary:
-          MyThemeProp(name: 'bodySecondary', color: MyColors.iconDarkGray),
-      background: MyThemeProp(name: 'background', color: MyColors.black));
+      primary: MyThemeProp(name: 'primary', color: Color(0xFF007aff)),
+      secondary: MyThemeProp(name: 'secondary', color: Color(0xFFd2e7ff)),
+      general: MyThemeProp(name: 'general', color: Color(0xFF111111)),
+      generalSecondary:
+          MyThemeProp(name: 'generalSecondary', color: Color(0xFFbdbdbf)),
+      generalInverted:
+          MyThemeProp(name: 'generalInverted', color: Color(0xFFf9f9f9)),
+      separators: MyThemeProp(name: 'separators', color: Color(0xFFC2C2C6)),
+      background: MyThemeProp(name: 'background', color: Color(0xFFffffff)));
 
   static MyTheme darkBlue = MyTheme(
-      name: 'Dark blue',
+      name: 'Dark Blue',
       primary: MyThemeProp(name: 'primary', color: MyColors.black),
       secondary: MyThemeProp(name: 'secondary', color: MyColors.black),
-      body: MyThemeProp(name: 'body', color: MyColors.gray),
-      bodySecondary:
-          MyThemeProp(name: 'bodySecondary', color: MyColors.iconDarkGray),
+      general: MyThemeProp(name: 'general', color: MyColors.black),
+      generalSecondary:
+          MyThemeProp(name: 'generalSecondary', color: MyColors.black),
+      generalInverted:
+          MyThemeProp(name: 'generalInverted', color: MyColors.iconDarkGray),
+      separators: MyThemeProp(name: 'separators', color: MyColors.black),
       background: MyThemeProp(name: 'background', color: MyColors.black));
 }

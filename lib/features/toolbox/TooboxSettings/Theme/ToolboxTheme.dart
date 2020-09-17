@@ -4,6 +4,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/DarkenColor.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ToolboxTheme extends StatelessWidget {
@@ -50,7 +51,7 @@ class ToolboxThemeItem extends StatelessWidget {
       width: 22,
       height: 22,
       decoration: BoxDecoration(
-          border: Border.all(width: 1, color: MyColors.iconGray),
+          border: Border.all(width: 1, color: color.darken()),
           shape: BoxShape.circle,
           color: color),
     );
@@ -105,8 +106,8 @@ class ToolboxThemeItem extends StatelessWidget {
                         height: 11,
                         decoration: BoxDecoration(
                             color: theme.secondary.color,
-                            border:
-                                Border.all(width: 1, color: theme.body.color),
+                            border: Border.all(
+                                width: 1, color: theme.separators.color),
                             borderRadius: BorderRadius.only(
                               bottomLeft: Radius.circular(6),
                               bottomRight: Radius.circular(6),
@@ -133,15 +134,31 @@ class ToolboxThemeItem extends StatelessWidget {
                       child: Stack(
                         overflow: Overflow.visible,
                         children: [
-                          buildCircle(theme.body.color),
+                          buildCircle(theme.primary.color),
                           Positioned(
                             left: 14,
-                            child: buildCircle(theme.bodySecondary.color),
+                            child: buildCircle(theme.secondary.color),
                           ),
                           Positioned(
                             left: 28,
+                            child: buildCircle(theme.general.color),
+                          ),
+                          Positioned(
+                            left: 42,
+                            child: buildCircle(theme.generalSecondary.color),
+                          ),
+                          Positioned(
+                            left: 56,
+                            child: buildCircle(theme.generalInverted.color),
+                          ),
+                          Positioned(
+                            left: 70,
+                            child: buildCircle(theme.separators.color),
+                          ),
+                          Positioned(
+                            left: 84,
                             child: buildCircle(theme.background.color),
-                          )
+                          ),
                         ],
                       ),
                     ),

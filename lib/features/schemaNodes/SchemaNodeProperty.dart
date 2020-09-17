@@ -42,6 +42,24 @@ class SchemaStringProperty extends SchemaNodeProperty {
   }
 }
 
+class SchemaIntProperty extends SchemaNodeProperty {
+  SchemaIntProperty(String name, int value) : super(name, value);
+
+  @override
+  SchemaIntProperty copy() {
+    return SchemaIntProperty(this.name, value);
+  }
+}
+
+class SchemaDoubleProperty extends SchemaNodeProperty {
+  SchemaDoubleProperty(String name, double value) : super(name, value);
+
+  @override
+  SchemaDoubleProperty copy() {
+    return SchemaDoubleProperty(this.name, value);
+  }
+}
+
 class SchemaColorProperty extends SchemaNodeProperty<Color> {
   SchemaColorProperty(String name, Color value) : super(name, value);
 

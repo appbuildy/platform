@@ -50,11 +50,18 @@ class _MyClickSelectState extends State<MyClickSelect> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                    child: Text(
-                  selectedOption.name,
-                  style: MyTextStyle.regularTitle,
-                )),
+                selectedOption.leftWidget != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: selectedOption.leftWidget)
+                    : Container(),
+                Expanded(
+                  child: Container(
+                      child: Text(
+                    selectedOption.name,
+                    style: MyTextStyle.regularTitle,
+                  )),
+                ),
                 Image.network(
                   'assets/icons/meta/expand-vertical.svg',
                   color: MyColors.iconGray,

@@ -39,7 +39,7 @@ class ToolboxLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(
-                      schemaNode: SchemaNodeButton(),
+                      schemaNode: SchemaNodeButton(theme: theme),
                     ),
                     ToolboxComponent(schemaNode: SchemaNodeText()),
                     ToolboxComponent(schemaNode: SchemaNodeImage()),
@@ -56,7 +56,7 @@ class ToolboxLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(
-                      schemaNode: SchemaNodeButton(),
+                      schemaNode: SchemaNodeButton(theme: theme),
                     ),
                     ToolboxComponent(schemaNode: SchemaNodeText()),
                     ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme))
@@ -130,9 +130,8 @@ class ToolboxComponent extends StatelessWidget {
 
     return Draggable<SchemaNode>(
       data: schemaNode,
-      feedback: Material(
-          borderRadius: BorderRadius.circular(6),
-          child: Opacity(opacity: 0.5, child: component)),
+      feedback:
+          Material(child: Opacity(opacity: 0.4, child: schemaNode.toWidget())),
       childWhenDragging: Opacity(
           opacity: 0.5,
           child: Padding(

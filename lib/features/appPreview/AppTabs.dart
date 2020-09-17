@@ -30,6 +30,7 @@ class AppTabs extends StatelessWidget {
                           child: AppTabItem(
                             tab: tab,
                             bottomNavigation: userActions.bottomNavigation,
+                            color: userActions.theme.currentTheme.primary.color,
                             isActive:
                                 tab.target == userActions.currentScreen.id,
                           ),
@@ -48,9 +49,14 @@ class AppTabItem extends StatelessWidget {
   final TabNavigation tab;
   final BottomNavigationStore bottomNavigation;
   final bool isActive;
+  final Color color;
 
   const AppTabItem(
-      {Key key, this.tab, this.isActive = false, this.bottomNavigation})
+      {Key key,
+      this.tab,
+      this.isActive = false,
+      this.bottomNavigation,
+      this.color})
       : super(key: key);
 
   @override
@@ -59,7 +65,7 @@ class AppTabItem extends StatelessWidget {
       children: [
         FaIcon(
           tab.icon,
-          color: isActive ? bottomNavigation.color : MyColors.iconGray,
+          color: isActive ? color : MyColors.iconGray,
           size: 28,
         ),
         SizedBox(
@@ -68,8 +74,7 @@ class AppTabItem extends StatelessWidget {
         Text(
           tab.label,
           style: TextStyle(
-              fontSize: 10,
-              color: isActive ? bottomNavigation.color : MyColors.iconGray),
+              fontSize: 10, color: isActive ? color : MyColors.iconGray),
         )
       ],
     );
