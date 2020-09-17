@@ -75,7 +75,8 @@ class SchemaNodeText extends SchemaNode {
       SizedBox(height: 16),
       Text('Value'),
       SizedBox(height: 8),
-      RemoteAttributesSelect(userActions: userActions),
+      RemoteAttributesSelect(
+          property: properties['Text'], userActions: userActions),
       MyTextField(
         key: id,
         defaultValue: properties['Text'].value,

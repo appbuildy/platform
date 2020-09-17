@@ -1,8 +1,9 @@
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 
 abstract class IRemoteAttribute {
   String name();
-  void bind(RemoteSchemaPropertiesBinding bindings);
+  void bind(RemoteSchemaPropertiesBinding bindings, SchemaNodeProperty prop);
 }
 
 class AirtableAttribute implements IRemoteAttribute {
@@ -11,7 +12,9 @@ class AirtableAttribute implements IRemoteAttribute {
   AirtableAttribute(this.id, this.field);
 
   @override
-  void bind(RemoteSchemaPropertiesBinding bindings) {}
+  void bind(RemoteSchemaPropertiesBinding bindings, SchemaNodeProperty prop) {
+    bindings.addMapping(prop, this);
+  }
 
   @override
   String name() {

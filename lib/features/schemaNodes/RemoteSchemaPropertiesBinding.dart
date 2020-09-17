@@ -1,4 +1,5 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
+import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class RemoteSchemaPropertiesBinding {
@@ -10,8 +11,8 @@ class RemoteSchemaPropertiesBinding {
     this.mappings = mappings ?? {};
   }
 
-  void addMapping(String id, String name, SchemaNodeProperty prop) {
-    mappings['$id/$name'] = prop;
+  void addMapping(SchemaNodeProperty prop, AirtableAttribute attribute) {
+    mappings['${attribute.id}/${attribute.field}'] = prop;
   }
 
   Future<Map<String, SchemaNodeProperty>> update() async {
@@ -23,6 +24,7 @@ class RemoteSchemaPropertiesBinding {
         final mapping = mappings[key];
 
         if (mapping != null) {
+          print(mapping);
           mapping.value = fieldVal;
         }
       });

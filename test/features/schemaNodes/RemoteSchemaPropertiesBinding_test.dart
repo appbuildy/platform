@@ -1,4 +1,5 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
+import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -25,10 +26,11 @@ void main() {
   test('update() fetches remote data using table', () async {
     final id = '123';
     final fieldName = 'Test';
+    final attribute = AirtableAttribute(id, fieldName);
     final prop = SchemaStringProperty('ButtonText', '1');
     final mockedTable = MockRemoteTable();
     final remoteProps = RemoteSchemaPropertiesBinding(mockedTable);
-    remoteProps.addMapping('123', 'Test', prop);
+    remoteProps.addMapping(prop, attribute);
 
     await remoteProps.update();
 
