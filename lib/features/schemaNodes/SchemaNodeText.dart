@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/rightToolbox/RemoteAttributeSelect.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
@@ -74,28 +75,7 @@ class SchemaNodeText extends SchemaNode {
       SizedBox(height: 16),
       Text('Value'),
       SizedBox(height: 8),
-      DropdownButton<String>(
-          value: userActions.remoteAttributeList().first.name(),
-          icon: Icon(Icons.arrow_downward),
-          iconSize: 24,
-          elevation: 16,
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
-          onChanged: (String newValue) {
-            print('42');
-          },
-          items: userActions
-              .remoteAttributeList()
-              .map((a) => a.name())
-              .toList()
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList()),
+      RemoteAttributesSelect(userActions: userActions),
       MyTextField(
         key: id,
         defaultValue: properties['Text'].value,
