@@ -48,7 +48,7 @@ class MyColorSelect extends StatelessWidget {
             buildColorPreview(theme.currentTheme.general.color),
           ),
           SelectOption(
-            'General Secondary',
+            'General Second',
             theme.currentTheme.generalSecondary,
             buildColorPreview(theme.currentTheme.generalSecondary.color),
           ),

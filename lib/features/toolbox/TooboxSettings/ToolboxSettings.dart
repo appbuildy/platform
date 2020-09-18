@@ -59,12 +59,10 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
       itemWidget = Container(
         color: Colors.transparent,
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
+          Image.network(
+            'assets/icons/settings/theme.svg',
             width: 38,
             height: 38,
-            decoration: BoxDecoration(
-                gradient: MyGradients.mainLightBlue,
-                borderRadius: BorderRadius.circular(8)),
           ),
           SizedBox(
             width: 12,

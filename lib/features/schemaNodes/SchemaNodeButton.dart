@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
 class SchemaNodeButton extends SchemaNode {
   Debouncer<String> textDebouncer;
@@ -87,31 +87,29 @@ class SchemaNodeButton extends SchemaNode {
 
   @override
   Widget toEditProps(userActions) {
-    return Observer(
-      builder: (_) => Column(children: [
-        MyTextField(
-          key: id,
-          defaultValue: properties['Text'].value,
-          onChanged: (newText) {
-            userActions.changePropertyTo(
-                SchemaStringProperty('Text', newText), false);
-
-            textDebouncer.run(
-                () => userActions.changePropertyTo(
-                    SchemaStringProperty('Text', newText),
-                    true,
-                    textDebouncer.prevValue),
-                newText);
-          },
-        ),
-        EditPropsCorners(
-          value: properties['BorderRadiusValue'].value,
-          onChanged: (int value) {
-            userActions.changePropertyTo(
-                SchemaIntProperty('BorderRadiusValue', value));
-          },
-        ),
-      ]),
-    );
+    return Column(children: [
+      EditPropsText(
+          id: id,
+          properties: properties,
+          propName: 'Text',
+          userActions: userActions,
+          textDebouncer: textDebouncer),
+      SizedBox(
+        height: 10,
+      ),
+      EditPropsColor(
+        theme: theme,
+        properties: properties,
+        userActions: userActions,
+        propName: 'BackgroundColor',
+      ),
+      EditPropsCorners(
+        value: properties['BorderRadiusValue'].value,
+        onChanged: (int value) {
+          userActions
+              .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+        },
+      ),
+    ]);
   }
 }

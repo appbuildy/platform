@@ -41,7 +41,7 @@ class ToolboxLayout extends StatelessWidget {
                     ToolboxComponent(
                       schemaNode: SchemaNodeButton(theme: theme),
                     ),
-                    ToolboxComponent(schemaNode: SchemaNodeText()),
+                    ToolboxComponent(schemaNode: SchemaNodeText(theme: theme)),
                     ToolboxComponent(schemaNode: SchemaNodeImage()),
                   ],
                 ),
@@ -58,7 +58,7 @@ class ToolboxLayout extends StatelessWidget {
                     ToolboxComponent(
                       schemaNode: SchemaNodeButton(theme: theme),
                     ),
-                    ToolboxComponent(schemaNode: SchemaNodeText()),
+                    ToolboxComponent(schemaNode: SchemaNodeText(theme: theme)),
                     ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme))
                   ],
                 ),
@@ -66,7 +66,7 @@ class ToolboxLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme)),
-                    ToolboxComponent(schemaNode: SchemaNodeText()),
+                    ToolboxComponent(schemaNode: SchemaNodeText(theme: theme)),
                   ],
                 ),
               ],

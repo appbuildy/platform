@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/ui/MySelects/MyColorSelect.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
 class SchemaNodeShape extends SchemaNode {
@@ -70,19 +68,13 @@ class SchemaNodeShape extends SchemaNode {
 
   @override
   Widget toEditProps(userActions) {
-//    final theme = userActions.theme.currentTheme;
-    log('theme name bro ${theme.currentTheme.name}');
-
     return Column(
       children: [
-        Row(children: []),
-        MyColorSelect(
+        EditPropsColor(
           theme: theme,
-          selectedValue: properties['Color'].value,
-          onChange: (option) {
-            userActions.changePropertyTo(
-                SchemaMyThemePropProperty('Color', option.value));
-          },
+          properties: properties,
+          propName: 'Color',
+          userActions: userActions,
         ),
         EditPropsCorners(
           value: properties['BorderRadiusValue'].value,

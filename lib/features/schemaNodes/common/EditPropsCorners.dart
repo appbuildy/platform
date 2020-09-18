@@ -19,7 +19,7 @@ class EditPropsCorners extends StatelessWidget {
           'Corners',
           style: MyTextStyle.regularCaption,
         ),
-        SizedBox(width: 10),
+        SizedBox(width: 0),
         Expanded(
           child: Row(
             children: [
@@ -41,7 +41,7 @@ class EditPropsCorners extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 24,
+                width: 18,
                 child: Text(
                   value.toString(),
                   textAlign: TextAlign.right,
