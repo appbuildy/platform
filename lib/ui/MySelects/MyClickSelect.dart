@@ -9,9 +9,14 @@ class MyClickSelect extends StatefulWidget {
   final dynamic selectedValue;
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
+  final String placeholder;
 
   const MyClickSelect(
-      {Key key, this.selectedValue, this.options, this.onChange})
+      {Key key,
+      this.selectedValue,
+      this.options,
+      this.onChange,
+      this.placeholder})
       : super(key: key);
 
   @override
@@ -35,9 +40,11 @@ class _MyClickSelectState extends State<MyClickSelect> {
         gradient: MyGradients.buttonLightBlue,
         border: Border.all(width: 1, color: MyColors.borderGray));
 
-    final selectedOption = widget.options
-        .where((option) => option.value == widget.selectedValue)
-        .first;
+    final dynamic selectedOption = widget.selectedValue != null
+        ? widget.options
+            .where((option) => option.value == widget.selectedValue)
+            .first
+        : null;
 
     return Cursor(
         cursor: CursorEnum.pointer,
@@ -50,7 +57,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                selectedOption.leftWidget != null
+                (selectedOption != null && selectedOption.leftWidget != null)
                     ? Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: selectedOption.leftWidget)
@@ -58,7 +65,9 @@ class _MyClickSelectState extends State<MyClickSelect> {
                 Expanded(
                   child: Container(
                       child: Text(
-                    selectedOption.name,
+                    selectedOption != null
+                        ? selectedOption.name
+                        : widget.placeholder,
                     style: MyTextStyle.regularTitle,
                   )),
                 ),

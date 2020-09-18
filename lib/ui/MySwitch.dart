@@ -9,8 +9,8 @@ class MySwitch extends StatefulWidget {
 
   const MySwitch({
     Key key,
-    this.value,
-    this.onTap,
+    @required this.value,
+    @required this.onTap,
   }) : super(key: key);
 
   @override

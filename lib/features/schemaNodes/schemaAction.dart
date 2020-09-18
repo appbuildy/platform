@@ -1,17 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 import 'JsonConvertable.dart';
 
-class GoToScreenAction extends SchemaNodeProperty<String>
+class GoToScreenAction extends SchemaNodeProperty<UniqueKey>
     implements Functionable, JsonConvertable {
-  GoToScreenAction(String name, String value) : super(name, value) {
+  GoToScreenAction(String name, UniqueKey value) : super(name, value) {
     this.type = SchemaActionType.goToScreen;
+    this.name = name;
+    this.value = value;
   }
 
   Function toFunction(UserActions userActions) {
-    return () => userActions.screens.selectByName(this.value);
+    return () => userActions.screens.selectById(this.value);
   }
 
   @override

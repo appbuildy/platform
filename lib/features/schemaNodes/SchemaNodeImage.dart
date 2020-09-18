@@ -13,7 +13,7 @@ class SchemaNodeImage extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(150.0, 100.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', 'main')};
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties =
         properties ?? {'Color': SchemaColorProperty('Color', Colors.red)};
   }

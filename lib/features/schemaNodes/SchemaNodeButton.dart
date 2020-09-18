@@ -26,7 +26,7 @@ class SchemaNodeButton extends SchemaNode {
     this.size = size ?? Offset(150.0, 100.0);
     this.id = id ?? UniqueKey();
     this.theme = theme;
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', 'main')};
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Button'),

@@ -27,7 +27,7 @@ class SchemaNodeText extends SchemaNode {
     this.id = id ?? UniqueKey();
     this.theme = theme;
 
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', 'main')};
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Text'),
