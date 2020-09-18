@@ -19,9 +19,14 @@ class AppPreview extends StatefulWidget {
   final UserActions userActions;
   final bool isPlayMode;
   final Function selectPlayModeToFalse;
+  final Function selectStateToLayout;
 
   const AppPreview(
-      {Key key, this.userActions, this.isPlayMode, this.selectPlayModeToFalse})
+      {Key key,
+      this.userActions,
+      this.isPlayMode,
+      this.selectPlayModeToFalse,
+      this.selectStateToLayout})
       : super(key: key);
 
   @override
@@ -551,6 +556,8 @@ class _AppPreviewState extends State<AppPreview> {
                                       debouncer = Debouncer(
                                           milliseconds: 500,
                                           prevValue: node.copy());
+                                      widget
+                                          .selectStateToLayout(); // select menu layout
                                     }
                                   },
                                   child: widget.isPlayMode

@@ -160,6 +160,9 @@ class _AppLayoutState extends State<AppLayout> {
                                             right: 30),
                                         child: AppPreview(
                                           isPlayMode: isPlayMode,
+                                          selectStateToLayout: () {
+                                            selectState(ToolboxStates.layout);
+                                          },
                                           userActions: userActions,
                                           selectPlayModeToFalse: () {
                                             if (isPlayMode == true) {
