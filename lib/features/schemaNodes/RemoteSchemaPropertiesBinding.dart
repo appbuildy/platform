@@ -4,18 +4,21 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class RemoteSchemaPropertiesBinding {
   IRemoteTable remoteTable;
-  Map<String, SchemaNodeProperty> mappings;
+  Map<String, IRemoteAttribute> mappings;
+
   RemoteSchemaPropertiesBinding(IRemoteTable remoteTable,
-      [Map<String, SchemaNodeProperty> mappings]) {
+      [Map<String, IRemoteAttribute> mappings]) {
     this.remoteTable = remoteTable;
     this.mappings = mappings ?? {};
   }
 
   void addMapping(SchemaNodeProperty prop, AirtableAttribute attribute) {
-    mappings['${attribute.id}/${attribute.field}'] = prop;
+    final key = '${attribute.id}/${attribute.field}';
+    prop.remoteAttribute = attribute;
+    mappings[key] = attribute;
   }
 
-  Future<Map<String, SchemaNodeProperty>> update() async {
+  Future<Map<String, IRemoteAttribute>> update() async {
     final response = await this.remoteTable.records();
     final records = response['records'];
     records.forEach((record) {

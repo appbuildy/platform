@@ -35,5 +35,6 @@ void main() {
     await remoteProps.update();
 
     expect(prop.value, equals('333'));
+    expect(prop.remoteAttr, isNotNull);
   });
 }

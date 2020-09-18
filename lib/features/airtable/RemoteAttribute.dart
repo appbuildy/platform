@@ -2,8 +2,13 @@ import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.d
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 
 abstract class IRemoteAttribute {
+  String id;
+  String field;
+
   String name();
   void bind(RemoteSchemaPropertiesBinding bindings, SchemaNodeProperty prop);
+  String get value => value;
+  set value(String val) => value = val;
 }
 
 class AirtableAttribute implements IRemoteAttribute {
@@ -20,4 +25,7 @@ class AirtableAttribute implements IRemoteAttribute {
   String name() {
     return "$id/$field";
   }
+
+  @override
+  String value;
 }
