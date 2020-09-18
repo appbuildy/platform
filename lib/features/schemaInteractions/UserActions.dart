@@ -69,7 +69,11 @@ class UserActions {
   }
 
   void updateRemoteAttributeValues() {
-    this._bindings.update();
+    if (currentScreen != null && selectedNode() != null) {
+      this._bindings.update(currentScreen, selectedNode());
+    } else {
+      this._bindings.update();
+    }
   }
 
   void changePropertyTo(ChangeableProperty prop,
@@ -84,6 +88,10 @@ class UserActions {
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
     }
+  }
+
+  void rerenderNode() {
+    currentScreen.update(selectedNode());
   }
 
   void copyNode(

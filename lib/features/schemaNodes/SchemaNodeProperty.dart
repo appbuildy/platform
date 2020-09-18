@@ -22,7 +22,9 @@ abstract class SchemaNodeProperty<T>
   Future<T> get remoteValue async => value;
   set remoteAttribute(IRemoteAttribute attribute) => remoteAttr = attribute;
   set value(T val) => _value = val;
-  T get value => remoteAttr != null ? remoteAttr.value : _value;
+  T get value => remoteAttr != null && remoteAttr.value != null
+      ? remoteAttr.value
+      : _value;
 
   @override
   Map<String, dynamic> toJson() {

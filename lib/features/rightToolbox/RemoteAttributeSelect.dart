@@ -12,8 +12,11 @@ class RemoteAttributesSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final val = property.remoteAttr != null
+        ? property.remoteAttr
+        : userActions.remoteAttributeList().first;
     return DropdownButton<IRemoteAttribute>(
-        value: userActions.remoteAttributeList().first,
+        value: val,
         icon: Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,

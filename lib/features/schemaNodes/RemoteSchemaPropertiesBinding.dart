@@ -1,6 +1,8 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
 
 class RemoteSchemaPropertiesBinding {
   IRemoteTable remoteTable;
@@ -18,7 +20,8 @@ class RemoteSchemaPropertiesBinding {
     mappings[key] = attribute;
   }
 
-  Future<Map<String, IRemoteAttribute>> update() async {
+  Future<Map<String, IRemoteAttribute>> update(
+      [SchemaStore screen, SchemaNode node]) async {
     final response = await this.remoteTable.records();
     final records = response['records'];
     records.forEach((record) {
@@ -27,11 +30,14 @@ class RemoteSchemaPropertiesBinding {
         final mapping = mappings[key];
 
         if (mapping != null) {
-          print(mapping);
           mapping.value = fieldVal;
+          mapping.updateValues();
         }
       });
     });
+    if (screen != null) {
+      screen.update(node);
+    }
     return mappings;
   }
 }
