@@ -21,7 +21,10 @@ class RemoteAttributesSelect extends StatelessWidget {
           height: 2,
           color: Colors.deepPurpleAccent,
         ),
-        onChanged: (IRemoteAttribute newValue) {},
+        onChanged: (IRemoteAttribute newValue) {
+          userActions.bindAttribute(property: property, attribute: newValue);
+          userActions.updateRemoteAttributeValues();
+        },
         items: userActions
             .remoteAttributeList()
             .map<DropdownMenuItem<IRemoteAttribute>>((IRemoteAttribute value) {

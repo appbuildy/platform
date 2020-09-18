@@ -68,6 +68,10 @@ class UserActions {
     }
   }
 
+  void updateRemoteAttributeValues() {
+    this._bindings.update();
+  }
+
   void changePropertyTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {
     final action = ChangeNodeProperty(
