@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySlider.dart';
 
 class EditPropsCorners extends StatelessWidget {
   final double value;
@@ -27,20 +28,12 @@ class EditPropsCorners extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: SliderTheme(
-                      data: SliderThemeData(
-                          thumbColor: Colors.white,
-                          overlayColor: Colors.transparent,
-                          inactiveTrackColor: Color(0xffaab5c8),
-                          activeTrackColor: MyColors.mainBlue,
-                          trackHeight: 3),
-                      child: Slider(
-                        max: 0.5,
-                        value: value / 100,
-                        onChanged: (value) {
-                          onChanged((value * 100).toInt());
-                        },
-                      ),
+                    child: MySlider(
+                      max: 0.5,
+                      value: value / 100,
+                      onChanged: (value) {
+                        onChanged((value * 100).toInt());
+                      },
                     ),
                   ),
                   SizedBox(
