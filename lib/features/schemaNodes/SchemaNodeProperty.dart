@@ -90,6 +90,16 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
   }
 }
 
+class SchemaStringListProperty extends SchemaNodeProperty<List<String>> {
+  SchemaStringListProperty(String name, List<String> value)
+      : super(name, value);
+
+  @override
+  SchemaStringListProperty copy() {
+    return SchemaStringListProperty(this.name, value);
+  }
+}
+
 class SchemaRemoteStringProperty extends SchemaNodeProperty<String> {
   RemoteTextValue remoteWrapper;
 
