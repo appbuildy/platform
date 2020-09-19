@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
@@ -32,7 +33,7 @@ void main() {
         node: text,
         newProp: newProp);
 
-    goToScreen = GoToScreenAction('Tap', 'Screen2');
+    goToScreen = GoToScreenAction('Tap', UniqueKey());
     changeBtnAction = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
         schemaStore: schemaStore,
