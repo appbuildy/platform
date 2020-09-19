@@ -3,15 +3,19 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
+import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ToolboxLayout extends StatelessWidget {
   final UserActions userActions;
+  final CurrentUserStore currentUserStore;
 
-  const ToolboxLayout({Key key, this.userActions}) : super(key: key);
+  const ToolboxLayout({Key key, this.currentUserStore, this.userActions})
+      : super(key: key);
 
   Widget buildTitle(String title) {
     return Padding(
@@ -28,9 +32,11 @@ class ToolboxLayout extends StatelessWidget {
       width: toolboxWidth,
       child: Column(
         children: [
-          ToolboxTitle(
-            'Layout',
-          ),
+          Observer(builder: (BuildContext context) {
+            return ToolboxTitle(
+              currentUserStore.currentUser.name,
+            );
+          }),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 10),
             child: Column(

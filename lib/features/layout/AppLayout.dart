@@ -8,9 +8,11 @@ import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
@@ -29,6 +31,7 @@ class _AppLayoutState extends State<AppLayout> {
   CurrentScreen currentScreen;
   ScreensStore screensStore;
   AppThemeStore themeStore;
+  CurrentUserStore currentUserStore;
   BottomNavigationStore bottomNavigationStore;
   bool isPlayMode;
   FocusNode _focusNode;
@@ -56,7 +59,9 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
+    currentUserStore = CurrentUserStore();
 
+    currentUserStore.tryLogIn(AuthenticationService.defaultAuth());
     userActions.updateRemoteAttributeValues();
   }
 
@@ -125,6 +130,7 @@ class _AppLayoutState extends State<AppLayout> {
                   }
                 },
                 child: Toolbox(
+                    currentUserStore: currentUserStore,
                     toolboxState: toolboxState,
                     selectState: selectState,
                     userActions: userActions),
