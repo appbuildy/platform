@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
+import 'package:flutter_app/ui/IconHover.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class IconCircleButton extends StatelessWidget {
@@ -44,45 +45,6 @@ class IconCircleButton extends StatelessWidget {
                   child: icon,
                 ),
         ),
-      ),
-    );
-  }
-}
-
-class IconHover extends StatefulWidget {
-  final String assetPath;
-
-  const IconHover({Key key, this.assetPath}) : super(key: key);
-
-  @override
-  _IconHoverState createState() => _IconHoverState();
-}
-
-class _IconHoverState extends State<IconHover> {
-  bool isHover;
-
-  @override
-  void initState() {
-    super.initState();
-    isHover = false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onHover: (e) {
-        setState(() {
-          isHover = true;
-        });
-      },
-      onExit: (e) {
-        setState(() {
-          isHover = false;
-        });
-      },
-      child: Image.network(
-        widget.assetPath,
-        color: isHover ? null : MyColors.iconDarkGray,
       ),
     );
   }

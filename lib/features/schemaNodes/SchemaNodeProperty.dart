@@ -59,6 +59,24 @@ class SchemaIntProperty extends SchemaNodeProperty {
   }
 }
 
+class SchemaFontWeightProperty extends SchemaNodeProperty {
+  SchemaFontWeightProperty(String name, FontWeight value) : super(name, value);
+
+  @override
+  SchemaFontWeightProperty copy() {
+    return SchemaFontWeightProperty(this.name, value);
+  }
+}
+
+class SchemaTextAlignProperty extends SchemaNodeProperty {
+  SchemaTextAlignProperty(String name, TextAlign value) : super(name, value);
+
+  @override
+  SchemaTextAlignProperty copy() {
+    return SchemaTextAlignProperty(this.name, value);
+  }
+}
+
 class SchemaDoubleProperty extends SchemaNodeProperty {
   SchemaDoubleProperty(String name, double value) : super(name, value);
 
