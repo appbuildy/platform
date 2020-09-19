@@ -50,6 +50,15 @@ class SchemaStringProperty extends SchemaNodeProperty {
   }
 }
 
+class SchemaBoolProperty extends SchemaNodeProperty {
+  SchemaBoolProperty(String name, bool value) : super(name, value);
+
+  @override
+  SchemaBoolProperty copy() {
+    return SchemaBoolProperty(this.name, value);
+  }
+}
+
 class SchemaIntProperty extends SchemaNodeProperty {
   SchemaIntProperty(String name, int value) : super(name, value);
 

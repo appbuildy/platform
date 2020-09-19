@@ -39,7 +39,21 @@ class SchemaNodeImage extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return SchemaNodeImage(position: position);
+    return SchemaNodeImage(
+      position: position ?? this.position,
+      id: id ?? this.id,
+      size: size ?? this.size,
+      properties: saveProperties ? this._copyProperties() : null,
+    );
+  }
+
+  Map<String, SchemaNodeProperty> _copyProperties() {
+    final newProps = Map<String, SchemaNodeProperty>();
+    this.properties.forEach((key, value) {
+      newProps[key] = value.copy();
+    });
+
+    return newProps;
   }
 
   BoxFit getFitOnString(String fit) {

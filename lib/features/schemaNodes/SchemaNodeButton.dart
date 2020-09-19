@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
@@ -30,10 +33,15 @@ class SchemaNodeButton extends SchemaNode {
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Button'),
-          'TextColor': SchemaMyThemePropProperty(
-              'TextColor', this.theme.currentTheme.general),
+          'FontColor': SchemaMyThemePropProperty(
+              'FontColor', this.theme.currentTheme.general),
+          'FontSize': SchemaIntProperty('FontSize', 16),
+          'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
+          'TextAlign': SchemaTextAlignProperty('TextAlign', TextAlign.center),
+          'Border': SchemaBoolProperty('Border', true),
           'BorderColor': SchemaMyThemePropProperty(
               'BorderColor', this.theme.currentTheme.primary),
+          'BorderWidth': SchemaIntProperty('BorderWidth', 1),
           'BackgroundColor': SchemaMyThemePropProperty(
               'BackgroundColor', this.theme.currentTheme.background),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 12),
@@ -74,14 +82,21 @@ class SchemaNodeButton extends SchemaNode {
           color: getThemeColor(theme, properties['BackgroundColor']),
           borderRadius:
               BorderRadius.circular(properties['BorderRadiusValue'].value),
-          border: Border.all(
-              width: 1,
-              color: getThemeColor(theme, properties['BorderColor']))),
+          border: properties['Border'].value
+              ? Border.all(
+                  width: properties['BorderWidth'].value,
+                  color: getThemeColor(theme, properties['BorderColor']))
+              : null),
       child: Center(
-          child: Text(
-        properties['Text'].value,
-        style: TextStyle(color: getThemeColor(theme, properties['TextColor'])),
-      )),
+        child: Text(
+          properties['Text'].value,
+          textAlign: properties['TextAlign'].value,
+          style: TextStyle(
+              fontWeight: properties['FontWeight'].value,
+              fontSize: properties['FontSize'].value,
+              color: getThemeColor(theme, properties['FontColor'])),
+        ),
+      ),
     );
   }
 
@@ -97,6 +112,12 @@ class SchemaNodeButton extends SchemaNode {
       SizedBox(
         height: 10,
       ),
+      EditPropsFontStyle(
+        theme: theme,
+        userActions: userActions,
+        properties: properties,
+      ),
+      ColumnDivider(),
       EditPropsColor(
         theme: theme,
         properties: properties,
@@ -112,6 +133,13 @@ class SchemaNodeButton extends SchemaNode {
           userActions
               .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
         },
+      ),
+      ColumnDivider(),
+      EditPropsBorder(
+        key: id,
+        properties: properties,
+        userActions: userActions,
+        theme: theme,
       ),
     ]);
   }

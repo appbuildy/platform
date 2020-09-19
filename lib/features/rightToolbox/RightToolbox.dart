@@ -38,7 +38,15 @@ class RightToolbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: MyColors.white,
-      child: buildWidgetOnState(),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SingleChildScrollView(child: buildWidgetOnState()),
+          Column(
+            children: [Container()],
+          )
+        ],
+      ),
     );
   }
 }
