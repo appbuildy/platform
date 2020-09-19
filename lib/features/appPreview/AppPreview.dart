@@ -541,6 +541,8 @@ class _AppPreviewState extends State<AppPreview> {
               borderRadius: BorderRadius.circular(39.0),
               child: Observer(
                 builder: (context) {
+                  final theme = userActions.theme.currentTheme;
+
                   return Stack(
                     textDirection: TextDirection.ltr,
                     children: [
@@ -577,14 +579,21 @@ class _AppPreviewState extends State<AppPreview> {
                         left: 0,
                         child: userActions.screens.current.bottomTabsVisible
                             ? Container(
-                                child: AppTabs(userActions: userActions),
-                                width: SCREEN_WIDTH,
-                                height: 84,
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(37.0),
-                                      bottomRight: Radius.circular(37.0)),
+                                    border: Border(
+                                        top: BorderSide(
+                                            width: 1,
+                                            color: theme.separators.color))),
+                                child: Container(
+                                  child: AppTabs(userActions: userActions),
+                                  width: SCREEN_WIDTH,
+                                  height: 84,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(37.0),
+                                        bottomRight: Radius.circular(37.0)),
+                                  ),
                                 ),
                               )
                             : Container(),
