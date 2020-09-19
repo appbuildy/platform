@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
+import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -44,7 +45,17 @@ class EditProps extends StatelessWidget {
             child: Column(
               children: [
                 selectedNode.toEditProps(userActions),
-                SizedBox(height: 20),
+                SizedBox(height: 24),
+                Container(
+                  height: 1,
+                  width: 260,
+                  decoration: BoxDecoration(
+                      color: MyColors.gray,
+                      borderRadius: BorderRadius.circular(5)),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
                 AllActions(
                   userActions: userActions,
                   screens: screens,

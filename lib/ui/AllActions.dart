@@ -9,7 +9,7 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 import 'package:mobx/mobx.dart';
 
-class AllActions extends StatelessWidget {
+class AllActions extends StatefulWidget {
   final ObservableList<SchemaStore> screens;
   final UserActions userActions;
 
@@ -18,17 +18,38 @@ class AllActions extends StatelessWidget {
       : super(key: key);
 
   @override
+  _AllActionsState createState() => _AllActionsState();
+}
+
+class _AllActionsState extends State<AllActions> {
+  bool isVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    isVisible = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    log("userActions.selectedNode().actions['Tap'].value ${userActions.selectedNode().actions['Tap'].value}");
-    final selectedNode = userActions.selectedNode();
+    log("userActions.selectedNode().actions['Tap'].value ${widget.userActions.selectedNode().actions['Tap'].value}");
+    final selectedNode = widget.userActions.selectedNode();
 
     return Column(
       children: [
         Row(
           children: [
             MySwitch(
-              value: false,
-              onTap: () {},
+              value: isVisible,
+              onTap: () {
+                setState(() {
+                  if (isVisible) {
+                    widget.userActions
+                        .changeActionTo(GoToScreenAction('Tap', null));
+                  }
+                  isVisible = !isVisible;
+                });
+              },
             ),
             SizedBox(width: 11),
             Text(
@@ -37,33 +58,38 @@ class AllActions extends StatelessWidget {
             ),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Navigate to',
-              style: MyTextStyle.regularCaption,
-            ),
-            Container(
-              width: 170,
-              child: MyClickSelect(
-                  placeholder: 'Select Page',
-                  selectedValue: selectedNode.actions['Tap'].value ?? null,
-                  onChange: (screen) {
-                    log('change screen value FUCKER');
-                    userActions
-                        .changeActionTo(GoToScreenAction('Tap', screen.value));
-                  },
-                  options: userActions.screens.all.screens
-                      .map((element) => SelectOption(element.name, element.id))
-                      .toList()),
-            )
-          ],
+        SizedBox(
+          height: 11,
         ),
-//        ScreensSelect(
-//            userActions: userActions,
-//            action: userActions.selectedNode().actions['Tap'],
-//            screens: screens),
+        AbsorbPointer(
+          absorbing: !isVisible,
+          child: Opacity(
+            opacity: isVisible ? 1 : 0.4,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Navigate to',
+                  style: MyTextStyle.regularCaption,
+                ),
+                Container(
+                  width: 170,
+                  child: MyClickSelect(
+                      placeholder: 'Select Page',
+                      selectedValue: selectedNode.actions['Tap'].value ?? null,
+                      onChange: (screen) {
+                        widget.userActions.changeActionTo(
+                            GoToScreenAction('Tap', screen.value));
+                      },
+                      options: widget.userActions.screens.all.screens
+                          .map((element) =>
+                              SelectOption(element.name, element.id))
+                          .toList()),
+                )
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
