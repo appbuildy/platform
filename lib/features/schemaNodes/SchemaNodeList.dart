@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
@@ -29,17 +27,15 @@ class SchemaNodeList extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Items': SchemaStringListProperty('Items', [
-            SchemaStringProperty('item1', 'Item 1'),
-            SchemaStringProperty('item2', 'Item 2')
-          ]),
+          'Items': SchemaStringListProperty('Items', {
+            'item1': SchemaStringProperty('item1', 'Item 1'),
+            'item2': SchemaStringProperty('item2', 'Item 2')
+          }),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', this.theme.currentTheme.general),
         };
 
-    textDebouncer = Debouncer(
-        milliseconds: 500,
-        prevValue: this.properties['Items'].value.first.value);
+    textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
   }
 
   @override
@@ -70,6 +66,7 @@ class SchemaNodeList extends SchemaNode {
     return Column(
         children: properties['Items']
             .value
+            .values
             .map((item) {
               return Text(
                 item.value,
@@ -84,7 +81,6 @@ class SchemaNodeList extends SchemaNode {
 
   @override
   Widget toEditProps(userActions) {
-    log(userActions.remoteAttributeList().toString());
     return Column(children: [
       EditPropsList(
           id: id,

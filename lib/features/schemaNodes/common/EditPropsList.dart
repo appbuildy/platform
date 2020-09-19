@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsListItem.dart';
 
 class EditPropsList extends StatelessWidget {
   final UniqueKey id;
@@ -23,36 +22,22 @@ class EditPropsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          'Text',
-          style: MyTextStyle.regularCaption,
-        ),
-        SizedBox(
-          width: 31,
-        ),
-        Expanded(
-          child: MyTextField(
-            key: id,
-            defaultValue: properties[propName].value.first.value,
-            onChanged: (newText) {
-              userActions.changePropertyTo(
-                  SchemaStringListProperty(
-                      propName, [SchemaStringProperty('item1', newText)]),
-                  false);
-
-              textDebouncer.run(
-                  () => userActions.changePropertyTo(
-                      SchemaStringListProperty(
-                          propName, [SchemaStringProperty('item1', newText)]),
-                      true,
-                      textDebouncer.prevValue),
-                  newText);
-            },
-          ),
-        ),
-      ],
-    );
+    print(properties[propName].value);
+    final children = properties[propName]
+        .value
+        .values
+        .map((prop) {
+          return EditPropsListItem(
+              listKey: prop.name,
+              id: id,
+              properties: properties,
+              propName: propName,
+              userActions: userActions,
+              textDebouncer:
+                  textDebouncer); //TODO: create debouncer for each instance
+        })
+        .toList()
+        .cast<Widget>();
+    return Column(children: children);
   }
 }

@@ -91,8 +91,8 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
 }
 
 class SchemaStringListProperty
-    extends SchemaNodeProperty<List<SchemaStringProperty>> {
-  SchemaStringListProperty(String name, List<SchemaStringProperty> value)
+    extends SchemaNodeProperty<Map<String, SchemaStringProperty>> {
+  SchemaStringListProperty(String name, Map<String, SchemaStringProperty> value)
       : super(name, value);
 
   @override
