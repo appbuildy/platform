@@ -9,7 +9,7 @@ export 'SchemaNodeProperty.dart';
 export 'SchemaNodeShape.dart';
 export 'SchemaNodeText.dart';
 
-enum SchemaNodeType { button, text, shape, image }
+enum SchemaNodeType { button, text, shape, image, list }
 
 abstract class SchemaNode {
   UniqueKey id;

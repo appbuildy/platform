@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
@@ -48,7 +49,8 @@ class ToolboxLayout extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme))
+                    ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme)),
+                    ToolboxComponent(schemaNode: SchemaNodeList(theme: theme))
                   ],
                 ),
                 ToolBoxCaption('Listing'),
