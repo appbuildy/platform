@@ -76,6 +76,9 @@ class SchemaNodeShape extends SchemaNode {
           propName: 'Color',
           userActions: userActions,
         ),
+        SizedBox(
+          height: 15,
+        ),
         EditPropsCorners(
           value: properties['BorderRadiusValue'].value,
           onChanged: (int value) {

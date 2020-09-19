@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
@@ -27,12 +25,11 @@ class _AllActionsState extends State<AllActions> {
   @override
   void initState() {
     super.initState();
-    isVisible = false;
+    isVisible = widget.userActions.selectedNode().actions['Tap'].value != null;
   }
 
   @override
   Widget build(BuildContext context) {
-    log("userActions.selectedNode().actions['Tap'].value ${widget.userActions.selectedNode().actions['Tap'].value}");
     final selectedNode = widget.userActions.selectedNode();
 
     return Column(

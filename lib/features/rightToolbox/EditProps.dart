@@ -57,6 +57,7 @@ class EditProps extends StatelessWidget {
                   height: 24,
                 ),
                 AllActions(
+                  key: selectedNode.id,
                   userActions: userActions,
                   screens: screens,
                 ),

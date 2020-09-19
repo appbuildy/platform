@@ -103,6 +103,9 @@ class SchemaNodeButton extends SchemaNode {
         userActions: userActions,
         propName: 'BackgroundColor',
       ),
+      SizedBox(
+        height: 15,
+      ),
       EditPropsCorners(
         value: properties['BorderRadiusValue'].value,
         onChanged: (int value) {

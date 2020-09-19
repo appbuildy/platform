@@ -9,6 +9,8 @@ class EditPropsText extends StatelessWidget {
   final UniqueKey id;
   final Map<String, SchemaNodeProperty> properties;
   final String propName;
+  final String title;
+  final String placeholder;
   final UserActions userActions;
   final Debouncer textDebouncer;
 
@@ -18,6 +20,8 @@ class EditPropsText extends StatelessWidget {
       @required this.properties,
       @required this.propName,
       @required this.userActions,
+      this.title,
+      this.placeholder,
       @required this.textDebouncer})
       : super(key: key);
 
@@ -25,16 +29,17 @@ class EditPropsText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          'Text',
-          style: MyTextStyle.regularCaption,
-        ),
         SizedBox(
-          width: 31,
+          width: 59,
+          child: Text(
+            title ?? 'Text',
+            style: MyTextStyle.regularCaption,
+          ),
         ),
         Expanded(
           child: MyTextField(
             key: id,
+            placeholder: placeholder,
             defaultValue: properties[propName].value,
             onChanged: (newText) {
               userActions.changePropertyTo(

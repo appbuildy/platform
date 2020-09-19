@@ -13,9 +13,9 @@ class MyClickSelect extends StatefulWidget {
 
   const MyClickSelect(
       {Key key,
-      this.selectedValue,
-      this.options,
-      this.onChange,
+      @required this.selectedValue,
+      @required this.options,
+      @required this.onChange,
       this.placeholder})
       : super(key: key);
 
