@@ -4,15 +4,15 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/MySlider.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 
-class EditPropsBorder extends StatelessWidget {
+class EditPropsShadow extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   final UserActions userActions;
   final AppThemeStore theme;
 
-  const EditPropsBorder(
+  const EditPropsShadow(
       {Key key,
       @required this.properties,
       @required this.userActions,
@@ -20,7 +20,7 @@ class EditPropsBorder extends StatelessWidget {
       : super(key: key);
 
   List<Widget> buildBorderStyle() {
-    if (properties['Border'].value == false) {
+    if (properties['BoxShadow'].value == false) {
       return [Container()];
     } else {
       return [
@@ -30,7 +30,7 @@ class EditPropsBorder extends StatelessWidget {
         EditPropsColor(
             theme: theme,
             userActions: userActions,
-            propName: 'BorderColor',
+            propName: 'BoxShadowColor',
             properties: properties),
         SizedBox(
           height: 10,
@@ -40,29 +40,28 @@ class EditPropsBorder extends StatelessWidget {
             SizedBox(
                 width: 59,
                 child: Text(
-                  'Width',
+                  'Blur',
                   style: MyTextStyle.regularCaption,
                 )),
             Expanded(
-              child: MyClickSelect(
-                  selectedValue: properties['BorderWidth'].value,
-                  options: [
-                    SelectOption('1', 1),
-                    SelectOption('2', 2),
-                    SelectOption('3', 3),
-                    SelectOption('4', 4),
-                    SelectOption('5', 5),
-                    SelectOption('6', 6),
-                    SelectOption('7', 7),
-                    SelectOption('8', 8),
-                    SelectOption('9', 9),
-                    SelectOption('10', 10),
-                  ],
-                  onChange: (SelectOption option) {
-                    userActions.changePropertyTo(
-                        SchemaIntProperty('BorderWidth', option.value));
-                  }),
+              child: MySlider(
+                max: 0.5,
+                onChanged: (value) {
+                  userActions.changePropertyTo(SchemaIntProperty(
+                      'BoxShadowBlur', (value * 100).toInt()));
+                },
+                value: properties['BoxShadowBlur'].value / 100,
+              ),
             ),
+            SizedBox(
+              width: 18,
+              child: Text(
+                properties['BoxShadowBlur'].value.toString(),
+                textAlign: TextAlign.right,
+                style: MyTextStyle.regularCaption,
+              ),
+            ),
+            SizedBox(width: 2),
           ],
         )
       ];
@@ -76,17 +75,17 @@ class EditPropsBorder extends StatelessWidget {
         Row(
           children: [
             MySwitch(
-              value: properties['Border'].value,
+              value: properties['BoxShadow'].value,
               onTap: () {
-                userActions.changePropertyTo(
-                    SchemaBoolProperty('Border', !properties['Border'].value));
+                userActions.changePropertyTo(SchemaBoolProperty(
+                    'BoxShadow', !properties['BoxShadow'].value));
               },
             ),
             SizedBox(
               width: 11,
             ),
             Text(
-              'Border',
+              'Shadow',
               style: MyTextStyle.regularTitle,
             )
           ],

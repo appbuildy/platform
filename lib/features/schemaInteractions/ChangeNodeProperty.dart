@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -43,7 +41,6 @@ class ChangeNodeProperty extends BaseAction {
 
 //    if (oldValue == null) return;
     executed = true;
-    log('property value ерпта ${property.value}');
     propsOrActions[property.name].value = property.value;
     selectNodeForEdit(
         node); // reselect node to updates be applied on the right bar

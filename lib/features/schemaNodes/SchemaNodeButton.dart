@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
@@ -45,6 +46,10 @@ class SchemaNodeButton extends SchemaNode {
           'BackgroundColor': SchemaMyThemePropProperty(
               'BackgroundColor', this.theme.currentTheme.background),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 12),
+          'BoxShadow': SchemaBoolProperty('BoxShadow', false),
+          'BoxShadowColor': SchemaMyThemePropProperty(
+              'BoxShadowColor', this.theme.currentTheme.general),
+          'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
         };
     textDebouncer =
         Debouncer(milliseconds: 500, prevValue: this.properties['Text'].value);
@@ -80,6 +85,16 @@ class SchemaNodeButton extends SchemaNode {
       height: size.dy,
       decoration: BoxDecoration(
           color: getThemeColor(theme, properties['BackgroundColor']),
+          boxShadow: properties['BoxShadow'].value
+              ? [
+                  BoxShadow(
+                      color: getThemeColor(theme, properties['BoxShadowColor'])
+                          .withOpacity(0.2),
+                      blurRadius: properties['BoxShadowBlur'].value,
+                      offset: Offset(0.0, 2.0),
+                      spreadRadius: 0)
+                ]
+              : [],
           borderRadius:
               BorderRadius.circular(properties['BorderRadiusValue'].value),
           border: properties['Border'].value
@@ -141,6 +156,11 @@ class SchemaNodeButton extends SchemaNode {
         userActions: userActions,
         theme: theme,
       ),
+      SizedBox(
+        height: 15,
+      ),
+      EditPropsShadow(
+          properties: properties, userActions: userActions, theme: theme)
     ]);
   }
 }

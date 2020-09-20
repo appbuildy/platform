@@ -72,6 +72,7 @@ class _AllActionsState extends State<AllActions> {
                 Container(
                   width: 170,
                   child: MyClickSelect(
+                      isOpenOnTop: true,
                       placeholder: 'Select Page',
                       selectedValue: selectedNode.actions['Tap'].value ?? null,
                       onChange: (screen) {

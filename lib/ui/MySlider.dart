@@ -17,18 +17,21 @@ class MySlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: SliderThemeData(
-          thumbColor: Colors.white,
-          overlayColor: Colors.transparent,
-          inactiveTrackColor: Color(0xffaab5c8),
-          activeTrackColor: MyColors.mainBlue,
-          trackHeight: 3),
-      child: Slider(
-        min: min,
-        max: max,
-        value: value,
-        onChanged: onChanged,
+    return SizedBox(
+      height: 20,
+      child: SliderTheme(
+        data: SliderThemeData(
+            thumbColor: Colors.white,
+            overlayColor: Colors.transparent,
+            inactiveTrackColor: Color(0xffaab5c8),
+            activeTrackColor: MyColors.mainBlue,
+            trackHeight: 3),
+        child: Slider(
+          min: min,
+          max: max,
+          value: value,
+          onChanged: onChanged,
+        ),
       ),
     );
   }

@@ -13,43 +13,40 @@ class EditPropsCorners extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 20,
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Corners',
-              style: MyTextStyle.regularCaption,
-            ),
-            SizedBox(width: 0),
-            Expanded(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: MySlider(
-                      max: 0.5,
-                      value: value / 100,
-                      onChanged: (value) {
-                        onChanged((value * 100).toInt());
-                      },
-                    ),
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Corners',
+            style: MyTextStyle.regularCaption,
+          ),
+          SizedBox(width: 0),
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: MySlider(
+                    max: 0.5,
+                    value: value / 100,
+                    onChanged: (value) {
+                      onChanged((value * 100).toInt());
+                    },
                   ),
-                  SizedBox(
-                    width: 18,
-                    child: Text(
-                      value.toString(),
-                      textAlign: TextAlign.right,
-                      style: MyTextStyle.regularCaption,
-                    ),
+                ),
+                SizedBox(
+                  width: 18,
+                  child: Text(
+                    value.toString(),
+                    textAlign: TextAlign.right,
+                    style: MyTextStyle.regularCaption,
                   ),
-                  SizedBox(width: 2),
-                ],
-              ),
+                ),
+                SizedBox(width: 2),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

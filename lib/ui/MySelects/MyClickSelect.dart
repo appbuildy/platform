@@ -10,13 +10,15 @@ class MyClickSelect extends StatefulWidget {
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
   final String placeholder;
+  final bool isOpenOnTop;
 
   const MyClickSelect(
       {Key key,
       @required this.selectedValue,
       @required this.options,
       @required this.onChange,
-      this.placeholder})
+      this.placeholder,
+      this.isOpenOnTop = false})
       : super(key: key);
 
   @override
@@ -158,7 +160,6 @@ class _MyClickSelectState extends State<MyClickSelect> {
         builder: (context) => Stack(
               overflow: Overflow.visible,
               children: [
-                // position a shadow because in main it would be cuted
                 Positioned(
                     child: GestureDetector(
                   onTap: () {
@@ -173,7 +174,9 @@ class _MyClickSelectState extends State<MyClickSelect> {
                 )),
                 Positioned(
                   left: offset.dx,
-                  top: offset.dy + size.height + 5,
+                  top: widget.isOpenOnTop
+                      ? offset.dy - size.height - 5
+                      : offset.dy + size.height + 5,
                   width: size.width,
                   child: Material(
                     color: Colors.transparent,
