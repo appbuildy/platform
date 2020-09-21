@@ -1,30 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>logo</title>
-    <g id="logo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <polygon id="Fill-1" fill="#35C3FF" points="9.4875759 3.00003226 14.2313259 11.0644073 18.9750759 3.00003226"></polygon>
-        <polygon id="Fill-2" fill="#54DEFF" points="9.4875759 3.00003226 4.7438259 11.0644073 14.2313259 11.0644073"></polygon>
-        <polygon id="Fill-3" fill="#35C3FF" points="18.9751518 3.00003226 23.7185223 11.0644073 28.4622723 3.00003226"></polygon>
-        <polygon id="Fill-4" fill="#74D8FF" points="18.9751518 3.00003226 14.2314018 11.0644073 23.7185223 11.0644073"></polygon>
-        <polygon id="Fill-5" fill="#54DEFF" points="28.4623862 3.00003226 23.7186362 11.0644073 33.2061362 11.0644073"></polygon>
-        <polygon id="Fill-6" fill="#007AFF" points="0 19.128621 9.4875 19.128621 4.74375 11.0645685"></polygon>
-        <polygon id="Fill-7" fill="#54DEFF" points="9.4875 19.12875 18.975 19.12875 14.23125 11.064375"></polygon>
-        <polygon id="Fill-8" fill="#32C5FF" points="9.4875 19.12875 14.23125 11.064375 4.74375 11.064375"></polygon>
-        <polygon id="Fill-9" fill="#32C5FF" points="0 19.128621 4.74375 27.192996 9.4875 19.128621"></polygon>
-        <polygon id="Fill-10" fill="#32A2FF" points="14.23125 27.193125 18.975 19.12875 9.4875 19.12875"></polygon>
-        <polygon id="Fill-11" fill="#007AFF" points="4.74375 27.193125 14.23125 27.193125 9.4875 19.12875"></polygon>
-        <polygon id="Fill-12" fill="#32C5FF" points="9.4875759 35.2575 18.9750759 35.2575 14.2313259 27.193125"></polygon>
-        <polygon id="Fill-13" fill="#54A6FF" points="4.74378795 27.1930605 9.48753795 35.2574355 14.231288 27.1930605"></polygon>
-        <polygon id="Fill-14" fill="#54DEFF" points="18.975 19.12875 28.4625 19.12875 23.71875 11.064375"></polygon>
-        <polygon id="Fill-15" fill="#007AFF" points="28.4623862 19.128621 37.9498861 19.128621 33.2061361 11.0645685"></polygon>
-        <polygon id="Fill-16" fill="#007AFF" points="18.975 19.12875 23.71875 11.064375 14.23125 11.064375"></polygon>
-        <polygon id="Fill-17" fill="#32C5FF" points="28.4625 19.12875 33.20625 11.064375 23.71875 11.064375"></polygon>
-        <polygon id="Fill-18" fill="#32A2FF" points="23.71875 27.193125 28.4625 19.12875 18.975 19.12875"></polygon>
-        <polygon id="Fill-19" fill="#32C5FF" points="28.4623862 19.128621 33.2061361 27.192996 37.9498861 19.128621"></polygon>
-        <polygon id="Fill-20" fill="#32C5FF" points="14.23125 27.193125 23.71875 27.193125 18.975 19.12875"></polygon>
-        <polygon id="Fill-21" fill="#007AFF" points="23.71875 27.193125 33.20625 27.193125 28.4625 19.12875"></polygon>
-        <polygon id="Fill-22" fill="#32C5FF" points="18.9751518 35.2575 28.4622723 35.2575 23.7185223 27.193125"></polygon>
-        <polygon id="Fill-23" fill="#288FFF" points="14.2313639 27.1930605 18.9751139 35.2574355 23.7184844 27.1930605"></polygon>
-        <polygon id="Fill-24" fill="#54A6FF" points="23.7185982 27.1930605 28.4623482 35.2574355 33.2060982 27.1930605"></polygon>
+    <title>logo-icon</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="logo-icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="url(#linearGradient-1)" cx="19" cy="19" r="18"></circle>
+        <rect id="Rectangle" fill="#FFFFFF" x="9" y="9" width="9" height="9" rx="2"></rect>
+        <rect id="Rectangle-Copy-6" fill="#FFFFFF" x="9" y="20" width="9" height="9" rx="2"></rect>
+        <rect id="Rectangle-Copy-7" fill="#FFFFFF" x="20" y="20" width="9" height="9" rx="2"></rect>
+        <rect id="Rectangle-Copy-8" fill="#FFFFFF" transform="translate(24.500000, 13.500000) rotate(45.000000) translate(-24.500000, -13.500000) " x="20" y="9" width="9" height="9" rx="2"></rect>
     </g>
 </svg>
