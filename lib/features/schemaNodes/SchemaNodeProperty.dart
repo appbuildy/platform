@@ -86,6 +86,26 @@ class SchemaTextAlignProperty extends SchemaNodeProperty {
   }
 }
 
+class SchemaMainAlignmentProperty extends SchemaNodeProperty {
+  SchemaMainAlignmentProperty(String name, MainAxisAlignment value)
+      : super(name, value);
+
+  @override
+  SchemaMainAlignmentProperty copy() {
+    return SchemaMainAlignmentProperty(this.name, value);
+  }
+}
+
+class SchemaCrossAlignmentProperty extends SchemaNodeProperty {
+  SchemaCrossAlignmentProperty(String name, CrossAxisAlignment value)
+      : super(name, value);
+
+  @override
+  SchemaCrossAlignmentProperty copy() {
+    return SchemaCrossAlignmentProperty(this.name, value);
+  }
+}
+
 class SchemaDoubleProperty extends SchemaNodeProperty {
   SchemaDoubleProperty(String name, double value) : super(name, value);
 

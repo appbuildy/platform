@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/features/rightToolbox/RemoteAttributeSelect.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
@@ -36,7 +35,10 @@ class SchemaNodeText extends SchemaNode {
               'FontColor', this.theme.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', 16),
           'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
-          'TextAlign': SchemaTextAlignProperty('TextAlign', TextAlign.start),
+          'MainAlignment': SchemaMainAlignmentProperty(
+              'MainAlignment', MainAxisAlignment.start),
+          'CrossAlignment': SchemaCrossAlignmentProperty(
+              'CrossAlignment', CrossAxisAlignment.start),
         };
 
     textDebouncer =
@@ -71,16 +73,21 @@ class SchemaNodeText extends SchemaNode {
     return Container(
       width: size.dx,
       height: size.dy,
-      child: Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Text(
-          properties['Text'].value,
-          textAlign: properties['TextAlign'].value,
-          style: TextStyle(
-              fontSize: properties['FontSize'].value,
-              fontWeight: properties['FontWeight'].value,
-              color: getThemeColor(theme, properties['FontColor'])),
-        ),
+      child: Column(
+        mainAxisAlignment: properties['MainAlignment'].value,
+        crossAxisAlignment: properties['CrossAlignment'].value,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(2.0),
+            child: Text(
+              properties['Text'].value,
+              style: TextStyle(
+                  fontSize: properties['FontSize'].value,
+                  fontWeight: properties['FontWeight'].value,
+                  color: getThemeColor(theme, properties['FontColor'])),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -103,11 +110,11 @@ class SchemaNodeText extends SchemaNode {
         userActions: userActions,
         properties: properties,
       ),
-      SizedBox(
-        height: 10,
-      ),
-      RemoteAttributesSelect(
-          property: properties['Text'], userActions: userActions),
+//      SizedBox(
+//        height: 10,
+//      ),
+//      RemoteAttributesSelect(
+//          property: properties['Text'], userActions: userActions),
     ]);
   }
 }

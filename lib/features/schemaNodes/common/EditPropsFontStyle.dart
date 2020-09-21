@@ -96,7 +96,7 @@ class EditPropsFontStyle extends StatelessWidget {
           ],
         ),
         SizedBox(
-          height: 10,
+          height: 13,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +106,7 @@ class EditPropsFontStyle extends StatelessWidget {
               style: MyTextStyle.regularCaption,
             ),
             SizedBox(
-              height: 7,
+              height: 9,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,11 +115,12 @@ class EditPropsFontStyle extends StatelessWidget {
                   children: [
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(SchemaTextAlignProperty(
-                            'TextAlign', TextAlign.start));
+                        userActions.changePropertyTo(
+                            SchemaCrossAlignmentProperty(
+                                'CrossAlignment', CrossAxisAlignment.start));
                       },
-                      isActive:
-                          properties['TextAlign'].value == TextAlign.start,
+                      isActive: properties['CrossAlignment'].value ==
+                          CrossAxisAlignment.start,
                       assetPath: 'assets/icons/text/horizontal-left.svg',
                     ),
                     SizedBox(
@@ -127,11 +128,12 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(SchemaTextAlignProperty(
-                            'TextAlign', TextAlign.center));
+                        userActions.changePropertyTo(
+                            SchemaCrossAlignmentProperty(
+                                'CrossAlignment', CrossAxisAlignment.center));
                       },
-                      isActive:
-                          properties['TextAlign'].value == TextAlign.center,
+                      isActive: properties['CrossAlignment'].value ==
+                          CrossAxisAlignment.center,
                       assetPath: 'assets/icons/text/horizontal-center.svg',
                     ),
                     SizedBox(
@@ -139,10 +141,12 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(SchemaTextAlignProperty(
-                            'TextAlign', TextAlign.end));
+                        userActions.changePropertyTo(
+                            SchemaCrossAlignmentProperty(
+                                'CrossAlignment', CrossAxisAlignment.end));
                       },
-                      isActive: properties['TextAlign'].value == TextAlign.end,
+                      isActive: properties['CrossAlignment'].value ==
+                          CrossAxisAlignment.end,
                       assetPath: 'assets/icons/text/horizontal-right.svg',
                     )
                   ],
@@ -151,35 +155,39 @@ class EditPropsFontStyle extends StatelessWidget {
                   children: [
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(SchemaTextAlignProperty(
-                            'TextAlign', TextAlign.start));
+                        userActions.changePropertyTo(
+                            SchemaMainAlignmentProperty(
+                                'MainAlignment', MainAxisAlignment.start));
                       },
-                      isActive:
-                          properties['TextAlign'].value == TextAlign.start,
-                      assetPath: 'assets/icons/text/horizontal-left.svg',
+                      isActive: properties['MainAlignment'].value ==
+                          MainAxisAlignment.start,
+                      assetPath: 'assets/icons/text/vertical-top.svg',
                     ),
                     SizedBox(
                       width: 8,
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(SchemaTextAlignProperty(
-                            'TextAlign', TextAlign.center));
+                        userActions.changePropertyTo(
+                            SchemaMainAlignmentProperty(
+                                'MainAlignment', MainAxisAlignment.center));
                       },
-                      isActive:
-                          properties['TextAlign'].value == TextAlign.center,
-                      assetPath: 'assets/icons/text/horizontal-center.svg',
+                      isActive: properties['MainAlignment'].value ==
+                          MainAxisAlignment.center,
+                      assetPath: 'assets/icons/text/vertical-center.svg',
                     ),
                     SizedBox(
                       width: 8,
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(SchemaTextAlignProperty(
-                            'TextAlign', TextAlign.end));
+                        userActions.changePropertyTo(
+                            SchemaMainAlignmentProperty(
+                                'MainAlignment', MainAxisAlignment.end));
                       },
-                      isActive: properties['TextAlign'].value == TextAlign.end,
-                      assetPath: 'assets/icons/text/horizontal-right.svg',
+                      isActive: properties['MainAlignment'].value ==
+                          MainAxisAlignment.end,
+                      assetPath: 'assets/icons/text/vertical-bottom.svg',
                     )
                   ],
                 )

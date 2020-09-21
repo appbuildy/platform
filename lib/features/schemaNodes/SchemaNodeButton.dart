@@ -38,7 +38,10 @@ class SchemaNodeButton extends SchemaNode {
               'FontColor', this.theme.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', 16),
           'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
-          'TextAlign': SchemaTextAlignProperty('TextAlign', TextAlign.center),
+          'MainAlignment': SchemaMainAlignmentProperty(
+              'MainAlignment', MainAxisAlignment.center),
+          'CrossAlignment': SchemaCrossAlignmentProperty(
+              'CrossAlignment', CrossAxisAlignment.center),
           'Border': SchemaBoolProperty('Border', true),
           'BorderColor': SchemaMyThemePropProperty(
               'BorderColor', this.theme.currentTheme.primary),
@@ -102,15 +105,18 @@ class SchemaNodeButton extends SchemaNode {
                   width: properties['BorderWidth'].value,
                   color: getThemeColor(theme, properties['BorderColor']))
               : null),
-      child: Center(
-        child: Text(
-          properties['Text'].value,
-          textAlign: properties['TextAlign'].value,
-          style: TextStyle(
-              fontWeight: properties['FontWeight'].value,
-              fontSize: properties['FontSize'].value,
-              color: getThemeColor(theme, properties['FontColor'])),
-        ),
+      child: Column(
+        mainAxisAlignment: properties['MainAlignment'].value,
+        crossAxisAlignment: properties['CrossAlignment'].value,
+        children: [
+          Text(
+            properties['Text'].value,
+            style: TextStyle(
+                fontWeight: properties['FontWeight'].value,
+                fontSize: properties['FontSize'].value,
+                color: getThemeColor(theme, properties['FontColor'])),
+          ),
+        ],
       ),
     );
   }
