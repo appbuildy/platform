@@ -91,7 +91,7 @@ class EditProps extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 150,
+            height: 40,
           ),
         ]);
       },

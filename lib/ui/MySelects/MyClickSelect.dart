@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
@@ -10,16 +12,14 @@ class MyClickSelect extends StatefulWidget {
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
   final String placeholder;
-  final bool isOpenOnTop;
 
-  const MyClickSelect(
-      {Key key,
-      @required this.selectedValue,
-      @required this.options,
-      @required this.onChange,
-      this.placeholder,
-      this.isOpenOnTop = false})
-      : super(key: key);
+  const MyClickSelect({
+    Key key,
+    @required this.selectedValue,
+    @required this.options,
+    @required this.onChange,
+    this.placeholder,
+  }) : super(key: key);
 
   @override
   _MyClickSelectState createState() => _MyClickSelectState();
@@ -156,6 +156,20 @@ class _MyClickSelectState extends State<MyClickSelect> {
     final firstValue = widget.options.first.value;
     final lastValue = widget.options.last.value;
 
+    final windowSize = MediaQuery.of(context).size;
+
+    double yPosition;
+    final calculatedHeight =
+        ((size.height - 2) * widget.options.length) + size.height;
+    final calculatedSum = calculatedHeight + offset.dy;
+
+    if (calculatedSum >= windowSize.height) {
+      yPosition =
+          offset.dy + ((size.height - 2) * widget.options.length * -1) - 6;
+    } else {
+      yPosition = offset.dy + size.height + 5;
+    }
+
     return OverlayEntry(
         builder: (context) => Stack(
               overflow: Overflow.visible,
@@ -174,11 +188,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
                 )),
                 Positioned(
                   left: offset.dx,
-                  top: widget.isOpenOnTop
-                      ? offset.dy +
-                          ((size.height - 2) * widget.options.length * -1) -
-                          5 // формула для вычисление нормальной позиции =)
-                      : offset.dy + size.height + 5,
+                  top: yPosition,
                   width: size.width,
                   child: Material(
                     color: Colors.transparent,
