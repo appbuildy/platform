@@ -64,7 +64,6 @@ class TabItem extends StatelessWidget {
         child: Cursor(
           cursor: CursorEnum.pointer,
           child: WithInfo(
-            withDuplicateAndDelete: true,
             onDuplicate: () {
               userActions.bottomNavigation.addTab(TabNavigation(
                   icon: tab.icon, label: tab.label, target: tab.target));

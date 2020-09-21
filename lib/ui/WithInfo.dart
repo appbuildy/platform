@@ -9,8 +9,10 @@ class WithInfo extends StatefulWidget {
   final Offset position;
   final BoxDecoration defaultDecoration;
   final BoxDecoration hoverDecoration;
-  final bool withDuplicateAndDelete;
+  final bool isShowAlways;
   final Function onDuplicate;
+  final Function onBringFront;
+  final Function onSendBack;
   final Function onDelete;
 
   const WithInfo({
@@ -19,9 +21,11 @@ class WithInfo extends StatefulWidget {
     this.position,
     this.defaultDecoration,
     this.hoverDecoration,
-    this.withDuplicateAndDelete = false,
     this.onDuplicate,
     this.onDelete,
+    this.isShowAlways = false,
+    this.onBringFront,
+    this.onSendBack,
   }) : super(key: key);
 
   @override
@@ -145,10 +149,50 @@ class _WithInfoState extends State<WithInfo> {
                                   width: 1, color: MyColors.borderGray),
                               borderRadius: BorderRadius.circular(6)),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: widget.withDuplicateAndDelete
-                                ? [
-                                    GestureDetector(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                widget.onBringFront != null
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          widget.onBringFront();
+                                          this._overlayEntry.remove();
+                                          setState(() {
+                                            isOverlayOpen = false;
+                                          });
+                                        },
+                                        child: buildOption(
+                                          icon: Image.network(
+                                            'assets/icons/meta/btn-rearrange-top.svg',
+                                            width: 24,
+                                            height: 24,
+                                            color: MyColors.iconDarkGray,
+                                          ),
+                                          title: 'Bring to Front',
+                                          isFirst: true,
+                                        ))
+                                    : Container(),
+                                widget.onSendBack != null
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          widget.onSendBack();
+                                          this._overlayEntry.remove();
+                                          setState(() {
+                                            isOverlayOpen = false;
+                                          });
+                                        },
+                                        child: buildOption(
+                                          icon: Image.network(
+                                            'assets/icons/meta/btn-rearrange-bottom.svg',
+                                            width: 24,
+                                            height: 24,
+                                            color: MyColors.iconDarkGray,
+                                          ),
+                                          title: 'Send to Back',
+                                          isFirst: true,
+                                        ))
+                                    : Container(),
+                                widget.onDuplicate != null
+                                    ? GestureDetector(
                                         onTap: () {
                                           widget.onDuplicate();
                                           this._overlayEntry.remove();
@@ -165,8 +209,10 @@ class _WithInfoState extends State<WithInfo> {
                                           ),
                                           title: 'Duplicate',
                                           isFirst: true,
-                                        )),
-                                    GestureDetector(
+                                        ))
+                                    : Container(),
+                                widget.onDelete != null
+                                    ? GestureDetector(
                                         onTap: () {
                                           widget.onDelete();
                                           this._overlayEntry.remove();
@@ -183,10 +229,9 @@ class _WithInfoState extends State<WithInfo> {
                                           ),
                                           title: 'Delete',
                                           isLast: true,
-                                        )),
-                                  ]
-                                : [],
-                          ),
+                                        ))
+                                    : Container(),
+                              ]),
                         ),
                       ),
                     ),
@@ -237,7 +282,7 @@ class _WithInfoState extends State<WithInfo> {
       child: Stack(
         children: [
           buildWithHoverDecoration(),
-          isInfoIconVisible || isOverlayOpen
+          isInfoIconVisible || isOverlayOpen || widget.isShowAlways
               ? Positioned(
                   right: widget.position != null ? widget.position.dx : 6.0,
                   top: widget.position != null ? widget.position.dy : 0.0,

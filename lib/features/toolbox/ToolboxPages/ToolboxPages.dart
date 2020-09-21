@@ -118,6 +118,9 @@ class _ToolboxPagesState extends State<ToolboxPages>
                 selectTab: selectTabNavigation,
                 userActions: widget.userActions,
               ),
+              SizedBox(
+                height: 17,
+              )
             ],
           ),
         ),

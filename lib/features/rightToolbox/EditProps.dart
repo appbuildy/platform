@@ -3,7 +3,9 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
+import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
+import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -28,11 +30,33 @@ class EditProps extends StatelessWidget {
 
         return Column(children: [
           ToolboxHeader(
-              leftWidget: IconCircleButton(
-                  onTap: () {
-                    userActions.copyNode(selectedNode);
-                  },
-                  assetPath: 'assets/icons/meta/btn-duplicate.svg'),
+              leftWidget: Container(
+                width: 38,
+                height: 38,
+                child: WithInfo(
+                    isShowAlways: true,
+                    defaultDecoration: BoxDecoration(
+                        gradient: MyGradients.plainWhite,
+                        shape: BoxShape.circle),
+                    hoverDecoration: BoxDecoration(
+                        gradient: MyGradients.lightBlue,
+                        shape: BoxShape.circle),
+                    position: Offset(0, 2),
+                    onBringFront: () {
+                      userActions.currentScreen.bringFront(selectedNode);
+                    },
+                    onSendBack: () {
+                      userActions.currentScreen.sendBack(selectedNode);
+                    },
+                    onDuplicate: () {
+                      userActions.copyNode(selectedNode);
+                    },
+                    child: Container(
+                      width: 38,
+                      height: 38,
+                      color: Colors.transparent,
+                    )),
+              ),
               rightWidget: IconCircleButton(
                 onTap: () {
                   userActions.deleteNode(selectedNode);

@@ -175,7 +175,9 @@ class _MyClickSelectState extends State<MyClickSelect> {
                 Positioned(
                   left: offset.dx,
                   top: widget.isOpenOnTop
-                      ? offset.dy - size.height - 5
+                      ? offset.dy +
+                          ((size.height - 2) * widget.options.length * -1) -
+                          5 // формула для вычисление нормальной позиции =)
                       : offset.dy + size.height + 5,
                   width: size.width,
                   child: Material(

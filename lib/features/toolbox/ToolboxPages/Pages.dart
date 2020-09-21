@@ -79,7 +79,6 @@ class PageItem extends StatelessWidget {
         child: WithInfo(
           hoverDecoration: hoverDecoration,
           defaultDecoration: defaultDecoration,
-          withDuplicateAndDelete: true,
           position: Offset(10.0, 4.5),
           onDuplicate: onDuplicate,
           onDelete: onDelete,

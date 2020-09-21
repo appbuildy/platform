@@ -53,6 +53,22 @@ abstract class _SchemaStore with Store {
   }
 
   @action
+  void bringFront(SchemaNode schemaNode) {
+    final index =
+        components.indexWhere((element) => element.id == schemaNode.id);
+    components.removeAt(index);
+    components.add(schemaNode);
+  }
+
+  @action
+  void sendBack(SchemaNode schemaNode) {
+    final index =
+        components.indexWhere((element) => element.id == schemaNode.id);
+    components.removeAt(index);
+    components.insert(0, schemaNode);
+  }
+
+  @action
   void remove(SchemaNode schemaNode) {
     components.removeWhere((element) => element.id == schemaNode.id);
   }
