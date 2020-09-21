@@ -10,6 +10,7 @@ class WithInfo extends StatefulWidget {
   final BoxDecoration defaultDecoration;
   final BoxDecoration hoverDecoration;
   final bool isShowAlways;
+  final bool isOnLeft;
   final Function onDuplicate;
   final Function onBringFront;
   final Function onSendBack;
@@ -24,6 +25,7 @@ class WithInfo extends StatefulWidget {
     this.onDuplicate,
     this.onDelete,
     this.isShowAlways = false,
+    this.isOnLeft = false,
     this.onBringFront,
     this.onSendBack,
   }) : super(key: key);
@@ -120,8 +122,12 @@ class _WithInfoState extends State<WithInfo> {
                   ),
                 ),
                 Positioned(
-                  left: offset.dx + size.width - 7,
-                  top: offset.dy - 15,
+                  left: widget.isOnLeft
+                      ? offset.dx - 125
+                      : offset.dx + size.width - 7,
+                  top: widget.isOnLeft
+                      ? offset.dy + size.width - 7
+                      : offset.dy - 15,
                   width: 170,
                   child: GestureDetector(
                     onTap: () {

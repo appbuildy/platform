@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -25,16 +26,30 @@ class EditProps extends StatelessWidget {
         final screens = userActions.screens.all.screens;
 
         if (selectedNode == null) {
-          return Container();
+          return EditPage(
+            userActions: userActions,
+          );
         }
 
         return Column(children: [
-          ToolboxHeader(
-              leftWidget: Container(
-                width: 38,
-                height: 38,
-                child: WithInfo(
+          Container(
+            decoration: BoxDecoration(
+                border:
+                    Border(left: BorderSide(width: 1, color: MyColors.gray))),
+            child: ToolboxHeader(
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                  right: 10.0,
+                ),
+                leftWidget: IconCircleButton(
+                  onTap: () {
+                    userActions.selectNodeForEdit(null);
+                  },
+                  assetPath: 'assets/icons/meta/btn-close.svg',
+                ),
+                rightWidget: WithInfo(
                     isShowAlways: true,
+                    isOnLeft: true,
                     defaultDecoration: BoxDecoration(
                         gradient: MyGradients.plainWhite,
                         shape: BoxShape.circle),
@@ -51,19 +66,16 @@ class EditProps extends StatelessWidget {
                     onDuplicate: () {
                       userActions.copyNode(selectedNode);
                     },
+                    onDelete: () {
+                      userActions.deleteNode(selectedNode);
+                    },
                     child: Container(
                       width: 38,
                       height: 38,
                       color: Colors.transparent,
                     )),
-              ),
-              rightWidget: IconCircleButton(
-                onTap: () {
-                  userActions.deleteNode(selectedNode);
-                },
-                assetPath: 'assets/icons/meta/btn-delete.svg',
-              ),
-              title: selectedNode.type.toString().split('.')[1].capitalize()),
+                title: selectedNode.type.toString().split('.')[1].capitalize()),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
             child: Column(

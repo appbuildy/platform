@@ -5,33 +5,29 @@ class ToolboxHeader extends StatelessWidget {
   final Widget leftWidget;
   final Widget rightWidget;
   final String title;
-  final bool isRight;
+  final EdgeInsets padding;
 
   const ToolboxHeader(
       {Key key,
       this.leftWidget,
       this.rightWidget,
       @required this.title,
-      this.isRight = false})
+      this.padding})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final padding = isRight
-        ? const EdgeInsets.only(
-            left: 20.0,
-            right: 20.0,
-          )
-        : const EdgeInsets.only(
-            left: 20.0,
-            right: 10.0,
-          );
+    final pad = padding ??
+        const EdgeInsets.only(
+          left: 20.0,
+          right: 10.0,
+        );
 
     return Container(
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
       child: Padding(
-        padding: padding,
+        padding: pad,
         child: Row(
           children: [
             leftWidget ?? Container(height: 38, width: 38),

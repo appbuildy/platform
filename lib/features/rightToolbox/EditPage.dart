@@ -20,14 +20,22 @@ class EditPage extends StatelessWidget {
 
         return Column(
           children: [
-            ToolboxHeader(
-              title: userActions.screens.current.name,
-              isRight: true,
-              rightWidget: IconCircleButton(
-                  onTap: () {
-                    userActions.screens.delete(currentScreen);
-                  },
-                  assetPath: 'assets/icons/meta/btn-delete.svg'),
+            Container(
+              decoration: BoxDecoration(
+                  border:
+                      Border(left: BorderSide(width: 1, color: MyColors.gray))),
+              child: ToolboxHeader(
+                title: userActions.screens.current.name,
+                padding: const EdgeInsets.only(
+                  left: 10.0,
+                  right: 10.0,
+                ),
+                rightWidget: IconCircleButton(
+                    onTap: () {
+                      userActions.screens.delete(currentScreen);
+                    },
+                    assetPath: 'assets/icons/meta/btn-delete.svg'),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20, top: 24.0),
