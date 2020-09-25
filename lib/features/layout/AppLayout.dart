@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +43,6 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   void initState() {
-    print("Query: ${Uri.base.queryParameters['jwt']}");
     super.initState();
     schemaStore = SchemaStore(components: [], id: MAIN_UNIQUE_KEY);
     currentScreen = CurrentScreen(schemaStore);
@@ -60,9 +61,15 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
+    final jwt = window.localStorage['jwt'] ?? Uri.base.queryParameters['jwt'];
+    final url = window.localStorage['url'] ??
+        Uri.base.queryParameters['url'] ??
+        "http://localhost:4000/me";
+
     currentUserStore = CurrentUserStore();
 
-    currentUserStore.tryLogIn(AuthenticationService.defaultAuth());
+    currentUserStore
+        .tryLogIn(AuthenticationService.defaultAuth(jwt: jwt, url: url));
     userActions.updateRemoteAttributeValues();
   }
 

@@ -11,12 +11,8 @@ class AuthenticationService {
   String _url;
   http.Client httpClient;
 
-  factory AuthenticationService.defaultAuth() {
-    return AuthenticationService(
-        jwt:
-            'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwic2NwIjoidXNlciIsImF1ZCI6bnVsbCwiaWF0IjoxNjAwNTMzMjIzLCJleHAiOjE2MDA2MTk2MjMsImp0aSI6IjQwNjUwYzFiLWY3YTktNDYzNS1iYzVlLTllMTUyOTc4YTJkOSJ9.CY3hzZV6SlSeuFxmazOynvNiWqg0ffbLYLgrC8YEK-4',
-        url: "http://localhost:4001/me",
-        client: http.Client());
+  factory AuthenticationService.defaultAuth({String jwt, String url}) {
+    return AuthenticationService(jwt: jwt, url: url, client: http.Client());
   }
   AuthenticationService({String url, String jwt, http.Client client}) {
     this._url = url;
