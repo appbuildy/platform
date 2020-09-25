@@ -66,6 +66,7 @@ class _AppLayoutState extends State<AppLayout> {
         Uri.base.queryParameters['url'] ??
         "http://localhost:4000/me";
 
+    print("Query: $jwt");
     currentUserStore = CurrentUserStore();
 
     currentUserStore
