@@ -25,13 +25,17 @@ class AuthenticationService {
   }
 
   Future<User> authenticate() async {
-    final response = await this.httpClient.get(_url,
-        headers: {HttpHeaders.authorizationHeader: "Bearer $_jwtToken"});
+    try {
+      final response = await this.httpClient.get(_url,
+          headers: {HttpHeaders.authorizationHeader: "Bearer $_jwtToken"});
 
-    if (response.statusCode == 200) {
-      final parsed = json.decode(response.body);
-      return CurrentUser(parsed['name'], _jwtToken);
-    } else {
+      if (response.statusCode == 200) {
+        final parsed = json.decode(response.body);
+        return CurrentUser(parsed['name'], _jwtToken);
+      } else {
+        return NotLoggedInUser();
+      }
+    } catch (e) {
       return NotLoggedInUser();
     }
   }

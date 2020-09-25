@@ -41,6 +41,7 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   void initState() {
+    print("Query: ${Uri.base.queryParameters['jwt']}");
     super.initState();
     schemaStore = SchemaStore(components: [], id: MAIN_UNIQUE_KEY);
     currentScreen = CurrentScreen(schemaStore);
