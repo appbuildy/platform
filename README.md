@@ -1,6 +1,13 @@
 # flutter_app
 
-Test
+Развернуть проект
+
+1. Клонируем репо.
+2. Скачиваем флаттер.
+3. ```flutter channel beta```
+4. ```flutter config --enable-web```
+5. flutter run chrome или в AndroidStudio выбираем хро и ранним
+
 
 ## Getting Started
 
