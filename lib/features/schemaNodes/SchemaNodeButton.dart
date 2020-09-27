@@ -35,20 +35,20 @@ class SchemaNodeButton extends SchemaNode {
         {
           'Text': SchemaStringProperty('Text', 'Button'),
           'FontColor': SchemaMyThemePropProperty(
-              'FontColor', this.theme.currentTheme.general),
+              'FontColor', this.theme.currentTheme.generalInverted),
           'FontSize': SchemaIntProperty('FontSize', 16),
           'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
           'MainAlignment': SchemaMainAlignmentProperty(
               'MainAlignment', MainAxisAlignment.center),
           'CrossAlignment': SchemaCrossAlignmentProperty(
               'CrossAlignment', CrossAxisAlignment.center),
-          'Border': SchemaBoolProperty('Border', true),
+          'Border': SchemaBoolProperty('Border', false),
           'BorderColor': SchemaMyThemePropProperty(
               'BorderColor', this.theme.currentTheme.primary),
           'BorderWidth': SchemaIntProperty('BorderWidth', 1),
           'BackgroundColor': SchemaMyThemePropProperty(
-              'BackgroundColor', this.theme.currentTheme.background),
-          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 12),
+              'BackgroundColor', this.theme.currentTheme.primary),
+          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 9),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty(
               'BoxShadowColor', this.theme.currentTheme.general),
