@@ -6,7 +6,7 @@
 2. Скачиваем флаттер.
 3. ```flutter channel beta```
 4. ```flutter config --enable-web```
-5. flutter run chrome или в AndroidStudio выбираем хро и ранним
+5. ```flutter run -d chrome``` или в AndroidStudio выбираем хро и ранним
 
 
 ## Getting Started
