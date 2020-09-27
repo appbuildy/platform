@@ -16,7 +16,7 @@ class SchemaNodeShape extends SchemaNode {
   }) : super() {
     this.type = SchemaNodeType.shape;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(150.0, 100.0);
+    this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
     this.theme = theme;
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
@@ -24,7 +24,7 @@ class SchemaNodeShape extends SchemaNode {
         {
           'Color': SchemaMyThemePropProperty(
               'Color', this.theme.currentTheme.primary),
-          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 12),
+          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
         };
   }
 

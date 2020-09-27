@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print("Query: ${Uri.base.queryParameters['jwt']}");
     return MaterialApp(
-      title: 'bestNoCodeApp',
+      title: 'AppBuildy — create your apps',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

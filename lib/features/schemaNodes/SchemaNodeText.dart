@@ -23,7 +23,7 @@ class SchemaNodeText extends SchemaNode {
       : super() {
     this.type = SchemaNodeType.text;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(150.0, 100.0);
+    this.size = size ?? Offset(375.0, 50.0);
     this.id = id ?? UniqueKey();
     this.theme = theme;
 

@@ -19,15 +19,15 @@ class SchemaNodeImage extends SchemaNode {
       : super() {
     this.type = SchemaNodeType.image;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(150.0, 100.0);
+    this.size = size ?? Offset(343.0, 150.0);
     this.id = id ?? UniqueKey();
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Url': SchemaStringProperty('Url',
               'https://images.unsplash.com/photo-1549880338-65ddcdfd017b'),
-          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 12),
-          'Fit': SchemaStringProperty('Fit', 'Fill')
+          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 8),
+          'Fit': SchemaStringProperty('Fit', 'Cover')
         };
     textDebouncer =
         Debouncer(milliseconds: 500, prevValue: this.properties['Url'].value);
