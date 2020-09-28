@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/TabSelected.dart';
@@ -172,10 +170,6 @@ class _ToolboxPagesState extends State<ToolboxPages>
         double reversedValue = (_animation.value - 1) * -1;
         double slideFirst = (-maxSlide / 2) * reversedValue;
         double slideSecond = maxSlide * (_animation.value);
-
-        log('${_animation.isCompleted}, isCompleted');
-        log('${_animation.value} value');
-        log('$reversedValue ReverserdValue');
 
         return Stack(children: [
           Transform(

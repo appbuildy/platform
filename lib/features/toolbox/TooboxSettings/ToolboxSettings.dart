@@ -141,16 +141,20 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
         return Stack(children: [
           Transform(
               transform: Matrix4.identity()..translate(slideFirst),
-              child: Container(
-                  color: MyColors.white,
-                  width: toolboxWidth,
-                  child: _buildMain())),
+              child: _animation.value == 0
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildMain())),
           Transform(
               transform: Matrix4.identity()..translate(slideSecond),
-              child: Container(
-                  color: MyColors.white,
-                  width: toolboxWidth,
-                  child: _buildSelectedSetting()))
+              child: _animation.value == 1
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildSelectedSetting()))
         ]);
       },
       animation: _animation,
