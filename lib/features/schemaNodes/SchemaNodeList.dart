@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
@@ -31,6 +32,7 @@ class SchemaNodeList extends SchemaNode {
             'item1': SchemaStringProperty('item1', 'Item 1'),
             'item2': SchemaStringProperty('item2', 'Item 2')
           }),
+          'Template': ListTemplate('Template', ListTemplateType.simple),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', this.theme.currentTheme.general),
         };

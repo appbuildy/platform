@@ -4,10 +4,10 @@ import '../SchemaNodeProperty.dart';
 
 enum ListTemplateType { simple, WithPhoto }
 
-class ListTemplate {
+class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
   ListTemplateType type;
 
-  ListTemplate(this.type);
+  ListTemplate(String name, ListTemplateType value) : super(name, value);
 
   Widget widget(
     Map<String, SchemaNodeProperty> properties,
@@ -24,5 +24,11 @@ class ListTemplate {
             })
             .toList()
             .cast<Widget>());
+  }
+
+  @override
+  SchemaNodeProperty copy() {
+    // TODO: implement copy
+    throw UnimplementedError();
   }
 }
