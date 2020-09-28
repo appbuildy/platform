@@ -50,7 +50,7 @@ class _AppPreviewState extends State<AppPreview> {
     @required double max,
     bool isDisableWhenMin = false,
   }) {
-    if (isDisableWhenMin && size <= 80.0) {
+    if (isDisableWhenMin && size <= 30.0) {
       return position;
     }
 
@@ -85,8 +85,8 @@ class _AppPreviewState extends State<AppPreview> {
 
     if (size + realValue + position > maxInt) {
       return max - position;
-    } else if (size + realValue <= 80.0) {
-      return 80.0;
+    } else if (size + realValue <= 30.0) {
+      return 30.0;
     }
     return size + realValue;
   }

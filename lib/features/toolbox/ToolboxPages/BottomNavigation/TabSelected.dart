@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/iconsList.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
+import 'package:flutter_app/ui/SelectIconList.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -148,36 +148,13 @@ class TabSelected extends StatelessWidget {
             );
           },
         ),
-        SizedBox(
-          height: 24,
-        ),
-        Text(
-          'Tab Icon',
-          style: MyTextStyle.regularTitle,
-        ),
-        SizedBox(
-          height: 14,
-        ),
-        Container(
-          child: FaIcon(
-            tab.icon,
-            color: MyColors.iconDarkGray,
-            size: 54,
-          ),
-        ),
-        Container(
-          width: 310,
-          height: MediaQuery.of(context).size.height - 290,
-          child: ListView.builder(
-              itemCount: allIconsList.length,
-              itemBuilder: (context, index) {
-                if (allIconsList[index].length == 1) {
-                  return _buildText(allIconsList[index][0]);
-                } else {
-                  return _buildRow(allIconsList[index]);
-                }
-              }),
-        )
+        SelectIconList(
+            selectedIcon: tab.icon,
+            onChanged: (IconData icon) {
+              tab.icon = icon;
+              userActions.bottomNavigation.updateTab(tab);
+              rerender();
+            })
       ],
     );
   }

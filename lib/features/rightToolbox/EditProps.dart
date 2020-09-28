@@ -80,13 +80,13 @@ class EditProps extends StatelessWidget {
             padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
             child: Column(
               children: [
-                selectedNode.toEditProps(userActions),
-                ColumnDivider(),
                 AllActions(
                   key: selectedNode.id,
                   userActions: userActions,
                   screens: screens,
                 ),
+                ColumnDivider(),
+                selectedNode.toEditProps(userActions),
               ],
             ),
           ),

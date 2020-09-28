@@ -106,6 +106,15 @@ class SchemaCrossAlignmentProperty extends SchemaNodeProperty {
   }
 }
 
+class SchemaIconProperty extends SchemaNodeProperty {
+  SchemaIconProperty(String name, IconData value) : super(name, value);
+
+  @override
+  SchemaIconProperty copy() {
+    return SchemaIconProperty(this.name, value);
+  }
+}
+
 class SchemaDoubleProperty extends SchemaNodeProperty {
   SchemaDoubleProperty(String name, double value) : super(name, value);
 

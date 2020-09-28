@@ -55,6 +55,7 @@ class EditPropsFontStyle extends StatelessWidget {
                   SelectOption('24', 24),
                   SelectOption('36', 36),
                   SelectOption('48', 48),
+                  SelectOption('56', 56),
                   SelectOption('72', 72),
                   SelectOption('96', 96),
                 ],

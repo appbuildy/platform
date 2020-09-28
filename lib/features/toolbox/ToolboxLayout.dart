@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
@@ -49,12 +50,16 @@ class ToolboxLayout extends StatelessWidget {
                       schemaNode: SchemaNodeButton(theme: theme),
                     ),
                     ToolboxComponent(schemaNode: SchemaNodeText(theme: theme)),
-                    ToolboxComponent(schemaNode: SchemaNodeImage()),
+                    ToolboxComponent(schemaNode: SchemaNodeIcon(theme: theme)),
                   ],
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    ToolboxComponent(schemaNode: SchemaNodeImage()),
+                    SizedBox(
+                      width: 10,
+                    ),
                     ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme)),
                   ],
                 ),

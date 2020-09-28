@@ -9,7 +9,7 @@ export 'SchemaNodeProperty.dart';
 export 'SchemaNodeShape.dart';
 export 'SchemaNodeText.dart';
 
-enum SchemaNodeType { button, text, shape, image, list }
+enum SchemaNodeType { button, text, shape, image, icon, list }
 
 abstract class SchemaNode {
   UniqueKey id;
@@ -36,7 +36,9 @@ abstract class SchemaNode {
         'type': SchemaNodeType.button
       };
   Widget toWidget();
-  Widget toEditProps(UserActions userActions);
+  Widget toEditProps(
+    UserActions userActions,
+  );
 
   Map<String, dynamic> _jsonActions() {
     final map = {};
