@@ -27,8 +27,7 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
   }
 
   @override
-  SchemaNodeProperty copy() {
-    // TODO: implement copy
-    throw UnimplementedError();
+  ListTemplate copy() {
+    return ListTemplate(this.name, value);
   }
 }
