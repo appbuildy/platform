@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/TabSelected.dart';
@@ -171,19 +173,27 @@ class _ToolboxPagesState extends State<ToolboxPages>
         double slideFirst = (-maxSlide / 2) * reversedValue;
         double slideSecond = maxSlide * (_animation.value);
 
+        log('${_animation.isCompleted}, isCompleted');
+        log('${_animation.value} value');
+        log('$reversedValue ReverserdValue');
+
         return Stack(children: [
           Transform(
               transform: Matrix4.identity()..translate(slideFirst),
-              child: Container(
-                  color: MyColors.white,
-                  width: toolboxWidth,
-                  child: _buildMain())),
+              child: _animation.value == 0
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildMain())),
           Transform(
               transform: Matrix4.identity()..translate(slideSecond),
-              child: Container(
-                  color: MyColors.white,
-                  width: toolboxWidth,
-                  child: _buildSelectedTab()))
+              child: _animation.value == 1
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildSelectedTab()))
         ]);
       },
       animation: _animation,

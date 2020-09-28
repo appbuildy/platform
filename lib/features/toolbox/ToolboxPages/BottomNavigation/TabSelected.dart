@@ -149,6 +149,7 @@ class TabSelected extends StatelessWidget {
           },
         ),
         SelectIconList(
+            subListHeight: 290,
             selectedIcon: tab.icon,
             onChanged: (IconData icon) {
               tab.icon = icon;

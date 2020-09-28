@@ -14,7 +14,7 @@ class SelectIconList extends StatelessWidget {
       {Key key,
       @required this.selectedIcon,
       @required this.onChanged,
-      this.subListHeight})
+      @required this.subListHeight})
       : super(key: key);
 
   Widget _buildText(String text) {
@@ -117,7 +117,7 @@ class SelectIconList extends StatelessWidget {
         ),
         Container(
           width: 310,
-          height: MediaQuery.of(context).size.height - subListHeight ?? 290,
+          height: MediaQuery.of(context).size.height - subListHeight,
           child: ListView.builder(
               itemCount: allIconsList.length,
               itemBuilder: (context, index) {
