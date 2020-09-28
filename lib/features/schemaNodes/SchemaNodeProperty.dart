@@ -135,7 +135,7 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
   SchemaMyThemePropProperty copy() {
     return SchemaMyThemePropProperty(this.name, value);
   }
-o}
+}
 
 class SchemaStringListProperty
     extends SchemaNodeProperty<Map<String, SchemaStringProperty>> {

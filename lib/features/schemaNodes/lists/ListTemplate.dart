@@ -19,9 +19,7 @@ class ListTemplate {
             .map((item) {
               return Text(
                 item.value,
-                style: TextStyle(
-                    fontSize: 16.0,
-                    color: getThemeColor(theme, properties['TextColor'])),
+                style: TextStyle(fontSize: 16.0),
               );
             })
             .toList()
