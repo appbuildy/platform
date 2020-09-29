@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsListItem.dart';
+import 'package:flutter_app/utils/Debouncer.dart';
 
 class EditPropsList extends StatelessWidget {
   final UniqueKey id;
@@ -22,7 +22,6 @@ class EditPropsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(properties[propName].value);
     final children = properties[propName]
         .value
         .values

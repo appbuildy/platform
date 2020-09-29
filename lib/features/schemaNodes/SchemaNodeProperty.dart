@@ -127,6 +127,16 @@ class SchemaDoubleProperty extends SchemaNodeProperty {
   var value;
 }
 
+class SchemaListItemProperty
+    extends SchemaNodeProperty<Map<String, SchemaStringProperty>> {
+  SchemaListItemProperty(String name, value) : super(name, value);
+
+  @override
+  SchemaListItemProperty copy() {
+    return SchemaListItemProperty(this.name, value);
+  }
+}
+
 class SchemaColorProperty extends SchemaNodeProperty<Color> {
   SchemaColorProperty(String name, Color value) : super(name, value);
 
@@ -147,13 +157,14 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
 }
 
 class SchemaStringListProperty
-    extends SchemaNodeProperty<Map<String, SchemaStringProperty>> {
-  SchemaStringListProperty(String name, Map<String, SchemaStringProperty> value)
+    extends SchemaNodeProperty<Map<String, SchemaListItemProperty>> {
+  SchemaStringListProperty(
+      String name, Map<String, SchemaListItemProperty> value)
       : super(name, value);
 
   @override
   SchemaStringListProperty copy() {
-    return SchemaStringListProperty(this.name, value);
+    return SchemaStringListProperty(this.name, this.value);
   }
 }
 

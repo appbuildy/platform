@@ -4,7 +4,6 @@ import 'package:flutter_app/features/schemaNodes/lists/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
-import 'package:flutter_app/utils/getThemeColor.dart';
 
 import 'common/EditPropsColor.dart';
 import 'common/EditPropsList.dart';
@@ -29,8 +28,8 @@ class SchemaNodeList extends SchemaNode {
     this.properties = properties ??
         {
           'Items': SchemaStringListProperty('Items', {
-            'item1': SchemaStringProperty('item1', 'Item 1'),
-            'item2': SchemaStringProperty('item2', 'Item 2')
+            'item1': SchemaListItemProperty(
+                'item1', {'Text': SchemaStringProperty("Text", "Item 1")}),
           }),
           'Template': ListTemplate('Template', ListTemplateType.simple),
           'TextColor': SchemaMyThemePropProperty(
@@ -65,20 +64,8 @@ class SchemaNodeList extends SchemaNode {
 
   @override
   Widget toWidget() {
-    return Column(
-        children: properties['Items']
-            .value
-            .values
-            .map((item) {
-              return Text(
-                item.value,
-                style: TextStyle(
-                    fontSize: 16.0,
-                    color: getThemeColor(theme, properties['TextColor'])),
-              );
-            })
-            .toList()
-            .cast<Widget>());
+    final template = this.properties['Template'] as ListTemplate;
+    return template.widget(this.properties['Items']);
   }
 
   @override

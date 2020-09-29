@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/schemaNodes/lists/DefaultListItem.dart';
 
 import '../SchemaNodeProperty.dart';
 
@@ -9,21 +10,22 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
 
   ListTemplate(String name, ListTemplateType value) : super(name, value);
 
-  Widget widget(
-    Map<String, SchemaNodeProperty> properties,
-  ) {
+  Widget widget(SchemaStringListProperty items) {
     return Column(
-        children: properties['Items']
-            .value
-            .values
+        children: items.value.values
             .map((item) {
-              return Text(
-                item.value,
-                style: TextStyle(fontSize: 16.0),
-              );
+              return _widget(item);
             })
             .toList()
             .cast<Widget>());
+  }
+
+  Widget _widget(SchemaListItemProperty item) {
+    final Map<ListTemplateType, Widget> mappings = Map();
+    mappings[ListTemplateType.simple] =
+        DefaultListItem(text: item.value['Text']).renderWidget();
+
+    return mappings[this.value];
   }
 
   @override

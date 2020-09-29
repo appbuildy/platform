@@ -26,7 +26,7 @@ class EditPropsListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(properties);
+    final item = properties[propName].value;
     return Row(
       children: [
         Text(
@@ -39,7 +39,8 @@ class EditPropsListItem extends StatelessWidget {
         Expanded(
           child: MyTextField(
             key: id,
-            defaultValue: properties[propName].value[listKey].value,
+            defaultValue:
+                properties[propName].value[listKey].value['Text'].value,
             onChanged: (newText) {
               ChangeListItems(userActions).change(
                   list: properties[propName],
