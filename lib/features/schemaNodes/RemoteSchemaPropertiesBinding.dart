@@ -8,11 +8,13 @@ import 'package:flutter_app/store/schema/SchemaStore.dart';
 class RemoteSchemaPropertiesBinding {
   IRemoteTable remoteTable;
   Map<String, IRemoteAttribute> mappings;
+  Map<String, IRemoteAttribute> listMappings;
 
   RemoteSchemaPropertiesBinding(IRemoteTable remoteTable,
       [Map<String, IRemoteAttribute> mappings]) {
     this.remoteTable = remoteTable;
     this.mappings = mappings ?? {};
+    this.listMappings = listMappings ?? {};
   }
 
   void addMapping(SchemaNodeProperty prop, AirtableAttribute attribute) {

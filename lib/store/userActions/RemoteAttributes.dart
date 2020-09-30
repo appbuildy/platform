@@ -1,3 +1,4 @@
+import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
