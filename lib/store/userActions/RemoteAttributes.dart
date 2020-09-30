@@ -22,6 +22,7 @@ abstract class _RemoteAttributes with Store {
 
   void update() async {
     IRemoteTable client = Client.defaultClient();
+
     final records = await client.records();
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {
