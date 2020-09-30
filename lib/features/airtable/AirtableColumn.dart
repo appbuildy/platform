@@ -8,8 +8,13 @@ class AirtableColumn implements RemoteList {
 
   @override
   String name;
-  AirtableColumn(String name, List<AirtableAttribute> list) {
-    this.list = list;
+  AirtableColumn(String name, [List<AirtableAttribute> list]) {
+    this.list = list ?? [];
     this.name = name;
+  }
+
+  void add(AirtableAttribute attribute) {
+    if (this.name != attribute.field) return;
+    list.add(attribute);
   }
 }
