@@ -16,7 +16,7 @@ class MockRemoteTable extends Mock implements IRemoteTable {
         },
         {
           "id": '444',
-          "fields": {"Test22": "33"}
+          "fields": {"Test22": "33", "Test": "42"}
         }
       ]
     };
@@ -29,7 +29,8 @@ void main() {
       final client = MockRemoteTable();
       final attributes = RemoteAttributes();
       await attributes.update(client);
-      expect(attributes.attributes.length, equals(2));
+      expect(attributes.attributes.length, equals(3));
+      expect(attributes.tables[client.table].length, equals(2));
     });
   });
 }
