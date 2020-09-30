@@ -4,6 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 class MockRemoteTable extends Mock implements IRemoteTable {
+  String table;
+  MockRemoteTable([this.table = 'table']);
+
   Future<Map<String, dynamic>> records() async {
     return {
       "records": [
