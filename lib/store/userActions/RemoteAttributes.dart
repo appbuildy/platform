@@ -33,6 +33,9 @@ abstract class _RemoteAttributes with Store {
     });
   }
 
+  @computed
+  List<String> get tableNames => tables.keys;
+
   @action
   Future<void> update([IRemoteTable fetchClient]) async {
     IRemoteTable client = fetchClient ?? Client.defaultClient();
