@@ -53,6 +53,7 @@ class UserActions {
   Screens get screens => _screens;
   BottomNavigationStore get bottomNavigation => _bottomNavigation;
   AppThemeStore get theme => _theme;
+  List<String> get tables => _remoteAttributes.tables.keys;
 
   void changeActionTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {
