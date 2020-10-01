@@ -29,9 +29,9 @@ void main() {
       final client = MockRemoteTable();
       final attributes = RemoteAttributes();
       await attributes.update(client);
-      final targetTable = attributes.tables[client.table];
+      final targetTableColumns = attributes.tables[client.table].keys;
       expect(attributes.attributes.length, equals(3));
-      expect(targetTable.length, equals(2));
+      expect(targetTableColumns.length, equals(2));
     });
   });
 }

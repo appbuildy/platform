@@ -27,13 +27,13 @@ mixin _$RemoteAttributes on _RemoteAttributes, Store {
   final _$tablesAtom = Atom(name: '_RemoteAttributes.tables');
 
   @override
-  ObservableMap<String, List<RemoteList>> get tables {
+  ObservableMap<String, Map<String, RemoteList>> get tables {
     _$tablesAtom.reportRead();
     return super.tables;
   }
 
   @override
-  set tables(ObservableMap<String, List<RemoteList>> value) {
+  set tables(ObservableMap<String, Map<String, RemoteList>> value) {
     _$tablesAtom.reportWrite(value, super.tables, () {
       super.tables = value;
     });

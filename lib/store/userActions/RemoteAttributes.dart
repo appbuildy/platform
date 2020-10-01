@@ -13,9 +13,9 @@ class RemoteAttributes = _RemoteAttributes with _$RemoteAttributes;
 abstract class _RemoteAttributes with Store {
   _RemoteAttributes(
       {List<IRemoteAttribute> attributes = const [],
-      ObservableMap<String, List<RemoteList>> tables}) {
+      ObservableMap<String, Map<String, RemoteList>> tables}) {
     this.attributes.addAll(attributes);
-    this.tables = tables ?? ObservableMap<String, List<RemoteList>>();
+    this.tables = tables ?? ObservableMap<String, Map<String, RemoteList>>();
   }
 
   @observable
@@ -23,8 +23,8 @@ abstract class _RemoteAttributes with Store {
       ObservableList<IRemoteAttribute>();
 
   @observable
-  ObservableMap<String, List<RemoteList>> tables =
-      ObservableMap<String, List<RemoteList>>();
+  ObservableMap<String, Map<String, RemoteList>> tables =
+      ObservableMap<String, Map<String, RemoteList>>();
 
   @action
   Future<void> fetchTables(List<String> tableNames) async {
@@ -36,7 +36,7 @@ abstract class _RemoteAttributes with Store {
   @action
   Future<void> update([IRemoteTable fetchClient]) async {
     IRemoteTable client = fetchClient ?? Client.defaultClient();
-    final columns = List<RemoteList>();
+    final columns = Map<String, RemoteList>();
     tables[client.table] = columns;
 
     final records = await client.records();
@@ -51,14 +51,12 @@ abstract class _RemoteAttributes with Store {
     print(tables);
   }
 
-  AirtableColumn _addColumnUniq(List<RemoteList> columns, key) {
+  AirtableColumn _addColumnUniq(Map<String, RemoteList> columns, key) {
     final column = AirtableColumn(key);
-    final foundColumn = columns.firstWhere(
-        (anyColumn) => anyColumn.name == column.name,
-        orElse: () => null);
+    final foundColumn = columns[key];
 
     if (foundColumn == null) {
-      columns.add(column);
+      columns[key] = column;
       return column;
     } else {
       return foundColumn;

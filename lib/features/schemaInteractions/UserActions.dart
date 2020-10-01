@@ -46,7 +46,7 @@ class UserActions {
     _theme = themeStore;
     _screens = screens;
 
-    _remoteAttributes.update();
+    _remoteAttributes.fetchTables(['Table 1', 'Moya Hueta']);
   }
 
   SchemaStore get currentScreen => _screens.current;
