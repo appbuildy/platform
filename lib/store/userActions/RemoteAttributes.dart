@@ -37,8 +37,7 @@ abstract class _RemoteAttributes with Store {
     final records = await client.records();
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {
-        final column = AirtableColumn(key);
-        _addColumn(columns, column);
+        _addColumnUniq(columns, key);
 
         final attribute = AirtableAttribute(record['id'], key);
         attributes.add(attribute);
@@ -46,8 +45,17 @@ abstract class _RemoteAttributes with Store {
     });
   }
 
-  void _addColumn(List<RemoteList> columns, column) {
-    if (columns.any((anyColumn) => anyColumn.name == column.name)) return;
-    columns.add(column);
+  AirtableColumn _addColumnUniq(List<RemoteList> columns, key) {
+    final column = AirtableColumn(key);
+    final foundColumn = columns.firstWhere(
+        (anyColumn) => anyColumn.name == column.name,
+        orElse: () => null);
+
+    if (foundColumn == null) {
+      columns.add(column);
+      return column;
+    } else {
+      return foundColumn;
+    }
   }
 }
