@@ -27,8 +27,13 @@ abstract class _RemoteAttributes with Store {
       ObservableMap<String, List<RemoteList>>();
 
   @action
-  void updateAttributes(ObservableList<IRemoteAttribute> list) {}
+  Future<void> fetchTables(List<String> tableNames) async {
+    tableNames.forEach((name) {
+      this.update(Client.defaultClient(table: name));
+    });
+  }
 
+  @action
   Future<void> update([IRemoteTable fetchClient]) async {
     IRemoteTable client = fetchClient ?? Client.defaultClient();
     final columns = List<RemoteList>();
@@ -43,6 +48,7 @@ abstract class _RemoteAttributes with Store {
         attributes.add(attribute);
       });
     });
+    print(tables);
   }
 
   AirtableColumn _addColumnUniq(List<RemoteList> columns, key) {

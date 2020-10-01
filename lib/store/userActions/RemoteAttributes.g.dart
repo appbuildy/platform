@@ -24,24 +24,40 @@ mixin _$RemoteAttributes on _RemoteAttributes, Store {
     });
   }
 
-  final _$_RemoteAttributesActionController =
-      ActionController(name: '_RemoteAttributes');
+  final _$tablesAtom = Atom(name: '_RemoteAttributes.tables');
 
   @override
-  void updateAttributes(ObservableList<IRemoteAttribute> list) {
-    final _$actionInfo = _$_RemoteAttributesActionController.startAction(
-        name: '_RemoteAttributes.updateAttributes');
-    try {
-      return super.updateAttributes(list);
-    } finally {
-      _$_RemoteAttributesActionController.endAction(_$actionInfo);
-    }
+  ObservableMap<String, List<RemoteList>> get tables {
+    _$tablesAtom.reportRead();
+    return super.tables;
+  }
+
+  @override
+  set tables(ObservableMap<String, List<RemoteList>> value) {
+    _$tablesAtom.reportWrite(value, super.tables, () {
+      super.tables = value;
+    });
+  }
+
+  final _$fetchTablesAsyncAction = AsyncAction('_RemoteAttributes.fetchTables');
+
+  @override
+  Future<void> fetchTables(List<String> tableNames) {
+    return _$fetchTablesAsyncAction.run(() => super.fetchTables(tableNames));
+  }
+
+  final _$updateAsyncAction = AsyncAction('_RemoteAttributes.update');
+
+  @override
+  Future<void> update([IRemoteTable fetchClient]) {
+    return _$updateAsyncAction.run(() => super.update(fetchClient));
   }
 
   @override
   String toString() {
     return '''
-attributes: ${attributes}
+attributes: ${attributes},
+tables: ${tables}
     ''';
   }
 }

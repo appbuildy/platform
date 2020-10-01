@@ -116,6 +116,28 @@ mixin _$SchemaStore on _SchemaStore, Store {
   }
 
   @override
+  void bringFront(SchemaNode schemaNode) {
+    final _$actionInfo = _$_SchemaStoreActionController.startAction(
+        name: '_SchemaStore.bringFront');
+    try {
+      return super.bringFront(schemaNode);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void sendBack(SchemaNode schemaNode) {
+    final _$actionInfo = _$_SchemaStoreActionController.startAction(
+        name: '_SchemaStore.sendBack');
+    try {
+      return super.sendBack(schemaNode);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void remove(SchemaNode schemaNode) {
     final _$actionInfo =
         _$_SchemaStoreActionController.startAction(name: '_SchemaStore.remove');

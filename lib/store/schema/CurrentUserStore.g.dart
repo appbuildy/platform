@@ -27,7 +27,7 @@ mixin _$CurrentUserStore on _CurrentUserStore, Store {
   final _$tryLogInAsyncAction = AsyncAction('_CurrentUserStore.tryLogIn');
 
   @override
-  Future tryLogIn(AuthenticationService authentication) {
+  Future<void> tryLogIn(AuthenticationService authentication) {
     return _$tryLogInAsyncAction.run(() => super.tryLogIn(authentication));
   }
 

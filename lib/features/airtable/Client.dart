@@ -13,14 +13,11 @@ class Client implements IRemoteTable {
   http.Client httpClient;
 
   factory Client.defaultClient(
-      {String table = 'Table%201',
+      {String table = 'Table 1',
       String apiKey = 'keyzl1cUgqEpq4zBB',
       String base = 'apphUx0izMa4P5pzQ'}) {
     return Client(
-        table: 'Table%201',
-        apiKey: 'keyzl1cUgqEpq4zBB',
-        base: 'apphUx0izMa4P5pzQ',
-        httpClient: http.Client());
+        table: table, apiKey: apiKey, base: base, httpClient: http.Client());
   }
 
   Client(
