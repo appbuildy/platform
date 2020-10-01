@@ -14,13 +14,13 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
     return Column(
         children: items.value.values
             .map((item) {
-              return _widget(item);
+              return _widgetFor(item);
             })
             .toList()
             .cast<Widget>());
   }
 
-  Widget _widget(SchemaListItemProperty item) {
+  Widget _widgetFor(SchemaListItemProperty item) {
     final Map<ListTemplateType, Widget> mappings = Map();
     mappings[ListTemplateType.simple] =
         DefaultListItem(text: item.value['Text']).renderWidget();
