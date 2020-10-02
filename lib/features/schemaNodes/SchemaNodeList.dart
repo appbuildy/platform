@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
 import 'common/EditPropsColor.dart';
@@ -71,6 +72,7 @@ class SchemaNodeList extends SchemaNode {
   @override
   Widget toEditProps(userActions) {
     return Column(children: [
+      ColumnDivider(),
       EditPropsList(
           id: id,
           properties: properties,

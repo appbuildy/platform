@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -85,6 +86,9 @@ class SchemaNodeIcon extends SchemaNode {
   @override
   Widget toEditProps(userActions) {
     return Column(children: [
+      ColumnDivider(
+        name: 'Icon Style',
+      ),
       EditPropsIconStyle(
         theme: theme,
         userActions: userActions,

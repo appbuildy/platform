@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
@@ -90,6 +91,9 @@ class SchemaNodeImage extends SchemaNode {
   @override
   Widget toEditProps(userActions) {
     return Column(children: [
+      ColumnDivider(
+        name: 'Image Style',
+      ),
       EditPropsText(
           title: 'Url',
           id: id,

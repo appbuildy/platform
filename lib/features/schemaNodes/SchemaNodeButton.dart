@@ -124,6 +124,7 @@ class SchemaNodeButton extends SchemaNode {
   @override
   Widget toEditProps(userActions) {
     return Column(children: [
+      ColumnDivider(name: 'Text Style'),
       EditPropsText(
           id: id,
           properties: properties,
@@ -138,7 +139,7 @@ class SchemaNodeButton extends SchemaNode {
         userActions: userActions,
         properties: properties,
       ),
-      ColumnDivider(),
+      ColumnDivider(name: 'Shape Style'),
       EditPropsColor(
         theme: theme,
         properties: properties,
@@ -155,7 +156,9 @@ class SchemaNodeButton extends SchemaNode {
               .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
         },
       ),
-      ColumnDivider(),
+      SizedBox(
+        height: 20,
+      ),
       EditPropsBorder(
         key: id,
         properties: properties,

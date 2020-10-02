@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/AllActions.dart';
-import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
@@ -34,7 +33,8 @@ class EditProps extends StatelessWidget {
         return Column(children: [
           Container(
             decoration: BoxDecoration(
-                border: Border(left: BorderSide(width: 1, color: MyColors.gray))),
+                border:
+                    Border(left: BorderSide(width: 1, color: MyColors.gray))),
             child: ToolboxHeader(
                 padding: const EdgeInsets.only(
                   left: 10.0,
@@ -84,7 +84,6 @@ class EditProps extends StatelessWidget {
                   userActions: userActions,
                   screens: screens,
                 ),
-                ColumnDivider(),
                 selectedNode.toEditProps(userActions),
               ],
             ),

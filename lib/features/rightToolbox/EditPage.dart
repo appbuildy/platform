@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
@@ -59,18 +60,8 @@ class EditPage extends StatelessWidget {
                           ),
                         )
                       ]),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                    height: 1,
-                    width: 260,
-                    decoration: BoxDecoration(
-                        color: MyColors.gray,
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
-                  SizedBox(
-                    height: 24,
+                  ColumnDivider(
+                    name: 'Page Settings',
                   ),
                   Row(
                     children: [

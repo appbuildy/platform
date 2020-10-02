@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
@@ -96,6 +97,9 @@ class SchemaNodeText extends SchemaNode {
   Widget toEditProps(userActions) {
     log(userActions.remoteAttributeList().toString());
     return Column(children: [
+      ColumnDivider(
+        name: 'Text Style',
+      ),
       EditPropsText(
           id: id,
           properties: properties,

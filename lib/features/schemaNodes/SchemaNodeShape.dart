@@ -4,6 +4,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
 class SchemaNodeShape extends SchemaNode {
@@ -70,6 +71,9 @@ class SchemaNodeShape extends SchemaNode {
   Widget toEditProps(userActions) {
     return Column(
       children: [
+        ColumnDivider(
+          name: 'Shape Style',
+        ),
         EditPropsColor(
           theme: theme,
           properties: properties,
