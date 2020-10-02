@@ -34,8 +34,7 @@ class EditProps extends StatelessWidget {
         return Column(children: [
           Container(
             decoration: BoxDecoration(
-                border:
-                    Border(left: BorderSide(width: 1, color: MyColors.gray))),
+                border: Border(left: BorderSide(width: 1, color: MyColors.gray))),
             child: ToolboxHeader(
                 padding: const EdgeInsets.only(
                   left: 10.0,
