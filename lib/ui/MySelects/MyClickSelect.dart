@@ -12,6 +12,7 @@ class MyClickSelect extends StatefulWidget {
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
   final String placeholder;
+  final Widget defaultIcon;
 
   const MyClickSelect({
     Key key,
@@ -19,6 +20,7 @@ class MyClickSelect extends StatefulWidget {
     @required this.options,
     @required this.onChange,
     this.placeholder,
+    this.defaultIcon,
   }) : super(key: key);
 
   @override
@@ -48,21 +50,23 @@ class _MyClickSelectState extends State<MyClickSelect> {
             .first
         : null;
 
+    final isSelectedWithDefaultIcon = selectedOption != null && widget.defaultIcon != null;
+
     return Cursor(
         cursor: CursorEnum.pointer,
         child: HoverDecoration(
           hoverDecoration: hoverDecoration,
           defaultDecoration: defaultDecoration,
           child: Padding(
-            padding:
-                const EdgeInsets.only(top: 9, bottom: 8, left: 16, right: 16),
+            padding: EdgeInsets.only(top: 9, bottom: 8, left: isSelectedWithDefaultIcon ? 10 : 16, right: 10),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                (selectedOption != null && selectedOption.leftWidget != null)
+                isSelectedWithDefaultIcon
                     ? Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: selectedOption.leftWidget)
+                        child: widget.defaultIcon)
                     : Container(),
                 Expanded(
                   child: Container(
@@ -175,7 +179,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
               overflow: Overflow.visible,
               children: [
                 Positioned(
-                    child: GestureDetector(
+                  child: GestureDetector(
                   onTap: () {
                     this._overlayEntry.remove();
                     setState(() {

@@ -81,7 +81,9 @@ class _AllActionsState extends State<AllActions> {
                       options: widget.userActions.screens.all.screens
                           .map((element) =>
                               SelectOption(element.name, element.id))
-                          .toList()),
+                          .toList(),
+                    defaultIcon: SizedBox(width: 20.0, height: 16.0, child: Image.network('assets/icons/layout/btn-navigate.svg')),
+                  ),
                 )
               ],
             ),
