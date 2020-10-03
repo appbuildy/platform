@@ -5,6 +5,8 @@ import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
+import 'lists/ListItem.dart';
+
 abstract class SchemaNodeProperty<T>
     implements ChangeableProperty<T>, JsonConvertable {
   String name;
@@ -125,16 +127,6 @@ class SchemaDoubleProperty extends SchemaNodeProperty {
 
   @override
   var value;
-}
-
-class SchemaListItemProperty
-    extends SchemaNodeProperty<Map<String, SchemaStringProperty>> {
-  SchemaListItemProperty(String name, value) : super(name, value);
-
-  @override
-  SchemaListItemProperty copy() {
-    return SchemaListItemProperty(this.name, value);
-  }
 }
 
 class SchemaColorProperty extends SchemaNodeProperty<Color> {

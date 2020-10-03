@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
+import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
-import 'common/EditPropsColor.dart';
-import 'common/EditPropsList.dart';
+import 'lists/ListItem.dart';
 
 class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
@@ -29,10 +30,35 @@ class SchemaNodeList extends SchemaNode {
     this.properties = properties ??
         {
           'Items': SchemaStringListProperty('Items', {
-            'item1': SchemaListItemProperty(
-                'item1', {'Text': SchemaStringProperty("Text", "Item 1")}),
+            // пример дата айтемов-row с сгенеренными
+            'mac': SchemaListItemProperty('mac', {
+              'restaurant_name':
+                  ListItem(column: 'restaurant_name', data: 'McDonalds'),
+              'restaurant_rate': ListItem(column: 'restaurant_rate', data: '5'),
+              'restaurant_url':
+                  ListItem(column: 'restaurant_url', data: 'http://google.com'),
+            }),
+            'bk': SchemaListItemProperty('mac', {
+              'restaurant_name':
+                  ListItem(column: 'restaurant_name', data: 'Burger King'),
+              'restaurant_rate': ListItem(column: 'restaurant_rate', data: '3'),
+              'restaurant_url':
+                  ListItem(column: 'restaurant_url', data: 'http://google.com'),
+            }),
           }),
           'Template': ListTemplate('Template', ListTemplateType.simple),
+          'Elements': ListElementsProperty(
+              'Elements',
+              ListElements(
+                  title: ListElement(
+                      type: ListElementType.title, column: 'restaurant_name'),
+                  subtitle: ListElement(
+                      type: ListElementType.subtitle,
+                      column: 'restaurant_rate'),
+                  image: ListElement(
+                      type: ListElementType.image, column: 'restaurant_url'),
+                  navigationIcon: ListElement(
+                      type: ListElementType.navigationIcon, column: 'true'))),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', this.theme.currentTheme.general),
         };
@@ -66,28 +92,46 @@ class SchemaNodeList extends SchemaNode {
   @override
   Widget toWidget() {
     final template = this.properties['Template'] as ListTemplate;
-    return template.widget(this.properties['Items']);
+    return template.widget(
+        this.properties['Items'], this.properties['Elements']);
   }
 
   @override
   Widget toEditProps(userActions) {
     return Column(children: [
-      ColumnDivider(),
-      EditPropsList(
-          id: id,
-          properties: properties,
-          propName: 'Items',
-          userActions: userActions,
-          textDebouncer: textDebouncer),
+      ColumnDivider(
+        name: 'Data Source',
+      ),
+      Row(
+        children: [
+          Text(
+            'Table from',
+            style: MyTextStyle.regularCaption,
+          )
+        ],
+      ),
+      ColumnDivider(
+        name: 'Row Elements',
+      ),
+      properties['Elements'].value.toEditProps(),
+      ColumnDivider(
+        name: 'Row Style',
+      ),
+//      EditPropsList(
+//          id: id,
+//          properties: properties,
+//          propName: 'Items',
+//          userActions: userActions,
+//          textDebouncer: textDebouncer),
       SizedBox(
         height: 10,
       ),
-      EditPropsColor(
-        theme: theme,
-        properties: properties,
-        userActions: userActions,
-        propName: 'TextColor',
-      ),
+//      EditPropsColor(
+//        theme: theme,
+//        properties: properties,
+//        userActions: userActions,
+//        propName: 'TextColor',
+//      ),
     ]);
   }
 }

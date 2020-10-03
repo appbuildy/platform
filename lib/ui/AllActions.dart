@@ -50,43 +50,40 @@ class _AllActionsState extends State<AllActions> {
             ),
             SizedBox(width: 11),
             Text(
-              'Navigate to Page on tap',
+              'Actions on Tap',
               style: MyTextStyle.regularTitle,
             ),
           ],
         ),
-        SizedBox(
-          height: 11,
-        ),
-        AbsorbPointer(
-          absorbing: !isVisible,
-          child: Opacity(
-            opacity: isVisible ? 1 : 0.4,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Navigate to',
-                  style: MyTextStyle.regularCaption,
+        isVisible
+            ? Padding(
+                padding: const EdgeInsets.only(top: 11.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Navigate to',
+                      style: MyTextStyle.regularCaption,
+                    ),
+                    Container(
+                      width: 170,
+                      child: MyClickSelect(
+                          placeholder: 'Select Page',
+                          selectedValue:
+                              selectedNode.actions['Tap'].value ?? null,
+                          onChange: (screen) {
+                            widget.userActions.changeActionTo(
+                                GoToScreenAction('Tap', screen.value));
+                          },
+                          options: widget.userActions.screens.all.screens
+                              .map((element) =>
+                                  SelectOption(element.name, element.id))
+                              .toList()),
+                    )
+                  ],
                 ),
-                Container(
-                  width: 170,
-                  child: MyClickSelect(
-                      placeholder: 'Select Page',
-                      selectedValue: selectedNode.actions['Tap'].value ?? null,
-                      onChange: (screen) {
-                        widget.userActions.changeActionTo(
-                            GoToScreenAction('Tap', screen.value));
-                      },
-                      options: widget.userActions.screens.all.screens
-                          .map((element) =>
-                              SelectOption(element.name, element.id))
-                          .toList()),
-                )
-              ],
-            ),
-          ),
-        )
+              )
+            : Container()
       ],
     );
   }
