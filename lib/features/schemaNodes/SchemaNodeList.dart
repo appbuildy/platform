@@ -36,24 +36,30 @@ class SchemaNodeList extends SchemaNode {
                   ListItem(column: 'restaurant_name', data: 'McDonalds'),
               'restaurant_rate':
                   ListItem(column: 'restaurant_rate', data: 'Fast Food'),
-              'restaurant_url':
-                  ListItem(column: 'restaurant_url', data: 'http://google.com'),
+              'restaurant_url': ListItem(
+                  column: 'restaurant_url',
+                  data:
+                      'https://images.unsplash.com/photo-1552895638-f7fe08d2f7d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80'),
             }),
             'bk': SchemaListItemProperty('mac', {
               'restaurant_name':
                   ListItem(column: 'restaurant_name', data: 'Burger King'),
               'restaurant_rate':
                   ListItem(column: 'restaurant_rate', data: 'Fast Food'),
-              'restaurant_url':
-                  ListItem(column: 'restaurant_url', data: 'http://google.com'),
+              'restaurant_url': ListItem(
+                  column: 'restaurant_url',
+                  data:
+                      'https://images.unsplash.com/photo-1528669826296-dbd6f641707d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80'),
             }),
             'lucky': SchemaListItemProperty('lucky', {
               'restaurant_name':
                   ListItem(column: 'restaurant_name', data: 'Lucky In The Kai'),
               'restaurant_rate':
                   ListItem(column: 'restaurant_rate', data: 'Elite Restaurant'),
-              'restaurant_url':
-                  ListItem(column: 'restaurant_url', data: 'http://google.com'),
+              'restaurant_url': ListItem(
+                  column: 'restaurant_url',
+                  data:
+                      'https://images.unsplash.com/photo-1579065693224-0a3abed6a058?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80'),
             }),
           }),
           'Template': ListTemplate('Template', ListTemplateType.simple),
@@ -129,7 +135,7 @@ class SchemaNodeList extends SchemaNode {
       ColumnDivider(
         name: 'Row Elements',
       ),
-      properties['Elements'].value.toEditProps(),
+      (properties['Elements'].value as ListElements).toEditProps(userActions),
       ColumnDivider(
         name: 'Row Style',
       ),

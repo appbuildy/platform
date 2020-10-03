@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 
@@ -19,28 +20,32 @@ class ListElements {
   ListElement image;
   ListElement navigationIcon;
 
-  Widget toEditProps() {
+  Widget toEditProps(UserActions userActions) {
     return Column(
       children: [
         ListElementWidget(
           type: ListElementType.title,
           name: "Title",
           parent: this,
+          userActions: userActions,
         ),
         ListElementWidget(
           type: ListElementType.subtitle,
           name: "Subtitle",
           parent: this,
+          userActions: userActions,
         ),
         ListElementWidget(
           type: ListElementType.image,
           name: "Image",
           parent: this,
+          userActions: userActions,
         ),
         ListElementWidget(
           type: ListElementType.navigationIcon,
           name: "Arrow",
           parent: this,
+          userActions: userActions,
         ),
       ],
     );
@@ -58,12 +63,14 @@ class ListElementWidget extends StatefulWidget {
   final ListElementType type;
   final String name;
   final ListElements parent;
+  final UserActions userActions;
 
   const ListElementWidget(
       {Key key,
       @required this.parent,
       @required this.type,
-      @required this.name})
+      @required this.name,
+      @required this.userActions})
       : super(key: key);
 
   @override
@@ -76,8 +83,12 @@ class _ListElementWidgetState extends State<ListElementWidget> {
       return isOnTap
           ? () {
               widget.parent.title = widget.parent.title == null
-                  ? ListElement(type: ListElementType.title, column: 'default')
+                  ? ListElement(
+                      type: ListElementType.title, column: 'restaurant_name')
                   : null;
+
+              widget.userActions.changePropertyTo(
+                  ListElementsProperty('Elements', widget.parent));
             }
           : widget.parent.title;
     } else if (widget.type == ListElementType.subtitle) {
@@ -85,16 +96,23 @@ class _ListElementWidgetState extends State<ListElementWidget> {
           ? () {
               widget.parent.subtitle = widget.parent.subtitle == null
                   ? ListElement(
-                      type: ListElementType.subtitle, column: 'default')
+                      type: ListElementType.subtitle, column: 'restaurant_rate')
                   : null;
+
+              widget.userActions.changePropertyTo(
+                  ListElementsProperty('Elements', widget.parent));
             }
           : widget.parent.subtitle;
     } else if (widget.type == ListElementType.image) {
       return isOnTap
           ? () {
               widget.parent.image = widget.parent.image == null
-                  ? ListElement(type: ListElementType.image, column: 'default')
+                  ? ListElement(
+                      type: ListElementType.image, column: 'restaurant_url')
                   : null;
+
+              widget.userActions.changePropertyTo(
+                  ListElementsProperty('Elements', widget.parent));
             }
           : widget.parent.image;
     } else if (widget.type == ListElementType.navigationIcon) {
@@ -106,6 +124,9 @@ class _ListElementWidgetState extends State<ListElementWidget> {
                           type: ListElementType.navigationIcon,
                           column: 'default')
                       : null;
+
+              widget.userActions.changePropertyTo(
+                  ListElementsProperty('Elements', widget.parent));
             }
           : widget.parent.navigationIcon;
     }
