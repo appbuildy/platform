@@ -50,7 +50,13 @@ class _MyClickSelectState extends State<MyClickSelect> {
             .first
         : null;
 
-    final isSelectedWithDefaultIcon = selectedOption != null && widget.defaultIcon != null;
+    bool isSelectedWithOwnSelectedOptionIcon = false;
+    bool isSelectedWithIcon = false;
+
+    if (selectedOption != null) {
+      isSelectedWithOwnSelectedOptionIcon = selectedOption.leftWidget != null;
+      isSelectedWithIcon = isSelectedWithOwnSelectedOptionIcon || widget.defaultIcon != null;
+    }
 
     return Cursor(
         cursor: CursorEnum.pointer,
@@ -58,15 +64,15 @@ class _MyClickSelectState extends State<MyClickSelect> {
           hoverDecoration: hoverDecoration,
           defaultDecoration: defaultDecoration,
           child: Padding(
-            padding: EdgeInsets.only(top: 9, bottom: 8, left: isSelectedWithDefaultIcon ? 10 : 16, right: 10),
+            padding: EdgeInsets.only(top: 9, bottom: 8, left: isSelectedWithIcon ? 10 : 16, right: 10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                isSelectedWithDefaultIcon
+                isSelectedWithIcon
                     ? Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: widget.defaultIcon)
+                        child: isSelectedWithOwnSelectedOptionIcon ? selectedOption.leftWidget : widget.defaultIcon)
                     : Container(),
                 Expanded(
                   child: Container(
