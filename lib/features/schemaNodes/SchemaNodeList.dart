@@ -22,7 +22,7 @@ class SchemaNodeList extends SchemaNode {
       : super() {
     this.type = SchemaNodeType.list;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(375.0, 150.0);
+    this.size = size ?? Offset(375.0, 250.0);
     this.id = id ?? UniqueKey();
     this.theme = theme;
 
@@ -34,14 +34,24 @@ class SchemaNodeList extends SchemaNode {
             'mac': SchemaListItemProperty('mac', {
               'restaurant_name':
                   ListItem(column: 'restaurant_name', data: 'McDonalds'),
-              'restaurant_rate': ListItem(column: 'restaurant_rate', data: '5'),
+              'restaurant_rate':
+                  ListItem(column: 'restaurant_rate', data: 'Fast Food'),
               'restaurant_url':
                   ListItem(column: 'restaurant_url', data: 'http://google.com'),
             }),
             'bk': SchemaListItemProperty('mac', {
               'restaurant_name':
                   ListItem(column: 'restaurant_name', data: 'Burger King'),
-              'restaurant_rate': ListItem(column: 'restaurant_rate', data: '3'),
+              'restaurant_rate':
+                  ListItem(column: 'restaurant_rate', data: 'Fast Food'),
+              'restaurant_url':
+                  ListItem(column: 'restaurant_url', data: 'http://google.com'),
+            }),
+            'lucky': SchemaListItemProperty('lucky', {
+              'restaurant_name':
+                  ListItem(column: 'restaurant_name', data: 'Lucky In The Kai'),
+              'restaurant_rate':
+                  ListItem(column: 'restaurant_rate', data: 'Elite Restaurant'),
               'restaurant_url':
                   ListItem(column: 'restaurant_url', data: 'http://google.com'),
             }),
@@ -92,8 +102,14 @@ class SchemaNodeList extends SchemaNode {
   @override
   Widget toWidget() {
     final template = this.properties['Template'] as ListTemplate;
-    return template.widget(
-        this.properties['Items'], this.properties['Elements']);
+    return Container(
+      width: this.size.dx,
+      height: this.size.dy,
+      child: template.widget(
+          items: this.properties['Items'],
+          elements: this.properties['Elements'],
+          theme: this.theme),
+    );
   }
 
   @override
