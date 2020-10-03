@@ -6,6 +6,8 @@ import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
+import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
 import 'lists/ListItem.dart';
@@ -29,6 +31,7 @@ class SchemaNodeList extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
+          'Table': SchemaStringProperty('Table', null),
           'Items': SchemaStringListProperty('Items', {
             // пример дата айтемов-row с сгенеренными
             'mac': SchemaListItemProperty('mac', {
@@ -66,6 +69,12 @@ class SchemaNodeList extends SchemaNode {
           'Elements': ListElementsProperty(
               'Elements',
               ListElements(
+                  allColumns: [
+                    'restaurant_name',
+                    'restaurant_rate',
+                    'restaurant_url',
+                    'restaurant_kek'
+                  ],
                   title: ListElement(
                       type: ListElementType.title, column: 'restaurant_name'),
                   subtitle: ListElement(
@@ -129,6 +138,21 @@ class SchemaNodeList extends SchemaNode {
           Text(
             'Table from',
             style: MyTextStyle.regularCaption,
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: MyClickSelect(
+                placeholder: 'Select Table',
+                selectedValue: properties['Table'].value ?? null,
+                onChange: (screen) {
+                  userActions.changePropertyTo(
+                      SchemaStringProperty('Table', screen.value));
+                },
+                options: userActions.tables
+                    .map((element) => SelectOption(element, element))
+                    .toList()),
           )
         ],
       ),

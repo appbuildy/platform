@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
+import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 
 import '../SchemaNodeProperty.dart';
@@ -19,10 +21,17 @@ class ListElements {
   ListElement subtitle;
   ListElement image;
   ListElement navigationIcon;
+  List<String> allColumns;
 
   Widget toEditProps(UserActions userActions) {
     return Column(
       children: [
+        ListElementWidget(
+          type: ListElementType.image,
+          name: "Image",
+          parent: this,
+          userActions: userActions,
+        ),
         ListElementWidget(
           type: ListElementType.title,
           name: "Title",
@@ -36,12 +45,6 @@ class ListElements {
           userActions: userActions,
         ),
         ListElementWidget(
-          type: ListElementType.image,
-          name: "Image",
-          parent: this,
-          userActions: userActions,
-        ),
-        ListElementWidget(
           type: ListElementType.navigationIcon,
           name: "Arrow",
           parent: this,
@@ -51,11 +54,12 @@ class ListElements {
     );
   }
 
-  ListElements({title, subtitle, image, navigationIcon}) {
+  ListElements({title, subtitle, image, navigationIcon, allColumns}) {
     this.title = title;
     this.subtitle = subtitle;
     this.image = image;
     this.navigationIcon = navigationIcon;
+    this.allColumns = allColumns;
   }
 }
 
@@ -135,23 +139,59 @@ class _ListElementWidgetState extends State<ListElementWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: widget.type == ListElementType.title
+      padding: widget.type == ListElementType.image
           ? const EdgeInsets.only()
-          : const EdgeInsets.only(top: 11),
-      child: Row(
+          : const EdgeInsets.only(top: 20),
+      child: Column(
         children: [
-          MySwitch(
-              value: _getElement() != null,
-              onTap: () {
-                setState(() {
-                  _getElement(true)();
-                });
-              }),
-          SizedBox(width: 11),
-          Text(
-            widget.name,
-            style: MyTextStyle.regularTitle,
-          )
+          Row(
+            children: [
+              MySwitch(
+                  value: _getElement() != null,
+                  onTap: () {
+                    setState(() {
+                      _getElement(true)();
+                    });
+                  }),
+              SizedBox(width: 11),
+              Text(
+                widget.name,
+                style: MyTextStyle.regularTitle,
+              )
+            ],
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          widget.type != ListElementType.navigationIcon
+              ? Row(
+                  children: [
+                    Text(
+                      'Column',
+                      style: MyTextStyle.regularCaption,
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                        child: MyClickSelect(
+                      placeholder: 'Select Column',
+                      onChange: (SelectOption element) {
+                        (_getElement() as ListElement).column = element.value;
+
+                        widget.userActions.changePropertyTo(
+                            ListElementsProperty('Elements', widget.parent));
+                      },
+                      options: widget.parent.allColumns
+                          .map((e) => SelectOption(e, e))
+                          .toList(),
+                      selectedValue: _getElement() != null
+                          ? (_getElement() as ListElement).column
+                          : null,
+                    ))
+                  ],
+                )
+              : Container()
         ],
       ),
     );
