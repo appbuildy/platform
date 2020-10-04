@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
+import 'package:flutter_app/features/airtable/AirtableColumn.dart';
 import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
@@ -54,6 +55,9 @@ class UserActions {
   BottomNavigationStore get bottomNavigation => _bottomNavigation;
   AppThemeStore get theme => _theme;
   List<String> get tables => _remoteAttributes.tableNames;
+  List<AirtableColumn> columnsFor(String tableName) {
+    return _remoteAttributes.tables[tableName].values;
+  }
 
   void changeActionTo(ChangeableProperty prop,
       [bool isAddedToDoneActions = true, prevValue]) {
