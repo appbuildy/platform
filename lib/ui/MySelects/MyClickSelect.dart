@@ -50,13 +50,8 @@ class _MyClickSelectState extends State<MyClickSelect> {
             .first
         : null;
 
-    bool isSelectedWithOwnSelectedOptionIcon = false;
-    bool isSelectedWithIcon = false;
-
-    if (selectedOption != null) {
-      isSelectedWithOwnSelectedOptionIcon = selectedOption.leftWidget != null;
-      isSelectedWithIcon = isSelectedWithOwnSelectedOptionIcon || widget.defaultIcon != null;
-    }
+    bool isWithIcon = widget.defaultIcon != null ||
+        (selectedOption != null && selectedOption.leftWidget != null);
 
     return Cursor(
         cursor: CursorEnum.pointer,
@@ -64,15 +59,18 @@ class _MyClickSelectState extends State<MyClickSelect> {
           hoverDecoration: hoverDecoration,
           defaultDecoration: defaultDecoration,
           child: Padding(
-            padding: EdgeInsets.only(top: 9, bottom: 8, left: isSelectedWithIcon ? 10 : 16, right: 10),
+            padding: EdgeInsets.only(
+                top: 9, bottom: 8, left: isWithIcon ? 10 : 16, right: 10),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                isSelectedWithIcon
+                isWithIcon
                     ? Padding(
                         padding: const EdgeInsets.only(right: 8),
-                        child: isSelectedWithOwnSelectedOptionIcon ? selectedOption.leftWidget : widget.defaultIcon)
+                        child: widget.defaultIcon != null
+                            ? widget.defaultIcon
+                            : selectedOption.leftWidget)
                     : Container(),
                 Expanded(
                   child: Container(
@@ -185,7 +183,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
               overflow: Overflow.visible,
               children: [
                 Positioned(
-                  child: GestureDetector(
+                    child: GestureDetector(
                   onTap: () {
                     this._overlayEntry.remove();
                     setState(() {
