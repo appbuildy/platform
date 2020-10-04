@@ -26,7 +26,7 @@ class SchemaNodeList extends SchemaNode {
       : super() {
     this.type = SchemaNodeType.listDefault;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(375.0, 250.0);
+    this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.theme = theme;
     this.listTemplateType = listTemplateType;

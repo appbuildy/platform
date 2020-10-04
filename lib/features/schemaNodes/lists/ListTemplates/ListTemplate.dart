@@ -29,3 +29,13 @@ ListTemplate getListTemplateByType(ListTemplateType type) {
     return ListTemplateSimple();
   }
 }
+
+double getListHeightByType(ListTemplateType type) {
+  if (type == ListTemplateType.simple) {
+    return 195.0;
+  } else if (type == ListTemplateType.cards) {
+    return 480.0;
+  } else {
+    return 195.0;
+  }
+}
