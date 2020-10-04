@@ -3,7 +3,7 @@ import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -12,8 +12,6 @@ import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
-import 'lists/ListItem.dart';
-
 class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
 
@@ -21,10 +19,11 @@ class SchemaNodeList extends SchemaNode {
       {Offset position,
       Offset size,
       @required AppThemeStore theme,
+      @required ListTemplateType listTemplateType,
       Map<String, SchemaNodeProperty> properties,
       UniqueKey id})
       : super() {
-    this.type = SchemaNodeType.list;
+    this.type = SchemaNodeType.listDefault;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 250.0);
     this.id = id ?? UniqueKey();
@@ -35,7 +34,8 @@ class SchemaNodeList extends SchemaNode {
         {
           'Table': SchemaStringProperty('Table', null),
           'Items': SchemaStringListProperty.sample(),
-          'Template': ListTemplate('Template', ListTemplateType.simple),
+          'Template': ListTemplateProperty(
+              'Template', getListTemplateByType(listTemplateType)),
           'Elements': ListElementsProperty(
               'Elements',
               ListElements(
@@ -85,7 +85,8 @@ class SchemaNodeList extends SchemaNode {
 
   @override
   Widget toWidget() {
-    final template = this.properties['Template'] as ListTemplate;
+    final template = this.properties['Template'].value;
+
     return Container(
       width: this.size.dx,
       height: this.size.dy,
@@ -125,7 +126,8 @@ class SchemaNodeList extends SchemaNode {
             child: MyClickSelect(
                 placeholder: 'Select Table',
                 selectedValue: properties['Table'].value ?? null,
-                onChange: (screen) {
+                onChange: (screen) async {
+                  await updateData(screen.value, userActions);
                   userActions.changePropertyTo(
                       SchemaStringProperty('Table', screen.value));
 
@@ -133,7 +135,6 @@ class SchemaNodeList extends SchemaNode {
                       .columnsFor(screen.value)
                       .map((e) => e.name)
                       .toList());
-                  updateData(screen.value, userActions);
 
 //                  userActions.changePropertyTo(ListElementsProperty(
 //                      'Elements', properties['Elements'].value));

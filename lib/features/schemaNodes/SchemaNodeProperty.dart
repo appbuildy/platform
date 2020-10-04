@@ -4,6 +4,7 @@ import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 import 'lists/ListItem.dart';
@@ -146,6 +147,15 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
   @override
   SchemaMyThemePropProperty copy() {
     return SchemaMyThemePropProperty(this.name, value);
+  }
+}
+
+class ListTemplateProperty extends SchemaNodeProperty<ListTemplate> {
+  ListTemplateProperty(String name, ListTemplate value) : super(name, value);
+
+  @override
+  ListTemplateProperty copy() {
+    return ListTemplateProperty(this.name, value);
   }
 }
 

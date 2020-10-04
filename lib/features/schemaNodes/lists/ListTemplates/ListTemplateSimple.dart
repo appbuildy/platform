@@ -1,36 +1,37 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../SchemaNodeProperty.dart';
-
-enum ListTemplateType { simple, WithPhoto }
-
-class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
-  ListTemplateType type;
-
-  ListTemplate(String name, ListTemplateType value) : super(name, value);
-
+class ListTemplateSimple extends ListTemplate {
   Widget widget(
       {SchemaStringListProperty items,
       ListElementsProperty elements,
       AppThemeStore theme}) {
+    print('hey bitch im listTemplate');
+    print('items ${items.value.values.first.value}');
+    print(
+        'column ${(items.value.values.first.value['Name'] != null ? items.value.values.first.value['Name'].column : 'kek')}');
+    print(
+        'data ${(items.value.values.first.value['Name'] != null ? items.value.values.first.value['Name'].data : 'kek')}');
     return Column(
         children: items.value.values
             .map((item) {
-              return _widgetFor(item, elements.value, theme);
+              return widgetFor(
+                  item: item, elements: elements.value, theme: theme);
             })
             .toList()
             .cast<Widget>());
   }
 
-  Widget _widgetFor(
-      SchemaListItemProperty item, ListElements elements, AppThemeStore theme) {
-//    final Map<ListTemplateType, Widget> mappings = Map();
-
+  Widget widgetFor(
+      {SchemaListItemProperty item,
+      ListElements elements,
+      AppThemeStore theme}) {
     return Row(
       children: [
         Expanded(
@@ -51,7 +52,7 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: Image.network(
-                              item.value[elements.image.column].data,
+                              item.value[elements.image.column]?.data ?? '',
                               fit: BoxFit.cover,
                               width: 36,
                               height: 36,
@@ -64,7 +65,7 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
                     children: [
                       elements.title != null
                           ? Text(
-                              item.value[elements.title.column].data,
+                              item.value[elements.title.column]?.data ?? '',
                               style: MyTextStyle.regularTitle,
                             )
                           : Container(),
@@ -72,7 +73,8 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
                           ? Padding(
                               padding: const EdgeInsets.only(top: 3),
                               child: Text(
-                                item.value[elements.subtitle.column].data,
+                                item.value[elements.subtitle.column]?.data ??
+                                    '',
                                 style: MyTextStyle.regularCaption,
                               ),
                             )
@@ -98,17 +100,5 @@ class ListTemplate extends SchemaNodeProperty<ListTemplateType> {
         ),
       ],
     );
-
-//    mappings[ListTemplateType.simple] =
-//        DefaultListItem(text: item.value['Text']).renderWidget();
-
-//    return mappings[this.value];
-
-    return Container();
-  }
-
-  @override
-  ListTemplate copy() {
-    return ListTemplate(this.name, value);
   }
 }

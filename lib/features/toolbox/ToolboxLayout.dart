@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
@@ -67,7 +68,19 @@ class ToolboxLayout extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ToolboxComponent(schemaNode: SchemaNodeList(theme: theme)),
+                    ToolboxComponent(
+                        defaultTitle: 'List',
+                        defaultType: SchemaNodeType.listDefault,
+                        schemaNode: SchemaNodeList(
+                          theme: theme,
+                          listTemplateType: ListTemplateType.simple,
+                        )),
+                    ToolboxComponent(
+                        defaultTitle: 'Cards',
+                        defaultType: SchemaNodeType.listCards,
+                        schemaNode: SchemaNodeList(
+                            theme: theme,
+                            listTemplateType: ListTemplateType.simple))
                   ],
                 ),
               ],
@@ -81,8 +94,12 @@ class ToolboxLayout extends StatelessWidget {
 
 class ToolboxComponent extends StatelessWidget {
   final SchemaNode schemaNode;
+  final String defaultTitle;
+  final SchemaNodeType defaultType;
 
-  const ToolboxComponent({Key key, this.schemaNode}) : super(key: key);
+  const ToolboxComponent(
+      {Key key, this.defaultType, this.schemaNode, this.defaultTitle})
+      : super(key: key);
 
   Widget buildComponent() {
     final defaultDecoration = BoxDecoration(
@@ -96,8 +113,10 @@ class ToolboxComponent extends StatelessWidget {
       border: Border.all(width: 1, color: MyColors.mainBlue),
     );
 
-    final type = schemaNode.type.toString().split('.')[1];
-    final name = type.capitalize();
+    final realType = defaultType ?? schemaNode.type;
+    final type = realType.toString().split('.')[1];
+    final name =
+        defaultTitle != null ? defaultTitle.capitalize() : type.capitalize();
 
     return Cursor(
       cursor: CursorEnum.pointer,
