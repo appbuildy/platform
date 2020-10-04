@@ -68,6 +68,11 @@ class _AllActionsState extends State<AllActions> {
                     Container(
                       width: 170,
                       child: MyClickSelect(
+                          defaultIcon: SizedBox(
+                              width: 20.0,
+                              height: 16.0,
+                              child: Image.network(
+                                  'assets/icons/layout/btn-navigate.svg')),
                           placeholder: 'Select Page',
                           selectedValue:
                               selectedNode.actions['Tap'].value ?? null,
