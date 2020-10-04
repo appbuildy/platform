@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
-import 'package:flutter_app/features/airtable/AirtableColumn.dart';
 import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
+import 'package:flutter_app/features/airtable/RemoteList.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
 import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
@@ -55,8 +55,8 @@ class UserActions {
   BottomNavigationStore get bottomNavigation => _bottomNavigation;
   AppThemeStore get theme => _theme;
   List<String> get tables => _remoteAttributes.tableNames;
-  List<AirtableColumn> columnsFor(String tableName) {
-    return _remoteAttributes.tables[tableName].values;
+  List<RemoteList> columnsFor(String tableName) {
+    return _remoteAttributes.tables[tableName].values.toList();
   }
 
   void changeActionTo(ChangeableProperty prop,

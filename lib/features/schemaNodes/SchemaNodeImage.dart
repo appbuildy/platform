@@ -20,7 +20,7 @@ class SchemaNodeImage extends SchemaNode {
       : super() {
     this.type = SchemaNodeType.image;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(343.0, 150.0);
+    this.size = size ?? Offset(375.0, 210.0);
     this.id = id ?? UniqueKey();
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??

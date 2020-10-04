@@ -73,7 +73,6 @@ class SchemaNodeList extends SchemaNode {
                     'restaurant_name',
                     'restaurant_rate',
                     'restaurant_url',
-                    'restaurant_kek'
                   ],
                   title: ListElement(
                       type: ListElementType.title, column: 'restaurant_name'),
@@ -149,6 +148,14 @@ class SchemaNodeList extends SchemaNode {
                 onChange: (screen) {
                   userActions.changePropertyTo(
                       SchemaStringProperty('Table', screen.value));
+
+                  properties['Elements'].value.updateAllColumns(userActions
+                      .columnsFor(screen.value)
+                      .map((e) => e.name)
+                      .toList());
+
+//                  userActions.changePropertyTo(ListElementsProperty(
+//                      'Elements', properties['Elements'].value));
                 },
                 options: userActions.tables
                     .map((element) => SelectOption(element, element))

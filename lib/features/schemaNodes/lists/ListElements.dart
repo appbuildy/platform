@@ -23,6 +23,15 @@ class ListElements {
   ListElement navigationIcon;
   List<String> allColumns;
 
+  void updateAllColumns(List<String> newAllColumns) {
+    allColumns = newAllColumns;
+
+    image.column = newAllColumns[0];
+    title.column = allColumns.length >= 2 ? newAllColumns[1] : newAllColumns[0];
+    subtitle.column =
+        allColumns.length >= 3 ? newAllColumns[2] : newAllColumns[0];
+  }
+
   Widget toEditProps(UserActions userActions) {
     return Column(
       children: [
@@ -88,7 +97,8 @@ class _ListElementWidgetState extends State<ListElementWidget> {
           ? () {
               widget.parent.title = widget.parent.title == null
                   ? ListElement(
-                      type: ListElementType.title, column: 'restaurant_name')
+                      type: ListElementType.title,
+                      column: widget.parent.allColumns[0])
                   : null;
 
               widget.userActions.changePropertyTo(
@@ -100,7 +110,10 @@ class _ListElementWidgetState extends State<ListElementWidget> {
           ? () {
               widget.parent.subtitle = widget.parent.subtitle == null
                   ? ListElement(
-                      type: ListElementType.subtitle, column: 'restaurant_rate')
+                      type: ListElementType.subtitle,
+                      column: widget.parent.allColumns.length >= 2
+                          ? widget.parent.allColumns[1]
+                          : widget.parent.allColumns[0])
                   : null;
 
               widget.userActions.changePropertyTo(
@@ -112,7 +125,10 @@ class _ListElementWidgetState extends State<ListElementWidget> {
           ? () {
               widget.parent.image = widget.parent.image == null
                   ? ListElement(
-                      type: ListElementType.image, column: 'restaurant_url')
+                      type: ListElementType.image,
+                      column: widget.parent.allColumns.length >= 3
+                          ? widget.parent.allColumns[2]
+                          : widget.parent.allColumns[0])
                   : null;
 
               widget.userActions.changePropertyTo(
@@ -163,7 +179,7 @@ class _ListElementWidgetState extends State<ListElementWidget> {
           SizedBox(
             height: 8,
           ),
-          widget.type != ListElementType.navigationIcon
+          widget.type != ListElementType.navigationIcon && _getElement() != null
               ? Row(
                   children: [
                     Text(
