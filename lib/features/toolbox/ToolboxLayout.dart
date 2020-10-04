@@ -80,7 +80,7 @@ class ToolboxLayout extends StatelessWidget {
                         defaultType: SchemaNodeType.listCards,
                         schemaNode: SchemaNodeList(
                             theme: theme,
-                            listTemplateType: ListTemplateType.simple))
+                            listTemplateType: ListTemplateType.cards))
                   ],
                 ),
               ],

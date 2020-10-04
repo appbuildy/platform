@@ -14,6 +14,7 @@ import 'package:flutter_app/utils/Debouncer.dart';
 
 class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
+  ListTemplateType listTemplateType;
 
   SchemaNodeList(
       {Offset position,
@@ -28,6 +29,7 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, 250.0);
     this.id = id ?? UniqueKey();
     this.theme = theme;
+    this.listTemplateType = listTemplateType;
 
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
@@ -67,11 +69,13 @@ class SchemaNodeList extends SchemaNode {
       UniqueKey id,
       bool saveProperties = true}) {
     return SchemaNodeList(
-        position: position ?? this.position,
-        id: id ?? this.id,
-        size: size ?? this.size,
-        properties: saveProperties ? this._copyProperties() : null,
-        theme: this.theme);
+      position: position ?? this.position,
+      id: id ?? this.id,
+      size: size ?? this.size,
+      properties: saveProperties ? this._copyProperties() : null,
+      theme: this.theme,
+      listTemplateType: this.listTemplateType,
+    );
   }
 
   Map<String, SchemaNodeProperty> _copyProperties() {
