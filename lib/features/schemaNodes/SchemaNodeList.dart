@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplate.dart';
@@ -94,8 +96,18 @@ class SchemaNodeList extends SchemaNode {
     );
   }
 
+  Future<void> updateData(String tableName, UserActions userActions) async {
+    final client = Client.defaultClient(table: tableName);
+    print(properties['Items'].value);
+
+    final newProp = await SchemaStringListProperty.fromRemoteTable(client);
+    userActions.changePropertyTo(newProp);
+
+    print(properties['Items'].value);
+  }
+
   @override
-  Widget toEditProps(userActions) {
+  Widget toEditProps(UserActions userActions) {
     return Column(children: [
       ColumnDivider(
         name: 'Data Source',
@@ -121,6 +133,7 @@ class SchemaNodeList extends SchemaNode {
                       .columnsFor(screen.value)
                       .map((e) => e.name)
                       .toList());
+                  updateData(screen.value, userActions);
 
 //                  userActions.changePropertyTo(ListElementsProperty(
 //                      'Elements', properties['Elements'].value));
