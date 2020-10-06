@@ -15,12 +15,14 @@ import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
+import 'package:http/http.dart' as http;
 
 import 'ConnectToRemoteAttribute.dart';
 
@@ -31,15 +33,16 @@ class UserActions {
   Screens _screens;
   BottomNavigationStore _bottomNavigation;
   AppThemeStore _theme;
+  CurrentUserStore _currentUserStore;
   RemoteAttributes _remoteAttributes;
   RemoteSchemaPropertiesBinding _bindings;
   List<String> remoteTableNames;
 
   UserActions(
       {Screens screens,
+      CurrentUserStore currentUserStore,
       BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore,
-      List<String> remoteTableNames}) {
+      AppThemeStore themeStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -48,9 +51,9 @@ class UserActions {
     _bindings = RemoteSchemaPropertiesBinding(Client.defaultClient());
     _theme = themeStore;
     _screens = screens;
-    this.remoteTableNames = remoteTableNames;
+    _currentUserStore = currentUserStore;
 
-    _remoteAttributes.fetchTables(this.remoteTableNames);
+    this.fetchTables();
   }
 
   SchemaStore get currentScreen => _screens.current;
@@ -60,6 +63,12 @@ class UserActions {
   List<String> get tables => _remoteAttributes.tableNames;
   List<RemoteList> columnsFor(String tableName) {
     return _remoteAttributes.tables[tableName].values.toList();
+  }
+
+  Future<void> fetchTables() async {
+    final remoteTableNames =
+        await _currentUserStore.currentUser.tables(http.Client());
+    _remoteAttributes.fetchTables(remoteTableNames);
   }
 
   void changeActionTo(ChangeableProperty prop,

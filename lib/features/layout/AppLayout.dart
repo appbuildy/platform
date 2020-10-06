@@ -52,15 +52,6 @@ class _AppLayoutState extends State<AppLayout> {
     themeStore.setTheme(MyThemes.lightBlue);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
-    userActions = UserActions(
-        screens: screens,
-        bottomNavigationStore: bottomNavigationStore,
-        themeStore: themeStore);
-    isPlayMode = false;
-    _focusNode = FocusNode();
-    _focusNode.addListener(_handleFocusChange);
-    _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
-    toolboxState = ToolboxStates.layout;
     final jwt = window.localStorage['jwt'] ?? Uri.base.queryParameters['jwt'];
     final url = window.localStorage['url'] ??
         Uri.base.queryParameters['url'] ??
@@ -72,6 +63,16 @@ class _AppLayoutState extends State<AppLayout> {
 
     currentUserStore
         .tryLogIn(AuthenticationService.defaultAuth(jwt: jwt, url: url));
+    userActions = UserActions(
+        currentUserStore: currentUserStore,
+        screens: screens,
+        bottomNavigationStore: bottomNavigationStore,
+        themeStore: themeStore);
+    isPlayMode = false;
+    _focusNode = FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+    _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
+    toolboxState = ToolboxStates.layout;
     userActions.updateRemoteAttributeValues();
   }
 
