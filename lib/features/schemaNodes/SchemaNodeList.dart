@@ -15,7 +15,7 @@ import 'package:flutter_app/utils/Debouncer.dart';
 class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
   ListTemplateType listTemplateType;
-
+`
   SchemaNodeList(
       {Offset position,
       Offset size,

@@ -33,11 +33,13 @@ class UserActions {
   AppThemeStore _theme;
   RemoteAttributes _remoteAttributes;
   RemoteSchemaPropertiesBinding _bindings;
+  List<String> remoteTableNames;
 
   UserActions(
       {Screens screens,
       BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+      AppThemeStore themeStore,
+      List<String> remoteTableNames}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -46,8 +48,9 @@ class UserActions {
     _bindings = RemoteSchemaPropertiesBinding(Client.defaultClient());
     _theme = themeStore;
     _screens = screens;
+    this.remoteTableNames = remoteTableNames;
 
-    _remoteAttributes.fetchTables(['Table 1', 'Moya Hueta']);
+    _remoteAttributes.fetchTables(this.remoteTableNames);
   }
 
   SchemaStore get currentScreen => _screens.current;

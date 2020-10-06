@@ -65,8 +65,9 @@ class _AppLayoutState extends State<AppLayout> {
     final url = window.localStorage['url'] ??
         Uri.base.queryParameters['url'] ??
         "http://localhost:4000/me";
+    final projectId = window.localStorage['projectId'] ??
+        Uri.base.queryParameters['projectId'];
 
-    print("Query: $jwt");
     currentUserStore = CurrentUserStore();
 
     currentUserStore
