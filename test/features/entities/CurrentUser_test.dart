@@ -1,26 +1,27 @@
-import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
-import 'package:flutter_app/features/airtable/AirtableColumn.dart';
-import 'package:flutter_app/features/airtable/RemoteList.dart';
 import 'package:flutter_app/features/entities/CurrentUser.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart';
+import 'package:http/testing.dart';
 import 'package:mockito/mockito.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
-class MockClient extends Mock implements http.Client {}
+class MockedClient extends MockClient {
+  MockedClient(fn) : super(fn);
+}
 
-final mockClient = MockClient();
 final responseBody = '{ "tables" : [{ "name": "table 1" }] }';
 
 void main() {
   test('tables()', () async {
     final dataUrl = 'https://backend.com/me';
 
-    when(mockClient.get(dataUrl))
-        .thenAnswer((_) async => http.Response(responseBody, 200));
+    var client = MockClient((request) async {
+      return Response(responseBody, 200, request: request);
+    });
 
     final CurrentUser user = CurrentUser('Sanek', '1231', dataUrl);
-    final tables = await user.tables(mockClient);
+    final tables = await user.tables(client);
     expect(tables.first, equals('table 1'));
   });
 }

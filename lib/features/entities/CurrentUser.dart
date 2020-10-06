@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'User.dart';
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 class CurrentUser extends User {
   String _name;
@@ -15,7 +16,10 @@ class CurrentUser extends User {
   }
 
   Future<List<String>> tables(http.Client client) async {
-    final response = await client.get(this.dataUrl);
+    final response = await client.get(this.dataUrl,
+        headers: {HttpHeaders.authorizationHeader: "Bearer ${this._JwtToken}"});
+    print(response);
+
     final Map<String, dynamic> tables = json.decode(response.body);
     final List<dynamic> tableNames = tables['tables'];
 
