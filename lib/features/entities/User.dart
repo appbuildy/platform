@@ -5,4 +5,7 @@ abstract class User {
   String get name;
   String dataUrl;
   Future<List<String>> tables(http.Client client);
+  Map<dynamic, dynamic> authHeaders() {
+    return {};
+  }
 }
