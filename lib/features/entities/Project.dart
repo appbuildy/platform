@@ -13,6 +13,7 @@ class Project {
   Future<Map<String, dynamic>> getData(Client client) async {
     final response = await client.get(this.url, headers: user.authHeaders());
     final data = json.decode(response.body);
+    print(data);
     _fetchedData = data;
     return data;
   }

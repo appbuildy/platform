@@ -11,6 +11,6 @@ class SettingsParser {
   String get userUrl => "$url/me";
   String get projectId =>
       _window.localStorage['projectId'] ??
-      Uri.base.queryParameters['projectId'];
+      Uri.base.queryParameters['project_id'];
   String get projectUrl => "$url/projects/$projectId";
 }
