@@ -3,9 +3,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/TooboxSettings/Theme/ToolboxTheme.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
-import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/ToolboxHeader.dart';
 
 enum SettingsEnum { info, theme, terms }
 
@@ -114,18 +112,7 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
   }
 
   Widget _buildSelectedSetting() {
-    return Column(
-      children: [
-        ToolboxHeader(
-            leftWidget: IconCircleButton(
-                onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
-            title: 'Theme'),
-        Padding(
-          padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
-          child: ToolboxTheme(userActions: widget.userActions),
-        ),
-      ],
-    );
+    return BuildToolboxThemePage(goBackToSettings: goBack, theme: widget.userActions.theme);
   }
 
   @override
@@ -134,28 +121,30 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
 
     return AnimatedBuilder(
       builder: (BuildContext context, Widget child) {
-        double reversedValue = (_animation.value - 1) * -1;
+        double reversedValue = (_controller.value - 1) * -1;
         double slideFirst = (-maxSlide / 2) * reversedValue;
-        double slideSecond = maxSlide * (_animation.value);
+        double slideSecond = maxSlide * (_controller.value);
 
-        return Stack(children: [
-          Transform(
-              transform: Matrix4.identity()..translate(slideFirst),
-              child: _animation.value == 0
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildMain())),
-          Transform(
-              transform: Matrix4.identity()..translate(slideSecond),
-              child: _animation.value == 1
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildSelectedSetting()))
-        ]);
+        return Stack(
+          children: [
+            Transform(
+                transform: Matrix4.identity()..translate(slideFirst),
+                child: _controller.value == 0
+                    ? Container()
+                    : Container(
+                        color: MyColors.white,
+                        width: toolboxWidth,
+                        child: _buildMain())),
+            Transform(
+                transform: Matrix4.identity()..translate(slideSecond),
+                child: _controller.value == 1
+                    ? Container()
+                    : Container(
+                        color: MyColors.white,
+                        width: toolboxWidth,
+                        child: _buildSelectedSetting()))
+          ],
+        );
       },
       animation: _animation,
     );
