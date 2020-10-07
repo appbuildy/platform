@@ -10,10 +10,14 @@ class SetupProject {
 
   SetupProject(this.userStore, this.settings);
 
-  Future<Project> setup(AuthenticationService auth, http.Client client) async {
-    await userStore.tryLogIn(auth);
+  Future<Project> setup(
+      [AuthenticationService auth, http.Client client]) async {
+    await userStore.tryLogIn(auth ??
+        AuthenticationService.defaultAuth(
+            jwt: settings.jwt, url: settings.userUrl));
+
     final project = Project(settings.projectUrl, userStore.currentUser);
-    await project.getData(client);
+    await project.getData(client ?? http.Client());
     return project;
   }
 }

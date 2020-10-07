@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
+import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/services/SettingsParser.dart';
+import 'package:flutter_app/features/services/SetupProject.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
@@ -41,6 +42,7 @@ class _AppLayoutState extends State<AppLayout> {
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
   ToolboxStates toolboxState;
+  Project project;
 
   @override
   void initState() {
@@ -53,11 +55,7 @@ class _AppLayoutState extends State<AppLayout> {
     themeStore.setTheme(MyThemes.lightBlue);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
-    final SettingsParser settings = SettingsParser(window);
-
     currentUserStore = CurrentUserStore();
-    currentUserStore.tryLogIn(AuthenticationService.defaultAuth(
-        jwt: settings.jwt, url: settings.userUrl));
 
     userActions = UserActions(
         currentUserStore: currentUserStore,
@@ -70,6 +68,11 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
     userActions.updateRemoteAttributeValues();
+  }
+
+  Future<void> setupProject() async {
+    final SettingsParser settings = SettingsParser(window);
+    project = await SetupProject(currentUserStore, settings).setup();
   }
 
   void _handleFocusChange() {
