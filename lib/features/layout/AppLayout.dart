@@ -11,6 +11,7 @@ import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
+import 'package:flutter_app/features/services/SettingsParser.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
@@ -52,17 +53,12 @@ class _AppLayoutState extends State<AppLayout> {
     themeStore.setTheme(MyThemes.lightBlue);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
-    final jwt = window.localStorage['jwt'] ?? Uri.base.queryParameters['jwt'];
-    final url = window.localStorage['url'] ??
-        Uri.base.queryParameters['url'] ??
-        "http://localhost:4000/me";
-    final projectId = window.localStorage['projectId'] ??
-        Uri.base.queryParameters['projectId'];
+    final SettingsParser settings = SettingsParser(window);
 
     currentUserStore = CurrentUserStore();
+    currentUserStore.tryLogIn(AuthenticationService.defaultAuth(
+        jwt: settings.jwt, url: settings.userUrl));
 
-    currentUserStore
-        .tryLogIn(AuthenticationService.defaultAuth(jwt: jwt, url: url));
     userActions = UserActions(
         currentUserStore: currentUserStore,
         screens: screens,
