@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>action-edit-highlighted</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%" />
+            <stop stop-color="#007AFF" offset="100%" />
+        </linearGradient>
+    </defs>
+    <g id="action-edit-highlighted" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M24.481403,15.7748129 L26.1456907,14.0031518 C27.1478424,12.9115222 27.3446937,11.3367123 26.3246464,10.2629783 L25.6446148,9.52926005 C24.7856276,8.63448171 23.157131,8.93870635 22.083397,9.95875365 L20.3475271,11.6230414 L24.481403,15.7748129 Z M9.4312313,28.0690673 L13.8335407,26.4226751 L23.3002956,16.9559203 L19.1664196,12.8041488 L9.68176924,22.2709036 L8.07116823,26.6732131 C7.73115246,27.6037825 8.6796175,28.3375008 9.4312313,28.0690673 Z" id="pencil" fill="url(#linearGradient-1)" />
+    </g>
+</svg>
