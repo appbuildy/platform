@@ -48,7 +48,7 @@ class BuildColorSelect extends StatelessWidget {
             defaultDecoration: defaultDecoration,
             child: Padding(
               padding: EdgeInsets.only(
-                  top: 9, bottom: 8, left: 16, right: 10),
+                  top: 9, bottom: 8, left: 10, right: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +61,7 @@ class BuildColorSelect extends StatelessWidget {
                         borderRadius: BorderRadius.circular(3),
                         color: themeColor.color),
                   ),
-                  SizedBox(width: 10.0),
+                  SizedBox(width: 12.0),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,7 @@ class BuildColorSelect extends StatelessWidget {
                         Container(
                           child: Text(
                             themeColor.name,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.w500),
                           ),
                         ),
                         Text(

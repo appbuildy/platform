@@ -93,7 +93,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage> with Sing
             title: selectedTheme.name,
         ),
         Padding(
-          padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
+          padding: EdgeInsets.only(top: 24.0, left: 20, right: 20),
           child: Column(
             children: [
               BuildColorSelect(themeColor: selectedTheme.primary, onColorChange: onColorChange(widget.theme.currentTheme.primary)),
