@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 
 class Project {
   User user;
+
   String url;
   Map<String, dynamic> _fetchedData;
   Project(this.url, this.user);

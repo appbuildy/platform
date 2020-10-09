@@ -8,6 +8,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';

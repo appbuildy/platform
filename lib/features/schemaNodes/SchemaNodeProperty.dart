@@ -5,6 +5,7 @@ import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 import 'lists/ListItem.dart';
@@ -35,22 +36,16 @@ abstract class SchemaNodeProperty<T>
     return {'name': value.toString()};
   }
 
+  SchemaNodeProperty.fromJson(Map<String, dynamic> targetJson) {
+    this.name = 'Text';
+  }
+
   StatefulWidget input(Function onChange) {
     return TextField(
       onChanged: onChange,
       decoration:
           InputDecoration(border: InputBorder.none, hintText: this.name),
     );
-  }
-}
-
-// типа Text
-class SchemaStringProperty extends SchemaNodeProperty {
-  SchemaStringProperty(String name, String value) : super(name, value);
-
-  @override
-  SchemaStringProperty copy() {
-    return SchemaStringProperty(this.name, value);
   }
 }
 

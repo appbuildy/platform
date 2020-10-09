@@ -1,7 +1,7 @@
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
