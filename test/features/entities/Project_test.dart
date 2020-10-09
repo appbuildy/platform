@@ -11,7 +11,11 @@ class MockedClient extends MockClient {
   MockedClient(fn) : super(fn);
 }
 
-class MockUser extends Mock implements User {}
+class MockUser extends Mock implements User {
+  Map<String, String> authHeaders() {
+    return {};
+  }
+}
 
 class MockHttp extends Mock implements Client {}
 
