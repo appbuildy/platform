@@ -40,6 +40,35 @@ class EditPropsShadow extends StatelessWidget {
             SizedBox(
                 width: 59,
                 child: Text(
+                  'Opacity',
+                  style: MyTextStyle.regularCaption,
+                )),
+            Expanded(
+              child: MySlider(
+                max: 1,
+                onChanged: (value) {
+                  userActions.changePropertyTo(
+                      SchemaIntProperty('BoxShadowOpacity', value));
+                },
+                value: properties['BoxShadowOpacity'].value,
+              ),
+            ),
+            SizedBox(
+              width: 18,
+              child: Text(
+                properties['BoxShadowOpacity'].value.toString(),
+                textAlign: TextAlign.right,
+                style: MyTextStyle.regularCaption,
+              ),
+            ),
+            SizedBox(width: 2),
+          ],
+        ),
+        Row(
+          children: [
+            SizedBox(
+                width: 59,
+                child: Text(
                   'Blur',
                   style: MyTextStyle.regularCaption,
                 )),

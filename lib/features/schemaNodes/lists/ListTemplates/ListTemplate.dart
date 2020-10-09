@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
@@ -9,9 +10,12 @@ import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 enum ListTemplateType { simple, cards }
 
 abstract class ListTemplate {
-  Widget widget(
-      {SchemaStringListProperty items,
-      ListElementsProperty elements,
+  Widget toWidget(
+      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties});
+
+  Widget rowStyle(
+      {Map<String, SchemaNodeProperty> properties,
+      UserActions userActions,
       AppThemeStore theme});
 
   Widget widgetFor(

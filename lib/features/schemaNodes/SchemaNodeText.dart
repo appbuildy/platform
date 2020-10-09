@@ -71,9 +71,9 @@ class SchemaNodeText extends SchemaNode {
 
   @override
   Widget toWidget() {
-    return Container(
-      width: size.dx,
-      height: size.dy,
+    return OverflowBox(
+      maxWidth: size.dx,
+      maxHeight: size.dy,
       child: Column(
         mainAxisAlignment: properties['MainAlignment'].value,
         crossAxisAlignment: properties['CrossAlignment'].value,
