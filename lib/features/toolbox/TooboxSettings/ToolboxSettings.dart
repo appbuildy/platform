@@ -112,7 +112,35 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
   }
 
   Widget _buildSelectedSetting() {
-    return BuildToolboxThemePage(goBackToSettings: goBack, theme: widget.userActions.theme);
+    return BuildToolboxThemePage(
+        goBackToSettings: goBack, theme: widget.userActions.theme);
+  }
+
+  Widget buildMain(slideFirst, slideSecond) {
+    return Stack(
+      children: [
+        Positioned(
+          child: Transform(
+              transform: Matrix4.identity()..translate(slideFirst),
+              child: _animation.value < 0.4
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildMain())),
+        ),
+        Positioned(
+          child: Transform(
+              transform: Matrix4.identity()..translate(slideSecond),
+              child: _animation.value == 1
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildSelectedSetting())),
+        )
+      ],
+    );
   }
 
   @override
@@ -121,29 +149,20 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
 
     return AnimatedBuilder(
       builder: (BuildContext context, Widget child) {
-        double reversedValue = (_controller.value - 1) * -1;
+        double reversedValue = (_animation.value - 1) * -1;
         double slideFirst = (-maxSlide / 2) * reversedValue;
-        double slideSecond = maxSlide * (_controller.value);
+        double slideSecond = maxSlide * (_animation.value);
 
-        return Stack(
-          children: [
-            Transform(
-                transform: Matrix4.identity()..translate(slideFirst),
-                child: _controller.value == 0
-                    ? Container()
-                    : Container(
-                        color: MyColors.white,
-                        width: toolboxWidth,
-                        child: _buildMain())),
-            Transform(
-                transform: Matrix4.identity()..translate(slideSecond),
-                child: _controller.value == 1
-                    ? Container()
-                    : Container(
-                        color: MyColors.white,
-                        width: toolboxWidth,
-                        child: _buildSelectedSetting()))
-          ],
+        if (_animation.value > 0.09 && _animation.value < 0.8) {
+          return Container(
+            child: ClipRect(
+              child: buildMain(slideFirst, slideSecond),
+            ),
+          );
+        }
+
+        return Container(
+          child: buildMain(slideFirst, slideSecond),
         );
       },
       animation: _animation,

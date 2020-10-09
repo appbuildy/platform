@@ -21,7 +21,8 @@ class BuildToolboxThemePage extends StatefulWidget {
   _BuildToolboxThemePageState createState() => _BuildToolboxThemePageState();
 }
 
-class _BuildToolboxThemePageState extends State<BuildToolboxThemePage> with SingleTickerProviderStateMixin {
+class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation _animation;
   MyTheme selectedTheme;
@@ -59,7 +60,8 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage> with Sing
       children: [
         ToolboxHeader(
             leftWidget: IconCircleButton(
-                onTap: widget.goBackToSettings, assetPath: 'assets/icons/meta/btn-back.svg'),
+                onTap: widget.goBackToSettings,
+                assetPath: 'assets/icons/meta/btn-back.svg'),
             title: 'Theme'),
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
@@ -88,28 +90,76 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage> with Sing
     return Column(
       children: [
         ToolboxHeader(
-            leftWidget: IconCircleButton(
-                onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
-            title: selectedTheme.name,
+          leftWidget: IconCircleButton(
+              onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
+          title: selectedTheme.name,
         ),
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 20),
           child: Column(
             children: [
-              BuildColorSelect(themeColor: selectedTheme.primary, onColorChange: onColorChange(widget.theme.currentTheme.primary)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.primary,
+                  onColorChange:
+                      onColorChange(widget.theme.currentTheme.primary)),
               SizedBox(height: 10.0),
-              BuildColorSelect(themeColor: selectedTheme.secondary, onColorChange: onColorChange(widget.theme.currentTheme.secondary)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.secondary,
+                  onColorChange:
+                      onColorChange(widget.theme.currentTheme.secondary)),
               SizedBox(height: 10.0),
-              BuildColorSelect(themeColor: selectedTheme.general, onColorChange: onColorChange(widget.theme.currentTheme.general)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.general,
+                  onColorChange:
+                      onColorChange(widget.theme.currentTheme.general)),
               SizedBox(height: 10.0),
-              BuildColorSelect(themeColor: selectedTheme.generalSecondary, onColorChange: onColorChange(widget.theme.currentTheme.generalSecondary)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.generalSecondary,
+                  onColorChange: onColorChange(
+                      widget.theme.currentTheme.generalSecondary)),
               SizedBox(height: 10.0),
-              BuildColorSelect(themeColor: selectedTheme.generalInverted, onColorChange: onColorChange(widget.theme.currentTheme.generalInverted)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.generalInverted,
+                  onColorChange:
+                      onColorChange(widget.theme.currentTheme.generalInverted)),
               SizedBox(height: 10.0),
-              BuildColorSelect(themeColor: selectedTheme.separators, onColorChange: onColorChange(widget.theme.currentTheme.separators)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.separators,
+                  onColorChange:
+                      onColorChange(widget.theme.currentTheme.separators)),
               SizedBox(height: 10.0),
-              BuildColorSelect(themeColor: selectedTheme.background, onColorChange: onColorChange(widget.theme.currentTheme.background)),
+              BuildColorSelect(
+                  themeColor: selectedTheme.background,
+                  onColorChange:
+                      onColorChange(widget.theme.currentTheme.background)),
             ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buildMain(slideFirst, slideSecond) {
+    return Stack(
+      overflow: Overflow.clip,
+      clipBehavior: Clip.hardEdge,
+      children: [
+        Positioned(
+          child: Transform(
+            transform: Matrix4.identity()..translate(slideFirst),
+            child: _animation.value == 0
+                ? Container()
+                : Container(width: toolboxWidth, child: _buildMane()),
+          ),
+        ),
+        Positioned(
+          child: Transform(
+            transform: Matrix4.identity()..translate(slideSecond),
+            child: _animation.value == 1
+                ? Container()
+                : Container(
+                    width: toolboxWidth,
+                    child: _buildSelectedThemeItemSettings()),
           ),
         )
       ],
@@ -122,25 +172,20 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage> with Sing
 
     return AnimatedBuilder(
       builder: (BuildContext context, Widget child) {
-        double reversedValue = (_controller.value - 1) * -1;
+        double reversedValue = (_animation.value - 1) * -1;
         double slideFirst = (-maxSlide / 2) * reversedValue;
-        double slideSecond = maxSlide * (_controller.value);
+        double slideSecond = maxSlide * (_animation.value);
 
-        return Stack(
-          children: [
-            Transform(
-                transform: Matrix4.identity()..translate(slideFirst),
-                child: _controller.value == 0
-                    ? Container()
-                    : Container(width: toolboxWidth, child: _buildMane()),
+        if (_animation.value > 0.09 && _animation.value < 0.8) {
+          return Container(
+            child: ClipRect(
+              child: buildMain(slideFirst, slideSecond),
             ),
-            Transform(
-                transform: Matrix4.identity()..translate(slideSecond),
-                child: _controller.value == 1
-                    ? Container()
-                    : Container(width: toolboxWidth, child: _buildSelectedThemeItemSettings()),
-            )
-          ],
+          );
+        }
+
+        return Container(
+          child: buildMain(slideFirst, slideSecond),
         );
       },
       animation: _animation,
@@ -184,4 +229,3 @@ class ToolboxThemeItems extends StatelessWidget {
     );
   }
 }
-
