@@ -2,7 +2,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('toJson loads from dynamic map', () async {
+  test('fromJson loads from dynamic map', () async {
     final Map<String, dynamic> targetJson = {
       'propertyClass': 'SchemaStringProperty',
       'name': 'Text',

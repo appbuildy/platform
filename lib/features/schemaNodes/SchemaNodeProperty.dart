@@ -5,7 +5,6 @@ import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 import 'lists/ListItem.dart';
@@ -64,15 +63,6 @@ class SchemaIntProperty extends SchemaNodeProperty {
   @override
   SchemaIntProperty copy() {
     return SchemaIntProperty(this.name, value);
-  }
-}
-
-class SchemaFontWeightProperty extends SchemaNodeProperty {
-  SchemaFontWeightProperty(String name, FontWeight value) : super(name, value);
-
-  @override
-  SchemaFontWeightProperty copy() {
-    return SchemaFontWeightProperty(this.name, value);
   }
 }
 
