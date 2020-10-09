@@ -37,6 +37,8 @@ void main() {
     SchemaConverter converter = SchemaConverter(store);
     await project.save(converter, client: client);
 
-    verify(client.patch(url, body: anyNamed('body'))).called(1);
+    verify(client.patch(url,
+            headers: anyNamed('headers'), body: anyNamed('body')))
+        .called(1);
   });
 }

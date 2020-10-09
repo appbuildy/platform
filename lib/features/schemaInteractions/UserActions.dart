@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/Client.dart';
@@ -22,6 +24,7 @@ import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
+import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:http/http.dart' as http;
 
 import 'ConnectToRemoteAttribute.dart';
@@ -53,6 +56,7 @@ class UserActions {
     _screens = screens;
     _currentUserStore = currentUserStore;
 
+    this.startAutoSave();
     this.fetchTables();
   }
 
@@ -92,6 +96,13 @@ class UserActions {
     } else {
       this._bindings.update();
     }
+  }
+
+  void startAutoSave() {
+    Timer.periodic(new Duration(seconds: 10), (timer) {
+      final converter = SchemaConverter(screens.all);
+      _currentUserStore.project.save(converter, client: http.Client());
+    });
   }
 
   void changePropertyTo(ChangeableProperty prop,
