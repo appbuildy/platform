@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_app/features/entities/User.dart';
+import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:http/http.dart';
 
 class Project {
@@ -14,8 +16,13 @@ class Project {
   Future<Map<String, dynamic>> getData(Client client) async {
     final response = await client.get(this.url, headers: user.authHeaders());
     final data = json.decode(response.body);
-    print(data);
     _fetchedData = data;
     return data;
+  }
+
+  Future<bool> save(SchemaConverter converter, {Client client}) async {
+    await client.patch(url, body: converter.toJson().toString());
+
+    return true;
   }
 }
