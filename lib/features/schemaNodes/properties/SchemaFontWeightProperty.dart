@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
-class SchemaFontWeightProperty extends SchemaNodeProperty {
+class SchemaFontWeightProperty extends SchemaNodeProperty<FontWeight> {
   SchemaFontWeightProperty(String name, FontWeight value) : super(name, value);
 
   Map<String, dynamic> toJson() {
