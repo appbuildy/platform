@@ -61,6 +61,13 @@ class SchemaNodeList extends SchemaNode {
           'ItemColor': SchemaMyThemePropProperty(
               'ItemColor', this.theme.currentTheme.background),
           'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
+          'SeparatorsColor': SchemaMyThemePropProperty(
+              'SeparatorsColor', this.theme.currentTheme.separators),
+          'BoxShadow': SchemaBoolProperty('BoxShadow', true),
+          'BoxShadowColor': SchemaMyThemePropProperty(
+              'BoxShadowColor', this.theme.currentTheme.general),
+          'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
         };
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
@@ -141,9 +148,6 @@ class SchemaNodeList extends SchemaNode {
                       .columnsFor(screen.value)
                       .map((e) => e.name)
                       .toList());
-
-//                  userActions.changePropertyTo(ListElementsProperty(
-//                      'Elements', properties['Elements'].value));
                 },
                 options: userActions.tables
                     .map((element) => SelectOption(element, element))

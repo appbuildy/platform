@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/getThemeColor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ListTemplateSimple extends ListTemplate {
@@ -19,7 +21,8 @@ class ListTemplateSimple extends ListTemplate {
               return widgetFor(
                   item: item,
                   elements: properties['Elements'].value,
-                  theme: theme);
+                  theme: theme,
+                  properties: properties);
             })
             .toList()
             .cast<Widget>());
@@ -29,21 +32,39 @@ class ListTemplateSimple extends ListTemplate {
       {Map<String, SchemaNodeProperty> properties,
       UserActions userActions,
       AppThemeStore theme}) {
-    return Container(child: Text('List'));
+    return Column(children: [
+      SizedBox(
+        height: 15,
+      ),
+      EditPropsColor(
+          theme: theme,
+          userActions: userActions,
+          propName: 'SeparatorsColor',
+          properties: properties)
+    ]);
   }
 
   Widget widgetFor(
       {SchemaListItemProperty item,
       ListElements elements,
-      AppThemeStore theme}) {
+      AppThemeStore theme,
+      Map<String, SchemaNodeProperty> properties}) {
     return Row(
       children: [
         Expanded(
           child: Container(
             decoration: BoxDecoration(
+                color: getThemeColor(
+                  theme,
+                  properties['ItemColor'],
+                ),
                 border: Border(
                     bottom: BorderSide(
-                        width: 1, color: theme.currentTheme.separators.color))),
+                        width: 1,
+                        color: getThemeColor(
+                          theme,
+                          properties['SeparatorsColor'],
+                        )))),
             child: Padding(
               padding: const EdgeInsets.only(
                   top: 12, bottom: 12, left: 24.0, right: 24.0),

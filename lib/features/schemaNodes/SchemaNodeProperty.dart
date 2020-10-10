@@ -126,9 +126,6 @@ class SchemaDoubleProperty extends SchemaNodeProperty {
   SchemaDoubleProperty copy() {
     return SchemaDoubleProperty(this.name, value);
   }
-
-  @override
-  var value;
 }
 
 class SchemaColorProperty extends SchemaNodeProperty<Color> {

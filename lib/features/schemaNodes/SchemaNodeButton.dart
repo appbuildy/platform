@@ -53,7 +53,7 @@ class SchemaNodeButton extends SchemaNode {
           'BoxShadowColor': SchemaMyThemePropProperty(
               'BoxShadowColor', this.theme.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
-          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowBlur', 0.5),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.5),
         };
 
     textDebouncer =

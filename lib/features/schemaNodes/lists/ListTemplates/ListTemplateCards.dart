@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
@@ -43,7 +44,12 @@ class ListTemplateCards extends ListTemplate {
             userActions
                 .changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
           },
-        )
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        EditPropsShadow(
+            properties: properties, userActions: userActions, theme: theme)
       ],
     );
   }
@@ -66,13 +72,18 @@ class ListTemplateCards extends ListTemplate {
                     theme,
                     properties['ItemColor'],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 0,
-                        blurRadius: 6,
-                        offset: Offset(0, 2),
-                        color: MyColors.black.withOpacity(0.2))
-                  ]),
+                  boxShadow: properties['BoxShadow'].value
+                      ? [
+                          BoxShadow(
+                              color: getThemeColor(
+                                      theme, properties['BoxShadowColor'])
+                                  .withOpacity(
+                                      properties['BoxShadowOpacity'].value),
+                              blurRadius: properties['BoxShadowBlur'].value,
+                              offset: Offset(0.0, 2.0),
+                              spreadRadius: 0)
+                        ]
+                      : []),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

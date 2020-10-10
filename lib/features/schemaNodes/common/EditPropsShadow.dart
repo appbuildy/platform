@@ -33,12 +33,12 @@ class EditPropsShadow extends StatelessWidget {
             propName: 'BoxShadowColor',
             properties: properties),
         SizedBox(
-          height: 10,
+          height: 13,
         ),
         Row(
           children: [
             SizedBox(
-                width: 59,
+                width: 50,
                 child: Text(
                   'Opacity',
                   style: MyTextStyle.regularCaption,
@@ -47,14 +47,14 @@ class EditPropsShadow extends StatelessWidget {
               child: MySlider(
                 max: 1,
                 onChanged: (value) {
-                  userActions.changePropertyTo(
-                      SchemaIntProperty('BoxShadowOpacity', value));
+                  userActions.changePropertyTo(SchemaDoubleProperty(
+                      'BoxShadowOpacity', num.parse(value.toStringAsFixed(2))));
                 },
                 value: properties['BoxShadowOpacity'].value,
               ),
             ),
             SizedBox(
-              width: 18,
+              width: 30,
               child: Text(
                 properties['BoxShadowOpacity'].value.toString(),
                 textAlign: TextAlign.right,
@@ -64,10 +64,13 @@ class EditPropsShadow extends StatelessWidget {
             SizedBox(width: 2),
           ],
         ),
+        SizedBox(
+          height: 13,
+        ),
         Row(
           children: [
             SizedBox(
-                width: 59,
+                width: 50,
                 child: Text(
                   'Blur',
                   style: MyTextStyle.regularCaption,
@@ -83,7 +86,7 @@ class EditPropsShadow extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: 18,
+              width: 30,
               child: Text(
                 properties['BoxShadowBlur'].value.toString(),
                 textAlign: TextAlign.right,
