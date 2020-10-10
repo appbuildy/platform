@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/TooboxSettings/Theme/ToolboxTheme.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
+import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 enum SettingsEnum { info, theme, terms }
@@ -53,35 +54,47 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
   Widget buildItem(SettingsEnum setting) {
     Widget itemWidget;
 
+    final defaultDecoration = BoxDecoration(
+        gradient: MyGradients.plainWhite,
+        borderRadius: BorderRadius.circular(8));
+    final hoverDecoration = BoxDecoration(
+        gradient: MyGradients.lightGray,
+        borderRadius: BorderRadius.circular(8));
+
     if (setting == SettingsEnum.theme) {
-      itemWidget = Container(
-        color: Colors.transparent,
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Image.network(
-            'assets/icons/settings/theme.svg',
-            width: 38,
-            height: 38,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Theme',
-                style: MyTextStyle.regularTitle,
-              ),
-              SizedBox(
-                height: 3,
-              ),
-              Text(
-                "App colors",
-                style: MyTextStyle.regularCaption,
-              ),
-            ],
-          )
-        ]),
+      itemWidget = HoverDecoration(
+        defaultDecoration: defaultDecoration,
+        hoverDecoration: hoverDecoration,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 16, top: 11, bottom: 11, right: 16),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Image.network(
+              'assets/icons/settings/theme.svg',
+              width: 38,
+              height: 38,
+            ),
+            SizedBox(
+              width: 12,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Theme',
+                  style: MyTextStyle.regularTitle,
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                Text(
+                  "App colors",
+                  style: MyTextStyle.regularCaption,
+                ),
+              ],
+            )
+          ]),
+        ),
       );
     }
     return Cursor(

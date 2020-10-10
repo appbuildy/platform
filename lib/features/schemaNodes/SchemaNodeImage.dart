@@ -133,7 +133,7 @@ class SchemaNodeImage extends SchemaNode {
         ],
       ),
       SizedBox(
-        height: 15,
+        height: 12,
       ),
       EditPropsCorners(
         value: properties['BorderRadiusValue'].value,

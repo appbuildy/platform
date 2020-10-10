@@ -55,7 +55,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
     });
   }
 
-  Widget _buildMane() {
+  Widget _buildMain() {
     return Column(
       children: [
         ToolboxHeader(
@@ -149,7 +149,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
             transform: Matrix4.identity()..translate(slideFirst),
             child: _animation.value == 0
                 ? Container()
-                : Container(width: toolboxWidth, child: _buildMane()),
+                : Container(width: toolboxWidth, child: _buildMain()),
           ),
         ),
         Positioned(
