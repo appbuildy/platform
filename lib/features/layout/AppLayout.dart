@@ -44,7 +44,8 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   void initState() {
     super.initState();
-    schemaStore = SchemaStore(components: [], id: MAIN_UNIQUE_KEY);
+    schemaStore =
+        SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
     bottomNavigationStore = BottomNavigationStore();

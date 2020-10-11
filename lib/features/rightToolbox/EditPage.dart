@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
@@ -12,6 +13,51 @@ class EditPage extends StatelessWidget {
   final UserActions userActions;
 
   const EditPage({Key key, this.userActions}) : super(key: key);
+
+  Widget _buildDetailedInfoScreen() {
+    final detailedInfo = userActions.currentScreen.detailedInfo;
+
+    if (detailedInfo == null) {
+      return Container();
+    }
+
+    return Column(children: [
+      ColumnDivider(
+        name: 'Data Source',
+      ),
+      Row(
+        children: [
+          Text(
+            'Table from',
+            style: MyTextStyle.regularCaption,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Expanded(
+            child: MyClickSelect(
+                selectedValue: detailedInfo.tableName,
+                defaultIcon: SizedBox(
+                    width: 20.0,
+                    height: 16.0,
+                    child: Image.network('assets/icons/meta/btn-navigate.svg')),
+                disabled: true,
+                onChange: (screen) {},
+                options: [
+                  SelectOption(detailedInfo.tableName, detailedInfo.tableName)
+                ]),
+          )
+        ],
+      ),
+      SizedBox(
+        height: 8,
+      ),
+      Text(
+        'This is the special page created automatically for the list on Page 3. \nThat way each element on this page can be linked to the each row you tap.',
+        style: TextStyle(color: Color(0xFF777777), fontSize: 14, height: 1.45),
+      )
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +85,13 @@ class EditPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20, top: 24.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Column(
                 children: [
+                  _buildDetailedInfoScreen(),
+                  ColumnDivider(
+                    name: 'Page Settings',
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -49,8 +99,10 @@ class EditPage extends StatelessWidget {
                           'Name',
                           style: MyTextStyle.regularCaption,
                         ),
-                        Container(
-                          width: 170,
+                        SizedBox(
+                          width: 50,
+                        ),
+                        Expanded(
                           child: MyTextField(
                             key: currentScreen.id,
                             onChanged: (text) {
@@ -60,8 +112,8 @@ class EditPage extends StatelessWidget {
                           ),
                         )
                       ]),
-                  ColumnDivider(
-                    name: 'Page Settings',
+                  SizedBox(
+                    height: 15,
                   ),
                   Row(
                     children: [

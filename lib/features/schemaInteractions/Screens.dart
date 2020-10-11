@@ -13,8 +13,26 @@ class Screens {
   ScreensStore all;
   Screens(this.all, this._current);
 
-  BaseAction create({moveToLastAfterCreated = false}) {
-    final action = AddScreen(components: [], screensStore: all);
+  BaseAction create({
+    bool moveToLastAfterCreated = false,
+    String name,
+  }) {
+    final action = AddScreen(components: [], screensStore: all, name: name);
+    action.execute();
+
+    if (moveToLastAfterCreated) lastScreen();
+    return action;
+  }
+
+  BaseAction createForList(
+      {bool moveToLastAfterCreated = false,
+      @required String name,
+      @required DetailedInfo detailedInfo}) {
+    final action = AddScreen(
+        components: [],
+        screensStore: all,
+        name: name,
+        detailedInfo: detailedInfo);
     action.execute();
 
     if (moveToLastAfterCreated) lastScreen();

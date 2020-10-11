@@ -39,6 +39,21 @@ mixin _$SchemaStore on _SchemaStore, Store {
     });
   }
 
+  final _$detailedInfoAtom = Atom(name: '_SchemaStore.detailedInfo');
+
+  @override
+  DetailedInfo get detailedInfo {
+    _$detailedInfoAtom.reportRead();
+    return super.detailedInfo;
+  }
+
+  @override
+  set detailedInfo(DetailedInfo value) {
+    _$detailedInfoAtom.reportWrite(value, super.detailedInfo, () {
+      super.detailedInfo = value;
+    });
+  }
+
   final _$bottomTabsVisibleAtom = Atom(name: '_SchemaStore.bottomTabsVisible');
 
   @override
@@ -70,6 +85,17 @@ mixin _$SchemaStore on _SchemaStore, Store {
   }
 
   final _$_SchemaStoreActionController = ActionController(name: '_SchemaStore');
+
+  @override
+  void setDetailedInfo(DetailedInfo newDetailedInfo) {
+    final _$actionInfo = _$_SchemaStoreActionController.startAction(
+        name: '_SchemaStore.setDetailedInfo');
+    try {
+      return super.setDetailedInfo(newDetailedInfo);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setBottomTabs(bool newValue) {
@@ -153,6 +179,7 @@ mixin _$SchemaStore on _SchemaStore, Store {
     return '''
 id: ${id},
 components: ${components},
+detailedInfo: ${detailedInfo},
 bottomTabsVisible: ${bottomTabsVisible},
 name: ${name}
     ''';

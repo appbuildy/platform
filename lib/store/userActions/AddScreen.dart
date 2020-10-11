@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -11,12 +9,14 @@ class AddScreen extends BaseAction {
   bool bottomTabsVisible;
   ScreensStore screensStore;
   SchemaStore createdScreen;
+  DetailedInfo detailedInfo;
   bool executed;
   AddScreen(
       {this.components,
       this.bottomTabsVisible,
       this.name = '',
-      this.screensStore});
+      this.screensStore,
+      this.detailedInfo});
 
   @override
   void execute() {
@@ -24,14 +24,14 @@ class AddScreen extends BaseAction {
     final newName = name.isEmpty ? _generatedNameForNewScreen() : name;
     final newComponents = components != null ? components : [];
 
-    log('new components $newComponents');
-
     final newBottomTabsVisible =
         bottomTabsVisible != null ? bottomTabsVisible : true;
     createdScreen = SchemaStore(
         components: newComponents,
         bottomTabsVisible: newBottomTabsVisible,
-        name: newName);
+        name: newName,
+        detailedInfo: detailedInfo);
+
     screensStore.createScreen(createdScreen);
   }
 

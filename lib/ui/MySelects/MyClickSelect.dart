@@ -12,6 +12,7 @@ class MyClickSelect extends StatefulWidget {
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
   final String placeholder;
+  final bool disabled;
   final Widget defaultIcon;
 
   const MyClickSelect({
@@ -20,6 +21,7 @@ class MyClickSelect extends StatefulWidget {
     @required this.options,
     @required this.onChange,
     this.placeholder,
+    this.disabled = false,
     this.defaultIcon,
   }) : super(key: key);
 
@@ -32,17 +34,34 @@ class _MyClickSelectState extends State<MyClickSelect> {
   bool isOverlayOpen;
 
   Widget buildSelectPreview() {
-    final defaultDecoration = BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        gradient: isOverlayOpen
-            ? MyGradients.buttonLightBlue
-            : MyGradients.buttonLightGray,
-        border: Border.all(width: 1, color: MyColors.borderGray));
+    BoxDecoration defaultDecoration;
+    BoxDecoration hoverDecoration;
 
-    final hoverDecoration = BoxDecoration(
-        borderRadius: BorderRadius.circular(6),
-        gradient: MyGradients.buttonLightBlue,
-        border: Border.all(width: 1, color: MyColors.borderGray));
+    if (widget.disabled) {
+      defaultDecoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          gradient: MyGradients.buttonDisabledGray,
+          border:
+              Border.all(width: 1, color: Color(0xFF666666).withOpacity(0.3)));
+
+      hoverDecoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          gradient: MyGradients.buttonDisabledGray,
+          border:
+              Border.all(width: 1, color: Color(0xFF666666).withOpacity(0.3)));
+    } else {
+      defaultDecoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          gradient: isOverlayOpen
+              ? MyGradients.buttonLightBlue
+              : MyGradients.buttonLightGray,
+          border: Border.all(width: 1, color: MyColors.borderGray));
+
+      hoverDecoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          gradient: MyGradients.buttonLightBlue,
+          border: Border.all(width: 1, color: MyColors.borderGray));
+    }
 
     final dynamic selectedOption = widget.selectedValue != null
         ? widget.options
@@ -54,7 +73,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
         (selectedOption != null && selectedOption.leftWidget != null);
 
     return Cursor(
-        cursor: CursorEnum.pointer,
+        cursor: widget.disabled ? CursorEnum.defaultCursor : CursorEnum.pointer,
         child: HoverDecoration(
           hoverDecoration: hoverDecoration,
           defaultDecoration: defaultDecoration,
@@ -246,14 +265,17 @@ class _MyClickSelectState extends State<MyClickSelect> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          this._overlayEntry = this._createOverlayEntry();
-          Overlay.of(context).insert(this._overlayEntry);
-          setState(() {
-            isOverlayOpen = true;
-          });
-        },
-        child: buildSelectPreview());
+    return AbsorbPointer(
+      absorbing: widget.disabled,
+      child: GestureDetector(
+          onTap: () {
+            this._overlayEntry = this._createOverlayEntry();
+            Overlay.of(context).insert(this._overlayEntry);
+            setState(() {
+              isOverlayOpen = true;
+            });
+          },
+          child: buildSelectPreview()),
+    );
   }
 }

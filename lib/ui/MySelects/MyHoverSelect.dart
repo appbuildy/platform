@@ -45,7 +45,9 @@ class _MyHoverSelectState extends State<MyHoverSelect> {
               children: [
                 Container(
                     child: Text(
-                  selectedOption.name,
+                  selectedOption.name.length < 22
+                      ? selectedOption.name
+                      : '${selectedOption.name.substring(0, 20)}...',
                   style: MyTextStyle.regularTitle,
                 )),
                 Image.network(
