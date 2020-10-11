@@ -3,9 +3,8 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/TooboxSettings/Theme/ToolboxTheme.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
-import 'package:flutter_app/ui/IconCircleButton.dart';
+import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/ToolboxHeader.dart';
 
 enum SettingsEnum { info, theme, terms }
 
@@ -55,35 +54,47 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
   Widget buildItem(SettingsEnum setting) {
     Widget itemWidget;
 
+    final defaultDecoration = BoxDecoration(
+        gradient: MyGradients.plainWhite,
+        borderRadius: BorderRadius.circular(8));
+    final hoverDecoration = BoxDecoration(
+        gradient: MyGradients.lightGray,
+        borderRadius: BorderRadius.circular(8));
+
     if (setting == SettingsEnum.theme) {
-      itemWidget = Container(
-        color: Colors.transparent,
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Image.network(
-            'assets/icons/settings/theme.svg',
-            width: 38,
-            height: 38,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Theme',
-                style: MyTextStyle.regularTitle,
-              ),
-              SizedBox(
-                height: 3,
-              ),
-              Text(
-                "App colors",
-                style: MyTextStyle.regularCaption,
-              ),
-            ],
-          )
-        ]),
+      itemWidget = HoverDecoration(
+        defaultDecoration: defaultDecoration,
+        hoverDecoration: hoverDecoration,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 16, top: 11, bottom: 11, right: 16),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Image.network(
+              'assets/icons/settings/theme.svg',
+              width: 38,
+              height: 38,
+            ),
+            SizedBox(
+              width: 12,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Theme',
+                  style: MyTextStyle.regularTitle,
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                Text(
+                  "App colors",
+                  style: MyTextStyle.regularCaption,
+                ),
+              ],
+            )
+          ]),
+        ),
       );
     }
     return Cursor(
@@ -114,16 +125,33 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
   }
 
   Widget _buildSelectedSetting() {
-    return Column(
+    return BuildToolboxThemePage(
+        goBackToSettings: goBack, theme: widget.userActions.theme);
+  }
+
+  Widget buildMain(slideFirst, slideSecond) {
+    return Stack(
       children: [
-        ToolboxHeader(
-            leftWidget: IconCircleButton(
-                onTap: goBack, assetPath: 'assets/icons/meta/btn-back.svg'),
-            title: 'Theme'),
-        Padding(
-          padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
-          child: ToolboxTheme(userActions: widget.userActions),
+        Positioned(
+          child: Transform(
+              transform: Matrix4.identity()..translate(slideFirst),
+              child: _animation.value < 0.4
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildMain())),
         ),
+        Positioned(
+          child: Transform(
+              transform: Matrix4.identity()..translate(slideSecond),
+              child: _animation.value == 1
+                  ? Container()
+                  : Container(
+                      color: MyColors.white,
+                      width: toolboxWidth,
+                      child: _buildSelectedSetting())),
+        )
       ],
     );
   }
@@ -138,24 +166,17 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
         double slideFirst = (-maxSlide / 2) * reversedValue;
         double slideSecond = maxSlide * (_animation.value);
 
-        return Stack(children: [
-          Transform(
-              transform: Matrix4.identity()..translate(slideFirst),
-              child: _animation.value == 0
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildMain())),
-          Transform(
-              transform: Matrix4.identity()..translate(slideSecond),
-              child: _animation.value == 1
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildSelectedSetting()))
-        ]);
+        if (_animation.value > 0.09 && _animation.value < 0.8) {
+          return Container(
+            child: ClipRect(
+              child: buildMain(slideFirst, slideSecond),
+            ),
+          );
+        }
+
+        return Container(
+          child: buildMain(slideFirst, slideSecond),
+        );
       },
       animation: _animation,
     );

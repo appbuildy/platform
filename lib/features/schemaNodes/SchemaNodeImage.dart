@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -132,7 +133,7 @@ class SchemaNodeImage extends SchemaNode {
         ],
       ),
       SizedBox(
-        height: 15,
+        height: 12,
       ),
       EditPropsCorners(
         value: properties['BorderRadiusValue'].value,

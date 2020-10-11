@@ -161,6 +161,31 @@ class _ToolboxPagesState extends State<ToolboxPages>
     );
   }
 
+  Widget buildMain(slideFirst, slideSecond) {
+    return Stack(children: [
+      Positioned(
+        child: Transform(
+            transform: Matrix4.identity()..translate(slideFirst),
+            child: _animation.value == 0
+                ? Container()
+                : Container(
+                    color: MyColors.white,
+                    width: toolboxWidth,
+                    child: _buildMain())),
+      ),
+      Positioned(
+        child: Transform(
+            transform: Matrix4.identity()..translate(slideSecond),
+            child: _animation.value == 1
+                ? Container()
+                : Container(
+                    color: MyColors.white,
+                    width: toolboxWidth,
+                    child: _buildSelectedTab())),
+      )
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final maxSlide = 300;
@@ -171,24 +196,17 @@ class _ToolboxPagesState extends State<ToolboxPages>
         double slideFirst = (-maxSlide / 2) * reversedValue;
         double slideSecond = maxSlide * (_animation.value);
 
-        return Stack(children: [
-          Transform(
-              transform: Matrix4.identity()..translate(slideFirst),
-              child: _animation.value == 0
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildMain())),
-          Transform(
-              transform: Matrix4.identity()..translate(slideSecond),
-              child: _animation.value == 1
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildSelectedTab()))
-        ]);
+        if (_animation.value > 0.09 && _animation.value < 0.8) {
+          return Container(
+            child: ClipRect(
+              child: buildMain(slideFirst, slideSecond),
+            ),
+          );
+        }
+
+        return Container(
+          child: buildMain(slideFirst, slideSecond),
+        );
       },
       animation: _animation,
     );

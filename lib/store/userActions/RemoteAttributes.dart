@@ -51,7 +51,6 @@ abstract class _RemoteAttributes with Store {
         attributes.add(attribute);
       });
     });
-    print(tables);
   }
 
   AirtableColumn _addColumnUniq(Map<String, RemoteList> columns, key) {

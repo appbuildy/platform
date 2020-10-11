@@ -35,22 +35,16 @@ abstract class SchemaNodeProperty<T>
     return {'name': value.toString()};
   }
 
+  SchemaNodeProperty.fromJson(Map<String, dynamic> targetJson) {
+    this.name = 'Text';
+  }
+
   StatefulWidget input(Function onChange) {
     return TextField(
       onChanged: onChange,
       decoration:
           InputDecoration(border: InputBorder.none, hintText: this.name),
     );
-  }
-}
-
-// типа Text
-class SchemaStringProperty extends SchemaNodeProperty {
-  SchemaStringProperty(String name, String value) : super(name, value);
-
-  @override
-  SchemaStringProperty copy() {
-    return SchemaStringProperty(this.name, value);
   }
 }
 
@@ -69,15 +63,6 @@ class SchemaIntProperty extends SchemaNodeProperty {
   @override
   SchemaIntProperty copy() {
     return SchemaIntProperty(this.name, value);
-  }
-}
-
-class SchemaFontWeightProperty extends SchemaNodeProperty {
-  SchemaFontWeightProperty(String name, FontWeight value) : super(name, value);
-
-  @override
-  SchemaFontWeightProperty copy() {
-    return SchemaFontWeightProperty(this.name, value);
   }
 }
 

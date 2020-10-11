@@ -6,9 +6,12 @@ import 'dart:io';
 
 class CurrentUser extends User {
   String _name;
-  String _JwtToken;
+  String _jwtToken;
   String dataUrl;
-  CurrentUser(this._name, this._JwtToken, this.dataUrl);
+  CurrentUser(this._name, this._jwtToken, this.dataUrl);
+  Map<String, String> authHeaders() {
+    return {HttpHeaders.authorizationHeader: "Bearer ${this._jwtToken}"};
+  }
 
   @override
   bool loggedIn() {
@@ -16,9 +19,7 @@ class CurrentUser extends User {
   }
 
   Future<List<String>> tables(http.Client client) async {
-    final response = await client.get(this.dataUrl,
-        headers: {HttpHeaders.authorizationHeader: "Bearer ${this._JwtToken}"});
-    print(response);
+    final response = await client.get(this.dataUrl, headers: authHeaders());
 
     final Map<String, dynamic> tables = json.decode(response.body);
     final List<dynamic> tableNames = tables['tables'];

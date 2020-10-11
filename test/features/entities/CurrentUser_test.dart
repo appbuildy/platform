@@ -2,9 +2,6 @@ import 'package:flutter_app/features/entities/CurrentUser.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
-import 'package:mockito/mockito.dart';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 
 class MockedClient extends MockClient {
   MockedClient(fn) : super(fn);

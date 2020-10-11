@@ -8,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("Query: ${Uri.base.queryParameters['jwt']}");
     return MaterialApp(
       title: 'AppBuildy — create your apps',
       theme: ThemeData(

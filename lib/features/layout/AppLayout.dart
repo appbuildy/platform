@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
+import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
@@ -40,6 +40,7 @@ class _AppLayoutState extends State<AppLayout> {
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
   ToolboxStates toolboxState;
+  Project project;
 
   @override
   void initState() {
@@ -53,17 +54,9 @@ class _AppLayoutState extends State<AppLayout> {
     themeStore.setTheme(MyThemes.lightBlue);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
-    final jwt = window.localStorage['jwt'] ?? Uri.base.queryParameters['jwt'];
-    final url = window.localStorage['url'] ??
-        Uri.base.queryParameters['url'] ??
-        "http://localhost:4000/me";
-    final projectId = window.localStorage['projectId'] ??
-        Uri.base.queryParameters['projectId'];
-
     currentUserStore = CurrentUserStore();
+    currentUserStore.setupProject(window);
 
-    currentUserStore
-        .tryLogIn(AuthenticationService.defaultAuth(jwt: jwt, url: url));
     userActions = UserActions(
         currentUserStore: currentUserStore,
         screens: screens,
