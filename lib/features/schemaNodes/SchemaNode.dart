@@ -44,7 +44,7 @@ abstract class SchemaNode {
         'actions': _jsonActions(),
         'type': SchemaNodeType.button
       };
-  Widget toWidget();
+  Widget toWidget({bool isPlayMode});
   Widget toEditProps(
     UserActions userActions,
   );

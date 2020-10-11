@@ -37,6 +37,7 @@ class ListTemplateSimple extends ListTemplate {
         height: 15,
       ),
       EditPropsColor(
+          title: 'Separators',
           theme: theme,
           userActions: userActions,
           propName: 'SeparatorsColor',

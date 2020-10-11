@@ -99,15 +99,26 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget() {
+  Widget toWidget({bool isPlayMode}) {
+    if (isPlayMode) {
+      return Container(
+          width: this.size.dx,
+          height: this.size.dy,
+          child: SingleChildScrollView(
+            child: this
+                .properties['Template']
+                .value
+                .toWidget(theme: this.theme, properties: this.properties),
+          ));
+    }
+
     return Container(
-      width: this.size.dx,
-      height: this.size.dy,
-      child: this
-          .properties['Template']
-          .value
-          .toWidget(theme: this.theme, properties: this.properties),
-    );
+        width: this.size.dx,
+        height: this.size.dy,
+        child: this
+            .properties['Template']
+            .value
+            .toWidget(theme: this.theme, properties: this.properties));
   }
 
   Future<void> updateData(String tableName, UserActions userActions) async {

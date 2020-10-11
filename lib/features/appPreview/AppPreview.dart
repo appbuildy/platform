@@ -486,7 +486,7 @@ class _AppPreviewState extends State<AppPreview> {
             child: Container(
               width: node.size.dx,
               height: node.size.dy,
-              child: node.toWidget(),
+              child: node.toWidget(isPlayMode: widget.isPlayMode),
             ),
           ),
         ),
@@ -546,8 +546,8 @@ class _AppPreviewState extends State<AppPreview> {
                   return Stack(
                     textDirection: TextDirection.ltr,
                     children: [
-                      ...userActions.screens.current.components
-                          .map((node) => Positioned(
+                      ...userActions.screens.current.components.map((node) =>
+                          Positioned(
                               child: GestureDetector(
                                   onTapDown: (details) {
                                     if (widget.isPlayMode) {
@@ -563,7 +563,8 @@ class _AppPreviewState extends State<AppPreview> {
                                     }
                                   },
                                   child: widget.isPlayMode
-                                      ? node.toWidget()
+                                      ? node.toWidget(
+                                          isPlayMode: widget.isPlayMode)
                                       : renderWithSelected(
                                           node: node,
                                         )),
