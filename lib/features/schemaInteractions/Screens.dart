@@ -17,7 +17,7 @@ class Screens {
     bool moveToLastAfterCreated = false,
     String name,
   }) {
-    final action = AddScreen(components: [], screensStore: all, name: name);
+    final action = AddScreen(components: [], screensStore: all);
     action.execute();
 
     if (moveToLastAfterCreated) lastScreen();
