@@ -18,7 +18,7 @@
 2. ```flutter pub get```
 3. ```flutter packages pub run build_runner build```
 4. ```flutter channel beta```
-5. ```flutter config --enable-web
+5. ```flutter config --enable-web```
 
 
 
