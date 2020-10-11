@@ -1,12 +1,25 @@
 # flutter_app
 
-Развернуть проект
+# Развернуть проект
 
 1. Клонируем репо.
 2. Скачиваем флаттер.
 3. ```flutter channel beta```
 4. ```flutter config --enable-web```
 5. ```flutter run -d chrome``` или в AndroidStudio выбираем хро и ранним
+
+ВАЖНО! Убедиться что версия flutter SDK = 1.22.1 
+```flutter --version``
+
+# Обновить тайпинги mobx
+Из-за бага c тайпингами нужно откатиться на стабильный ченел, сбилдить тайпинги и вернуться
+
+1. ```flutter channel stable```
+2. ```flutter pub get```
+3. ```flutter packages pub run build_runner build```
+4. ```flutter channel beta```
+5. ```flutter config --enable-web
+
 
 
 ## Getting Started
