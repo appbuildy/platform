@@ -7,14 +7,14 @@ class SchemaBoolProperty extends SchemaNodeProperty<bool> {
     return {
       'propertyClass': 'SchemaBoolProperty',
       'name': this.name,
-      'value': this.value ? 1 : 0,
+      'value': this.value,
     };
   }
 
   SchemaBoolProperty.fromJson(Map<String, dynamic> targetJson)
   : super('Bool', null) {
     this.name = targetJson['name'];
-    this.value = int.parse(targetJson['value']) == 1;
+    this.value = targetJson['value'];
   }
 
   @override

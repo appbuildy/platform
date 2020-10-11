@@ -13,7 +13,7 @@ class SchemaIconProperty extends SchemaNodeProperty<IconData> {
         'codePoint': this.value.codePoint,
         'fontFamily': this.value.fontFamily,
         'fontPackage': this.value.fontPackage,
-        'matchTextDirection': this.value.matchTextDirection ? 1 : 0,
+        'matchTextDirection': this.value.matchTextDirection,
       },
     };
   }
@@ -26,7 +26,7 @@ class SchemaIconProperty extends SchemaNodeProperty<IconData> {
     final int iconDataCodePoint = int.parse(jsonValue['codePoint']);
     final String iconDataFontFamily = jsonValue['fontFamily'];
     final String iconDataFontPackage = jsonValue['fontPackage'];
-    final bool iconDataMatchTextDirection = int.parse(jsonValue['matchTextDirection']) == 1;
+    final bool iconDataMatchTextDirection = jsonValue['matchTextDirection'];
 
     this.value = IconData(
       iconDataCodePoint,

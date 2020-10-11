@@ -6,13 +6,13 @@ void main() {
    SchemaBoolProperty booleanProp = SchemaBoolProperty('Boolean', true);
    final jsonBooleanProp = booleanProp.toJson();
    expect(jsonBooleanProp['name'], equals(booleanProp.name));
-   expect(jsonBooleanProp['value'], equals(1));
+   expect(jsonBooleanProp['value'], equals(true));
  });
 
  test('fromJson() deserialization', () {
    final Map<String, dynamic> targetJson = {
      'name': 'THis IS BooLean',
-     'value': '0',
+     'value': false,
      'propertyClass': 'SchemaBoolProperty',
    };
 

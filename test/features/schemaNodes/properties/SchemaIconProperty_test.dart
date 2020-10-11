@@ -22,7 +22,7 @@ void main() {
     expect(jsonIconPropValue['codePoint'], equals(iconProp.value.codePoint));
     expect(jsonIconPropValue['fontFamily'], equals(iconProp.value.fontFamily));
     expect(jsonIconPropValue['fontPackage'], equals(iconProp.value.fontPackage));
-    expect(jsonIconPropValue['matchTextDirection'], equals(iconProp.value.matchTextDirection ? 1 : 0));
+    expect(jsonIconPropValue['matchTextDirection'], equals(iconProp.value.matchTextDirection));
   });
 
   test('fromJson() deserialization', () {
@@ -33,7 +33,7 @@ void main() {
         'codePoint': '0xf042',
         'fontFamily': 'FontAwesomeSolid',
         'fontPackage': 'font_awesome_flutter',
-        'matchTextDirection': '0',
+        'matchTextDirection': false,
       },
     };
 
