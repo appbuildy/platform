@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateSimple.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 
 enum ListTemplateType { simple, cards }
 
 abstract class ListTemplate {
+  ListTemplateType getType();
+
   Widget toWidget(
       {AppThemeStore theme, Map<String, SchemaNodeProperty> properties});
 
@@ -19,7 +21,7 @@ abstract class ListTemplate {
       AppThemeStore theme});
 
   Widget widgetFor(
-      {SchemaListItemProperty item,
+      {SchemaListItemsProperty item,
       ListElements elements,
       AppThemeStore theme});
 }

@@ -10,6 +10,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
