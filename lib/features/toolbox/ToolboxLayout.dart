@@ -66,7 +66,7 @@ class ToolboxLayout extends StatelessWidget {
                 ),
                 ToolBoxCaption('Listing'),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     ToolboxComponent(
                         defaultTitle: 'List',
@@ -75,6 +75,9 @@ class ToolboxLayout extends StatelessWidget {
                           theme: theme,
                           listTemplateType: ListTemplateType.simple,
                         )),
+                    SizedBox(
+                      width: 10,
+                    ),
                     ToolboxComponent(
                         defaultTitle: 'Cards',
                         defaultType: SchemaNodeType.listCards,
@@ -150,8 +153,9 @@ class ToolboxComponent extends StatelessWidget {
 
     return Draggable<SchemaNode>(
       data: schemaNode,
-      feedback:
-          Material(child: Opacity(opacity: 0.4, child: schemaNode.toWidget())),
+      feedback: Material(
+          child: Opacity(
+              opacity: 0.4, child: schemaNode.toWidget(isPlayMode: false))),
       childWhenDragging: Opacity(
           opacity: 0.5,
           child: Padding(

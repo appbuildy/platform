@@ -1,30 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/getThemeColor.dart';
 
 class ListTemplateCards extends ListTemplate {
-  Widget widget(
-      {SchemaStringListProperty items,
-      ListElementsProperty elements,
-      AppThemeStore theme}) {
+  Widget toWidget(
+      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties}) {
     return Column(
-        children: items.value.values
+        children: properties['Items']
+            .value
+            .values
             .map((item) {
               return widgetFor(
-                  item: item, elements: elements.value, theme: theme);
+                  item: item,
+                  elements: properties['Elements'].value,
+                  theme: theme,
+                  properties: properties);
             })
             .toList()
             .cast<Widget>());
   }
 
+  Widget rowStyle({
+    Map<String, SchemaNodeProperty> properties,
+    UserActions userActions,
+    AppThemeStore theme,
+  }) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 15,
+        ),
+        EditPropsCorners(
+          value: properties['ItemRadiusValue'].value,
+          onChanged: (int value) {
+            userActions
+                .changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
+          },
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        EditPropsShadow(
+            properties: properties, userActions: userActions, theme: theme)
+      ],
+    );
+  }
+
   Widget widgetFor(
       {SchemaListItemProperty item,
       ListElements elements,
-      AppThemeStore theme}) {
+      AppThemeStore theme,
+      Map<String, SchemaNodeProperty> properties}) {
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(
@@ -32,23 +66,34 @@ class ListTemplateCards extends ListTemplate {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(9),
-                  color: MyColors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        spreadRadius: 0,
-                        blurRadius: 6,
-                        offset: Offset(0, 2),
-                        color: MyColors.black.withOpacity(0.2))
-                  ]),
+                  borderRadius: BorderRadius.circular(
+                      properties['ItemRadiusValue'].value),
+                  color: getThemeColor(
+                    theme,
+                    properties['ItemColor'],
+                  ),
+                  boxShadow: properties['BoxShadow'].value
+                      ? [
+                          BoxShadow(
+                              color: getThemeColor(
+                                      theme, properties['BoxShadowColor'])
+                                  .withOpacity(
+                                      properties['BoxShadowOpacity'].value),
+                              blurRadius: properties['BoxShadowBlur'].value,
+                              offset: Offset(0.0, 2.0),
+                              spreadRadius: 0)
+                        ]
+                      : []),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   elements.image != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(9),
-                            topRight: Radius.circular(9),
+                            topLeft: Radius.circular(
+                                properties['ItemRadiusValue'].value),
+                            topRight: Radius.circular(
+                                properties['ItemRadiusValue'].value),
                           ),
                           child: Image.network(
                             item.value[elements.image.column]?.data ?? '',

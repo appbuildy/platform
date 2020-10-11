@@ -55,7 +55,9 @@ class SchemaNodeButton extends SchemaNode {
           'BoxShadowColor': SchemaMyThemePropProperty(
               'BoxShadowColor', this.theme.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.5),
         };
+
     textDebouncer =
         Debouncer(milliseconds: 500, prevValue: this.properties['Text'].value);
   }
@@ -84,7 +86,7 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toWidget() {
+  Widget toWidget({bool isPlayMode}) {
     return Container(
       width: size.dx,
       height: size.dy,
@@ -94,7 +96,7 @@ class SchemaNodeButton extends SchemaNode {
               ? [
                   BoxShadow(
                       color: getThemeColor(theme, properties['BoxShadowColor'])
-                          .withOpacity(0.2),
+                          .withOpacity(properties['BoxShadowOpacity'].value),
                       blurRadius: properties['BoxShadowBlur'].value,
                       offset: Offset(0.0, 2.0),
                       spreadRadius: 0)

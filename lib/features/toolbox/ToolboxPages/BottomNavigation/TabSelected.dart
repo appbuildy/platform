@@ -133,17 +133,21 @@ class TabSelected extends StatelessWidget {
                 Container(
                   width: 170,
                   child: MyClickSelect(
-                      selectedValue: tab.target,
-                      onChange: (screen) {
-                        tab.target = screen.value;
-                        userActions.bottomNavigation.updateTab(tab);
-                        rerender();
-                      },
-                      options: userActions.screens.all.screens
-                          .map((element) =>
-                              SelectOption(element.name, element.id))
-                          .toList(),
-                    defaultIcon: SizedBox(width: 20.0, height: 16.0, child: Image.network('assets/icons/layout/btn-navigate.svg')),
+                    selectedValue: tab.target,
+                    onChange: (screen) {
+                      tab.target = screen.value;
+                      userActions.bottomNavigation.updateTab(tab);
+                      rerender();
+                    },
+                    options: userActions.screens.all.screens
+                        .map(
+                            (element) => SelectOption(element.name, element.id))
+                        .toList(),
+                    defaultIcon: SizedBox(
+                        width: 20.0,
+                        height: 16.0,
+                        child: Image.network(
+                            'assets/icons/meta/btn-navigate.svg')),
                   ),
                 )
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
@@ -25,7 +26,7 @@ class SchemaNodeList extends SchemaNode {
       Map<String, SchemaNodeProperty> properties,
       UniqueKey id})
       : super() {
-    this.type = SchemaNodeType.listDefault;
+    this.type = SchemaNodeType.list;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
@@ -58,6 +59,16 @@ class SchemaNodeList extends SchemaNode {
                       type: ListElementType.navigationIcon, column: 'true'))),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', this.theme.currentTheme.general),
+          'ItemColor': SchemaMyThemePropProperty(
+              'ItemColor', this.theme.currentTheme.background),
+          'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
+          'SeparatorsColor': SchemaMyThemePropProperty(
+              'SeparatorsColor', this.theme.currentTheme.separators),
+          'BoxShadow': SchemaBoolProperty('BoxShadow', true),
+          'BoxShadowColor': SchemaMyThemePropProperty(
+              'BoxShadowColor', this.theme.currentTheme.general),
+          'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
         };
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
@@ -89,17 +100,26 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget() {
-    final template = this.properties['Template'].value;
+  Widget toWidget({bool isPlayMode}) {
+    if (isPlayMode) {
+      return Container(
+          width: this.size.dx,
+          height: this.size.dy,
+          child: SingleChildScrollView(
+            child: this
+                .properties['Template']
+                .value
+                .toWidget(theme: this.theme, properties: this.properties),
+          ));
+    }
 
     return Container(
-      width: this.size.dx,
-      height: this.size.dy,
-      child: template.widget(
-          items: this.properties['Items'],
-          elements: this.properties['Elements'],
-          theme: this.theme),
-    );
+        width: this.size.dx,
+        height: this.size.dy,
+        child: this
+            .properties['Template']
+            .value
+            .toWidget(theme: this.theme, properties: this.properties));
   }
 
   Future<void> updateData(String tableName, UserActions userActions) async {
@@ -140,9 +160,6 @@ class SchemaNodeList extends SchemaNode {
                       .columnsFor(screen.value)
                       .map((e) => e.name)
                       .toList());
-
-//                  userActions.changePropertyTo(ListElementsProperty(
-//                      'Elements', properties['Elements'].value));
                 },
                 options: userActions.tables
                     .map((element) => SelectOption(element, element))
@@ -157,21 +174,17 @@ class SchemaNodeList extends SchemaNode {
       ColumnDivider(
         name: 'Row Style',
       ),
-//      EditPropsList(
-//          id: id,
-//          properties: properties,
-//          propName: 'Items',
-//          userActions: userActions,
-//          textDebouncer: textDebouncer),
+      EditPropsColor(
+        theme: theme,
+        properties: properties,
+        propName: 'ItemColor',
+        userActions: userActions,
+      ),
+      this.properties['Template'].value.rowStyle(
+          userActions: userActions, properties: properties, theme: theme),
       SizedBox(
         height: 10,
       ),
-//      EditPropsColor(
-//        theme: theme,
-//        properties: properties,
-//        userActions: userActions,
-//        propName: 'TextColor',
-//      ),
     ]);
   }
 }

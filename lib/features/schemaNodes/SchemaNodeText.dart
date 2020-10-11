@@ -26,7 +26,7 @@ class SchemaNodeText extends SchemaNode {
       : super() {
     this.type = SchemaNodeType.text;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(375.0, 50.0);
+    this.size = size ?? Offset(343.0, 50.0);
     this.id = id ?? UniqueKey();
     this.theme = theme;
 
@@ -72,7 +72,7 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toWidget() {
+  Widget toWidget({bool isPlayMode}) {
     return Container(
       width: size.dx,
       height: size.dy,

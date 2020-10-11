@@ -1,20 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 import 'package:mobx/mobx.dart';
 
 part 'SchemaStore.g.dart';
 
 class SchemaStore = _SchemaStore with _$SchemaStore;
 
+class DetailedInfo {
+  String tableName;
+  UniqueKey screenId;
+  Map<String, ListItem> rowData;
+
+  DetailedInfo(
+      {@required String tableName,
+      @required UniqueKey screenId,
+      @required Map<String, ListItem> rowData}) {
+    this.tableName = tableName;
+    this.screenId = screenId;
+    this.rowData = rowData;
+  }
+}
+
 abstract class _SchemaStore with Store {
   _SchemaStore(
-      {List<SchemaNode> components,
-      name = 'Main',
+      {@required List<SchemaNode> components,
+      @required name,
       bool bottomTabsVisible,
+      DetailedInfo detailedInfo,
       id}) {
     this.components = ObservableList<SchemaNode>();
     this.components.addAll(components);
     this.name = name;
+    this.detailedInfo = detailedInfo;
     this.id = id ?? UniqueKey();
     this.bottomTabsVisible = bottomTabsVisible ?? true;
   }
@@ -23,6 +41,14 @@ abstract class _SchemaStore with Store {
 
   @observable
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();
+
+  @observable
+  DetailedInfo detailedInfo;
+
+  @action
+  void setDetailedInfo(DetailedInfo newDetailedInfo) {
+    detailedInfo = newDetailedInfo;
+  }
 
   @observable
   bool bottomTabsVisible;

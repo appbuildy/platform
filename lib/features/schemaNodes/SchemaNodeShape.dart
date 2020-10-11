@@ -53,7 +53,7 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toWidget() {
+  Widget toWidget({bool isPlayMode}) {
     return Container(
       width: size.dx,
       height: size.dy,

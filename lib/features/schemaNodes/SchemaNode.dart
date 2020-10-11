@@ -9,7 +9,16 @@ export 'SchemaNodeProperty.dart';
 export 'SchemaNodeShape.dart';
 export 'SchemaNodeText.dart';
 
-enum SchemaNodeType { button, text, shape, image, icon, listDefault, listCards }
+enum SchemaNodeType {
+  button,
+  text,
+  shape,
+  image,
+  icon,
+  list,
+  listDefault,
+  listCards
+}
 
 abstract class SchemaNode {
   UniqueKey id;
@@ -35,7 +44,7 @@ abstract class SchemaNode {
         'actions': _jsonActions(),
         'type': SchemaNodeType.button
       };
-  Widget toWidget();
+  Widget toWidget({bool isPlayMode});
   Widget toEditProps(
     UserActions userActions,
   );
