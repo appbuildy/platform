@@ -1,22 +1,23 @@
 import 'package:flutter/cupertino.dart';
 
-import '../SchemaNodeProperty.dart';
-
-class SchemaListItemProperty extends SchemaNodeProperty<Map<String, ListItem>> {
-  SchemaListItemProperty(String name, value) : super(name, value);
-
-  @override
-  SchemaListItemProperty copy() {
-    return SchemaListItemProperty(this.name, value);
-  }
-}
-
 class ListItem {
   String column;
   String data;
 
-  ListItem({@required column, @required data}) {
-    this.column = column;
-    this.data = data;
+  ListItem({
+    @required this.column,
+    @required this.data,
+  });
+
+  Map<String, String> toJson() {
+    return {
+      'column': this.column,
+      'data': this.data,
+    };
+  }
+
+  ListItem.fromJson(Map<String, dynamic> targetJson) {
+    this.column = targetJson['column'];
+    this.data = targetJson['data'];
   }
 }

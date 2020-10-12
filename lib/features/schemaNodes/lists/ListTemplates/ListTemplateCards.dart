@@ -4,13 +4,16 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
 class ListTemplateCards extends ListTemplate {
+  ListTemplateType getType() => ListTemplateType.cards;
+
   Widget toWidget(
       {AppThemeStore theme, Map<String, SchemaNodeProperty> properties}) {
     return Column(
@@ -55,7 +58,7 @@ class ListTemplateCards extends ListTemplate {
   }
 
   Widget widgetFor(
-      {SchemaListItemProperty item,
+      {SchemaListItemsProperty item,
       ListElements elements,
       AppThemeStore theme,
       Map<String, SchemaNodeProperty> properties}) {
