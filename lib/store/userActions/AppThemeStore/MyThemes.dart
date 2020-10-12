@@ -47,30 +47,32 @@ class MyTheme {
     return primary;
   }
 
-  MyTheme({
-    @required this.name,
-    @required this.primary,
-    @required this.secondary,
-    @required this.general,
-    @required this.generalSecondary,
-    @required this.generalInverted,
-    @required this.separators,
-    @required this.background
-  }) : super();
+  MyTheme(
+      {@required this.name,
+      @required this.primary,
+      @required this.secondary,
+      @required this.general,
+      @required this.generalSecondary,
+      @required this.generalInverted,
+      @required this.separators,
+      @required this.background})
+      : super();
 
-  MyTheme.fromBaseColors({
-    @required String name,
-    @required MyThemeProp primary,
-    @required MyThemeProp secondary
-  }) : super() {
+  MyTheme.fromBaseColors(
+      {@required String name,
+      @required MyThemeProp primary,
+      @required MyThemeProp secondary})
+      : super() {
     this.name = name;
     this.primary = primary;
     this.secondary = secondary;
-    this.general = MyThemeProp(name: 'General', color: Color(0xFF111111));
-    this.generalSecondary = MyThemeProp(name: 'General Secondary', color: Color(0xFFbdbdbf));
-    this.generalInverted = MyThemeProp(name: 'General Inverted', color: Color(0xFFf9f9f9));
-    this.separators = MyThemeProp(name: 'Separators', color: Color(0xFFC2C2C6));
-    this.background = MyThemeProp(name: 'Background', color: Color(0xFFffffff));
+    this.general = MyThemeProp(name: 'general', color: Color(0xFF111111));
+    this.generalSecondary =
+        MyThemeProp(name: 'generalSecondary', color: Color(0xFFbdbdbf));
+    this.generalInverted =
+        MyThemeProp(name: 'generalInverted', color: Color(0xFFf9f9f9));
+    this.separators = MyThemeProp(name: 'separators', color: Color(0xFFC2C2C6));
+    this.background = MyThemeProp(name: 'background', color: Color(0xFFffffff));
   }
 }
 
@@ -81,43 +83,36 @@ class MyThemes {
       primary: MyThemeProp(name: 'primary', color: Color(0xFF007aff)),
       secondary: MyThemeProp(name: 'secondary', color: Color(0xFFd2e7ff)),
     ),
-
     'monochrome': MyTheme.fromBaseColors(
-        name: 'Monochrome',
-        primary: MyThemeProp(name: 'primary', color: Color(0xFF5f5f5f)),
-        secondary: MyThemeProp(name: 'secondary', color: Color(0xFFececec)),
+      name: 'Monochrome',
+      primary: MyThemeProp(name: 'primary', color: Color(0xFF5f5f5f)),
+      secondary: MyThemeProp(name: 'secondary', color: Color(0xFFececec)),
     ),
-
     'green': MyTheme.fromBaseColors(
       name: 'Green',
       primary: MyThemeProp(name: 'primary', color: Color(0xFF34c759)),
       secondary: MyThemeProp(name: 'secondary', color: Color(0xFFe5ffec)),
     ),
-
     'darkBlue': MyTheme.fromBaseColors(
       name: 'Dark Blue',
       primary: MyThemeProp(name: 'primary', color: Color(0xFF5856d6)),
       secondary: MyThemeProp(name: 'secondary', color: Color(0xFFe4e4ff)),
     ),
-
     'orange': MyTheme.fromBaseColors(
       name: 'Orange',
       primary: MyThemeProp(name: 'primary', color: Color(0xFFff9500)),
       secondary: MyThemeProp(name: 'secondary', color: Color(0xFFffedd4)),
     ),
-
     'red': MyTheme.fromBaseColors(
       name: 'Red',
       primary: MyThemeProp(name: 'primary', color: Color(0xFFff3b30)),
       secondary: MyThemeProp(name: 'secondary', color: Color(0xFFffc7c3)),
     ),
-
     'violet': MyTheme.fromBaseColors(
       name: 'Violet',
       primary: MyThemeProp(name: 'primary', color: Color(0xFFaf52de)),
       secondary: MyThemeProp(name: 'secondary', color: Color(0xFFf0d2ff)),
     ),
-
     'lightBlue': MyTheme.fromBaseColors(
       name: 'Light Blue',
       primary: MyThemeProp(name: 'primary', color: Color(0xFF5ac8fa)),
