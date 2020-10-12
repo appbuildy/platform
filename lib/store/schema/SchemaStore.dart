@@ -99,6 +99,10 @@ abstract class _SchemaStore with Store {
     components.removeWhere((element) => element.id == schemaNode.id);
   }
 
-  Map<String, dynamic> toJson() =>
-      {'components': components.map((comp) => comp.toJson()).toList()};
+  Map<String, dynamic> toJson() => {
+        'components': components
+            .map((comp) => comp.toJson())
+            .toList()
+            .cast<Map<String, dynamic>>()
+      };
 }

@@ -27,7 +27,6 @@ class SetupProject {
 
   Future<void> _fetchTables(http.Client client) async {
     final remoteTableNames = await userStore.currentUser.tables(client);
-    print(remoteTableNames);
     attributes.fetchTables(remoteTableNames);
   }
 }

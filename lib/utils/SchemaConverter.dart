@@ -6,7 +6,9 @@ class SchemaConverter {
 
   Map<String, dynamic> toJson() => {
         'canvas': {
-          'screens': screens.screens.map((screen) => screen.toJson()).toList()
+          'screens': screens.screens.map((screen) {
+            return screen.toJson();
+          }).toList()
         }
       };
 }

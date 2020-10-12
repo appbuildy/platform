@@ -20,9 +20,7 @@ class CurrentUser extends User {
   }
 
   Future<List<String>> tables(http.Client client) async {
-    print("I try: client: $client");
     final response = await client.get(this.dataUrl, headers: authHeaders());
-    print("I try: $response");
 
     final Map<String, dynamic> tables = json.decode(response.body);
     final List<dynamic> tableNames = tables['tables'];
