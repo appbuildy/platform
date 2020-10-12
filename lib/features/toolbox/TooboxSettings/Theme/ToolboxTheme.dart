@@ -210,20 +210,14 @@ class ToolboxThemeItems extends StatelessWidget {
         final currentTheme = theme.currentTheme;
 
         return Column(
-          children: [
-            ToolboxThemeItem(
-              theme: MyThemes.lightBlue,
-              isActive: currentTheme.name == MyThemes.lightBlue.name,
+          children: MyThemes.allThemes.values.map((MyTheme themeItem) {
+            return ToolboxThemeItem(
+              theme: themeItem,
+              isActive: currentTheme.name == themeItem.name,
               setTheme: theme.setTheme,
               onSettingsTap: onThemeSettingsTap,
-            ),
-            ToolboxThemeItem(
-              theme: MyThemes.darkBlue,
-              isActive: currentTheme.name == MyThemes.darkBlue.name,
-              setTheme: theme.setTheme,
-              onSettingsTap: onThemeSettingsTap,
-            ),
-          ],
+            );
+          }).toList(),
         );
       },
     );
