@@ -6,7 +6,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/DarkenColor.dart';
 import 'package:flutter_app/utils/CapitalizeString.dart';
 
-import 'ColorPicker.dart';
+import 'MyColorPicker.dart';
 
 class BuildColorSelect extends StatelessWidget {
   const BuildColorSelect({
@@ -74,7 +74,7 @@ class BuildColorSelect extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '#${themeColor.color.value.toRadixString(16).toUpperCase()}',
+                          '#${themeColor.color.value.toRadixString(16).substring(2).toUpperCase()}',
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],
