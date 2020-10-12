@@ -106,10 +106,10 @@ class SchemaNodeList extends SchemaNode {
           width: this.size.dx,
           height: this.size.dy,
           child: SingleChildScrollView(
-            child: this
-                .properties['Template']
-                .value
-                .toWidget(theme: this.theme, properties: this.properties),
+            child: this.properties['Template'].value.toWidget(
+                theme: this.theme,
+                properties: this.properties,
+                isPlayMode: isPlayMode),
           ));
     }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
@@ -12,17 +13,31 @@ import 'package:flutter_app/utils/getThemeColor.dart';
 
 class ListTemplateCards extends ListTemplate {
   Widget toWidget(
-      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties}) {
+      {AppThemeStore theme,
+      Map<String, SchemaNodeProperty> properties,
+      Map<String, SchemaNodeProperty> actions,
+      UserActions userActions,
+      bool isPlayMode}) {
     return Column(
         children: properties['Items']
             .value
             .values
             .map((item) {
-              return widgetFor(
-                  item: item,
-                  elements: properties['Elements'].value,
-                  theme: theme,
-                  properties: properties);
+              return GestureDetector(
+                onTap: () {
+                  if (isPlayMode) {
+                    print('ListTemplateSimple');
+                    print('KEK ${item.value}');
+                    (actions['Tap'] as Functionable)
+                        .toFunction(userActions)();
+                  }
+                },
+                child: widgetFor(
+                    item: item,
+                    elements: properties['Elements'].value,
+                    theme: theme,
+                    properties: properties),
+              );
             })
             .toList()
             .cast<Widget>());
@@ -58,7 +73,8 @@ class ListTemplateCards extends ListTemplate {
       {SchemaListItemProperty item,
       ListElements elements,
       AppThemeStore theme,
-      Map<String, SchemaNodeProperty> properties}) {
+      Map<String, SchemaNodeProperty> properties,
+      bool isPlayMode}) {
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(

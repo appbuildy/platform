@@ -12,17 +12,26 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ListTemplateSimple extends ListTemplate {
   Widget toWidget(
-      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties}) {
+      {AppThemeStore theme,
+      Map<String, SchemaNodeProperty> properties,
+      bool isPlayMode}) {
     return Column(
         children: properties['Items']
             .value
             .values
             .map((item) {
-              return widgetFor(
-                  item: item,
-                  elements: properties['Elements'].value,
-                  theme: theme,
-                  properties: properties);
+              return GestureDetector(
+                onTap: () {
+                  if (isPlayMode) {
+                    print('ListTemplateSimple');
+                  }
+                },
+                child: widgetFor(
+                    item: item,
+                    elements: properties['Elements'].value,
+                    theme: theme,
+                    properties: properties),
+              );
             })
             .toList()
             .cast<Widget>());

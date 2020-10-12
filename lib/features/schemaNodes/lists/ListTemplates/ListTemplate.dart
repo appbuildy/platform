@@ -11,17 +11,20 @@ enum ListTemplateType { simple, cards }
 
 abstract class ListTemplate {
   Widget toWidget(
-      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties});
+      {AppThemeStore theme,
+      Map<String, SchemaNodeProperty> properties,
+      bool isPlayMode});
 
   Widget rowStyle(
       {Map<String, SchemaNodeProperty> properties,
       UserActions userActions,
       AppThemeStore theme});
 
-  Widget widgetFor(
-      {SchemaListItemProperty item,
-      ListElements elements,
-      AppThemeStore theme});
+  Widget widgetFor({
+    SchemaListItemProperty item,
+    ListElements elements,
+    AppThemeStore theme,
+  });
 }
 
 ListTemplate getListTemplateByType(ListTemplateType type) {
