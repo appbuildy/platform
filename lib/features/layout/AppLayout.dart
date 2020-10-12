@@ -51,7 +51,7 @@ class _AppLayoutState extends State<AppLayout> {
     screensStore = ScreensStore();
     bottomNavigationStore = BottomNavigationStore();
     themeStore = AppThemeStore();
-    themeStore.setTheme(MyThemes.allThemes['Light Blue']);
+    themeStore.setTheme(MyThemes.allThemes['blue']);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
     currentUserStore = CurrentUserStore();
