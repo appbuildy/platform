@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +53,6 @@ class _AppLayoutState extends State<AppLayout> {
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
     currentUserStore = CurrentUserStore();
-    currentUserStore.setupProject(window);
 
     userActions = UserActions(
         currentUserStore: currentUserStore,

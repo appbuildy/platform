@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
-import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/airtable/Client.dart' as airtable;
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/airtable/RemoteList.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
@@ -26,6 +26,7 @@ import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:http/http.dart' as http;
+import 'package:universal_html/html.dart';
 
 import 'ConnectToRemoteAttribute.dart';
 
@@ -51,13 +52,13 @@ class UserActions {
     _currentNode = CurrentEditingNode();
     _bottomNavigation = bottomNavigationStore;
     _remoteAttributes = RemoteAttributes();
-    _bindings = RemoteSchemaPropertiesBinding(Client.defaultClient());
+    _bindings = RemoteSchemaPropertiesBinding(airtable.Client.defaultClient());
     _theme = themeStore;
     _screens = screens;
     _currentUserStore = currentUserStore;
 
+    _currentUserStore.setupProject(window, _remoteAttributes);
     this.startAutoSave();
-    this.fetchTables();
   }
 
   SchemaStore get currentScreen => _screens.current;
@@ -67,12 +68,6 @@ class UserActions {
   List<String> get tables => _remoteAttributes.tableNames;
   List<RemoteList> columnsFor(String tableName) {
     return _remoteAttributes.tables[tableName].values.toList();
-  }
-
-  Future<void> fetchTables() async {
-    final remoteTableNames =
-        await _currentUserStore.currentUser.tables(http.Client());
-    _remoteAttributes.fetchTables(remoteTableNames);
   }
 
   void changeActionTo(ChangeableProperty prop,
