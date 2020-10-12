@@ -42,7 +42,7 @@ abstract class SchemaNode {
         'size': {'x': size.dx, 'y': size.dy},
         'properties': _jsonProperties(),
         'actions': _jsonActions(),
-        'type': SchemaNodeType.button.toString()
+        'type': this.type.toString()
       };
   Widget toWidget({bool isPlayMode});
   Widget toEditProps(
