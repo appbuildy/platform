@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/CapitalizeString.dart';
+import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 
 enum ToolboxStates { layout, settings, pages, data }
 
