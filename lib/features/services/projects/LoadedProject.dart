@@ -3,7 +3,6 @@ import 'package:flutter_app/features/services/projects/IProjectLoad.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
-import 'package:universal_html/html.dart';
 
 class LoadedProject implements IProjectLoad {
   Map<String, dynamic> jsonCanvas;
