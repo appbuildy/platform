@@ -16,6 +16,7 @@ import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.d
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/services/projects/LoadedProject.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -57,8 +58,7 @@ class UserActions {
     _screens = screens;
     _currentUserStore = currentUserStore;
 
-    _currentUserStore.setupProject(window, _remoteAttributes);
-    this.startAutoSave();
+    this.loadProject();
   }
 
   SchemaStore get currentScreen => _screens.current;
@@ -68,6 +68,16 @@ class UserActions {
   List<String> get tables => _remoteAttributes.tableNames;
   List<RemoteList> columnsFor(String tableName) {
     return _remoteAttributes.tables[tableName].values.toList();
+  }
+
+  Future<void> loadProject() async {
+    await _currentUserStore.setupProject(window, _remoteAttributes);
+    final Screens screens =
+        LoadedProject(_currentUserStore.project.data['canvas']).load();
+    _screens = screens;
+    print(
+        "Loaded: $screens. Components: ${screens.all.screens.first.components}");
+    this.startAutoSave();
   }
 
   void changeActionTo(ChangeableProperty prop,

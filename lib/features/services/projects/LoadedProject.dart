@@ -12,7 +12,7 @@ class LoadedProject implements IProjectLoad {
 
   @override
   Screens load() {
-    final screen = SchemaStore(components: _loadComponents());
+    final screen = SchemaStore(name: 'Home', components: _loadComponents());
     final store = ScreensStore(screens: [screen]);
     final current = CurrentScreen(screen);
     final screens = Screens(store, current);
