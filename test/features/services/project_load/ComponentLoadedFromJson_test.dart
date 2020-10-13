@@ -12,5 +12,8 @@ void main() {
   Map<String, dynamic> decodedComponent = json.decode(jsonComponent);
   SchemaNode loaded = ComponentLoadedFromJson(decodedComponent).load();
 
-  test('load() loads screens', () async {});
+  test('load() loads size', () async {
+    expect(loaded.size.dx, 343);
+    expect(loaded.size.dy, 50);
+  });
 }
