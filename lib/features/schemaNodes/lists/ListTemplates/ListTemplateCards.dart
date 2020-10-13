@@ -7,15 +7,17 @@ import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
 class ListTemplateCards extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.cards;
 
-  Widget toWidget(
-      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties}) {
+  Widget toWidget({
+    MyTheme currentTheme,
+    Map<String, SchemaNodeProperty> properties,
+  }) {
     return Column(
         children: properties['Items']
             .value
@@ -24,7 +26,7 @@ class ListTemplateCards extends ListTemplate {
               return widgetFor(
                   item: item,
                   elements: properties['Elements'].value,
-                  theme: theme,
+                  currentTheme: currentTheme,
                   properties: properties);
             })
             .toList()
@@ -34,7 +36,7 @@ class ListTemplateCards extends ListTemplate {
   Widget rowStyle({
     Map<String, SchemaNodeProperty> properties,
     UserActions userActions,
-    AppThemeStore theme,
+    MyTheme currentTheme,
   }) {
     return Column(
       children: [
@@ -52,7 +54,10 @@ class ListTemplateCards extends ListTemplate {
           height: 15,
         ),
         EditPropsShadow(
-            properties: properties, userActions: userActions, theme: theme)
+            properties: properties,
+            userActions: userActions,
+            currentTheme: currentTheme,
+        )
       ],
     );
   }
@@ -60,7 +65,7 @@ class ListTemplateCards extends ListTemplate {
   Widget widgetFor(
       {SchemaListItemsProperty item,
       ListElements elements,
-      AppThemeStore theme,
+      MyTheme currentTheme,
       Map<String, SchemaNodeProperty> properties}) {
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
@@ -72,14 +77,14 @@ class ListTemplateCards extends ListTemplate {
                   borderRadius: BorderRadius.circular(
                       properties['ItemRadiusValue'].value),
                   color: getThemeColor(
-                    theme,
+                    currentTheme,
                     properties['ItemColor'],
                   ),
                   boxShadow: properties['BoxShadow'].value
                       ? [
                           BoxShadow(
                               color: getThemeColor(
-                                      theme, properties['BoxShadowColor'])
+                                  currentTheme, properties['BoxShadowColor'])
                                   .withOpacity(
                                       properties['BoxShadowOpacity'].value),
                               blurRadius: properties['BoxShadowBlur'].value,

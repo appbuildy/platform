@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
@@ -10,11 +11,11 @@ import 'ToolboxThemeItemSettings/ToolboxThemeItemColorSelect.dart';
 
 class BuildToolboxThemePage extends StatefulWidget {
   final goBackToSettings;
-  final theme;
+  final UserActions userActions;
 
   BuildToolboxThemePage({
     @required this.goBackToSettings,
-    @required this.theme,
+    @required this.userActions,
   });
 
   @override
@@ -41,6 +42,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 
   void selectTheme(MyTheme theme) {
     _controller.reverse();
+    widget.userActions.setTheme(theme);
     setState(() {
       selectedTheme = theme;
     });
@@ -66,7 +68,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
           child: ToolboxThemeItems(
-            theme: widget.theme,
+            userActions: widget.userActions,
             onThemeSettingsTap: selectTheme,
           ),
         ),
@@ -79,10 +81,10 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 
     onColorChange(String oldColorName) {
       return (Color newColor) {
-        widget.theme.currentTheme.getThemePropByName(oldColorName).color = newColor;
-        widget.theme.setTheme(widget.theme.currentTheme);
+        widget.userActions.currentTheme.getThemePropByName(oldColorName).color = newColor;
+        widget.userActions.setTheme(widget.userActions.currentTheme);
         setState(() {
-          selectedTheme = widget.theme.currentTheme;
+          selectedTheme = widget.userActions.currentTheme;
         });
       };
     }
@@ -167,12 +169,12 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 }
 
 class ToolboxThemeItems extends StatelessWidget {
-  final theme;
+  final UserActions userActions;
   final Function onThemeSettingsTap;
 
   const ToolboxThemeItems({
     Key key,
-    @required this.theme,
+    @required this.userActions,
     @required this.onThemeSettingsTap,
   }) : super(key: key);
 
@@ -180,14 +182,14 @@ class ToolboxThemeItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(
       builder: (BuildContext context) {
-        final currentTheme = theme.currentTheme;
+        final currentTheme = userActions.currentTheme;
 
         return Column(
           children: MyThemes.allThemes.values.map((MyTheme themeItem) {
             return ToolboxThemeItem(
               theme: themeItem,
               isActive: currentTheme.name == themeItem.name,
-              setTheme: theme.setTheme,
+              setTheme: userActions.setTheme,
               onSettingsTap: onThemeSettingsTap,
             );
           }).toList(),

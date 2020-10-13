@@ -56,9 +56,6 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
         gradient: MyGradients.lightGray,
         borderRadius: BorderRadius.circular(8));
 
-    List<MyThemeProp> allThemeColors = widget.theme.getAllColors();
-    print(allThemeColors.length);
-
     return GestureDetector(
       onTap: () {
         if (!widget.isActive) {
@@ -167,6 +164,7 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
                   if (showIcon)
                     GestureDetector(
                       onTap: () {
+                        widget.setTheme(widget.theme);
                         widget.onSettingsTap(widget.theme);
                       },
                       child: Cursor(

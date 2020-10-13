@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:mobx/mobx.dart';
 
 part 'SchemaStore.g.dart';
@@ -23,18 +24,21 @@ class DetailedInfo {
 }
 
 abstract class _SchemaStore with Store {
-  _SchemaStore(
-      {@required List<SchemaNode> components,
-      @required name,
-      bool bottomTabsVisible,
-      DetailedInfo detailedInfo,
-      id}) {
+  _SchemaStore({
+    @required List<SchemaNode> components,
+    @required name,
+    bool bottomTabsVisible,
+    DetailedInfo detailedInfo,
+    id,
+    MyThemeProp backgroundColor,
+  }) {
     this.components = ObservableList<SchemaNode>();
     this.components.addAll(components);
     this.name = name;
     this.detailedInfo = detailedInfo;
     this.id = id ?? UniqueKey();
     this.bottomTabsVisible = bottomTabsVisible ?? true;
+    this.backgroundColor = backgroundColor;
   }
   @observable
   UniqueKey id;
@@ -48,6 +52,14 @@ abstract class _SchemaStore with Store {
   @action
   void setDetailedInfo(DetailedInfo newDetailedInfo) {
     detailedInfo = newDetailedInfo;
+  }
+
+  @observable
+  MyThemeProp backgroundColor;
+
+  @action
+  void setBackgroundColor(MyThemeProp color) {
+    backgroundColor = color;
   }
 
   @observable

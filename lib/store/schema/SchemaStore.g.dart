@@ -54,6 +54,21 @@ mixin _$SchemaStore on _SchemaStore, Store {
     });
   }
 
+  final _$backgroundColorAtom = Atom(name: '_SchemaStore.backgroundColor');
+
+  @override
+  MyThemeProp get backgroundColor {
+    _$backgroundColorAtom.reportRead();
+    return super.backgroundColor;
+  }
+
+  @override
+  set backgroundColor(MyThemeProp value) {
+    _$backgroundColorAtom.reportWrite(value, super.backgroundColor, () {
+      super.backgroundColor = value;
+    });
+  }
+
   final _$bottomTabsVisibleAtom = Atom(name: '_SchemaStore.bottomTabsVisible');
 
   @override
@@ -92,6 +107,17 @@ mixin _$SchemaStore on _SchemaStore, Store {
         name: '_SchemaStore.setDetailedInfo');
     try {
       return super.setDetailedInfo(newDetailedInfo);
+    } finally {
+      _$_SchemaStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setBackgroundColor(MyThemeProp color) {
+    final _$actionInfo = _$_SchemaStoreActionController.startAction(
+        name: '_SchemaStore.setBackgroundColor');
+    try {
+      return super.setBackgroundColor(color);
     } finally {
       _$_SchemaStoreActionController.endAction(_$actionInfo);
     }
@@ -180,6 +206,7 @@ mixin _$SchemaStore on _SchemaStore, Store {
 id: ${id},
 components: ${components},
 detailedInfo: ${detailedInfo},
+backgroundColor: ${backgroundColor},
 bottomTabsVisible: ${bottomTabsVisible},
 name: ${name}
     ''';

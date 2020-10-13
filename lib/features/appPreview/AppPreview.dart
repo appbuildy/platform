@@ -520,30 +520,30 @@ class _AppPreviewState extends State<AppPreview> {
           scale = heightScaled < widthScaled ? heightScaled : widthScaled;
         }
 
-        return Transform.scale(
-          scale: scale,
-          alignment: Alignment.topCenter,
-          child: (Container(
-            width: SCREEN_WIDTH + 4, // 4px is for border (2 px on both sides)
-            height: SCREEN_HEIGHT + 4, // 4px is for border (2 px on both sides)
-            decoration: BoxDecoration(
-                color: MyColors.white,
-                borderRadius: BorderRadius.circular(40.0),
-                boxShadow: [
-                  BoxShadow(
-                      spreadRadius: 0,
-                      blurRadius: 20,
-                      offset: Offset(0, 2),
-                      color: MyColors.black.withOpacity(0.15))
-                ],
-                border: Border.all(width: 2, color: MyColors.black)),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(39.0),
-              child: Observer(
-                builder: (context) {
-                  final theme = userActions.theme.currentTheme;
+        return Observer(
+          builder: (context) {
+            final theme = userActions.currentTheme;
 
-                  return Stack(
+            return Transform.scale(
+              scale: scale,
+              alignment: Alignment.topCenter,
+              child: Container(
+                width: SCREEN_WIDTH + 4, // 4px is for border (2 px on both sides)
+                height: SCREEN_HEIGHT + 4, // 4px is for border (2 px on both sides)
+                decoration: BoxDecoration(
+                    color: userActions.screens.current.backgroundColor.color,
+                    borderRadius: BorderRadius.circular(40.0),
+                    boxShadow: [
+                      BoxShadow(
+                          spreadRadius: 0,
+                          blurRadius: 20,
+                          offset: Offset(0, 2),
+                          color: MyColors.black.withOpacity(0.15))
+                    ],
+                    border: Border.all(width: 2, color: MyColors.black)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(39.0),
+                  child:  Stack(
                     textDirection: TextDirection.ltr,
                     children: [
                       ...userActions.screens.current.components.map((node) =>
@@ -564,10 +564,10 @@ class _AppPreviewState extends State<AppPreview> {
                                   },
                                   child: widget.isPlayMode
                                       ? node.toWidget(
-                                          isPlayMode: widget.isPlayMode)
+                                      isPlayMode: widget.isPlayMode)
                                       : renderWithSelected(
-                                          node: node,
-                                        )),
+                                    node: node,
+                                  )),
                               top: node.position.dy,
                               left: node.position.dx)),
                       Positioned(
@@ -579,45 +579,48 @@ class _AppPreviewState extends State<AppPreview> {
                         bottom: 0,
                         left: 0,
                         child: userActions.screens.current.bottomTabsVisible
-                            ? Container(
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        top: BorderSide(
-                                            width: 1,
-                                            color: theme.separators.color))),
-                                child: Container(
-                                  child: AppTabs(userActions: userActions),
-                                  width: SCREEN_WIDTH,
-                                  height: 84,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(37.0),
-                                        bottomRight: Radius.circular(37.0)),
-                                  ),
-                                ),
+                          ? Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  width: 1,
+                                  color: theme.separators.color)
                               )
-                            : Container(),
+                            ),
+                            child: Container(
+                              child: AppTabs(userActions: userActions),
+                              width: SCREEN_WIDTH,
+                              height: 84,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(37.0),
+                                    bottomRight: Radius.circular(37.0)
+                                ),
+                              ),
+                            ),
+                          )
+                          : Container(),
                       ),
                       Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 7.0),
-                            child: Container(
-                              width: 134,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF000000),
-                                  borderRadius: BorderRadius.circular(100)),
-                            ),
-                          )),
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 7.0),
+                          child: Container(
+                            width: 134,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                color: Color(0xFF000000),
+                                borderRadius: BorderRadius.circular(100)),
+                          ),
+                        )
+                      ),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          )),
-        );
+            );
+        });
       },
     );
   }

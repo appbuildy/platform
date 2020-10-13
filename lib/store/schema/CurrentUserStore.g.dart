@@ -24,6 +24,30 @@ mixin _$CurrentUserStore on _CurrentUserStore, Store {
     });
   }
 
+  final _$projectAtom = Atom(name: '_CurrentUserStore.project');
+
+  @override
+  Project get project {
+    _$projectAtom.reportRead();
+    return super.project;
+  }
+
+  @override
+  set project(Project value) {
+    _$projectAtom.reportWrite(value, super.project, () {
+      super.project = value;
+    });
+  }
+
+  final _$setupProjectAsyncAction =
+      AsyncAction('_CurrentUserStore.setupProject');
+
+  @override
+  Future<void> setupProject(dynamic window, RemoteAttributes attrs) {
+    return _$setupProjectAsyncAction
+        .run(() => super.setupProject(window, attrs));
+  }
+
   final _$tryLogInAsyncAction = AsyncAction('_CurrentUserStore.tryLogIn');
 
   @override
@@ -34,7 +58,8 @@ mixin _$CurrentUserStore on _CurrentUserStore, Store {
   @override
   String toString() {
     return '''
-currentUser: ${currentUser}
+currentUser: ${currentUser},
+project: ${project}
     ''';
   }
 }

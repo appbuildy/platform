@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 export 'SchemaNodeButton.dart';
 export 'SchemaNodeImage.dart';
@@ -24,7 +25,7 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
-  AppThemeStore theme;
+  AppThemeStore themeStore;
   Offset size;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> changeableProperties;

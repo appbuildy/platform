@@ -8,13 +8,13 @@ import 'package:flutter_app/utils/StringExtentions/FromSnakeCase.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 
 class MyColorSelect extends StatelessWidget {
-  final AppThemeStore theme;
+  final MyTheme currentTheme;
   final dynamic selectedValue;
   final Function onChange;
 
   const MyColorSelect(
       {Key key,
-      @required this.theme,
+      @required this.currentTheme,
       @required this.onChange,
       @required this.selectedValue})
       : super(key: key);
@@ -34,7 +34,7 @@ class MyColorSelect extends StatelessWidget {
     return MyClickSelect(
         selectedValue: selectedValue,
         onChange: onChange,
-        options: theme.currentTheme.getAllColors().map((MyThemeProp color) {
+        options: currentTheme.getAllColors().map((MyThemeProp color) {
           return SelectOption(
             color.name.toNormalCapitalizedString().capitalize(),
             color,

@@ -5,7 +5,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +14,7 @@ class ListTemplateSimple extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.simple;
 
   Widget toWidget(
-      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties}) {
+      {MyTheme currentTheme, Map<String, SchemaNodeProperty> properties}) {
     return Column(
         children: properties['Items']
             .value
@@ -23,7 +23,7 @@ class ListTemplateSimple extends ListTemplate {
               return widgetFor(
                   item: item,
                   elements: properties['Elements'].value,
-                  theme: theme,
+                  currentTheme: currentTheme,
                   properties: properties);
             })
             .toList()
@@ -33,14 +33,14 @@ class ListTemplateSimple extends ListTemplate {
   Widget rowStyle(
       {Map<String, SchemaNodeProperty> properties,
       UserActions userActions,
-      AppThemeStore theme}) {
+      MyTheme currentTheme}) {
     return Column(children: [
       SizedBox(
         height: 15,
       ),
       EditPropsColor(
           title: 'Separators',
-          theme: theme,
+          currentTheme: currentTheme,
           userActions: userActions,
           propName: 'SeparatorsColor',
           properties: properties)
@@ -50,7 +50,7 @@ class ListTemplateSimple extends ListTemplate {
   Widget widgetFor(
       {SchemaListItemsProperty item,
       ListElements elements,
-      AppThemeStore theme,
+      MyTheme currentTheme,
       Map<String, SchemaNodeProperty> properties}) {
     return Row(
       children: [
@@ -58,14 +58,14 @@ class ListTemplateSimple extends ListTemplate {
           child: Container(
             decoration: BoxDecoration(
                 color: getThemeColor(
-                  theme,
+                  currentTheme,
                   properties['ItemColor'],
                 ),
                 border: Border(
                     bottom: BorderSide(
                         width: 1,
                         color: getThemeColor(
-                          theme,
+                          currentTheme,
                           properties['SeparatorsColor'],
                         )))),
             child: Padding(
@@ -117,7 +117,7 @@ class ListTemplateSimple extends ListTemplate {
                   elements.navigationIcon != null
                       ? FaIcon(
                           FontAwesomeIcons.chevronRight,
-                          color: theme.currentTheme.separators.color,
+                          color: currentTheme.separators.color,
                           size: 18,
                         )
                       : Container()

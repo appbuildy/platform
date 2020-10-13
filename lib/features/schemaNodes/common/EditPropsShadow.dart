@@ -5,7 +5,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySlider.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
@@ -13,13 +13,13 @@ import 'package:flutter_app/ui/MySwitch.dart';
 class EditPropsShadow extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   final UserActions userActions;
-  final AppThemeStore theme;
+  final MyTheme currentTheme;
 
   const EditPropsShadow(
       {Key key,
       @required this.properties,
       @required this.userActions,
-      @required this.theme})
+      @required this.currentTheme})
       : super(key: key);
 
   List<Widget> buildBorderStyle() {
@@ -31,7 +31,7 @@ class EditPropsShadow extends StatelessWidget {
           height: 10,
         ),
         EditPropsColor(
-            theme: theme,
+            currentTheme: currentTheme,
             userActions: userActions,
             propName: 'BoxShadowColor',
             properties: properties),
