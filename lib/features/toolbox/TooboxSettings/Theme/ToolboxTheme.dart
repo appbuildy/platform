@@ -77,9 +77,9 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
   Widget _buildSelectedThemeItemSettings() {
     if (selectedTheme == null) return null;
 
-    onColorChange(MyThemeProp oldColor) {
+    onColorChange(String oldColorName) {
       return (Color newColor) {
-        oldColor.color = newColor;
+        widget.theme.currentTheme.getThemePropByName(oldColorName).color = newColor;
         widget.theme.setTheme(widget.theme.currentTheme);
         setState(() {
           selectedTheme = widget.theme.currentTheme;
@@ -97,42 +97,15 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 20),
           child: Column(
-            children: [
-              BuildColorSelect(
-                  themeColor: selectedTheme.primary,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.primary)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.secondary,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.secondary)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.general,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.general)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.generalSecondary,
-                  onColorChange: onColorChange(
-                      widget.theme.currentTheme.generalSecondary)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.generalInverted,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.generalInverted)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.separators,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.separators)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.background,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.background)),
-            ],
+            children: selectedTheme.getAllColors().map((MyThemeProp color) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: BuildColorSelect(
+                    themeColor: color,
+                    onColorChange: onColorChange(color.name),
+                ),
+              );
+            }).toList(),
           ),
         )
       ],

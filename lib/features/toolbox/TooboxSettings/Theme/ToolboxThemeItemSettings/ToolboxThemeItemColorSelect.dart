@@ -4,7 +4,7 @@ import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/DarkenColor.dart';
-import 'package:flutter_app/utils/CapitalizeString.dart';
+import 'package:flutter_app/utils/StringExtentions/FromSnakeCase.dart';
 
 import 'MyColorPicker.dart';
 
@@ -69,7 +69,7 @@ class BuildColorSelect extends StatelessWidget {
                       children: [
                         Container(
                           child: Text(
-                            themeColor.name.capitalize(),
+                            themeColor.name.toNormalCapitalizedString(),
                             style: TextStyle(fontWeight: FontWeight.w500),
                           ),
                         ),

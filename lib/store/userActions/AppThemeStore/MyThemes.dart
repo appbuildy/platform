@@ -34,9 +34,9 @@ class MyTheme {
       return secondary;
     } else if (name == 'general') {
       return general;
-    } else if (name == 'generalSecondary') {
+    } else if (name == 'general_secondary') {
       return generalSecondary;
-    } else if (name == 'generalInverted') {
+    } else if (name == 'general_inverted') {
       return generalInverted;
     } else if (name == 'separators') {
       return separators;
@@ -45,6 +45,18 @@ class MyTheme {
     }
 
     return primary;
+  }
+
+  List<MyThemeProp> getAllColors() {
+    return [
+      this.primary,
+      this.secondary,
+      this.general,
+      this.generalSecondary,
+      this.generalInverted,
+      this.separators,
+      this.background,
+    ];
   }
 
   MyTheme(
@@ -68,9 +80,9 @@ class MyTheme {
     this.secondary = secondary;
     this.general = MyThemeProp(name: 'general', color: Color(0xFF111111));
     this.generalSecondary =
-        MyThemeProp(name: 'generalSecondary', color: Color(0xFFbdbdbf));
+        MyThemeProp(name: 'general_secondary', color: Color(0xFFbdbdbf));
     this.generalInverted =
-        MyThemeProp(name: 'generalInverted', color: Color(0xFFf9f9f9));
+        MyThemeProp(name: 'general_inverted', color: Color(0xFFf9f9f9));
     this.separators = MyThemeProp(name: 'separators', color: Color(0xFFC2C2C6));
     this.background = MyThemeProp(name: 'background', color: Color(0xFFffffff));
   }

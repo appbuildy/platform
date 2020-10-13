@@ -9,7 +9,7 @@ import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/CapitalizeString.dart';
+import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ToolboxLayout extends StatelessWidget {
