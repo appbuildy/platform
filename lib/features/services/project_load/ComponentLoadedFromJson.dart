@@ -14,7 +14,20 @@ class ComponentLoadedFromJson implements IComponentLoader {
     themeStore
         .setTheme(MyThemes.allThemes['blue']); //TODO: Загружать тему нормально
 
-    return SchemaNodeButton(size: _loadSize(), theme: themeStore);
+    switch (jsonComponent['type']) {
+      case 'SchemaNodeType.button':
+        {
+          return SchemaNodeButton(
+              position: _loadPosition(), size: _loadSize(), theme: themeStore);
+        }
+        break;
+    }
+  }
+
+  Offset _loadPosition() {
+    int x = jsonComponent['size']['x'];
+    int y = jsonComponent['size']['y'];
+    return Offset(x.toDouble(), y.toDouble());
   }
 
   Offset _loadSize() {
