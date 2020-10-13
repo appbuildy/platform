@@ -1,13 +1,21 @@
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/services/projects/IProjectLoad.dart';
+import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:universal_html/html.dart';
 
 class LoadedProject implements IProjectLoad {
-  Client http;
+  Map<String, dynamic> jsonCanvas;
+  LoadedProject(this.jsonCanvas);
 
   @override
   Screens load() {
-    // TODO: implement load
-    throw UnimplementedError();
+    final screen = SchemaStore(components: []);
+    final store = ScreensStore(screens: [screen]);
+    final current = CurrentScreen(screen);
+    final screens = Screens(store, current);
+
+    return screens;
   }
 }
