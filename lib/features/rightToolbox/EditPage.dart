@@ -38,12 +38,10 @@ class EditPage extends StatelessWidget {
             child: MyClickSelect(
                 selectedValue: detailedInfo.tableName,
                 defaultIcon: Container(
-                    width: 21.0,
-                    height: 21.0,
                     child: Image.network(
-                      'assets/icons/meta/btn-detailed-info.svg',
-                      fit: BoxFit.cover,
-                    )),
+                  'assets/icons/meta/btn-detailed-info-big.svg',
+                  fit: BoxFit.contain,
+                )),
                 disabled: true,
                 onChange: (screen) {},
                 options: [
