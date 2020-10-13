@@ -27,9 +27,10 @@ class Screens {
   BaseAction createForList(
       {bool moveToLastAfterCreated = false,
       @required String name,
-      @required DetailedInfo detailedInfo}) {
+      @required DetailedInfo detailedInfo,
+      @required detailedComponents}) {
     final action = AddScreen(
-        components: [],
+        components: detailedComponents ?? [],
         screensStore: all,
         name: name,
         detailedInfo: detailedInfo);

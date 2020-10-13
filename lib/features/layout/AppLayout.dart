@@ -45,13 +45,13 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   void initState() {
     super.initState();
+    themeStore = AppThemeStore();
+    themeStore.setTheme(MyThemes.lightBlue);
     schemaStore =
         SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
     currentScreen = CurrentScreen(schemaStore);
     screensStore = ScreensStore();
     bottomNavigationStore = BottomNavigationStore();
-    themeStore = AppThemeStore();
-    themeStore.setTheme(MyThemes.lightBlue);
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
     currentUserStore = CurrentUserStore();

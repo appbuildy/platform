@@ -37,6 +37,7 @@ class EditPage extends StatelessWidget {
           Expanded(
             child: MyClickSelect(
                 selectedValue: detailedInfo.tableName,
+                placeholder: 'Select in List',
                 defaultIcon: Container(
                     child: Image.network(
                   'assets/icons/meta/btn-detailed-info-big.svg',

@@ -43,18 +43,16 @@ class SchemaNodeList extends SchemaNode {
           'Elements': ListElementsProperty(
               'Elements',
               ListElements(
-                  allColumns: [
-                    'restaurant_name',
-                    'restaurant_rate',
-                    'restaurant_url',
-                  ],
+                  allColumns: listColumnsSample,
                   title: ListElement(
-                      type: ListElementType.title, column: 'restaurant_name'),
+                      type: ListElementType.title,
+                      column: listColumnsSample[0]),
                   subtitle: ListElement(
                       type: ListElementType.subtitle,
-                      column: 'restaurant_rate'),
+                      column: listColumnsSample[1]),
                   image: ListElement(
-                      type: ListElementType.image, column: 'restaurant_url'),
+                      type: ListElementType.image,
+                      column: listColumnsSample[2]),
                   navigationIcon: ListElement(
                       type: ListElementType.navigationIcon, column: 'true'))),
           'TextColor': SchemaMyThemePropProperty(

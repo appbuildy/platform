@@ -30,11 +30,11 @@ class _AllActionsState extends State<AllActions> {
     isVisible = widget.userActions.selectedNode().actions['Tap'].value != null;
   }
 
-  void _createDetailedInfoForList(SchemaNode selectedNode) {
+  void _createDetailedInfoForList(SchemaNode selectedNode, String tableName) {
     final screenName = 'Details for ${widget.userActions.currentScreen.name}';
     final detailedInfo = DetailedInfo(
-      tableName: 'kek',
-      rowData: selectedNode.properties['Items'].value['mac'].value,
+      tableName: tableName,
+      rowData: selectedNode.properties['Items'].value['house_first'].value,
       screenId: widget.userActions.currentScreen.id,
     );
 
@@ -44,10 +44,16 @@ class _AllActionsState extends State<AllActions> {
         duration: 2,
         gravity: Toast.TOP);
 
+    final theme = widget.userActions.theme;
+    final detailedComponents = [
+      SchemaNodeButton(theme: theme, position: Offset(15, 200))
+    ];
+
     widget.userActions.screens.createForList(
         moveToLastAfterCreated: true,
         name: screenName,
-        detailedInfo: detailedInfo);
+        detailedInfo: detailedInfo,
+        detailedComponents: detailedComponents);
 
     widget.userActions.selectNodeForEdit(null);
   }
@@ -69,7 +75,8 @@ class _AllActionsState extends State<AllActions> {
                         .changeActionTo(GoToScreenAction('Tap', null));
                   } else {
                     if (selectedNode.type == SchemaNodeType.list) {
-                      _createDetailedInfoForList(selectedNode);
+                      _createDetailedInfoForList(
+                          selectedNode, selectedNode.properties['Table'].value);
                     }
                   }
                   isVisible = !isVisible;
