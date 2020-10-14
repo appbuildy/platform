@@ -77,9 +77,10 @@ class UserActions {
   void setTheme(MyTheme theme) {
     _theme.setTheme(theme);
 
-    String backgroundColorName = _screens.current.backgroundColor?.name ?? theme.background.name;
-
-    _screens.current.setBackgroundColor(theme.getThemePropByName(backgroundColorName));
+    _screens.all.screens.forEach((screen) {
+      String backgroundColorName = screen.backgroundColor?.name ?? theme.background.name;
+      screen.setBackgroundColor(theme.getThemePropByName(backgroundColorName));
+    });
   }
 
   Future<void> loadProject() async {
