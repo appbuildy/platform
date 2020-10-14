@@ -114,6 +114,11 @@ class EditProps extends StatelessWidget {
                                   child: MyClickSelect(
                                 placeholder: 'Select Column',
                                 selectedValue: detailedInfo.tableName,
+                                defaultIcon: Container(
+                                    child: Image.network(
+                                  'assets/icons/meta/btn-detailed-info-big.svg',
+                                  fit: BoxFit.contain,
+                                )),
                                 onChange: (SelectOption element) {
 //                                  (_getElement() as ListElement).column =
 //                                      element.value;
