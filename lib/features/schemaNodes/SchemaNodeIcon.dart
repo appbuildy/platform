@@ -10,13 +10,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'common/EditPropsIconStyle.dart';
 
 class SchemaNodeIcon extends SchemaNode {
-  SchemaNodeIcon(
-      {Offset position,
-      Offset size,
-      @required AppThemeStore theme,
-      Map<String, SchemaNodeProperty> properties,
-      UniqueKey id})
-      : super() {
+  SchemaNodeIcon({
+    Offset position,
+    Offset size,
+    @required AppThemeStore theme,
+    Map<String, SchemaNodeProperty> properties,
+    IconData icon,
+    int iconSize,
+    UniqueKey id,
+  }) : super() {
     this.type = SchemaNodeType.icon;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
@@ -26,10 +28,11 @@ class SchemaNodeIcon extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.arrowRight),
+          'Icon':
+              SchemaIconProperty('Icon', icon ?? FontAwesomeIcons.arrowRight),
           'IconColor': SchemaMyThemePropProperty(
               'IconColor', this.theme.currentTheme.primary),
-          'IconSize': SchemaIntProperty('IconSize', 36),
+          'IconSize': SchemaIntProperty('IconSize', iconSize ?? 36),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty(

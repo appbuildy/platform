@@ -17,6 +17,8 @@ class SchemaNodeImage extends SchemaNode {
       {Offset position,
       Offset size,
       Map<String, SchemaNodeProperty> properties,
+      String column,
+      String url,
       UniqueKey id})
       : super() {
     this.type = SchemaNodeType.image;
@@ -26,9 +28,12 @@ class SchemaNodeImage extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Url': SchemaStringProperty('Url',
-              'https://images.unsplash.com/photo-1549880338-65ddcdfd017b'),
-          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 8),
+          'Url': SchemaStringProperty(
+              'Url',
+              url ??
+                  'https://images.unsplash.com/photo-1549880338-65ddcdfd017b'),
+          'Column': SchemaStringProperty('Column', column ?? null),
+          'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Fit': SchemaStringProperty('Fit', 'Cover')
         };
     textDebouncer =

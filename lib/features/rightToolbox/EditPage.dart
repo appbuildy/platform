@@ -55,7 +55,7 @@ class EditPage extends StatelessWidget {
         height: 8,
       ),
       Text(
-        'This is the special page created automatically for the list on Page 3. \nThat way each element on this page can be linked to the each row you tap.',
+        'This is the special page created for the list Page. This way each element on this page can be linked to the data from the list.',
         style: TextStyle(color: Color(0xFF777777), fontSize: 14, height: 1.45),
       )
     ]);

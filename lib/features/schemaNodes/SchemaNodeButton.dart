@@ -25,6 +25,7 @@ class SchemaNodeButton extends SchemaNode {
     @required AppThemeStore theme,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
+    String text,
     UniqueKey id,
   }) : super() {
     this.type = SchemaNodeType.button;
@@ -35,7 +36,7 @@ class SchemaNodeButton extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Text': SchemaStringProperty('Text', 'Button'),
+          'Text': SchemaStringProperty('Text', text ?? 'Button'),
           'FontColor': SchemaMyThemePropProperty(
               'FontColor', this.theme.currentTheme.generalInverted),
           'FontSize': SchemaIntProperty('FontSize', 16),

@@ -22,6 +22,8 @@ class SchemaNodeText extends SchemaNode {
       Offset size,
       @required AppThemeStore theme,
       Map<String, SchemaNodeProperty> properties,
+      String column,
+      String text,
       UniqueKey id})
       : super() {
     this.type = SchemaNodeType.text;
@@ -33,11 +35,12 @@ class SchemaNodeText extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Text': SchemaStringProperty('Text', 'Text'),
+          'Text': SchemaStringProperty('Text', text ?? 'Text'),
           'FontColor': SchemaMyThemePropProperty(
               'FontColor', this.theme.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', 16),
           'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
+          'Column': SchemaStringProperty('Column', column ?? null),
           'MainAlignment': SchemaMainAlignmentProperty(
               'MainAlignment', MainAxisAlignment.start),
           'CrossAlignment': SchemaCrossAlignmentProperty(

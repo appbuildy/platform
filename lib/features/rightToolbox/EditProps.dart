@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
@@ -100,7 +101,8 @@ class EditProps extends StatelessWidget {
                   userActions: userActions,
                   screens: screens,
                 ),
-                detailedInfo != null
+                detailedInfo != null &&
+                        selectedNode.properties['Column'] != null
                     ? Column(
                         children: [
                           ColumnDivider(name: 'Data Source'),
@@ -113,25 +115,21 @@ class EditProps extends StatelessWidget {
                               Expanded(
                                   child: MyClickSelect(
                                 placeholder: 'Select Column',
-                                selectedValue: detailedInfo.tableName,
+                                selectedValue:
+                                    selectedNode.properties['Column'].value,
                                 defaultIcon: Container(
                                     child: Image.network(
                                   'assets/icons/meta/btn-detailed-info-big.svg',
                                   fit: BoxFit.contain,
                                 )),
                                 onChange: (SelectOption element) {
-//                                  (_getElement() as ListElement).column =
-//                                      element.value;
-//                                  userActions.changePropertyTo(
-//                                      ListElementsProperty(
-//                                          'Elements', widget.parent));
+                                  userActions.changePropertyTo(
+                                      SchemaStringProperty(
+                                          'Column', element.value));
                                 },
                                 options: columns
                                     .map((e) => SelectOption(e, e))
                                     .toList(),
-//                                selectedValue: _getElement() != null
-//                                    ? (_getElement() as ListElement).column
-//                                    : null,
                               ))
                             ],
                           )
