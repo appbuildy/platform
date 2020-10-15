@@ -145,12 +145,19 @@ class ToolboxLayout extends StatelessWidget {
                                     color: MyColors.white,
                                     fontWeight: FontWeight.w500)),
                             SizedBox(
-                              height: 10,
+                              height: 12,
                             ),
                             Container(
                               decoration: BoxDecoration(
                                   color: MyColors.white,
-                                  borderRadius: BorderRadius.circular(6)),
+                                  borderRadius: BorderRadius.circular(6),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 5,
+                                        spreadRadius: 0,
+                                        offset: Offset(0, 2),
+                                        color: MyColors.black.withOpacity(0.2))
+                                  ]),
                               child: Padding(
                                 padding: const EdgeInsets.only(
                                     top: 4, bottom: 6, left: 12, right: 12),
