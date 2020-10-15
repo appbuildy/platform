@@ -21,16 +21,16 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
     return OverlayEntry(builder: (BuildContext context) => ProjectLoadingAnimation());
   }
 
-  void setupProject() async {
+  void setupProject(Function endLoadingAnimation) async {
     await userActions.loadProject();
 
     int elapsedTime = animationStopwatch.elapsedMilliseconds;
 
     if (elapsedTime > minLoadingAnimationDurationTime) {
-      _overlayEntry.remove();
+      endLoadingAnimation();
     } else {
       Future.delayed(Duration(milliseconds: minLoadingAnimationDurationTime - elapsedTime))
-          .then((value) => _overlayEntry.remove());
+          .then((value) => endLoadingAnimation());
     }
   }
 
@@ -43,7 +43,10 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
       Overlay.of(context).insert(this._overlayEntry);
       animationStopwatch = Stopwatch()..start();
 
-      this.setupProject();
+      this.setupProject(() {
+        _overlayEntry.remove();
+        animationStopwatch.stop();
+      });
     });
 
     super.initState();
