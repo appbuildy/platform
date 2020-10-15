@@ -4,7 +4,10 @@ import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/utils/DarkenColor.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
-import 'package:flutter_app/utils/StringExtentions/FromSnakeCaseme;
+import 'package:flutter_app/utils/StringExtentions/FromSnakeCase.dart';
+
+class MyColorSelect extends StatelessWidget {
+  final MyTheme currentTheme;
   final dynamic selectedValue;
   final Function onChange;
 
