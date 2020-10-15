@@ -126,16 +126,16 @@ class ListTemplateCards extends ListTemplate {
                       : Container(),
                   elements.title != null
                       ? Padding(
-                    padding: EdgeInsets.only(
-                        left: 13,
-                        right: 13,
-                        top: 11.0,
-                        bottom: elements.subtitle != null ? 0 : 12),
-                    child: Text(
-                      item.value[elements.title.column]?.data ?? '',
-                      style: MyTextStyle.regularTitle,
-                    ),
-                  )
+                          padding: EdgeInsets.only(
+                              left: 13,
+                              right: 13,
+                              top: 11.0,
+                              bottom: elements.subtitle != null ? 0 : 12),
+                          child: Text(
+                            item.value[elements.title.column]?.data ?? '',
+                            style: MyTextStyle.regularTitle,
+                          ),
+                        )
                       : Container(),
                   elements.subtitle != null
                       ? Padding(

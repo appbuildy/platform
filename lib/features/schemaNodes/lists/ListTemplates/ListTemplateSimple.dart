@@ -120,8 +120,8 @@ class ListTemplateSimple extends ListTemplate {
                   ),
                   elements.navigationIcon != null
                       ? Expanded(
-                    child: Container(),
-                  )
+                          child: Container(),
+                        )
                       : Container(),
                   elements.navigationIcon != null
                       ? FaIcon(
