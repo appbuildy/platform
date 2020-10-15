@@ -25,8 +25,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
         }
         break;
     }
-    return SchemaNodeButton(
-        position: _loadPosition(), size: _loadSize(), theme: themeStore);
+    return SchemaNodeButton(position: _loadPosition(), size: _loadSize());
   }
 
   Offset _loadPosition() {
