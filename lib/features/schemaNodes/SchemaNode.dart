@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 export 'SchemaNodeButton.dart';
 export 'SchemaNodeImage.dart';
@@ -43,7 +42,7 @@ abstract class SchemaNode {
         'size': {'x': size.dx, 'y': size.dy},
         'properties': _jsonProperties(),
         'actions': _jsonActions(),
-        'type': this.type.toString()
+    'type': this.type.toString()
       };
   Widget toWidget({bool isPlayMode});
   Widget toEditProps(

@@ -13,13 +13,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ToolboxLayout extends StatelessWidget {
   final UserActions userActions;
+
   // final CurrentUserStore currentUserStore;
 
-  const ToolboxLayout({
-    Key key,
-    // this.currentUserStore,
-    this.userActions
-  }) : super(key: key);
+  const ToolboxLayout(
+      {Key key,
+      // this.currentUserStore,
+      this.userActions})
+      : super(key: key);
 
   Widget buildTitle(String title) {
     return Padding(
@@ -50,8 +51,10 @@ class ToolboxLayout extends StatelessWidget {
                     ToolboxComponent(
                       schemaNode: SchemaNodeButton(themeStore: themeStore),
                     ),
-                    ToolboxComponent(schemaNode: SchemaNodeText(themeStore: themeStore)),
-                    ToolboxComponent(schemaNode: SchemaNodeIcon(themeStore: themeStore)),
+                    ToolboxComponent(
+                        schemaNode: SchemaNodeText(themeStore: themeStore)),
+                    ToolboxComponent(
+                        schemaNode: SchemaNodeIcon(themeStore: themeStore)),
                   ],
                 ),
                 Row(
@@ -61,7 +64,8 @@ class ToolboxLayout extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    ToolboxComponent(schemaNode: SchemaNodeShape(themeStore: themeStore)),
+                    ToolboxComponent(
+                        schemaNode: SchemaNodeShape(themeStore: themeStore)),
                   ],
                 ),
                 ToolBoxCaption('Listing'),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
 import 'package:toast/toast.dart';
 
@@ -30,11 +33,14 @@ class _AllActionsState extends State<AllActions> {
     isVisible = widget.userActions.selectedNode().actions['Tap'].value != null;
   }
 
-  void _createDetailedInfoForList(SchemaNode selectedNode) {
+  void _createDetailedInfoForList(SchemaNode selectedNode, String tableName) {
     final screenName = 'Details for ${widget.userActions.currentScreen.name}';
+    print('rowData ${selectedNode.properties['Items'].value.values.toList()}');
     final detailedInfo = DetailedInfo(
-      tableName: 'kek',
-      rowData: selectedNode.properties['Items'].value['mac'].value,
+      tableName: tableName,
+      rowData: selectedNode.properties['Items'].value.values
+          .toList()[0]
+          .value, // select first row data
       screenId: widget.userActions.currentScreen.id,
     );
 
@@ -44,10 +50,41 @@ class _AllActionsState extends State<AllActions> {
         duration: 2,
         gravity: Toast.TOP);
 
+    final themeStore = widget.userActions.themeStore;
+    final detailedComponents = [
+      SchemaNodeImage(
+          position: Offset(0, 0),
+          url: detailedInfo.rowData[listColumnsSample[2]].data,
+          column: listColumnsSample[2]),
+      SchemaNodeIcon(
+          themeStore: themeStore,
+          position: Offset(14, 40),
+          iconSize: 24,
+          icon: FontAwesomeIcons.arrowLeft),
+      SchemaNodeText(
+          position: Offset(14, 220),
+          themeStore: themeStore,
+          text: detailedInfo.rowData[listColumnsSample[0]].data,
+          column: listColumnsSample[0]),
+      SchemaNodeText(
+          position: Offset(14, 240),
+          themeStore: themeStore,
+          text: detailedInfo.rowData[listColumnsSample[1]].data,
+          column: listColumnsSample[1]),
+      SchemaNodeText(
+          position: Offset(14, 380),
+          themeStore: themeStore,
+          text: detailedInfo.rowData[listColumnsSample[3]].data,
+          column: listColumnsSample[3]),
+      SchemaNodeButton(
+          themeStore: themeStore, position: Offset(20, 300), text: 'Contact Us')
+    ];
+
     widget.userActions.screens.createForList(
         moveToLastAfterCreated: true,
         name: screenName,
-        detailedInfo: detailedInfo);
+        detailedInfo: detailedInfo,
+        detailedComponents: detailedComponents);
 
     widget.userActions.selectNodeForEdit(null);
   }
@@ -69,7 +106,8 @@ class _AllActionsState extends State<AllActions> {
                         .changeActionTo(GoToScreenAction('Tap', null));
                   } else {
                     if (selectedNode.type == SchemaNodeType.list) {
-                      _createDetailedInfoForList(selectedNode);
+                      _createDetailedInfoForList(
+                          selectedNode, selectedNode.properties['Table'].value);
                     }
                   }
                   isVisible = !isVisible;

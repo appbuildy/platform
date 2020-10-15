@@ -15,6 +15,7 @@ class UserInstanceMock extends Mock implements CurrentUser {}
 
 class MockSettings extends Mock implements SettingsParser {
   String get jwt => '123';
+
   String get projectUrl => 'https://somewhere.com/projects/1';
 }
 

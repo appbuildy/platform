@@ -36,7 +36,7 @@ void main() {
 
   test('save() saves project by sending PATCH request on a given URL',
       () async {
-    final client = MockHttp();
+        final client = MockHttp();
     ScreensStore store = ScreensStore();
     SchemaConverter converter = SchemaConverter(store);
     await project.save(converter, client: client);

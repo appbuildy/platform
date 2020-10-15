@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
-class SchemaMainAlignmentProperty extends SchemaNodeProperty<MainAxisAlignment> {
+class SchemaMainAlignmentProperty
+    extends SchemaNodeProperty<MainAxisAlignment> {
   SchemaMainAlignmentProperty(String name, MainAxisAlignment value)
       : super(name, value);
 
@@ -18,7 +19,8 @@ class SchemaMainAlignmentProperty extends SchemaNodeProperty<MainAxisAlignment> 
     this.name = jsonTarget['name'];
 
     final int mainAlignItemIndex = int.parse(jsonTarget['value']);
-    final MainAxisAlignment mainAlignItem = MainAxisAlignment.values.firstWhere((alignItem) => alignItem.index == mainAlignItemIndex);
+    final MainAxisAlignment mainAlignItem = MainAxisAlignment.values
+        .firstWhere((alignItem) => alignItem.index == mainAlignItemIndex);
 
     this.value = mainAlignItem;
   }

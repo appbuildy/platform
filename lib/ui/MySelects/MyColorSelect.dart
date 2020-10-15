@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/utils/DarkenColor.dart';
-import 'package:flutter_app/utils/StringExtentions/FromSnakeCase.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
+import 'package:flutter_app/utils/StringExtentions/FromSnakeCase.dart';
 
 class MyColorSelect extends StatelessWidget {
   final MyTheme currentTheme;
@@ -32,15 +31,15 @@ class MyColorSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyClickSelect(
-        selectedValue: selectedValue,
-        onChange: onChange,
-        options: currentTheme.getAllColors().map((MyThemeProp color) {
-          return SelectOption(
-            color.name.toNormalCapitalizedString().capitalize(),
-            color,
-            buildColorPreview(color.color),
-          );
-        }).toList(),
+      selectedValue: selectedValue,
+      onChange: onChange,
+      options: currentTheme.getAllColors().map((MyThemeProp color) {
+        return SelectOption(
+          color.name.toNormalCapitalizedString().capitalize(),
+          color,
+          buildColorPreview(color.color),
+        );
+      }).toList(),
     );
   }
 }

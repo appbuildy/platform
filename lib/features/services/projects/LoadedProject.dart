@@ -8,6 +8,7 @@ import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 
 class LoadedProject implements IProjectLoad {
   Map<String, dynamic> jsonCanvas;
+
   LoadedProject(this.jsonCanvas);
 
   @override

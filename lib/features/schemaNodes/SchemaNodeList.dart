@@ -14,7 +14,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProp
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
@@ -50,18 +49,16 @@ class SchemaNodeList extends SchemaNode {
           'Elements': ListElementsProperty(
               'Elements',
               ListElements(
-                  allColumns: [
-                    'restaurant_name',
-                    'restaurant_rate',
-                    'restaurant_url',
-                  ],
+                  allColumns: listColumnsSample,
                   title: ListElement(
-                      type: ListElementType.title, column: 'restaurant_name'),
+                      type: ListElementType.title,
+                      column: listColumnsSample[0]),
                   subtitle: ListElement(
                       type: ListElementType.subtitle,
-                      column: 'restaurant_rate'),
+                      column: listColumnsSample[1]),
                   image: ListElement(
-                      type: ListElementType.image, column: 'restaurant_url'),
+                      type: ListElementType.image,
+                      column: listColumnsSample[2]),
                   navigationIcon: ListElement(
                       type: ListElementType.navigationIcon, column: 'true'))),
           'TextColor': SchemaMyThemePropProperty(
@@ -113,20 +110,19 @@ class SchemaNodeList extends SchemaNode {
           width: this.size.dx,
           height: this.size.dy,
           child: SingleChildScrollView(
-            child: this
-                .properties['Template']
-                .value
-                .toWidget(currentTheme: this.themeStore.currentTheme, properties: this.properties),
+            child: this.properties['Template'].value.toWidget(
+                currentTheme: this.themeStore.currentTheme,
+                properties: this.properties,
+                isPlayMode: isPlayMode),
           ));
     }
 
     return Container(
         width: this.size.dx,
         height: this.size.dy,
-        child: this
-            .properties['Template']
-            .value
-            .toWidget(currentTheme: this.themeStore.currentTheme, properties: this.properties));
+        child: this.properties['Template'].value.toWidget(
+            currentTheme: this.themeStore.currentTheme,
+            properties: this.properties));
   }
 
   Future<void> updateData(String tableName, UserActions userActions) async {
@@ -188,7 +184,9 @@ class SchemaNodeList extends SchemaNode {
         userActions: userActions,
       ),
       this.properties['Template'].value.rowStyle(
-          userActions: userActions, properties: properties, currentTheme: themeStore.currentTheme),
+          userActions: userActions,
+          properties: properties,
+          currentTheme: themeStore.currentTheme),
       SizedBox(
         height: 10,
       ),

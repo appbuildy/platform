@@ -14,11 +14,12 @@ class SchemaTextAlignProperty extends SchemaNodeProperty<TextAlign> {
   }
 
   SchemaTextAlignProperty.fromJson(Map<String, dynamic> jsonTarget)
-   : super('Text align', null) {
+      : super('Text align', null) {
     this.name = jsonTarget['name'];
 
     final int textAlignItemIndex = int.parse(jsonTarget['value']);
-    final TextAlign textAlignItem = TextAlign.values.firstWhere((alignItem) => alignItem.index == textAlignItemIndex);
+    final TextAlign textAlignItem = TextAlign.values
+        .firstWhere((alignItem) => alignItem.index == textAlignItemIndex);
 
     this.value = textAlignItem;
   }

@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
@@ -18,7 +19,7 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
   }
 
   SchemaMyThemePropProperty.fromJson(Map<String, dynamic> jsonTarget)
-    : super('my theme prop', null) {
+      : super('my theme prop', null) {
     this.name = jsonTarget['name'];
 
     this.value = MyThemeProp(

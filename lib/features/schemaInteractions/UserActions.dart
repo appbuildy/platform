@@ -44,12 +44,11 @@ class UserActions {
   RemoteSchemaPropertiesBinding _bindings;
   List<String> remoteTableNames;
 
-  UserActions({
-    Screens screens,
-    CurrentUserStore currentUserStore,
-    BottomNavigationStore bottomNavigationStore,
-    AppThemeStore themeStore
-  }) {
+  UserActions(
+      {Screens screens,
+      CurrentUserStore currentUserStore,
+      BottomNavigationStore bottomNavigationStore,
+      AppThemeStore themeStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -64,21 +63,29 @@ class UserActions {
   }
 
   SchemaStore get currentScreen => _screens.current;
+
   Screens get screens => _screens;
+
   BottomNavigationStore get bottomNavigation => _bottomNavigation;
+
   AppThemeStore get themeStore => _theme;
+
   MyTheme get currentTheme => _theme.currentTheme;
+
   List<String> get tables => _remoteAttributes.tableNames;
+
   List<RemoteList> columnsFor(String tableName) {
     return _remoteAttributes.tables[tableName].values.toList();
   }
+
   CurrentUserStore get currentUserStore => _currentUserStore;
 
   void setTheme(MyTheme theme) {
     _theme.setTheme(theme);
 
     _screens.all.screens.forEach((screen) {
-      String backgroundColorName = screen.backgroundColor?.name ?? theme.background.name;
+      String backgroundColorName =
+          screen.backgroundColor?.name ?? theme.background.name;
       screen.setBackgroundColor(theme.getThemePropByName(backgroundColorName));
     });
   }
@@ -141,9 +148,7 @@ class UserActions {
     currentScreen.update(selectedNode());
   }
 
-  void copyNode(
-    SchemaNode node,
-  ) {
+  void copyNode(SchemaNode node,) {
     final action = new CopyNode(
         node: node,
         schemaStore: currentScreen,
@@ -153,9 +158,7 @@ class UserActions {
     _actionsDone.add(action);
   }
 
-  void deleteNode(
-    SchemaNode node,
-  ) {
+  void deleteNode(SchemaNode node,) {
     final action = new DeleteNode(
         node: node,
         schemaStore: currentScreen,
@@ -188,7 +191,7 @@ class UserActions {
   void repositionAndResize(SchemaNode updatedNode,
       [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
     final action =
-        RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
+    RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
 
     action.execute(prevValue);
     if (isAddedToDoneActions) {
@@ -204,8 +207,7 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  void bindAttribute(
-      {SchemaNodeProperty property, AirtableAttribute attribute}) {
+  void bindAttribute({SchemaNodeProperty property, AirtableAttribute attribute}) {
     final action = ConnectToRemoteAttribute(_bindings, attribute, property);
     action.execute();
     _actionsDone.add(action);

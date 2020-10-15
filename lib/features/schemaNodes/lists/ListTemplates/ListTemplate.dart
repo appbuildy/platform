@@ -12,9 +12,10 @@ enum ListTemplateType { simple, cards }
 abstract class ListTemplate {
   ListTemplateType getType();
 
-  Widget toWidget({
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties});
+  Widget toWidget(
+      {MyTheme currentTheme,
+      Map<String, SchemaNodeProperty> properties,
+      bool isPlayMode});
 
   Widget rowStyle(
       {Map<String, SchemaNodeProperty> properties,

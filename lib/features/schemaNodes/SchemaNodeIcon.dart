@@ -6,7 +6,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
@@ -15,13 +14,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'common/EditPropsIconStyle.dart';
 
 class SchemaNodeIcon extends SchemaNode {
-  SchemaNodeIcon(
-      {Offset position,
-      Offset size,
-      @required AppThemeStore themeStore,
-      Map<String, SchemaNodeProperty> properties,
-      UniqueKey id})
-      : super() {
+  SchemaNodeIcon({
+    Offset position,
+    Offset size,
+    @required AppThemeStore themeStore,
+    Map<String, SchemaNodeProperty> properties,
+    IconData icon,
+    int iconSize,
+    UniqueKey id,
+  }) : super() {
     this.type = SchemaNodeType.icon;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
@@ -31,10 +32,11 @@ class SchemaNodeIcon extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.arrowRight),
+          'Icon':
+              SchemaIconProperty('Icon', icon ?? FontAwesomeIcons.arrowRight),
           'IconColor': SchemaMyThemePropProperty(
               'IconColor', this.themeStore.currentTheme.primary),
-          'IconSize': SchemaIntProperty('IconSize', 36),
+          'IconSize': SchemaIntProperty('IconSize', iconSize ?? 36),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty(
@@ -82,7 +84,8 @@ class SchemaNodeIcon extends SchemaNode {
         child: FaIcon(
           properties['Icon'].value,
           size: properties['IconSize'].value,
-          color: getThemeColor(themeStore.currentTheme, properties['IconColor']),
+          color:
+          getThemeColor(themeStore.currentTheme, properties['IconColor']),
         ),
       ),
     );

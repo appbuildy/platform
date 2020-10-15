@@ -12,8 +12,8 @@ void main() {
     matchTextDirection: false,
   );
   test('toJson() maps to JSON', () {
-
-    final SchemaIconProperty iconProp = SchemaIconProperty('Icon', FontAwesomeIcons.adjust);
+    final SchemaIconProperty iconProp =
+        SchemaIconProperty('Icon', FontAwesomeIcons.adjust);
     final jsonIconProp = iconProp.toJson();
     expect(jsonIconProp['name'], equals(iconProp.name));
 
@@ -21,8 +21,10 @@ void main() {
 
     expect(jsonIconPropValue['codePoint'], equals(iconProp.value.codePoint));
     expect(jsonIconPropValue['fontFamily'], equals(iconProp.value.fontFamily));
-    expect(jsonIconPropValue['fontPackage'], equals(iconProp.value.fontPackage));
-    expect(jsonIconPropValue['matchTextDirection'], equals(iconProp.value.matchTextDirection));
+    expect(
+        jsonIconPropValue['fontPackage'], equals(iconProp.value.fontPackage));
+    expect(jsonIconPropValue['matchTextDirection'],
+        equals(iconProp.value.matchTextDirection));
   });
 
   test('fromJson() deserialization', () {
@@ -37,7 +39,7 @@ void main() {
       },
     };
 
-    final SchemaIconProperty iconProp =  SchemaIconProperty.toJson(jsonTarget);
+    final SchemaIconProperty iconProp = SchemaIconProperty.toJson(jsonTarget);
     expect(iconProp.name, equals('IC ON'));
 
     final IconData iconPropValue = iconProp.value;

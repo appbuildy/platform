@@ -81,7 +81,8 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 
     onColorChange(String oldColorName) {
       return (Color newColor) {
-        widget.userActions.currentTheme.getThemePropByName(oldColorName).color = newColor;
+        widget.userActions.currentTheme.getThemePropByName(oldColorName).color =
+            newColor;
         widget.userActions.setTheme(widget.userActions.currentTheme);
         setState(() {
           selectedTheme = widget.userActions.currentTheme;
@@ -103,8 +104,8 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
                 child: BuildColorSelect(
-                    themeColor: color,
-                    onColorChange: onColorChange(color.name),
+                  themeColor: color,
+                  onColorChange: onColorChange(color.name),
                 ),
               );
             }).toList(),

@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('toJson() maps to JSON', () {
-    final SchemaMainAlignmentProperty mainAlignProp = SchemaMainAlignmentProperty('main axis align', MainAxisAlignment.spaceEvenly);
+    final SchemaMainAlignmentProperty mainAlignProp =
+        SchemaMainAlignmentProperty(
+            'main axis align', MainAxisAlignment.spaceEvenly);
 
     final jsonMainAlignProp = mainAlignProp.toJson();
 
@@ -19,7 +21,8 @@ void main() {
       'value': '5',
     };
 
-    final SchemaMainAlignmentProperty mainAlignProp = SchemaMainAlignmentProperty.fromJson(jsonTarget);
+    final SchemaMainAlignmentProperty mainAlignProp =
+        SchemaMainAlignmentProperty.fromJson(jsonTarget);
     expect(mainAlignProp.name, equals('MainAlign'));
     expect(mainAlignProp.value, equals(MainAxisAlignment.spaceEvenly));
   });

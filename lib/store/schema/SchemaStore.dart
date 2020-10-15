@@ -40,6 +40,7 @@ abstract class _SchemaStore with Store {
     this.bottomTabsVisible = bottomTabsVisible ?? true;
     this.backgroundColor = backgroundColor;
   }
+
   @observable
   UniqueKey id;
 

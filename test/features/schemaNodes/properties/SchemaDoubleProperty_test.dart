@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('toJson() maps JSON', () {
-    final SchemaDoubleProperty doubleProp = SchemaDoubleProperty('Double', 322.0);
+    final SchemaDoubleProperty doubleProp =
+        SchemaDoubleProperty('Double', 322.0);
     final jsonIntProperty = doubleProp.toJson();
     expect(jsonIntProperty['value'], equals(322.0));
   });

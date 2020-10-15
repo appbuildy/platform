@@ -37,7 +37,8 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   void initState() {
     super.initState();
-    final SchemaStore schemaStore = SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
+    final SchemaStore schemaStore =
+        SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
 
     final CurrentScreen currentScreen = CurrentScreen(schemaStore);
     final ScreensStore screensStore = ScreensStore();
@@ -54,8 +55,7 @@ class _AppLayoutState extends State<AppLayout> {
         currentUserStore: currentUserStore,
         screens: screens,
         bottomNavigationStore: bottomNavigationStore,
-        themeStore: themeStore
-    );
+        themeStore: themeStore);
 
     userActions.setTheme(MyThemes.allThemes['blue']);
 
@@ -132,7 +132,7 @@ class _AppLayoutState extends State<AppLayout> {
                   }
                 },
                 child: Toolbox(
-                    // currentUserStore: currentUserStore,
+                  // currentUserStore: currentUserStore,
                     toolboxState: toolboxState,
                     selectState: selectState,
                     userActions: userActions),

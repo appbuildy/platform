@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
@@ -23,6 +27,19 @@ class EditProps extends StatelessWidget {
       builder: (BuildContext context) {
         final selectedNode = userActions.selectedNode();
         final screens = userActions.screens.all.screens;
+        final detailedInfo = userActions.currentScreen.detailedInfo;
+        var columns = [];
+
+        if (detailedInfo != null) {
+          columns = detailedInfo.tableName != null
+              ? userActions
+                  .columnsFor(detailedInfo.tableName)
+                  .map((e) => e.name)
+                  .toList()
+              : [...listColumnsSample];
+        }
+
+        print('detailedInfo $detailedInfo');
 
         if (selectedNode == null) {
           return EditPage(
@@ -84,6 +101,41 @@ class EditProps extends StatelessWidget {
                   userActions: userActions,
                   screens: screens,
                 ),
+                detailedInfo != null &&
+                        selectedNode.properties['Column'] != null
+                    ? Column(
+                        children: [
+                          ColumnDivider(name: 'Data Source'),
+                          Row(
+                            children: [
+                              SizedBox(
+                                child: Text('Column'),
+                                width: 59,
+                              ),
+                              Expanded(
+                                  child: MyClickSelect(
+                                placeholder: 'Select Column',
+                                selectedValue:
+                                    selectedNode.properties['Column'].value,
+                                defaultIcon: Container(
+                                    child: Image.network(
+                                  'assets/icons/meta/btn-detailed-info-big.svg',
+                                  fit: BoxFit.contain,
+                                )),
+                                onChange: (SelectOption element) {
+                                  userActions.changePropertyTo(
+                                      SchemaStringProperty(
+                                          'Column', element.value));
+                                },
+                                options: columns
+                                    .map((e) => SelectOption(e, e))
+                                    .toList(),
+                              ))
+                            ],
+                          )
+                        ],
+                      )
+                    : Container(),
                 selectedNode.toEditProps(userActions),
               ],
             ),

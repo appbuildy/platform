@@ -33,13 +33,13 @@ class _MySwitchState extends State<MySwitch>
             begin: widget.value ? Alignment.centerRight : Alignment.centerLeft,
             end: widget.value ? Alignment.centerLeft : Alignment.centerRight)
         .animate(CurvedAnimation(
-            parent: _animationController, curve: Curves.linear));
+            parent: _animationController, curve: Curves.easeInOutQuad));
   }
 
   @override
   void didUpdateWidget(MySwitch oldWidget) {
     if (oldWidget.value != widget.value) {
-      _animationController.isCompleted
+      _circleAnimation.isCompleted
           ? _animationController.reverse()
           : _animationController.forward();
     }
@@ -48,15 +48,16 @@ class _MySwitchState extends State<MySwitch>
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Cursor(
-        cursor: CursorEnum.pointer,
-        child: GestureDetector(
-          onTap: () {
-            widget.onTap();
-          },
+    return Cursor(
+      cursor: CursorEnum.pointer,
+      child: GestureDetector(
+        onTap: () {
+          widget.onTap();
+        },
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
           child: AnimatedBuilder(
-            animation: _animationController,
+            animation: _circleAnimation,
             builder: (context, child) {
               return Container(
                 width: 43.0,
@@ -81,7 +82,15 @@ class _MySwitchState extends State<MySwitch>
                           width: 21.0,
                           height: 21.0,
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle, color: MyColors.white),
+                              shape: BoxShape.circle,
+                              color: MyColors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                    offset: Offset(0, 1),
+                                    color: MyColors.black.withOpacity(0.2))
+                              ]),
                         ),
                       ),
                       _circleAnimation.value == Alignment.centerLeft

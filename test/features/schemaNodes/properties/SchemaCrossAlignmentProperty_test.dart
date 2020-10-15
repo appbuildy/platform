@@ -4,7 +4,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('toJson() maps to JSON', () {
-    final SchemaCrossAlignmentProperty crossAlignProp = SchemaCrossAlignmentProperty('cross axis align', CrossAxisAlignment.center);
+    final SchemaCrossAlignmentProperty crossAlignProp =
+        SchemaCrossAlignmentProperty(
+            'cross axis align', CrossAxisAlignment.center);
 
     final jsonCrossAlignProp = crossAlignProp.toJson();
 
@@ -19,7 +21,8 @@ void main() {
       'value': '2',
     };
 
-    final SchemaCrossAlignmentProperty crossAlignProp = SchemaCrossAlignmentProperty.fromJson(jsonTarget);
+    final SchemaCrossAlignmentProperty crossAlignProp =
+        SchemaCrossAlignmentProperty.fromJson(jsonTarget);
     expect(crossAlignProp.name, equals('CrossAlign'));
     expect(crossAlignProp.value, equals(CrossAxisAlignment.center));
   });

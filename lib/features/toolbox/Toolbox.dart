@@ -9,16 +9,17 @@ import 'package:flutter_app/ui/MyColors.dart';
 class Toolbox extends StatelessWidget {
   final UserActions userActions;
   final ToolboxStates toolboxState;
+
   // final CurrentUserStore currentUserStore;
   final Function(ToolboxStates) selectState;
 
-  const Toolbox({
-    Key key,
-    // this.currentUserStore,
-    this.userActions,
-    this.toolboxState,
-    this.selectState
-  }) : super(key: key);
+  const Toolbox(
+      {Key key,
+      // this.currentUserStore,
+      this.userActions,
+      this.toolboxState,
+      this.selectState})
+      : super(key: key);
 
   Widget buildWidgetOnState() {
     switch (toolboxState) {
@@ -27,8 +28,7 @@ class Toolbox extends StatelessWidget {
       case ToolboxStates.layout:
         return ToolboxLayout(
             // currentUserStore: currentUserStore,
-            userActions: userActions
-        );
+            userActions: userActions);
       case ToolboxStates.pages:
         return ToolboxPages(
           userActions: userActions,

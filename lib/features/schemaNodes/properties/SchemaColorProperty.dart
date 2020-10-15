@@ -14,7 +14,7 @@ class SchemaColorProperty extends SchemaNodeProperty<Color> {
   }
 
   SchemaColorProperty.fromJson(Map<String, dynamic> jsonTarget)
-    : super('Color', null) {
+      : super('Color', null) {
     this.name = jsonTarget['name'];
     this.value = Color(int.parse(jsonTarget['value']));
   }

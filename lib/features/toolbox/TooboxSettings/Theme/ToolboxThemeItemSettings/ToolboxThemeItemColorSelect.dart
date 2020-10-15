@@ -70,11 +70,13 @@ class BuildColorSelect extends StatelessWidget {
                         Container(
                           child: Text(
                             themeColor.name.toNormalCapitalizedString(),
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w500),
+                        ),
                         ),
                         Text(
-                          '#${themeColor.color.value.toRadixString(16).substring(2).toUpperCase()}',
+                          '#${themeColor.color.value.toRadixString(16)
+                              .substring(2)
+                              .toUpperCase()}',
                           style: TextStyle(color: Colors.grey),
                         ),
                       ],

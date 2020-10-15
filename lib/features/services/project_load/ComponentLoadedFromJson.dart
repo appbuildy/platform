@@ -6,6 +6,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class ComponentLoadedFromJson implements IComponentLoader {
   Map<String, dynamic> jsonComponent;
+
   ComponentLoadedFromJson(this.jsonComponent);
 
   @override
@@ -18,7 +19,9 @@ class ComponentLoadedFromJson implements IComponentLoader {
       case 'SchemaNodeType.button':
         {
           return SchemaNodeButton(
-              position: _loadPosition(), size: _loadSize(), themeStore: themeStore);
+              position: _loadPosition(),
+              size: _loadSize(),
+              themeStore: themeStore);
         }
         break;
     }

@@ -192,6 +192,11 @@ class _ListElementWidgetState extends State<ListElementWidget> {
                     Expanded(
                         child: MyClickSelect(
                       placeholder: 'Select Column',
+                      defaultIcon: Container(
+                          child: Image.network(
+                        'assets/icons/meta/btn-detailed-info-big.svg',
+                        fit: BoxFit.contain,
+                      )),
                       onChange: (SelectOption element) {
                         (_getElement() as ListElement).column = element.value;
 

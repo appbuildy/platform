@@ -18,7 +18,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
@@ -32,6 +31,7 @@ class SchemaNodeButton extends SchemaNode {
     @required AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
+    String text,
     UniqueKey id,
   }) : super() {
     this.type = SchemaNodeType.button;
@@ -42,7 +42,7 @@ class SchemaNodeButton extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Text': SchemaStringProperty('Text', 'Button'),
+          'Text': SchemaStringProperty('Text', text ?? 'Button'),
           'FontColor': SchemaMyThemePropProperty(
               'FontColor', this.themeStore.currentTheme.generalInverted),
           'FontSize': SchemaIntProperty('FontSize', 16),
@@ -98,11 +98,13 @@ class SchemaNodeButton extends SchemaNode {
       width: size.dx,
       height: size.dy,
       decoration: BoxDecoration(
-          color: getThemeColor(themeStore.currentTheme, properties['BackgroundColor']),
+          color: getThemeColor(
+              themeStore.currentTheme, properties['BackgroundColor']),
           boxShadow: properties['BoxShadow'].value
               ? [
                   BoxShadow(
-                      color: getThemeColor(themeStore.currentTheme, properties['BoxShadowColor'])
+                      color: getThemeColor(themeStore.currentTheme,
+                              properties['BoxShadowColor'])
                           .withOpacity(properties['BoxShadowOpacity'].value),
                       blurRadius: properties['BoxShadowBlur'].value,
                       offset: Offset(0.0, 2.0),
@@ -113,8 +115,9 @@ class SchemaNodeButton extends SchemaNode {
               BorderRadius.circular(properties['BorderRadiusValue'].value),
           border: properties['Border'].value
               ? Border.all(
-                  width: properties['BorderWidth'].value,
-                  color: getThemeColor(themeStore.currentTheme, properties['BorderColor']))
+              width: properties['BorderWidth'].value,
+              color: getThemeColor(
+                  themeStore.currentTheme, properties['BorderColor']))
               : null),
       child: Column(
         mainAxisAlignment: properties['MainAlignment'].value,
@@ -125,7 +128,8 @@ class SchemaNodeButton extends SchemaNode {
             style: TextStyle(
                 fontWeight: properties['FontWeight'].value,
                 fontSize: properties['FontSize'].value,
-                color: getThemeColor(themeStore.currentTheme, properties['FontColor'])),
+                color: getThemeColor(
+                    themeStore.currentTheme, properties['FontColor'])),
           ),
         ],
       ),
@@ -180,7 +184,9 @@ class SchemaNodeButton extends SchemaNode {
         height: 15,
       ),
       EditPropsShadow(
-          properties: properties, userActions: userActions, currentTheme: themeStore.currentTheme)
+          properties: properties,
+          userActions: userActions,
+          currentTheme: themeStore.currentTheme)
     ]);
   }
 }

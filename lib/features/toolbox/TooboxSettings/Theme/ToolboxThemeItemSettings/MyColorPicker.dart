@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_app/utils/StringExtentions/ToColor.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 class HexColorField extends StatefulWidget {
   final bool withAlpha;
@@ -90,7 +90,9 @@ class _HexColorFieldState extends State<HexColorField> {
           onChanged: (value) {
             if (value.length == valueLength)
               widget.onColorChanged(
-                value.padRight(valueLength, '0').toColor(argb: widget.withAlpha),
+                value
+                    .padRight(valueLength, '0')
+                    .toColor(argb: widget.withAlpha),
               );
           },
           inputFormatters: [
@@ -118,10 +120,10 @@ class _HexColorFieldState extends State<HexColorField> {
 
 class MyColorIndicator extends StatelessWidget {
   const MyColorIndicator(
-      this.hsvColor, {
-        this.width: 50.0,
-        this.height: 50.0,
-      });
+    this.hsvColor, {
+    this.width: 50.0,
+    this.height: 50.0,
+  });
 
   final HSVColor hsvColor;
   final double width;
@@ -193,7 +195,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
     return ColorPickerSlider(
       trackType,
       currentHsvColor,
-          (HSVColor color) {
+      (HSVColor color) {
         setState(() => currentHsvColor = color);
         widget.onColorChanged(currentHsvColor.toColor());
       },
@@ -206,7 +208,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
       borderRadius: widget.pickerAreaBorderRadius,
       child: ColorPickerArea(
         currentHsvColor,
-            (HSVColor color) {
+        (HSVColor color) {
           setState(() => currentHsvColor = color);
           widget.onColorChanged(currentHsvColor.toColor());
         },
@@ -320,12 +322,12 @@ class _MyColorPickerState extends State<MyColorPicker> {
   }
 }
 
-
 class BuildColorPicker extends StatelessWidget {
   const BuildColorPicker({
     @required this.themeColor,
     @required this.onColorChange,
   });
+
   final Function onColorChange;
   final MyThemeProp themeColor;
 

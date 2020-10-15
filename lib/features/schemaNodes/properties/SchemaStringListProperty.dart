@@ -4,10 +4,20 @@ import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 
 import 'SchemaListItemsProperty.dart';
 
-class SchemaStringListProperty extends SchemaNodeProperty<Map<String, SchemaListItemsProperty>> {
-  static Future<SchemaStringListProperty> fromRemoteTable(IRemoteTable remoteTable) async {
+const listColumnsSample = [
+  'house_price',
+  'house_address',
+  'house_image',
+  'house_description',
+];
+
+class SchemaStringListProperty
+    extends SchemaNodeProperty<Map<String, SchemaListItemsProperty>> {
+  static Future<SchemaStringListProperty> fromRemoteTable(
+      IRemoteTable remoteTable) async {
     final records = await remoteTable.records();
-    final result = SchemaStringListProperty('Items', Map<String, SchemaListItemsProperty>());
+    final result = SchemaStringListProperty(
+        'Items', Map<String, SchemaListItemsProperty>());
 
     records['records'].forEach((record) {
       print(record);
@@ -24,35 +34,48 @@ class SchemaStringListProperty extends SchemaNodeProperty<Map<String, SchemaList
   factory SchemaStringListProperty.sample() {
     return SchemaStringListProperty('Items', {
       // пример дата айтемов-row с сгенеренными
-      'mac': SchemaListItemsProperty('mac', {
-        'restaurant_name':
-        ListItem(column: 'restaurant_name', data: 'McDonalds'),
-        'restaurant_rate':
-        ListItem(column: 'restaurant_rate', data: 'Fast Food'),
-        'restaurant_url': ListItem(
-            column: 'restaurant_url',
-            data:
-            'https://images.unsplash.com/photo-1552895638-f7fe08d2f7d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80'),
+      'house_first': SchemaListItemsProperty('house_first', {
+        listColumnsSample[0]: ListItem(
+            column: listColumnsSample[0], data: '\$539,990 | 3 Bedroom'),
+        listColumnsSample[1]: ListItem(
+          column: listColumnsSample[1],
+          data: '885-891 3rd Ave, San Bruno, CA 94066',
+        ),
+        listColumnsSample[2]: ListItem(
+          column: listColumnsSample[2],
+          data:
+              'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80',
+        ),
+        listColumnsSample[3]:
+            ListItem(column: listColumnsSample[3], data: "Lorem impsump"),
       }),
-      'bk': SchemaListItemsProperty('mac', {
-        'restaurant_name':
-        ListItem(column: 'restaurant_name', data: 'Burger King'),
-        'restaurant_rate':
-        ListItem(column: 'restaurant_rate', data: 'Fast Food'),
-        'restaurant_url': ListItem(
-            column: 'restaurant_url',
-            data:
-            'https://images.unsplash.com/photo-1528669826296-dbd6f641707d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80'),
+      'house_second': SchemaListItemsProperty('house_second', {
+        listColumnsSample[0]: ListItem(
+            column: listColumnsSample[0], data: '\$974,000 | 5 Bedroom'),
+        listColumnsSample[1]: ListItem(
+            column: listColumnsSample[1],
+            data: '3939 4rd Ave, San Mateo, CA 94403'),
+        listColumnsSample[2]: ListItem(
+          column: listColumnsSample[2],
+          data:
+              'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=80',
+        ),
+        listColumnsSample[3]:
+            ListItem(column: listColumnsSample[3], data: "Lorem impsump"),
       }),
-      'lucky': SchemaListItemsProperty('lucky', {
-        'restaurant_name':
-        ListItem(column: 'restaurant_name', data: 'Lucky In The Kai'),
-        'restaurant_rate':
-        ListItem(column: 'restaurant_rate', data: 'Elite Restaurant'),
-        'restaurant_url': ListItem(
-            column: 'restaurant_url',
-            data:
-            'https://images.unsplash.com/photo-1579065693224-0a3abed6a058?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=256&q=80'),
+      'house_third': SchemaListItemsProperty('house_third', {
+        listColumnsSample[0]: ListItem(
+            column: listColumnsSample[0], data: '\$840,900 | 4 Bedroom'),
+        listColumnsSample[1]: ListItem(
+            column: listColumnsSample[1],
+            data: '2730 Summit Dr, Palo Alto, CA 94010'),
+        listColumnsSample[2]: ListItem(
+          column: listColumnsSample[2],
+          data:
+              'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=80',
+        ),
+        listColumnsSample[3]:
+            ListItem(column: listColumnsSample[3], data: "Lorem impsump"),
       }),
     });
   }
@@ -76,13 +99,14 @@ class SchemaStringListProperty extends SchemaNodeProperty<Map<String, SchemaList
   }
 
   SchemaStringListProperty.fromJson(Map<String, dynamic> targetJson)
-    : super('String List Property', null) {
+      : super('String List Property', null) {
     this.name = targetJson['name'];
 
     Map<String, SchemaListItemsProperty> innerValue = {};
 
     targetJson['value'].forEach((key, schemaListItemsTargetJson) {
-      innerValue['$key'] = SchemaListItemsProperty.fromJson(schemaListItemsTargetJson);
+      innerValue['$key'] =
+          SchemaListItemsProperty.fromJson(schemaListItemsTargetJson);
     });
 
     this.value = innerValue;

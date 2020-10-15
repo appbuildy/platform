@@ -12,7 +12,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
@@ -27,6 +26,8 @@ class SchemaNodeText extends SchemaNode {
       Offset size,
       @required AppThemeStore themeStore,
       Map<String, SchemaNodeProperty> properties,
+      String column,
+      String text,
       UniqueKey id})
       : super() {
     this.type = SchemaNodeType.text;
@@ -38,11 +39,12 @@ class SchemaNodeText extends SchemaNode {
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
-          'Text': SchemaStringProperty('Text', 'Text'),
+          'Text': SchemaStringProperty('Text', text ?? 'Text'),
           'FontColor': SchemaMyThemePropProperty(
               'FontColor', this.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', 16),
           'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
+          'Column': SchemaStringProperty('Column', column ?? null),
           'MainAlignment': SchemaMainAlignmentProperty(
               'MainAlignment', MainAxisAlignment.start),
           'CrossAlignment': SchemaCrossAlignmentProperty(
@@ -92,7 +94,8 @@ class SchemaNodeText extends SchemaNode {
               style: TextStyle(
                   fontSize: properties['FontSize'].value,
                   fontWeight: properties['FontWeight'].value,
-                  color: getThemeColor(themeStore.currentTheme, properties['FontColor'])),
+                  color: getThemeColor(
+                      themeStore.currentTheme, properties['FontColor'])),
             ),
           ),
         ],

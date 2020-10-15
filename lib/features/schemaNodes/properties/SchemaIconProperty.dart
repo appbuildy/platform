@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
@@ -19,7 +18,7 @@ class SchemaIconProperty extends SchemaNodeProperty<IconData> {
   }
 
   SchemaIconProperty.toJson(Map<String, dynamic> jsonTarget)
-    : super('Icon', null) {
+      : super('Icon', null) {
     this.name = jsonTarget['name'];
 
     final jsonValue = jsonTarget['value'];
