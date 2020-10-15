@@ -102,9 +102,9 @@ class ListTemplateSimple extends ListTemplate {
                     children: [
                       elements.title != null
                           ? Text(
-                        item.value[elements.title.column]?.data ?? '',
-                        style: MyTextStyle.regularTitle,
-                      )
+                              item.value[elements.title.column]?.data ?? '',
+                              style: MyTextStyle.regularTitle,
+                            )
                           : Container(),
                       elements.subtitle != null
                           ? Padding(

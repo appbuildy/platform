@@ -95,15 +95,15 @@ class ListTemplateCards extends ListTemplate {
                   ),
                   boxShadow: properties['BoxShadow'].value
                       ? [
-                    BoxShadow(
-                        color: getThemeColor(currentTheme,
-                            properties['BoxShadowColor'])
-                            .withOpacity(
-                            properties['BoxShadowOpacity'].value),
-                        blurRadius: properties['BoxShadowBlur'].value,
-                        offset: Offset(0.0, 2.0),
-                        spreadRadius: 0)
-                  ]
+                          BoxShadow(
+                              color: getThemeColor(currentTheme,
+                                      properties['BoxShadowColor'])
+                                  .withOpacity(
+                                      properties['BoxShadowOpacity'].value),
+                              blurRadius: properties['BoxShadowBlur'].value,
+                              offset: Offset(0.0, 2.0),
+                              spreadRadius: 0)
+                        ]
                       : []),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
