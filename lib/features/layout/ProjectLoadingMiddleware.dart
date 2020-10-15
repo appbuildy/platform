@@ -19,7 +19,7 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
   }
 
   void setupProject() async {
-    await userActions.loadProject().catchError((_) => _overlayEntry.remove());
+    await userActions.loadProject();
 
     _overlayEntry.remove();
   }

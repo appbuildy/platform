@@ -91,14 +91,18 @@ class UserActions {
   }
 
   Future<void> loadProject() async {
-    await _currentUserStore.setupProject(window, _remoteAttributes);
-    final Screens screens =
-        LoadedProject(_currentUserStore.project.data['canvas']).load();
-    final loadedFirstScreen = screens.all.screens.first;
-    _screens.all.createScreen(loadedFirstScreen);
-    _screens.selectByName(loadedFirstScreen.name);
+    try {
+      await _currentUserStore.setupProject(window, _remoteAttributes);
+      final Screens screens =
+      LoadedProject(_currentUserStore.project.data['canvas']).load();
+      final loadedFirstScreen = screens.all.screens.first;
+      _screens.all.createScreen(loadedFirstScreen);
+      _screens.selectByName(loadedFirstScreen.name);
 
-    this.startAutoSave();
+      this.startAutoSave();
+    } catch (_) {
+      print('loadProject() error');
+    }
   }
 
   void changeActionTo(ChangeableProperty prop,
