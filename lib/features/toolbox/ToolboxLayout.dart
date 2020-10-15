@@ -35,65 +35,140 @@ class ToolboxLayout extends StatelessWidget {
 
     return Container(
       width: toolboxWidth,
-      child: Column(
-        children: [
-          Observer(builder: (BuildContext context) {
-            return ToolboxTitle(userActions.currentUserStore.currentUser.name);
-          }),
-          Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 10),
-            child: Column(
+      height: MediaQuery.of(context).size.height,
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
               children: [
-                ToolBoxCaption('Basics'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ToolboxComponent(
-                      schemaNode: SchemaNodeButton(themeStore: themeStore),
-                    ),
-                    ToolboxComponent(
-                        schemaNode: SchemaNodeText(themeStore: themeStore)),
-                    ToolboxComponent(
-                        schemaNode: SchemaNodeIcon(themeStore: themeStore)),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ToolboxComponent(schemaNode: SchemaNodeImage()),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    ToolboxComponent(
-                        schemaNode: SchemaNodeShape(themeStore: themeStore)),
-                  ],
-                ),
-                ToolBoxCaption('Listing'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ToolboxComponent(
-                        defaultTitle: 'List',
-                        defaultType: SchemaNodeType.listDefault,
-                        schemaNode: SchemaNodeList(
-                          themeStore: themeStore,
-                          listTemplateType: ListTemplateType.simple,
-                        )),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    ToolboxComponent(
-                        defaultTitle: 'Cards',
-                        defaultType: SchemaNodeType.listCards,
-                        schemaNode: SchemaNodeList(
-                            themeStore: themeStore,
-                            listTemplateType: ListTemplateType.cards))
-                  ],
+                Observer(builder: (BuildContext context) {
+                  return ToolboxTitle(
+                      userActions.currentUserStore.currentUser.name);
+                }),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, right: 10),
+                  child: Column(
+                    children: [
+                      ToolBoxCaption('Basics'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ToolboxComponent(
+                            schemaNode:
+                                SchemaNodeButton(themeStore: themeStore),
+                          ),
+                          ToolboxComponent(
+                              schemaNode:
+                                  SchemaNodeText(themeStore: themeStore)),
+                          ToolboxComponent(
+                              schemaNode:
+                                  SchemaNodeIcon(themeStore: themeStore)),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ToolboxComponent(schemaNode: SchemaNodeImage()),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ToolboxComponent(
+                              schemaNode:
+                                  SchemaNodeShape(themeStore: themeStore)),
+                        ],
+                      ),
+                      ToolBoxCaption('Listing'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          ToolboxComponent(
+                              defaultTitle: 'List',
+                              defaultType: SchemaNodeType.listDefault,
+                              schemaNode: SchemaNodeList(
+                                themeStore: themeStore,
+                                listTemplateType: ListTemplateType.simple,
+                              )),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ToolboxComponent(
+                              defaultTitle: 'Cards',
+                              defaultType: SchemaNodeType.listCards,
+                              schemaNode: SchemaNodeList(
+                                  themeStore: themeStore,
+                                  listTemplateType: ListTemplateType.cards))
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(bottom: 13),
+              child: Container(
+                width: 270,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: AlignmentDirectional.centerEnd,
+                    end: AlignmentDirectional.centerStart,
+                    colors: [Color(0xFF00b1ff), Color(0xFF0083ff)],
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: Image.network(
+                            'assets/icons/meta/request-feature.svg')),
+                    Padding(
+                        padding: const EdgeInsets.only(
+                            bottom: 16, top: 13, left: 16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Need a Feature?',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: MyColors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text('We ll make it live — tell us about it',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: MyColors.white,
+                                    fontWeight: FontWeight.w500)),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: MyColors.white,
+                                  borderRadius: BorderRadius.circular(6)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 4, bottom: 6, left: 12, right: 12),
+                                child: Text('Request Feature',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: MyColors.textBlue,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                            )
+                          ],
+                        )),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
