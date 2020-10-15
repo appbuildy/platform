@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaColorProperty.dart';
-import 'package:flutter_test/flutter_testart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('toJson() maps to JSON', () {
