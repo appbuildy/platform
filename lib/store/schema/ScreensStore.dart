@@ -16,6 +16,7 @@ abstract class _ScreensStore with Store {
 
   @action
   void createScreen(SchemaStore screen) {
+    screens.removeWhere((oldScreen) => oldScreen.name == screen.name);
     screens.add(screen);
   }
 

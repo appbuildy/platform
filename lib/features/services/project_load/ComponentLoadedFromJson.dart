@@ -25,17 +25,19 @@ class ComponentLoadedFromJson implements IComponentLoader {
         }
         break;
     }
+    return SchemaNodeButton(
+        position: _loadPosition(), size: _loadSize(), theme: themeStore);
   }
 
   Offset _loadPosition() {
-    int x = jsonComponent['size']['x'];
-    int y = jsonComponent['size']['y'];
+    double x = jsonComponent['position']['x'];
+    double y = jsonComponent['position']['y'];
     return Offset(x.toDouble(), y.toDouble());
   }
 
   Offset _loadSize() {
-    int x = jsonComponent['size']['x'];
-    int y = jsonComponent['size']['y'];
+    double x = jsonComponent['size']['x'];
+    double y = jsonComponent['size']['y'];
     return Offset(x.toDouble(), y.toDouble());
   }
 

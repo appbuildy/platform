@@ -94,9 +94,10 @@ class UserActions {
     await _currentUserStore.setupProject(window, _remoteAttributes);
     final Screens screens =
         LoadedProject(_currentUserStore.project.data['canvas']).load();
-    _screens = screens;
-    print(
-        "Loaded: $screens. Components: ${screens.all.screens.first.components}");
+    final loadedFirstScreen = screens.all.screens.first;
+    _screens.all.createScreen(loadedFirstScreen);
+    _screens.selectByName(loadedFirstScreen.name);
+
     this.startAutoSave();
   }
 
