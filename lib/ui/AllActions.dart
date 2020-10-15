@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -49,34 +50,34 @@ class _AllActionsState extends State<AllActions> {
         duration: 2,
         gravity: Toast.TOP);
 
-    final theme = widget.userActions.theme;
+    final themeStore = widget.userActions.themeStore;
     final detailedComponents = [
       SchemaNodeImage(
           position: Offset(0, 0),
           url: detailedInfo.rowData[listColumnsSample[2]].data,
           column: listColumnsSample[2]),
       SchemaNodeIcon(
-          theme: theme,
+          themeStore: themeStore,
           position: Offset(14, 40),
           iconSize: 24,
           icon: FontAwesomeIcons.arrowLeft),
       SchemaNodeText(
           position: Offset(14, 220),
-          theme: theme,
+          themeStore: themeStore,
           text: detailedInfo.rowData[listColumnsSample[0]].data,
           column: listColumnsSample[0]),
       SchemaNodeText(
           position: Offset(14, 240),
-          theme: theme,
+          themeStore: themeStore,
           text: detailedInfo.rowData[listColumnsSample[1]].data,
           column: listColumnsSample[1]),
       SchemaNodeText(
           position: Offset(14, 380),
-          theme: theme,
+          themeStore: themeStore,
           text: detailedInfo.rowData[listColumnsSample[3]].data,
           column: listColumnsSample[3]),
       SchemaNodeButton(
-          theme: theme, position: Offset(20, 300), text: 'Contact Us')
+          themeStore: themeStore, position: Offset(20, 300), text: 'Contact Us')
     ];
 
     widget.userActions.screens.createForList(

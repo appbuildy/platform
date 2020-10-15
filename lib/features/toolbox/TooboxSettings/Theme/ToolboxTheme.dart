@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
@@ -10,11 +11,11 @@ import 'ToolboxThemeItemSettings/ToolboxThemeItemColorSelect.dart';
 
 class BuildToolboxThemePage extends StatefulWidget {
   final goBackToSettings;
-  final theme;
+  final UserActions userActions;
 
   BuildToolboxThemePage({
     @required this.goBackToSettings,
-    @required this.theme,
+    @required this.userActions,
   });
 
   @override
@@ -41,6 +42,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 
   void selectTheme(MyTheme theme) {
     _controller.reverse();
+    widget.userActions.setTheme(theme);
     setState(() {
       selectedTheme = theme;
     });
@@ -66,7 +68,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
           child: ToolboxThemeItems(
-            theme: widget.theme,
+            userActions: widget.userActions,
             onThemeSettingsTap: selectTheme,
           ),
         ),
@@ -77,12 +79,13 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
   Widget _buildSelectedThemeItemSettings() {
     if (selectedTheme == null) return null;
 
-    onColorChange(MyThemeProp oldColor) {
+    onColorChange(String oldColorName) {
       return (Color newColor) {
-        oldColor.color = newColor;
-        widget.theme.setTheme(widget.theme.currentTheme);
+        widget.userActions.currentTheme.getThemePropByName(oldColorName).color =
+            newColor;
+        widget.userActions.setTheme(widget.userActions.currentTheme);
         setState(() {
-          selectedTheme = widget.theme.currentTheme;
+          selectedTheme = widget.userActions.currentTheme;
         });
       };
     }
@@ -97,42 +100,15 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 20),
           child: Column(
-            children: [
-              BuildColorSelect(
-                  themeColor: selectedTheme.primary,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.primary)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.secondary,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.secondary)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.general,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.general)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.generalSecondary,
-                  onColorChange: onColorChange(
-                      widget.theme.currentTheme.generalSecondary)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.generalInverted,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.generalInverted)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.separators,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.separators)),
-              SizedBox(height: 10.0),
-              BuildColorSelect(
-                  themeColor: selectedTheme.background,
-                  onColorChange:
-                      onColorChange(widget.theme.currentTheme.background)),
-            ],
+            children: selectedTheme.getAllColors().map((MyThemeProp color) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: BuildColorSelect(
+                  themeColor: color,
+                  onColorChange: onColorChange(color.name),
+                ),
+              );
+            }).toList(),
           ),
         )
       ],
@@ -194,12 +170,12 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 }
 
 class ToolboxThemeItems extends StatelessWidget {
-  final theme;
+  final UserActions userActions;
   final Function onThemeSettingsTap;
 
   const ToolboxThemeItems({
     Key key,
-    @required this.theme,
+    @required this.userActions,
     @required this.onThemeSettingsTap,
   }) : super(key: key);
 
@@ -207,23 +183,17 @@ class ToolboxThemeItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Observer(
       builder: (BuildContext context) {
-        final currentTheme = theme.currentTheme;
+        final currentTheme = userActions.currentTheme;
 
         return Column(
-          children: [
-            ToolboxThemeItem(
-              theme: MyThemes.lightBlue,
-              isActive: currentTheme.name == MyThemes.lightBlue.name,
-              setTheme: theme.setTheme,
+          children: MyThemes.allThemes.values.map((MyTheme themeItem) {
+            return ToolboxThemeItem(
+              theme: themeItem,
+              isActive: currentTheme.name == themeItem.name,
+              setTheme: userActions.setTheme,
               onSettingsTap: onThemeSettingsTap,
-            ),
-            ToolboxThemeItem(
-              theme: MyThemes.darkBlue,
-              isActive: currentTheme.name == MyThemes.darkBlue.name,
-              setTheme: theme.setTheme,
-              onSettingsTap: onThemeSettingsTap,
-            ),
-          ],
+            );
+          }).toList(),
         );
       },
     );

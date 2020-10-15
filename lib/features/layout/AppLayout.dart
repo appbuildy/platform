@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,13 +26,7 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  SchemaStore schemaStore;
   UserActions userActions;
-  CurrentScreen currentScreen;
-  ScreensStore screensStore;
-  AppThemeStore themeStore;
-  CurrentUserStore currentUserStore;
-  BottomNavigationStore bottomNavigationStore;
   bool isPlayMode;
   FocusNode _focusNode;
   FocusAttachment _focusNodeAttachment;
@@ -45,23 +37,28 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   void initState() {
     super.initState();
-    themeStore = AppThemeStore();
-    themeStore.setTheme(MyThemes.lightBlue);
-    schemaStore =
+    final SchemaStore schemaStore =
         SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
-    currentScreen = CurrentScreen(schemaStore);
-    screensStore = ScreensStore();
-    bottomNavigationStore = BottomNavigationStore();
+
+    final CurrentScreen currentScreen = CurrentScreen(schemaStore);
+    final ScreensStore screensStore = ScreensStore();
     screensStore.createScreen(schemaStore);
     final screens = Screens(screensStore, currentScreen);
-    currentUserStore = CurrentUserStore();
-    currentUserStore.setupProject(window);
+
+    final BottomNavigationStore bottomNavigationStore = BottomNavigationStore();
+
+    final AppThemeStore themeStore = AppThemeStore();
+
+    final CurrentUserStore currentUserStore = CurrentUserStore();
 
     userActions = UserActions(
         currentUserStore: currentUserStore,
         screens: screens,
         bottomNavigationStore: bottomNavigationStore,
         themeStore: themeStore);
+
+    userActions.setTheme(MyThemes.allThemes['blue']);
+
     isPlayMode = false;
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
@@ -135,7 +132,7 @@ class _AppLayoutState extends State<AppLayout> {
                   }
                 },
                 child: Toolbox(
-                    currentUserStore: currentUserStore,
+                  // currentUserStore: currentUserStore,
                     toolboxState: toolboxState,
                     selectState: selectState,
                     userActions: userActions),

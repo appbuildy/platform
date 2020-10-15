@@ -28,6 +28,7 @@ abstract class _RemoteAttributes with Store {
 
   @action
   Future<void> fetchTables(List<String> tableNames) async {
+    print("Fetch $tableNames");
     tableNames.forEach((name) {
       this.update(Client.defaultClient(table: name));
     });

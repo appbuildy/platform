@@ -5,18 +5,21 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
-import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/CapitalizeString.dart';
+import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ToolboxLayout extends StatelessWidget {
   final UserActions userActions;
-  final CurrentUserStore currentUserStore;
 
-  const ToolboxLayout({Key key, this.currentUserStore, this.userActions})
+  // final CurrentUserStore currentUserStore;
+
+  const ToolboxLayout(
+      {Key key,
+      // this.currentUserStore,
+      this.userActions})
       : super(key: key);
 
   Widget buildTitle(String title) {
@@ -28,16 +31,14 @@ class ToolboxLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = userActions.theme;
+    final themeStore = userActions.themeStore;
 
     return Container(
       width: toolboxWidth,
       child: Column(
         children: [
           Observer(builder: (BuildContext context) {
-            return ToolboxTitle(
-              currentUserStore.currentUser.name,
-            );
+            return ToolboxTitle(userActions.currentUserStore.currentUser.name);
           }),
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 10),
@@ -48,10 +49,12 @@ class ToolboxLayout extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ToolboxComponent(
-                      schemaNode: SchemaNodeButton(theme: theme),
+                      schemaNode: SchemaNodeButton(themeStore: themeStore),
                     ),
-                    ToolboxComponent(schemaNode: SchemaNodeText(theme: theme)),
-                    ToolboxComponent(schemaNode: SchemaNodeIcon(theme: theme)),
+                    ToolboxComponent(
+                        schemaNode: SchemaNodeText(themeStore: themeStore)),
+                    ToolboxComponent(
+                        schemaNode: SchemaNodeIcon(themeStore: themeStore)),
                   ],
                 ),
                 Row(
@@ -61,7 +64,8 @@ class ToolboxLayout extends StatelessWidget {
                     SizedBox(
                       width: 10,
                     ),
-                    ToolboxComponent(schemaNode: SchemaNodeShape(theme: theme)),
+                    ToolboxComponent(
+                        schemaNode: SchemaNodeShape(themeStore: themeStore)),
                   ],
                 ),
                 ToolBoxCaption('Listing'),
@@ -72,7 +76,7 @@ class ToolboxLayout extends StatelessWidget {
                         defaultTitle: 'List',
                         defaultType: SchemaNodeType.listDefault,
                         schemaNode: SchemaNodeList(
-                          theme: theme,
+                          themeStore: themeStore,
                           listTemplateType: ListTemplateType.simple,
                         )),
                     SizedBox(
@@ -82,7 +86,7 @@ class ToolboxLayout extends StatelessWidget {
                         defaultTitle: 'Cards',
                         defaultType: SchemaNodeType.listCards,
                         schemaNode: SchemaNodeList(
-                            theme: theme,
+                            themeStore: themeStore,
                             listTemplateType: ListTemplateType.cards))
                   ],
                 ),
@@ -129,19 +133,18 @@ class ToolboxComponent extends StatelessWidget {
           child: HoverDecoration(
             defaultDecoration: defaultDecoration,
             hoverDecoration: hoverDecoration,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Image.network(
-                  'assets/icons/layout/$type.svg',
-                  height: 56.0,
-                ),
-                Text(name),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.network(
+                    'assets/icons/layout/$type.svg',
+                  ),
+                  Text(name),
+                ],
+              ),
             ),
           )),
     );

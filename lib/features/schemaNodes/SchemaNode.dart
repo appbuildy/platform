@@ -24,7 +24,7 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
-  AppThemeStore theme;
+  AppThemeStore themeStore;
   Offset size;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> changeableProperties;
@@ -42,7 +42,7 @@ abstract class SchemaNode {
         'size': {'x': size.dx, 'y': size.dy},
         'properties': _jsonProperties(),
         'actions': _jsonActions(),
-        'type': SchemaNodeType.button
+    'type': this.type.toString()
       };
   Widget toWidget({bool isPlayMode});
   Widget toEditProps(
@@ -50,13 +50,13 @@ abstract class SchemaNode {
   );
 
   Map<String, dynamic> _jsonActions() {
-    final map = {};
+    final Map<String, dynamic> map = {};
     actions.forEach((k, v) => map[k] = v.toJson());
     return map;
   }
 
   Map<String, dynamic> _jsonProperties() {
-    final map = {};
+    final Map<String, dynamic> map = {};
     properties.forEach((k, v) => map[k] = v.toJson());
     return map;
   }

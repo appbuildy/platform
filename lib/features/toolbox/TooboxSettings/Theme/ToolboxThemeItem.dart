@@ -164,6 +164,7 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
                   if (showIcon)
                     GestureDetector(
                       onTap: () {
+                        widget.setTheme(widget.theme);
                         widget.onSettingsTap(widget.theme);
                       },
                       child: Cursor(

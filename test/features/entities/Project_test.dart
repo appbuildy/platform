@@ -11,7 +11,11 @@ class MockedClient extends MockClient {
   MockedClient(fn) : super(fn);
 }
 
-class MockUser extends Mock implements User {}
+class MockUser extends Mock implements User {
+  Map<String, String> authHeaders() {
+    return {};
+  }
+}
 
 class MockHttp extends Mock implements Client {}
 
@@ -32,11 +36,13 @@ void main() {
 
   test('save() saves project by sending PATCH request on a given URL',
       () async {
-    final client = MockHttp();
+        final client = MockHttp();
     ScreensStore store = ScreensStore();
     SchemaConverter converter = SchemaConverter(store);
     await project.save(converter, client: client);
 
-    verify(client.patch(url, body: anyNamed('body'))).called(1);
+    verify(client.patch(url,
+            headers: anyNamed('headers'), body: anyNamed('body')))
+        .called(1);
   });
 }

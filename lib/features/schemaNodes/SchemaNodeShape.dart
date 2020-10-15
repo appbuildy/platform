@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -11,7 +13,7 @@ class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
     Offset position,
     Offset size,
-    @required AppThemeStore theme,
+    @required AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
     UniqueKey id,
   }) : super() {
@@ -19,12 +21,12 @@ class SchemaNodeShape extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
-    this.theme = theme;
+    this.themeStore = themeStore;
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(
-              'Color', this.theme.currentTheme.primary),
+              'Color', this.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
         };
   }
@@ -40,7 +42,7 @@ class SchemaNodeShape extends SchemaNode {
         id: id ?? this.id,
         size: size ?? this.size,
         properties: saveProperties ? this._copyProperties() : null,
-        theme: this.theme);
+        themeStore: this.themeStore);
   }
 
   Map<String, SchemaNodeProperty> _copyProperties() {
@@ -59,7 +61,7 @@ class SchemaNodeShape extends SchemaNode {
       height: size.dy,
       decoration: BoxDecoration(
           color: getThemeColor(
-            theme,
+            themeStore.currentTheme,
             properties['Color'],
           ),
           borderRadius:
@@ -75,7 +77,7 @@ class SchemaNodeShape extends SchemaNode {
           name: 'Shape Style',
         ),
         EditPropsColor(
-          theme: theme,
+          currentTheme: themeStore.currentTheme,
           properties: properties,
           propName: 'Color',
           userActions: userActions,

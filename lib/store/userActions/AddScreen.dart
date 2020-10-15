@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class AddScreen extends BaseAction {
   String name;
@@ -11,12 +13,16 @@ class AddScreen extends BaseAction {
   SchemaStore createdScreen;
   DetailedInfo detailedInfo;
   bool executed;
-  AddScreen(
-      {this.components,
-      this.bottomTabsVisible,
-      this.name = '',
-      this.screensStore,
-      this.detailedInfo});
+  MyThemeProp backgroundColor;
+
+  AddScreen({
+    this.components,
+    this.bottomTabsVisible,
+    this.name = '',
+    this.screensStore,
+    this.detailedInfo,
+    @required this.backgroundColor,
+  });
 
   @override
   void execute() {
@@ -27,10 +33,12 @@ class AddScreen extends BaseAction {
     final newBottomTabsVisible =
         bottomTabsVisible != null ? bottomTabsVisible : true;
     createdScreen = SchemaStore(
-        components: newComponents,
-        bottomTabsVisible: newBottomTabsVisible,
-        name: newName,
-        detailedInfo: detailedInfo);
+      components: newComponents,
+      bottomTabsVisible: newBottomTabsVisible,
+      name: newName,
+      detailedInfo: detailedInfo,
+      backgroundColor: this.backgroundColor,
+    );
 
     screensStore.createScreen(createdScreen);
   }

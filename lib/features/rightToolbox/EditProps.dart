@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
-import 'package:flutter_app/utils/CapitalizeString.dart';
+import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class EditProps extends StatelessWidget {

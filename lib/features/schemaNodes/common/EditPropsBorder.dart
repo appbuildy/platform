@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
@@ -10,13 +12,13 @@ import 'package:flutter_app/ui/MySwitch.dart';
 class EditPropsBorder extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   final UserActions userActions;
-  final AppThemeStore theme;
+  final MyTheme currentTheme;
 
   const EditPropsBorder(
       {Key key,
       @required this.properties,
       @required this.userActions,
-      @required this.theme})
+      @required this.currentTheme})
       : super(key: key);
 
   List<Widget> buildBorderStyle() {
@@ -28,7 +30,7 @@ class EditPropsBorder extends StatelessWidget {
           height: 10,
         ),
         EditPropsColor(
-            theme: theme,
+            currentTheme: currentTheme,
             userActions: userActions,
             propName: 'BorderColor',
             properties: properties),

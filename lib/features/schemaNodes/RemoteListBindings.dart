@@ -1,9 +1,9 @@
 import 'package:flutter_app/features/airtable/RemoteList.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 
 class RemoteListBindings {
   Map<String, RemoteList> table;
-  SchemaListItemProperty listProperty;
+  SchemaListItemsProperty listProperty;
 
   RemoteListBindings(this.table, this.listProperty);
 }

@@ -4,6 +4,7 @@ import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/services/SettingsParser.dart';
 import 'package:flutter_app/features/services/SetupProject.dart';
+import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:mobx/mobx.dart';
 
 part 'CurrentUserStore.g.dart';
@@ -20,9 +21,9 @@ abstract class _CurrentUserStore with Store {
   Project project;
 
   @action
-  Future<void> setupProject(dynamic window) async {
+  Future<void> setupProject(dynamic window, RemoteAttributes attrs) async {
     final SettingsParser settings = SettingsParser(window);
-    project = await SetupProject(this, settings).setup();
+    project = await SetupProject(this, settings, attrs).setup();
   }
 
   @action

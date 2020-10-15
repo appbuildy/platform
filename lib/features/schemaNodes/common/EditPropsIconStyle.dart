@@ -2,20 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 
 class EditPropsIconStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   final UserActions userActions;
-  final AppThemeStore theme;
+  final MyTheme currentTheme;
 
   const EditPropsIconStyle(
       {Key key,
       @required this.properties,
       @required this.userActions,
-      @required this.theme})
+      @required this.currentTheme})
       : super(key: key);
 
   @override
@@ -24,7 +25,7 @@ class EditPropsIconStyle extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         EditPropsColor(
-          theme: theme,
+          currentTheme: currentTheme,
           properties: properties,
           userActions: userActions,
           propName: 'IconColor',
