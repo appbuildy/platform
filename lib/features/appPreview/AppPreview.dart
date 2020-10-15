@@ -556,72 +556,68 @@ class _AppPreviewState extends State<AppPreview> {
                                         .toFunction(userActions)();
                                   } else {
                                     userActions.selectNodeForEdit(node);
-                                      debouncer = Debouncer(
-                                          milliseconds: 500,
-                                          prevValue: node.copy());
-                                      widget
-                                          .selectStateToLayout(); // select menu layout
-                                      }
-                                    },
-                                    child: widget.isPlayMode
-                                        ? node.toWidget(
+                                    debouncer = Debouncer(
+                                        milliseconds: 500,
+                                        prevValue: node.copy());
+                                    widget
+                                        .selectStateToLayout(); // select menu layout
+                                  }
+                                },
+                                child: widget.isPlayMode
+                                    ? node.toWidget(
                                         isPlayMode: widget.isPlayMode)
-                                        : renderWithSelected(
-                                      node: node,
-                                    )),
-                                top: node.position.dy,
-                                left: node.position.dx)),
-                      Positioned(
-                          top: 0,
-                          left: 0,
-                          child: Image.network(
-                              'assets/icons/meta/status-bar.svg')),
-                      Positioned(
-                        bottom: 0,
+                                    : renderWithSelected(
+                                        node: node,
+                                      )),
+                            top: node.position.dy,
+                            left: node.position.dx)),
+                    Positioned(
+                        top: 0,
                         left: 0,
-                        child: userActions.screens.current.bottomTabsVisible
-                            ? Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(
-                                      width: 1,
-                                      color: theme.separators.color)
-                              )
-                          ),
-                          child: Container(
-                            child: AppTabs(userActions: userActions),
-                            width: SCREEN_WIDTH,
-                            height: 84,
-                            decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(37.0),
-                                  bottomRight: Radius.circular(37.0)
-                              ),
-                            ),
-                          ),
-                        )
-                            : Container(),
-                      ),
-                        Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 7.0),
+                        child:
+                            Image.network('assets/icons/meta/status-bar.svg')),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      child: userActions.screens.current.bottomTabsVisible
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  border: Border(
+                                      top: BorderSide(
+                                          width: 1,
+                                          color: theme.separators.color))),
                               child: Container(
-                                width: 134,
-                                height: 5,
+                                child: AppTabs(userActions: userActions),
+                                width: SCREEN_WIDTH,
+                                height: 84,
                                 decoration: BoxDecoration(
-                                    color: Color(0xFF000000),
-                                    borderRadius: BorderRadius.circular(100)),
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(37.0),
+                                      bottomRight: Radius.circular(37.0)),
+                                ),
                               ),
                             )
-                        ),
-                      ],
+                          : Container(),
                     ),
-                  ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 7.0),
+                          child: Container(
+                            width: 134,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                color: Color(0xFF000000),
+                                borderRadius: BorderRadius.circular(100)),
+                          ),
+                        )),
+                  ],
                 ),
-              );
-            });
+              ),
+            ),
+          );
+        });
       },
     );
   }

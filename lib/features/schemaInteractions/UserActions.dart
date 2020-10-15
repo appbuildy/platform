@@ -148,7 +148,9 @@ class UserActions {
     currentScreen.update(selectedNode());
   }
 
-  void copyNode(SchemaNode node,) {
+  void copyNode(
+    SchemaNode node,
+  ) {
     final action = new CopyNode(
         node: node,
         schemaStore: currentScreen,
@@ -158,7 +160,9 @@ class UserActions {
     _actionsDone.add(action);
   }
 
-  void deleteNode(SchemaNode node,) {
+  void deleteNode(
+    SchemaNode node,
+  ) {
     final action = new DeleteNode(
         node: node,
         schemaStore: currentScreen,
@@ -207,7 +211,8 @@ class UserActions {
     SelectNodeForPropsEdit(node, _currentNode).execute();
   }
 
-  void bindAttribute({SchemaNodeProperty property, AirtableAttribute attribute}) {
+  void bindAttribute(
+      {SchemaNodeProperty property, AirtableAttribute attribute}) {
     final action = ConnectToRemoteAttribute(_bindings, attribute, property);
     action.execute();
     _actionsDone.add(action);

@@ -33,14 +33,14 @@ class ListTemplateCards extends ListTemplate {
                     print('KEK ${item.value}');
                     (actions['Tap'] as Functionable).toFunction(userActions)();
                   }
-            },
-            child: widgetFor(
-                item: item,
-                elements: properties['Elements'].value,
-                currentTheme: currentTheme,
-                properties: properties),
-          );
-        })
+                },
+                child: widgetFor(
+                    item: item,
+                    elements: properties['Elements'].value,
+                    currentTheme: currentTheme,
+                    properties: properties),
+              );
+            })
             .toList()
             .cast<Widget>());
   }

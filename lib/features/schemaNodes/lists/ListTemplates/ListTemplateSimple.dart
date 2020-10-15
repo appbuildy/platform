@@ -23,25 +23,26 @@ class ListTemplateSimple extends ListTemplate {
             .values
             .map((item) {
               return GestureDetector(
-            onTap: () {
-              if (isPlayMode) {
-                print('ListTemplateSimple');
-              }
-            },
-            child: widgetFor(
-                item: item,
-                elements: properties['Elements'].value,
-                currentTheme: currentTheme,
-                properties: properties),
-          );
-        })
+                onTap: () {
+                  if (isPlayMode) {
+                    print('ListTemplateSimple');
+                  }
+                },
+                child: widgetFor(
+                    item: item,
+                    elements: properties['Elements'].value,
+                    currentTheme: currentTheme,
+                    properties: properties),
+              );
+            })
             .toList()
             .cast<Widget>());
   }
 
-  Widget rowStyle({Map<String, SchemaNodeProperty> properties,
-    UserActions userActions,
-    MyTheme currentTheme}) {
+  Widget rowStyle(
+      {Map<String, SchemaNodeProperty> properties,
+      UserActions userActions,
+      MyTheme currentTheme}) {
     return Column(children: [
       SizedBox(
         height: 15,
@@ -55,10 +56,11 @@ class ListTemplateSimple extends ListTemplate {
     ]);
   }
 
-  Widget widgetFor({SchemaListItemsProperty item,
-    ListElements elements,
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties}) {
+  Widget widgetFor(
+      {SchemaListItemsProperty item,
+      ListElements elements,
+      MyTheme currentTheme,
+      Map<String, SchemaNodeProperty> properties}) {
     return Row(
       children: [
         Expanded(
