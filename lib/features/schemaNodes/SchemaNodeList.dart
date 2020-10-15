@@ -14,6 +14,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProp
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
@@ -27,7 +28,7 @@ class SchemaNodeList extends SchemaNode {
   SchemaNodeList(
       {Offset position,
       Offset size,
-      @required AppThemeStore theme,
+      @required AppThemeStore themeStore,
       @required ListTemplateType listTemplateType,
       Map<String, SchemaNodeProperty> properties,
       UniqueKey id})
@@ -36,7 +37,7 @@ class SchemaNodeList extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
-    this.theme = theme;
+    this.themeStore = themeStore;
     this.listTemplateType = listTemplateType;
 
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
@@ -64,15 +65,15 @@ class SchemaNodeList extends SchemaNode {
                   navigationIcon: ListElement(
                       type: ListElementType.navigationIcon, column: 'true'))),
           'TextColor': SchemaMyThemePropProperty(
-              'TextColor', this.theme.currentTheme.general),
+              'TextColor', this.themeStore.currentTheme.general),
           'ItemColor': SchemaMyThemePropProperty(
-              'ItemColor', this.theme.currentTheme.background),
+              'ItemColor', this.themeStore.currentTheme.background),
           'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
           'SeparatorsColor': SchemaMyThemePropProperty(
-              'SeparatorsColor', this.theme.currentTheme.separators),
+              'SeparatorsColor', this.themeStore.currentTheme.separators),
           'BoxShadow': SchemaBoolProperty('BoxShadow', true),
           'BoxShadowColor': SchemaMyThemePropProperty(
-              'BoxShadowColor', this.theme.currentTheme.general),
+              'BoxShadowColor', this.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
         };
@@ -91,7 +92,7 @@ class SchemaNodeList extends SchemaNode {
       id: id ?? this.id,
       size: size ?? this.size,
       properties: saveProperties ? this._copyProperties() : null,
-      theme: this.theme,
+      themeStore: this.themeStore,
       listTemplateType: this.listTemplateType,
     );
   }
@@ -115,7 +116,7 @@ class SchemaNodeList extends SchemaNode {
             child: this
                 .properties['Template']
                 .value
-                .toWidget(theme: this.theme, properties: this.properties),
+                .toWidget(currentTheme: this.themeStore.currentTheme, properties: this.properties),
           ));
     }
 
@@ -125,7 +126,7 @@ class SchemaNodeList extends SchemaNode {
         child: this
             .properties['Template']
             .value
-            .toWidget(theme: this.theme, properties: this.properties));
+            .toWidget(currentTheme: this.themeStore.currentTheme, properties: this.properties));
   }
 
   Future<void> updateData(String tableName, UserActions userActions) async {
@@ -181,13 +182,13 @@ class SchemaNodeList extends SchemaNode {
         name: 'Row Style',
       ),
       EditPropsColor(
-        theme: theme,
+        currentTheme: themeStore.currentTheme,
         properties: properties,
         propName: 'ItemColor',
         userActions: userActions,
       ),
       this.properties['Template'].value.rowStyle(
-          userActions: userActions, properties: properties, theme: theme),
+          userActions: userActions, properties: properties, currentTheme: themeStore.currentTheme),
       SizedBox(
         height: 10,
       ),

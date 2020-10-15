@@ -18,7 +18,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
       case 'SchemaNodeType.button':
         {
           return SchemaNodeButton(
-              position: _loadPosition(), size: _loadSize(), theme: themeStore);
+              position: _loadPosition(), size: _loadSize(), themeStore: themeStore);
         }
         break;
     }

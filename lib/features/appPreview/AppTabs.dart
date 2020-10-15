@@ -30,9 +30,8 @@ class AppTabs extends StatelessWidget {
                             tab: tab,
                             bottomNavigation: userActions.bottomNavigation,
                             activeColor:
-                                userActions.theme.currentTheme.primary.color,
-                            disabledColor: userActions
-                                .theme.currentTheme.generalSecondary.color,
+                                userActions.currentTheme.primary.color,
+                            disabledColor: userActions.currentTheme.generalSecondary.color,
                             isActive:
                                 tab.target == userActions.currentScreen.id,
                           ),

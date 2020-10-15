@@ -126,7 +126,7 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
 
   Widget _buildSelectedSetting() {
     return BuildToolboxThemePage(
-        goBackToSettings: goBack, theme: widget.userActions.theme);
+        goBackToSettings: goBack, userActions: widget.userActions);
   }
 
   Widget buildMain(slideFirst, slideSecond) {

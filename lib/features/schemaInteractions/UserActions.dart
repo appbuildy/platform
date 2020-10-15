@@ -23,6 +23,7 @@ import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/ActionsDone.dart';
 import 'package:flutter_app/store/userActions/ActionsUndone.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
@@ -43,11 +44,12 @@ class UserActions {
   RemoteSchemaPropertiesBinding _bindings;
   List<String> remoteTableNames;
 
-  UserActions(
-      {Screens screens,
-      CurrentUserStore currentUserStore,
-      BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+  UserActions({
+    Screens screens,
+    CurrentUserStore currentUserStore,
+    BottomNavigationStore bottomNavigationStore,
+    AppThemeStore themeStore
+  }) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -64,10 +66,21 @@ class UserActions {
   SchemaStore get currentScreen => _screens.current;
   Screens get screens => _screens;
   BottomNavigationStore get bottomNavigation => _bottomNavigation;
-  AppThemeStore get theme => _theme;
+  AppThemeStore get themeStore => _theme;
+  MyTheme get currentTheme => _theme.currentTheme;
   List<String> get tables => _remoteAttributes.tableNames;
   List<RemoteList> columnsFor(String tableName) {
     return _remoteAttributes.tables[tableName].values.toList();
+  }
+  CurrentUserStore get currentUserStore => _currentUserStore;
+
+  void setTheme(MyTheme theme) {
+    _theme.setTheme(theme);
+
+    _screens.all.screens.forEach((screen) {
+      String backgroundColorName = screen.backgroundColor?.name ?? theme.background.name;
+      screen.setBackgroundColor(theme.getThemePropByName(backgroundColorName));
+    });
   }
 
   Future<void> loadProject() async {

@@ -17,7 +17,11 @@ class Screens {
     bool moveToLastAfterCreated = false,
     String name,
   }) {
-    final action = AddScreen(components: [], screensStore: all);
+    final action = AddScreen(
+      components: [],
+      screensStore: all,
+      backgroundColor: _current.currentScreen.backgroundColor,
+    );
     action.execute();
 
     if (moveToLastAfterCreated) lastScreen();
@@ -32,7 +36,9 @@ class Screens {
         components: [],
         screensStore: all,
         name: name,
-        detailedInfo: detailedInfo);
+        detailedInfo: detailedInfo,
+        backgroundColor: _current.currentScreen.backgroundColor,
+    );
     action.execute();
 
     if (moveToLastAfterCreated) lastScreen();
@@ -41,10 +47,12 @@ class Screens {
 
   BaseAction duplicate({SchemaStore duplicatingScreen}) {
     final action = AddScreen(
-        name: '${duplicatingScreen.name} Copy',
-        components: duplicatingScreen.components.toList(),
-        bottomTabsVisible: duplicatingScreen.bottomTabsVisible,
-        screensStore: all);
+      name: '${duplicatingScreen.name} Copy',
+      components: duplicatingScreen.components.toList(),
+      bottomTabsVisible: duplicatingScreen.bottomTabsVisible,
+      screensStore: all,
+      backgroundColor: _current.currentScreen.backgroundColor,
+    );
     action.execute();
 
     return action;

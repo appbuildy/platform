@@ -12,6 +12,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
@@ -24,7 +25,7 @@ class SchemaNodeText extends SchemaNode {
   SchemaNodeText(
       {Offset position,
       Offset size,
-      @required AppThemeStore theme,
+      @required AppThemeStore themeStore,
       Map<String, SchemaNodeProperty> properties,
       UniqueKey id})
       : super() {
@@ -32,14 +33,14 @@ class SchemaNodeText extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(343.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.theme = theme;
+    this.themeStore = themeStore;
 
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', 'Text'),
           'FontColor': SchemaMyThemePropProperty(
-              'FontColor', this.theme.currentTheme.general),
+              'FontColor', this.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', 16),
           'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
           'MainAlignment': SchemaMainAlignmentProperty(
@@ -63,7 +64,7 @@ class SchemaNodeText extends SchemaNode {
         id: id ?? this.id,
         size: size ?? this.size,
         properties: saveProperties ? this._copyProperties() : null,
-        theme: this.theme);
+        themeStore: this.themeStore);
   }
 
   Map<String, SchemaNodeProperty> _copyProperties() {
@@ -91,7 +92,7 @@ class SchemaNodeText extends SchemaNode {
               style: TextStyle(
                   fontSize: properties['FontSize'].value,
                   fontWeight: properties['FontWeight'].value,
-                  color: getThemeColor(theme, properties['FontColor'])),
+                  color: getThemeColor(themeStore.currentTheme, properties['FontColor'])),
             ),
           ),
         ],
@@ -116,7 +117,7 @@ class SchemaNodeText extends SchemaNode {
         height: 10,
       ),
       EditPropsFontStyle(
-        theme: theme,
+        currentTheme: themeStore.currentTheme,
         userActions: userActions,
         properties: properties,
       ),

@@ -5,25 +5,26 @@ import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateSimple.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 enum ListTemplateType { simple, cards }
 
 abstract class ListTemplate {
   ListTemplateType getType();
 
-  Widget toWidget(
-      {AppThemeStore theme, Map<String, SchemaNodeProperty> properties});
+  Widget toWidget({
+    MyTheme currentTheme,
+    Map<String, SchemaNodeProperty> properties});
 
   Widget rowStyle(
       {Map<String, SchemaNodeProperty> properties,
       UserActions userActions,
-      AppThemeStore theme});
+      MyTheme currentTheme});
 
   Widget widgetFor(
       {SchemaListItemsProperty item,
       ListElements elements,
-      AppThemeStore theme});
+      MyTheme currentTheme});
 }
 
 ListTemplate getListTemplateByType(ListTemplateType type) {

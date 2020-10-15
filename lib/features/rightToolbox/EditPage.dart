@@ -9,6 +9,8 @@ import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import 'EditPageBackgroundColor.dart';
+
 class EditPage extends StatelessWidget {
   final UserActions userActions;
 
@@ -92,15 +94,25 @@ class EditPage extends StatelessWidget {
                   ColumnDivider(
                     name: 'Page Settings',
                   ),
+                  EditBackgroundColor(
+                    currentTheme: userActions.currentTheme,
+                    onChange: (SelectOption option) {
+                      currentScreen.setBackgroundColor(option.value);
+                    },
+                    selectedValue: currentScreen.backgroundColor,
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Name',
-                          style: MyTextStyle.regularCaption,
-                        ),
                         SizedBox(
-                          width: 50,
+                          width: 60,
+                          child: Text(
+                            'Name',
+                            style: MyTextStyle.regularCaption,
+                          ),
                         ),
                         Expanded(
                           child: MyTextField(

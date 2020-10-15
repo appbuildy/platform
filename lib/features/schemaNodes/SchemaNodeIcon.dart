@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
@@ -17,14 +18,14 @@ class SchemaNodeIcon extends SchemaNode {
   SchemaNodeIcon(
       {Offset position,
       Offset size,
-      @required AppThemeStore theme,
+      @required AppThemeStore themeStore,
       Map<String, SchemaNodeProperty> properties,
       UniqueKey id})
       : super() {
     this.type = SchemaNodeType.icon;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
-    this.theme = theme;
+    this.themeStore = themeStore;
 
     this.id = id ?? UniqueKey();
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
@@ -32,12 +33,12 @@ class SchemaNodeIcon extends SchemaNode {
         {
           'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.arrowRight),
           'IconColor': SchemaMyThemePropProperty(
-              'IconColor', this.theme.currentTheme.primary),
+              'IconColor', this.themeStore.currentTheme.primary),
           'IconSize': SchemaIntProperty('IconSize', 36),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty(
-              'BoxShadowColor', this.theme.currentTheme.general),
+              'BoxShadowColor', this.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
         };
     ;
@@ -53,7 +54,7 @@ class SchemaNodeIcon extends SchemaNode {
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
-      theme: this.theme,
+      themeStore: this.themeStore,
       properties: saveProperties ? this._copyProperties() : null,
     );
   }
@@ -81,7 +82,7 @@ class SchemaNodeIcon extends SchemaNode {
         child: FaIcon(
           properties['Icon'].value,
           size: properties['IconSize'].value,
-          color: getThemeColor(theme, properties['IconColor']),
+          color: getThemeColor(themeStore.currentTheme, properties['IconColor']),
         ),
       ),
     );
@@ -94,7 +95,7 @@ class SchemaNodeIcon extends SchemaNode {
         name: 'Icon Style',
       ),
       EditPropsIconStyle(
-        theme: theme,
+        currentTheme: themeStore.currentTheme,
         userActions: userActions,
         properties: properties,
       ),

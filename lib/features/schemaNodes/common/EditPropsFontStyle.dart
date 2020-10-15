@@ -6,7 +6,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignment
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/IconRectangleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
@@ -14,13 +14,13 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 class EditPropsFontStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   final UserActions userActions;
-  final AppThemeStore theme;
+  final MyTheme currentTheme;
 
   const EditPropsFontStyle(
       {Key key,
       @required this.properties,
       @required this.userActions,
-      @required this.theme})
+      @required this.currentTheme})
       : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class EditPropsFontStyle extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         EditPropsColor(
-          theme: theme,
+          currentTheme: currentTheme,
           properties: properties,
           userActions: userActions,
           propName: 'FontColor',
