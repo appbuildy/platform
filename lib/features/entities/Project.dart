@@ -13,6 +13,7 @@ class Project {
   Map<String, dynamic> get data => _fetchedData ?? {};
 
   bool get _projectDataNotSet => (url.toString().contains('null'));
+
   Future<Map<String, dynamic>> getData(Client client) async {
     if (_projectDataNotSet) return {};
 

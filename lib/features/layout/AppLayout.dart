@@ -4,29 +4,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
 import 'package:flutter_app/features/entities/Project.dart';
-import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
-import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
-import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
-import 'package:flutter_app/store/schema/CurrentUserStore.dart';
-import 'package:flutter_app/store/schema/SchemaStore.dart';
-import 'package:flutter_app/store/schema/ScreensStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class AppLayout extends StatefulWidget {
+  final UserActions userActions;
+
+  AppLayout({ @required this.userActions });
+
   @override
   _AppLayoutState createState() => _AppLayoutState();
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  UserActions userActions;
   bool isPlayMode;
   FocusNode _focusNode;
   FocusAttachment _focusNodeAttachment;
@@ -37,34 +31,12 @@ class _AppLayoutState extends State<AppLayout> {
   @override
   void initState() {
     super.initState();
-    final SchemaStore schemaStore =
-        SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
-
-    final CurrentScreen currentScreen = CurrentScreen(schemaStore);
-    final ScreensStore screensStore = ScreensStore();
-    screensStore.createScreen(schemaStore);
-    final screens = Screens(screensStore, currentScreen);
-
-    final BottomNavigationStore bottomNavigationStore = BottomNavigationStore();
-
-    final AppThemeStore themeStore = AppThemeStore();
-
-    final CurrentUserStore currentUserStore = CurrentUserStore();
-
-    userActions = UserActions(
-        currentUserStore: currentUserStore,
-        screens: screens,
-        bottomNavigationStore: bottomNavigationStore,
-        themeStore: themeStore);
-
-    userActions.setTheme(MyThemes.allThemes['blue']);
 
     isPlayMode = false;
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
-    userActions.updateRemoteAttributeValues();
   }
 
   void _handleFocusChange() {
@@ -88,19 +60,19 @@ class _AppLayoutState extends State<AppLayout> {
       print('got key event: ${e.logicalKey}');
 
       if (e.logicalKey == LogicalKeyboardKey.keyZ && e.isMetaPressed) {
-        userActions.undo();
+        widget.userActions.undo();
         return true;
       }
 
-      final selected = userActions.selectedNode();
+      final selected = widget.userActions.selectedNode();
       if (selected == null) {
         return false;
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
-        userActions.deleteNode(selected);
+        widget.userActions.deleteNode(selected);
       } else if (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) {
-        userActions.copyNode(selected);
+        widget.userActions.copyNode(selected);
       }
 
       return true;
@@ -135,7 +107,7 @@ class _AppLayoutState extends State<AppLayout> {
                     // currentUserStore: currentUserStore,
                     toolboxState: toolboxState,
                     selectState: selectState,
-                    userActions: userActions),
+                    userActions: widget.userActions),
               ),
               Flexible(
                 child: GestureDetector(
@@ -147,7 +119,7 @@ class _AppLayoutState extends State<AppLayout> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      AppActions(userActions: userActions),
+                      AppActions(userActions: widget.userActions),
                       Expanded(
                         child: Container(
                           color: MyColors.lightGray,
@@ -173,7 +145,7 @@ class _AppLayoutState extends State<AppLayout> {
                                           selectStateToLayout: () {
                                             selectState(ToolboxStates.layout);
                                           },
-                                          userActions: userActions,
+                                          userActions: widget.userActions,
                                           selectPlayModeToFalse: () {
                                             if (isPlayMode == true) {
                                               setState(() {
@@ -200,7 +172,7 @@ class _AppLayoutState extends State<AppLayout> {
                                               isPlayMode = newIsPlayMode;
 
                                               if (newIsPlayMode) {
-                                                userActions
+                                                widget.userActions
                                                     .selectNodeForEdit(null);
                                               }
                                             });
@@ -225,7 +197,7 @@ class _AppLayoutState extends State<AppLayout> {
                   child: RightToolbox(
                       toolboxState: toolboxState,
                       selectState: selectState,
-                      userActions: userActions),
+                      userActions: widget.userActions),
                 ),
               )
             ],
