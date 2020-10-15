@@ -132,7 +132,7 @@ class _AppLayoutState extends State<AppLayout> {
                   }
                 },
                 child: Toolbox(
-                  // currentUserStore: currentUserStore,
+                    // currentUserStore: currentUserStore,
                     toolboxState: toolboxState,
                     selectState: selectState,
                     userActions: userActions),

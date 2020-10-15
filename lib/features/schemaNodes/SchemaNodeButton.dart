@@ -115,9 +115,9 @@ class SchemaNodeButton extends SchemaNode {
               BorderRadius.circular(properties['BorderRadiusValue'].value),
           border: properties['Border'].value
               ? Border.all(
-              width: properties['BorderWidth'].value,
-              color: getThemeColor(
-                  themeStore.currentTheme, properties['BorderColor']))
+                  width: properties['BorderWidth'].value,
+                  color: getThemeColor(
+                      themeStore.currentTheme, properties['BorderColor']))
               : null),
       child: Column(
         mainAxisAlignment: properties['MainAlignment'].value,

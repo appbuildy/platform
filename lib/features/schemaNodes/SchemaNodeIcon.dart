@@ -85,7 +85,7 @@ class SchemaNodeIcon extends SchemaNode {
           properties['Icon'].value,
           size: properties['IconSize'].value,
           color:
-          getThemeColor(themeStore.currentTheme, properties['IconColor']),
+              getThemeColor(themeStore.currentTheme, properties['IconColor']),
         ),
       ),
     );

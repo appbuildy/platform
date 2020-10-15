@@ -33,14 +33,14 @@ class ListTemplateCards extends ListTemplate {
                     print('KEK ${item.value}');
                     (actions['Tap'] as Functionable).toFunction(userActions)();
                   }
-            },
-            child: widgetFor(
-                item: item,
-                elements: properties['Elements'].value,
-                currentTheme: currentTheme,
-                properties: properties),
-          );
-        })
+                },
+                child: widgetFor(
+                    item: item,
+                    elements: properties['Elements'].value,
+                    currentTheme: currentTheme,
+                    properties: properties),
+              );
+            })
             .toList()
             .cast<Widget>());
   }
@@ -74,11 +74,12 @@ class ListTemplateCards extends ListTemplate {
     );
   }
 
-  Widget widgetFor({SchemaListItemsProperty item,
-    ListElements elements,
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties,
-    bool isPlayMode}) {
+  Widget widgetFor(
+      {SchemaListItemsProperty item,
+      ListElements elements,
+      MyTheme currentTheme,
+      Map<String, SchemaNodeProperty> properties,
+      bool isPlayMode}) {
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(
@@ -94,57 +95,57 @@ class ListTemplateCards extends ListTemplate {
                   ),
                   boxShadow: properties['BoxShadow'].value
                       ? [
-                    BoxShadow(
-                        color: getThemeColor(currentTheme,
-                            properties['BoxShadowColor'])
-                            .withOpacity(
-                            properties['BoxShadowOpacity'].value),
-                        blurRadius: properties['BoxShadowBlur'].value,
-                        offset: Offset(0.0, 2.0),
-                        spreadRadius: 0)
-                  ]
+                          BoxShadow(
+                              color: getThemeColor(currentTheme,
+                                      properties['BoxShadowColor'])
+                                  .withOpacity(
+                                      properties['BoxShadowOpacity'].value),
+                              blurRadius: properties['BoxShadowBlur'].value,
+                              offset: Offset(0.0, 2.0),
+                              spreadRadius: 0)
+                        ]
                       : []),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   elements.image != null
                       ? ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                          properties['ItemRadiusValue'].value),
-                      topRight: Radius.circular(
-                          properties['ItemRadiusValue'].value),
-                    ),
-                    child: Image.network(
-                      item.value[elements.image.column]?.data ?? '',
-                      fit: BoxFit.cover,
-                      height: 80,
-                      width: 351,
-                    ),
-                  )
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                                properties['ItemRadiusValue'].value),
+                            topRight: Radius.circular(
+                                properties['ItemRadiusValue'].value),
+                          ),
+                          child: Image.network(
+                            item.value[elements.image.column]?.data ?? '',
+                            fit: BoxFit.cover,
+                            height: 80,
+                            width: 351,
+                          ),
+                        )
                       : Container(),
                   elements.title != null
                       ? Padding(
-                    padding: EdgeInsets.only(
-                        left: 13,
-                        right: 13,
-                        top: 11.0,
-                        bottom: elements.subtitle != null ? 0 : 12),
-                    child: Text(
-                      item.value[elements.title.column]?.data ?? '',
-                      style: MyTextStyle.regularTitle,
-                    ),
-                  )
+                          padding: EdgeInsets.only(
+                              left: 13,
+                              right: 13,
+                              top: 11.0,
+                              bottom: elements.subtitle != null ? 0 : 12),
+                          child: Text(
+                            item.value[elements.title.column]?.data ?? '',
+                            style: MyTextStyle.regularTitle,
+                          ),
+                        )
                       : Container(),
                   elements.subtitle != null
                       ? Padding(
-                    padding: const EdgeInsets.only(
-                        left: 13, right: 13, top: 3, bottom: 12),
-                    child: Text(
-                      item.value[elements.subtitle.column]?.data ?? '',
-                      style: MyTextStyle.regularCaption,
-                    ),
-                  )
+                          padding: const EdgeInsets.only(
+                              left: 13, right: 13, top: 3, bottom: 12),
+                          child: Text(
+                            item.value[elements.subtitle.column]?.data ?? '',
+                            style: MyTextStyle.regularCaption,
+                          ),
+                        )
                       : Container(),
                 ],
               ),

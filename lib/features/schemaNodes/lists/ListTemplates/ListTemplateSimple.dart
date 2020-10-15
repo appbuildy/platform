@@ -23,25 +23,26 @@ class ListTemplateSimple extends ListTemplate {
             .values
             .map((item) {
               return GestureDetector(
-            onTap: () {
-              if (isPlayMode) {
-                print('ListTemplateSimple');
-              }
-            },
-            child: widgetFor(
-                item: item,
-                elements: properties['Elements'].value,
-                currentTheme: currentTheme,
-                properties: properties),
-          );
-        })
+                onTap: () {
+                  if (isPlayMode) {
+                    print('ListTemplateSimple');
+                  }
+                },
+                child: widgetFor(
+                    item: item,
+                    elements: properties['Elements'].value,
+                    currentTheme: currentTheme,
+                    properties: properties),
+              );
+            })
             .toList()
             .cast<Widget>());
   }
 
-  Widget rowStyle({Map<String, SchemaNodeProperty> properties,
-    UserActions userActions,
-    MyTheme currentTheme}) {
+  Widget rowStyle(
+      {Map<String, SchemaNodeProperty> properties,
+      UserActions userActions,
+      MyTheme currentTheme}) {
     return Column(children: [
       SizedBox(
         height: 15,
@@ -55,10 +56,11 @@ class ListTemplateSimple extends ListTemplate {
     ]);
   }
 
-  Widget widgetFor({SchemaListItemsProperty item,
-    ListElements elements,
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties}) {
+  Widget widgetFor(
+      {SchemaListItemsProperty item,
+      ListElements elements,
+      MyTheme currentTheme,
+      Map<String, SchemaNodeProperty> properties}) {
     return Row(
       children: [
         Expanded(
@@ -83,50 +85,50 @@ class ListTemplateSimple extends ListTemplate {
                 children: [
                   elements.image != null
                       ? Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image.network(
-                        item.value[elements.image.column]?.data ?? '',
-                        fit: BoxFit.cover,
-                        width: 36,
-                        height: 36,
-                      ),
-                    ),
-                  )
+                          padding: const EdgeInsets.only(right: 12),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.network(
+                              item.value[elements.image.column]?.data ?? '',
+                              fit: BoxFit.cover,
+                              width: 36,
+                              height: 36,
+                            ),
+                          ),
+                        )
                       : Container(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       elements.title != null
                           ? Text(
-                        item.value[elements.title.column]?.data ?? '',
-                        style: MyTextStyle.regularTitle,
-                      )
+                              item.value[elements.title.column]?.data ?? '',
+                              style: MyTextStyle.regularTitle,
+                            )
                           : Container(),
                       elements.subtitle != null
                           ? Padding(
-                        padding: const EdgeInsets.only(top: 3),
-                        child: Text(
-                          item.value[elements.subtitle.column]?.data ??
-                              '',
-                          style: MyTextStyle.regularCaption,
-                        ),
-                      )
+                              padding: const EdgeInsets.only(top: 3),
+                              child: Text(
+                                item.value[elements.subtitle.column]?.data ??
+                                    '',
+                                style: MyTextStyle.regularCaption,
+                              ),
+                            )
                           : Container(),
                     ],
                   ),
                   elements.navigationIcon != null
                       ? Expanded(
-                    child: Container(),
-                  )
+                          child: Container(),
+                        )
                       : Container(),
                   elements.navigationIcon != null
                       ? FaIcon(
-                    FontAwesomeIcons.chevronRight,
-                    color: currentTheme.separators.color,
-                    size: 18,
-                  )
+                          FontAwesomeIcons.chevronRight,
+                          color: currentTheme.separators.color,
+                          size: 18,
+                        )
                       : Container()
                 ],
               ),

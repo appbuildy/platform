@@ -41,56 +41,54 @@ class BuildColorSelect extends StatelessWidget {
     }
 
     return Cursor(
-        cursor: CursorEnum.pointer,
-        child: GestureDetector(
-          onTap: showColorPicker,
-          child: HoverDecoration(
-            hoverDecoration: hoverDecoration,
-            defaultDecoration: defaultDecoration,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: 9, bottom: 8, left: 10, right: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: themeColor.color.darken(0.15)),
-                        borderRadius: BorderRadius.circular(3),
-                        color: themeColor.color),
-                  ),
-                  SizedBox(width: 12.0),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          child: Text(
-                            themeColor.name.toNormalCapitalizedString(),
+      cursor: CursorEnum.pointer,
+      child: GestureDetector(
+        onTap: showColorPicker,
+        child: HoverDecoration(
+          hoverDecoration: hoverDecoration,
+          defaultDecoration: defaultDecoration,
+          child: Padding(
+            padding: EdgeInsets.only(top: 9, bottom: 8, left: 10, right: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 18,
+                  height: 18,
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          width: 1, color: themeColor.color.darken(0.15)),
+                      borderRadius: BorderRadius.circular(3),
+                      color: themeColor.color),
+                ),
+                SizedBox(width: 12.0),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        child: Text(
+                          themeColor.name.toNormalCapitalizedString(),
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
-                        ),
-                        Text(
-                          '#${themeColor.color.value.toRadixString(16)
-                              .substring(2)
-                              .toUpperCase()}',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text(
+                        '#${themeColor.color.value.toRadixString(16).substring(2).toUpperCase()}',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  Image.network(
-                    'assets/icons/meta/expand-vertical.svg',
-                    color: MyColors.iconGray,
-                  ),
-                ],
-              ),
+                ),
+                Image.network(
+                  'assets/icons/meta/expand-vertical.svg',
+                  color: MyColors.iconGray,
+                ),
+              ],
             ),
           ),
         ),
+      ),
     );
   }
 }
