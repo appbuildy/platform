@@ -1,6 +1,5 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -41,15 +40,15 @@ void main() {
       expect(list.value['123'].value['Test'].data, equals('333'));
     });
   });
-
-  group('SchemaRemoteProperty remoteValue', () {
-    test('it fetches from remote', () async {
-      final RemoteTextValue rText = MockText('123');
-      final prop = SchemaRemoteStringProperty('Name', 'Value', rText);
-      final value = await prop.remoteValue;
-      expect(value, equals('123'));
-    });
-  });
+  // тестируемый класс закоментирован
+  // group('SchemaRemoteProperty remoteValue', () {
+  //   test('it fetches from remote', () async {
+  //     final RemoteTextValue rText = MockText('123');
+  //     final prop = SchemaRemoteStringProperty('Name', 'Value', rText);
+  //     final value = await prop.remoteValue;
+  //     expect(value, equals('123'));
+  //   });
+  // });
 
   group('copy()', () {
     test('performs deep copy', () {
