@@ -74,11 +74,12 @@ class ListTemplateCards extends ListTemplate {
     );
   }
 
-  Widget widgetFor({SchemaListItemsProperty item,
-    ListElements elements,
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties,
-    bool isPlayMode}) {
+  Widget widgetFor(
+      {SchemaListItemsProperty item,
+      ListElements elements,
+      MyTheme currentTheme,
+      Map<String, SchemaNodeProperty> properties,
+      bool isPlayMode}) {
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(

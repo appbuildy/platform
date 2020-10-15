@@ -195,7 +195,7 @@ class UserActions {
   void repositionAndResize(SchemaNode updatedNode,
       [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
     final action =
-    RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
+        RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
 
     action.execute(prevValue);
     if (isAddedToDoneActions) {

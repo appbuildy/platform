@@ -85,17 +85,17 @@ class ListTemplateSimple extends ListTemplate {
                 children: [
                   elements.image != null
                       ? Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Image.network(
-                        item.value[elements.image.column]?.data ?? '',
-                        fit: BoxFit.cover,
-                        width: 36,
-                        height: 36,
-                      ),
-                    ),
-                  )
+                          padding: const EdgeInsets.only(right: 12),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Image.network(
+                              item.value[elements.image.column]?.data ?? '',
+                              fit: BoxFit.cover,
+                              width: 36,
+                              height: 36,
+                            ),
+                          ),
+                        )
                       : Container(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
