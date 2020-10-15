@@ -11,8 +11,11 @@ class ProjectSetupMiddleware extends StatefulWidget {
 }
 
 class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
+  final int minLoadingAnimationDurationTime = 1000;
+
   UserActions userActions;
   OverlayEntry _overlayEntry;
+  Stopwatch animationStopwatch;
 
   OverlayEntry _renderLoadingOverlay() {
     return OverlayEntry(builder: (BuildContext context) => ProjectLoadingAnimation());
@@ -21,7 +24,14 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
   void setupProject() async {
     await userActions.loadProject();
 
-    _overlayEntry.remove();
+    int elapsedTime = animationStopwatch.elapsedMilliseconds;
+
+    if (elapsedTime > minLoadingAnimationDurationTime) {
+      _overlayEntry.remove();
+    } else {
+      Future.delayed(Duration(milliseconds: minLoadingAnimationDurationTime - elapsedTime))
+          .then((value) { print(animationStopwatch.elapsedMilliseconds); _overlayEntry.remove(); });
+    }
   }
 
   void initState() {
@@ -31,6 +41,8 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Overlay.of(context).insert(this._overlayEntry);
+      animationStopwatch = Stopwatch()..start();
+
       this.setupProject();
     });
 
