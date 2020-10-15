@@ -30,7 +30,7 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
       _overlayEntry.remove();
     } else {
       Future.delayed(Duration(milliseconds: minLoadingAnimationDurationTime - elapsedTime))
-          .then((value) { print(animationStopwatch.elapsedMilliseconds); _overlayEntry.remove(); });
+          .then((value) => _overlayEntry.remove());
     }
   }
 
