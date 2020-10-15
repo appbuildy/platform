@@ -110,19 +110,19 @@ class ListTemplateCards extends ListTemplate {
                 children: [
                   elements.image != null
                       ? ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(
-                          properties['ItemRadiusValue'].value),
-                      topRight: Radius.circular(
-                          properties['ItemRadiusValue'].value),
-                    ),
-                    child: Image.network(
-                      item.value[elements.image.column]?.data ?? '',
-                      fit: BoxFit.cover,
-                      height: 80,
-                      width: 351,
-                    ),
-                  )
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(
+                                properties['ItemRadiusValue'].value),
+                            topRight: Radius.circular(
+                                properties['ItemRadiusValue'].value),
+                          ),
+                          child: Image.network(
+                            item.value[elements.image.column]?.data ?? '',
+                            fit: BoxFit.cover,
+                            height: 80,
+                            width: 351,
+                          ),
+                        )
                       : Container(),
                   elements.title != null
                       ? Padding(

@@ -108,13 +108,13 @@ class ListTemplateSimple extends ListTemplate {
                           : Container(),
                       elements.subtitle != null
                           ? Padding(
-                        padding: const EdgeInsets.only(top: 3),
-                        child: Text(
-                          item.value[elements.subtitle.column]?.data ??
-                              '',
-                          style: MyTextStyle.regularCaption,
-                        ),
-                      )
+                              padding: const EdgeInsets.only(top: 3),
+                              child: Text(
+                                item.value[elements.subtitle.column]?.data ??
+                                    '',
+                                style: MyTextStyle.regularCaption,
+                              ),
+                            )
                           : Container(),
                     ],
                   ),
