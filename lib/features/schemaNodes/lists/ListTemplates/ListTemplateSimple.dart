@@ -125,10 +125,10 @@ class ListTemplateSimple extends ListTemplate {
                       : Container(),
                   elements.navigationIcon != null
                       ? FaIcon(
-                    FontAwesomeIcons.chevronRight,
-                    color: currentTheme.separators.color,
-                    size: 18,
-                  )
+                          FontAwesomeIcons.chevronRight,
+                          color: currentTheme.separators.color,
+                          size: 18,
+                        )
                       : Container()
                 ],
               ),

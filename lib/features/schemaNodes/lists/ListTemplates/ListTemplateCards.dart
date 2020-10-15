@@ -139,13 +139,13 @@ class ListTemplateCards extends ListTemplate {
                       : Container(),
                   elements.subtitle != null
                       ? Padding(
-                    padding: const EdgeInsets.only(
-                        left: 13, right: 13, top: 3, bottom: 12),
-                    child: Text(
-                      item.value[elements.subtitle.column]?.data ?? '',
-                      style: MyTextStyle.regularCaption,
-                    ),
-                  )
+                          padding: const EdgeInsets.only(
+                              left: 13, right: 13, top: 3, bottom: 12),
+                          child: Text(
+                            item.value[elements.subtitle.column]?.data ?? '',
+                            style: MyTextStyle.regularCaption,
+                          ),
+                        )
                       : Container(),
                 ],
               ),
