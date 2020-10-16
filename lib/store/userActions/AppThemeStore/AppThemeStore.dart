@@ -8,7 +8,7 @@ class AppThemeStore = _AppThemeStore with _$AppThemeStore;
 
 abstract class _AppThemeStore with Store {
   @observable
-  MyTheme currentTheme;
+  MyTheme currentTheme = MyThemes.allThemes['blue'];
 
   @action
   void setTheme(MyTheme theme) {

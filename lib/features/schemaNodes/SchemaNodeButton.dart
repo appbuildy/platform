@@ -28,7 +28,7 @@ class SchemaNodeButton extends SchemaNode {
   SchemaNodeButton({
     Offset position,
     Offset size,
-    @required AppThemeStore themeStore,
+    AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
     String text,
@@ -38,7 +38,7 @@ class SchemaNodeButton extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(343.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.themeStore = themeStore;
+    this.themeStore = themeStore ?? AppThemeStore();
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
@@ -111,8 +111,8 @@ class SchemaNodeButton extends SchemaNode {
                       spreadRadius: 0)
                 ]
               : [],
-          borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value),
+          borderRadius: BorderRadius.circular(
+              properties['BorderRadiusValue'].value.toDouble()),
           border: properties['Border'].value
               ? Border.all(
                   width: properties['BorderWidth'].value,
@@ -127,7 +127,7 @@ class SchemaNodeButton extends SchemaNode {
             properties['Text'].value,
             style: TextStyle(
                 fontWeight: properties['FontWeight'].value,
-                fontSize: properties['FontSize'].value,
+                fontSize: properties['FontSize'].value.toDouble(),
                 color: getThemeColor(
                     themeStore.currentTheme, properties['FontColor'])),
           ),

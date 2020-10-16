@@ -33,6 +33,7 @@ void main() {
         position: Offset(2222, 2),
         size: Offset(22, 33));
     schemaStore.add(btn);
+    userActions.selectNodeForEdit(btn);
 
     final testWidget = MaterialApp(
         title: 'Test',
