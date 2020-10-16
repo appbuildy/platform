@@ -1,5 +1,5 @@
 # flutter_app
-
+[![Build Status](https://github.com/appbuildy/platform/workflows/flutter%20drive/badge.svg?branch=master)](https://github.com/ksheremet/flutter_actions/actions?query=workflow%3A"flutter+drive"+branch%3Amaster)
 # Развернуть проект
 
 1. Клонируем репо.
