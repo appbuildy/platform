@@ -8,6 +8,7 @@ import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/ui/AllActions.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 
 class MockAction extends Mock implements SchemaNodeProperty<String> {
   String value;
@@ -42,7 +43,9 @@ void main() {
           child: allActions,
         )));
 
-    await tester.pumpWidget(testWidget);
-    expect(find.byType(Column), findsNWidgets(1));
+    mockNetworkImagesFor(() async {
+      await tester.pumpWidget(testWidget);
+      expect(find.byType(Column), findsNWidgets(1));
+    });
   });
 }
