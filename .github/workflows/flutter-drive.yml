@@ -23,9 +23,9 @@ jobs:
         # Contains a sequence of tasks.
       steps:
         # A name for your step to display on GitHub.
-        - name: "List all simulators"
+      - name: "List all simulators"
       run: "xcrun instruments -s"
-        - name: "Start Simulator"
+      - name: "Start Simulator"
       run: |
         UDID=$(
         xcrun instruments -s |
