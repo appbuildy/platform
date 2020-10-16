@@ -1,5 +1,6 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,6 +34,19 @@ class MockText extends Mock implements RemoteTextValue {
 }
 
 void main() {
+  group('.fromJson', () {
+    test('with button', () {
+      final Map<String, dynamic> targetJson = {
+        'propertyClass': 'SchemaStringProperty',
+        'name': 'Text',
+        'value': 'Random'
+      };
+
+      final element = SchemaNodeProperty.deserializeFromJson(targetJson);
+      expect(element, isA<SchemaStringProperty>());
+    });
+  });
+
   group('SchemaStringListProperty', () {
     test('fromRemoteTable', () async {
       final SchemaStringListProperty list =
@@ -40,15 +54,6 @@ void main() {
       expect(list.value['123'].value['Test'].data, equals('333'));
     });
   });
-  // тестируемый класс закоментирован
-  // group('SchemaRemoteProperty remoteValue', () {
-  //   test('it fetches from remote', () async {
-  //     final RemoteTextValue rText = MockText('123');
-  //     final prop = SchemaRemoteStringProperty('Name', 'Value', rText);
-  //     final value = await prop.remoteValue;
-  //     expect(value, equals('123'));
-  //   });
-  // });
 
   group('copy()', () {
     test('performs deep copy', () {
