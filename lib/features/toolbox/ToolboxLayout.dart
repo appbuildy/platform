@@ -8,6 +8,7 @@ import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MyModal.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -147,25 +148,37 @@ class ToolboxLayout extends StatelessWidget {
                             SizedBox(
                               height: 12,
                             ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: MyColors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        blurRadius: 5,
-                                        spreadRadius: 0,
-                                        offset: Offset(0, 2),
-                                        color: MyColors.black.withOpacity(0.2))
-                                  ]),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 4, bottom: 6, left: 12, right: 12),
-                                child: Text('Request Feature',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: MyColors.textBlue,
-                                        fontWeight: FontWeight.w600)),
+                            Cursor(
+                              cursor: CursorEnum.pointer,
+                              child: GestureDetector(
+                                onTap: () {
+                                  MyModal.show(
+                                    context: context,
+                                    child: Text('модал очка'),
+                                    onClose: () { print('kekmek'); }
+                                  );
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: MyColors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 5,
+                                            spreadRadius: 0,
+                                            offset: Offset(0, 2),
+                                            color: MyColors.black.withOpacity(0.2))
+                                      ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 4, bottom: 6, left: 12, right: 12),
+                                    child: Text('Request Feature',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: MyColors.textBlue,
+                                            fontWeight: FontWeight.w600)),
+                                  ),
+                                ),
                               ),
                             )
                           ],

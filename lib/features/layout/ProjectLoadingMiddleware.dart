@@ -17,39 +17,45 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
   OverlayEntry _overlayEntry;
   Stopwatch animationStopwatch;
 
-  OverlayEntry _renderLoadingOverlay() {
-    return OverlayEntry(builder: (BuildContext context) => ProjectLoadingAnimation());
-  }
-
-  void setupProject(Function endLoadingAnimation) async {
-    await userActions.loadProject();
-
-    int elapsedTime = animationStopwatch.elapsedMilliseconds;
-
-    if (elapsedTime > minLoadingAnimationDurationTime) {
-      endLoadingAnimation();
-    } else {
-      Future.delayed(Duration(milliseconds: minLoadingAnimationDurationTime - elapsedTime))
-          .then((value) => endLoadingAnimation());
-    }
-  }
-
   void initState() {
     userActions = setupUserActions();
 
+    this.startLoadingAnimation(onStart: this.setupProject);
+
+    super.initState();
+  }
+
+  void startLoadingAnimation({@required Function onStart}) {
     this._overlayEntry = this._renderLoadingOverlay();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Overlay.of(context).insert(this._overlayEntry);
+
       animationStopwatch = Stopwatch()..start();
 
-      this.setupProject(() {
-        _overlayEntry.remove();
-        animationStopwatch.stop();
-      });
+      onStart();
     });
+  }
 
-    super.initState();
+  OverlayEntry _renderLoadingOverlay() {
+    return OverlayEntry(builder: (BuildContext context) => ProjectLoadingAnimation());
+  }
+
+  void setupProject() async {
+    await userActions.loadProject();
+
+    this.endLoadingAnimation();
+  }
+
+  void endLoadingAnimation() async {
+    int elapsedTime = animationStopwatch.elapsedMilliseconds;
+
+    if (elapsedTime < minLoadingAnimationDurationTime) {
+      await Future.delayed(Duration(milliseconds: minLoadingAnimationDurationTime - elapsedTime));
+    }
+
+    _overlayEntry.remove();
+    animationStopwatch.stop();
   }
 
   @override
