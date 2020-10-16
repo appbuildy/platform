@@ -24,7 +24,7 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
 
     this.value = MyThemeProp(
       name: jsonTarget['value']['name'],
-      color: Color(int.parse(jsonTarget['value']['color'])),
+      color: Color(int.parse(jsonTarget['value']['color'].toString())),
     );
   }
 

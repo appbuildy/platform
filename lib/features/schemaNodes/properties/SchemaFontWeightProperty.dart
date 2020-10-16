@@ -16,7 +16,7 @@ class SchemaFontWeightProperty extends SchemaNodeProperty<FontWeight> {
   SchemaFontWeightProperty.fromJson(Map<String, dynamic> targetJson)
       : super('FontWeight', null) {
     this.name = targetJson['name'];
-    final fontIndex = int.parse(targetJson['value']);
+    final fontIndex = int.parse(targetJson['value'].toString());
     final deserializedFont =
         FontWeight.values.firstWhere((font) => font.index == fontIndex);
     this.value = deserializedFont;

@@ -7,7 +7,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaColorProperty.
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListTemplateProperty.dart';
@@ -64,7 +63,7 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
           return SchemaIntProperty.fromJson(targetJson);
         }
         break;
-      case 'SchemaBoolPropery':
+      case 'SchemaBoolProperty':
         {
           return SchemaBoolProperty.fromJson(targetJson);
         }
@@ -120,8 +119,12 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
           return SchemaStringListProperty.fromJson(targetJson);
         }
         break;
+      default:
+        {
+          print("Failed to deserialize $targetJson");
+        }
     }
-    return SchemaStringProperty.fromJson(targetJson);
+    return null;
   }
 
   SchemaNodeProperty.fromJson(Map<String, dynamic> targetJson) {

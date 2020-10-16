@@ -21,6 +21,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
           return SchemaNodeButton(
               position: _loadPosition(),
               size: _loadSize(),
+              properties: _loadProperies(),
               themeStore: themeStore);
         }
         break;
@@ -30,18 +31,22 @@ class ComponentLoadedFromJson implements IComponentLoader {
   }
 
   Offset _loadPosition() {
-    double x = jsonComponent['position']['x'];
-    double y = jsonComponent['position']['y'];
+    double x = jsonComponent['position']['x'].toDouble();
+    double y = jsonComponent['position']['y'].toDouble();
     return Offset(x.toDouble(), y.toDouble());
   }
 
   Offset _loadSize() {
-    double x = jsonComponent['size']['x'];
-    double y = jsonComponent['size']['y'];
+    double x = jsonComponent['size']['x'].toDouble();
+    double y = jsonComponent['size']['y'].toDouble();
     return Offset(x.toDouble(), y.toDouble());
   }
 
-  SchemaNodeProperty _loadProperty() {
-    final Map<String, SchemaNodeProperty> props = {};
+  Map<String, SchemaNodeProperty> _loadProperies() {
+    final Map<String, SchemaNodeProperty> deserialized = {};
+    jsonComponent['properties'].forEach((key, val) {
+      deserialized[key] = SchemaNodeProperty.deserializeFromJson(val);
+    });
+    return deserialized;
   }
 }

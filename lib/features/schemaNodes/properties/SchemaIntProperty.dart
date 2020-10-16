@@ -14,7 +14,7 @@ class SchemaIntProperty extends SchemaNodeProperty<int> {
   SchemaIntProperty.fromJson(Map<String, dynamic> targetJson)
       : super('Int', null) {
     this.name = targetJson['name'];
-    this.value = int.parse(targetJson['value']);
+    this.value = int.parse(targetJson['value'].toString());
   }
 
   @override

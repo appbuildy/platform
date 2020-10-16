@@ -14,7 +14,7 @@ class SchemaDoubleProperty extends SchemaNodeProperty<double> {
   SchemaDoubleProperty.fromJson(Map<String, dynamic> targetJson)
       : super('Double', null) {
     this.name = targetJson['name'];
-    this.value = double.parse(targetJson['value']);
+    this.value = double.parse(targetJson['value'].toString());
   }
 
   @override

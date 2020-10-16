@@ -18,7 +18,7 @@ class SchemaMainAlignmentProperty
       : super('MainAlign', null) {
     this.name = jsonTarget['name'];
 
-    final int mainAlignItemIndex = int.parse(jsonTarget['value']);
+    final int mainAlignItemIndex = int.parse(jsonTarget['value'].toString());
     final MainAxisAlignment mainAlignItem = MainAxisAlignment.values
         .firstWhere((alignItem) => alignItem.index == mainAlignItemIndex);
 

@@ -18,7 +18,7 @@ class SchemaCrossAlignmentProperty
       : super('CrossAlign', null) {
     this.name = jsonTarget['name'];
 
-    final int crossAlignItemIndex = int.parse(jsonTarget['value']);
+    final int crossAlignItemIndex = int.parse(jsonTarget['value'].toString());
     final CrossAxisAlignment crossAlignItem = CrossAxisAlignment.values
         .firstWhere((alignItem) => alignItem.index == crossAlignItemIndex);
 
