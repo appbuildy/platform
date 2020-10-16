@@ -31,7 +31,7 @@ void main() {
       final newCalculatedOffset =
           newPosition.calculate(350.0, 750.0, Offset(80, 80));
 
-      expect(newCalculatedOffset.dx, equals(-54.0));
+      expect(newCalculatedOffset.dx, equals(0));
     });
   });
 }
