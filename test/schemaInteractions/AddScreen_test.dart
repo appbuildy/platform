@@ -20,6 +20,6 @@ void main() {
     action.execute();
 
     expect(screensStore.screens.length, equals(1));
-    expect(screensStore.screens.last.name, equals('screen_1'));
+    expect(screensStore.screens.last.name, equals('Page 1'));
   });
 }

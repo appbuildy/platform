@@ -21,14 +21,15 @@ class AddScreen extends BaseAction {
     this.name = '',
     this.screensStore,
     this.detailedInfo,
-    @required this.backgroundColor,
+    this.backgroundColor,
   });
 
   @override
   void execute() {
     executed = true;
     final newName = name.isEmpty ? _generatedNameForNewScreen() : name;
-    final newComponents = components != null ? components : [];
+    final newComponents =
+        components != null ? components : List<SchemaNode>.of([]);
 
     final newBottomTabsVisible =
         bottomTabsVisible != null ? bottomTabsVisible : true;
@@ -37,7 +38,8 @@ class AddScreen extends BaseAction {
       bottomTabsVisible: newBottomTabsVisible,
       name: newName,
       detailedInfo: detailedInfo,
-      backgroundColor: this.backgroundColor,
+      backgroundColor: this.backgroundColor ??
+          MyThemeProp(name: 'background', color: Color(0xFFffffff)),
     );
 
     screensStore.createScreen(createdScreen);

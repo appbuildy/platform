@@ -24,7 +24,7 @@ class SchemaNodeText extends SchemaNode {
   SchemaNodeText(
       {Offset position,
       Offset size,
-      @required AppThemeStore themeStore,
+      AppThemeStore themeStore,
       Map<String, SchemaNodeProperty> properties,
       String column,
       String text,
@@ -34,7 +34,7 @@ class SchemaNodeText extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(343.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.themeStore = themeStore;
+    this.themeStore = themeStore ?? AppThemeStore();
 
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
