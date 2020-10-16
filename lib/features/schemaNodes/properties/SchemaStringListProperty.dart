@@ -20,7 +20,6 @@ class SchemaStringListProperty
         'Items', Map<String, SchemaListItemsProperty>());
 
     records['records'].forEach((record) {
-      print(record);
       final mapProps = Map<String, ListItem>();
       final prop = SchemaListItemsProperty(record['id'], mapProps);
       record['fields'].forEach((key, value) {
