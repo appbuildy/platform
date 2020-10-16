@@ -63,11 +63,12 @@ class _MyClickSelectState extends State<MyClickSelect> {
           border: Border.all(width: 1, color: MyColors.borderGray));
     }
 
-    final dynamic selectedOption = widget.selectedValue != null
-        ? widget.options
-            .where((option) => option.value == widget.selectedValue)
-            .first
-        : null;
+    final dynamic selectedOption =
+        widget.selectedValue != null && widget.options != null
+            ? widget.options.firstWhere(
+                (option) => option.value == widget.selectedValue,
+                orElse: () => null)
+            : null;
 
     bool isWithIcon = widget.defaultIcon != null ||
         (selectedOption != null && selectedOption.leftWidget != null);
