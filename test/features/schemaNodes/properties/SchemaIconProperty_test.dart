@@ -39,7 +39,7 @@ void main() {
       },
     };
 
-    final SchemaIconProperty iconProp = SchemaIconProperty.toJson(jsonTarget);
+    final SchemaIconProperty iconProp = SchemaIconProperty.fromJson(jsonTarget);
     expect(iconProp.name, equals('IC ON'));
 
     final IconData iconPropValue = iconProp.value;
