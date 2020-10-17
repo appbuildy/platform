@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/toolbox/TooboxSettings/Theme/ToolboxTheme.dart';
+import 'package:flutter_app/features/toolbox/TooboxSettings/Airtable/ToolboxAirtablePage.dart';
+import 'package:flutter_app/features/toolbox/TooboxSettings/Information/ToolboxInformationPage.dart';
+import 'package:flutter_app/features/toolbox/TooboxSettings/Theme/ToolboxThemePage.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
-enum SettingsEnum { info, theme, terms }
+enum SettingsEnum { information, theme, airtable, terms }
 
 class ToolboxSettings extends StatefulWidget {
   final UserActions userActions;
@@ -19,84 +22,60 @@ class ToolboxSettings extends StatefulWidget {
 
 class _ToolboxSettingsState extends State<ToolboxSettings>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation _animation;
-  SettingsEnum selectedSetting;
+  PageSliderController pageSliderController;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        value: 1, vsync: this, duration: Duration(milliseconds: 250));
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOutQuad,
-      reverseCurve: Curves.easeInOutQuad,
+
+    Map<SettingsEnum, Widget> sliderAnimationPages = {
+      SettingsEnum.information: BuildToolboxInformationPage(goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.theme: BuildToolboxThemePage(goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.airtable: BuildToolboxAirtablePage(goBackToSettings: goBack, userActions: widget.userActions),
+    };
+
+    pageSliderController = PageSliderController<SettingsEnum>(
+      vsync: this,
+      rootPage: _buildMain(),
+      pagesMap: sliderAnimationPages,
     );
   }
 
   void selectSetting(SettingsEnum setting) {
-    _controller.reverse();
-    setState(() {
-      selectedSetting = setting;
-    });
+    pageSliderController.to(setting);
   }
 
   void goBack() {
-    _controller.forward();
-    Future.delayed(Duration(milliseconds: 200), () {
-      setState(() {
-        selectedSetting = null;
-      });
-    });
+    pageSliderController.toRoot();
   }
 
   Widget buildItem(SettingsEnum setting) {
     Widget itemWidget;
 
-    final defaultDecoration = BoxDecoration(
-        gradient: MyGradients.plainWhite,
-        borderRadius: BorderRadius.circular(8));
-    final hoverDecoration = BoxDecoration(
-        gradient: MyGradients.lightGray,
-        borderRadius: BorderRadius.circular(8));
-
-    if (setting == SettingsEnum.theme) {
-      itemWidget = HoverDecoration(
-        defaultDecoration: defaultDecoration,
-        hoverDecoration: hoverDecoration,
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 16, top: 11, bottom: 11, right: 16),
-          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Image.network(
-              'assets/icons/settings/theme.svg',
-              width: 38,
-              height: 38,
-            ),
-            SizedBox(
-              width: 12,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Theme',
-                  style: MyTextStyle.regularTitle,
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                Text(
-                  "App colors",
-                  style: MyTextStyle.regularCaption,
-                ),
-              ],
-            )
-          ]),
-        ),
+    if (setting == SettingsEnum.information) {
+      itemWidget = BuildThemeToolboxItem(
+        iconPath: 'assets/icons/settings/information.svg',
+        title: 'Information',
+        subtitle: "Name, icon and description",
       );
     }
+
+    if (setting == SettingsEnum.theme) {
+      itemWidget = BuildThemeToolboxItem(
+        iconPath: 'assets/icons/settings/theme.svg',
+        title: 'Theme',
+        subtitle: "App colors",
+      );
+    }
+
+    if (setting == SettingsEnum.airtable) {
+      itemWidget = BuildThemeToolboxItem(
+        iconPath: 'assets/icons/settings/airtable.svg',
+        title: 'Airtable',
+        subtitle: 'Data connection',
+      );
+    }
+
     return Cursor(
       cursor: CursorEnum.pointer,
       child: GestureDetector(
@@ -117,68 +96,86 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
           child: Column(
-            children: [buildItem(SettingsEnum.theme)],
+            children: [
+              buildItem(SettingsEnum.information),
+              buildItem(SettingsEnum.theme),
+              buildItem(SettingsEnum.airtable),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget _buildSelectedSetting() {
-    return BuildToolboxThemePage(
-        goBackToSettings: goBack, userActions: widget.userActions);
-  }
-
-  Widget buildMain(slideFirst, slideSecond) {
-    return Stack(
-      children: [
-        Positioned(
-          child: Transform(
-              transform: Matrix4.identity()..translate(slideFirst),
-              child: _animation.value < 0.4
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildMain())),
-        ),
-        Positioned(
-          child: Transform(
-              transform: Matrix4.identity()..translate(slideSecond),
-              child: _animation.value == 1
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: toolboxWidth,
-                      child: _buildSelectedSetting())),
-        )
-      ],
+  @override
+  Widget build(BuildContext context) {
+    return PageSliderAnimator(
+      pageSliderController: pageSliderController,
+      maxSlide: 300,
+      slidesWidth: 311,
     );
   }
+}
+
+class BuildThemeToolboxItem extends StatelessWidget {
+  final String iconPath;
+  final String title;
+  final String subtitle;
+
+  BuildThemeToolboxItem({
+    this.iconPath,
+    this.title,
+    this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final maxSlide = 300;
-
-    return AnimatedBuilder(
-      builder: (BuildContext context, Widget child) {
-        double reversedValue = (_animation.value - 1) * -1;
-        double slideFirst = (-maxSlide / 2) * reversedValue;
-        double slideSecond = maxSlide * (_animation.value);
-
-        if (_animation.value > 0.09 && _animation.value < 0.8) {
-          return Container(
-            child: ClipRect(
-              child: buildMain(slideFirst, slideSecond),
-            ),
-          );
-        }
-
-        return Container(
-          child: buildMain(slideFirst, slideSecond),
-        );
-      },
-      animation: _animation,
+    final defaultDecoration = BoxDecoration(
+        gradient: MyGradients.plainWhite,
+        borderRadius: BorderRadius.circular(8));
+    final hoverDecoration = BoxDecoration(
+        gradient: MyGradients.lightGray,
+        borderRadius: BorderRadius.circular(8));
+    return HoverDecoration(
+      defaultDecoration: defaultDecoration,
+      hoverDecoration: hoverDecoration,
+      child: Container(
+        height: 70.0,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                iconPath,
+                width: 38,
+                height: 38,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: MyTextStyle.regularTitle,
+                  ),
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    subtitle,
+                    style: MyTextStyle.regularCaption,
+                  ),
+                ],
+              )
+            ]
+          ),
+        ),
+      ),
     );
   }
 }

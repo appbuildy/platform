@@ -7,6 +7,7 @@ class MyTextField extends StatefulWidget {
   final String defaultValue;
   final String value;
   final Function onChanged;
+  final bool enabled;
 
   const MyTextField({
     Key key,
@@ -14,6 +15,7 @@ class MyTextField extends StatefulWidget {
     @required this.onChanged,
     this.defaultValue,
     this.value,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -28,17 +30,6 @@ class _MyTextFieldState extends State<MyTextField> {
     _textEditingController =
         TextEditingController(text: widget.defaultValue ?? '');
   }
-
-//  @override
-//  void didUpdateWidget(MyTextField oldWidget) {
-//    super.didUpdateWidget(oldWidget);
-//    _textEditingController.value = TextEditingValue(
-//      text: widget.defaultValue,
-//      selection: TextSelection.fromPosition(
-//        TextPosition(offset: widget.defaultValue.length),
-//      ),
-//    );
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,29 +46,10 @@ class _MyTextFieldState extends State<MyTextField> {
         placeholderStyle: MyTextStyle.regularTitle,
         cursorColor: MyColors.black,
         cursorRadius: Radius.circular(0),
+        enabled: widget.enabled,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6),
             color: MyColors.white,
             border: Border.all(width: 1, color: MyColors.borderGray)));
   }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return TextField(
-//      controller: _textEditingController,
-//      onChanged: (String value) {
-//        widget.onChanged(value);
-//      },
-//      enableInteractiveSelection: true,
-//      textCapitalization: TextCapitalization.sentences,
-//      style: TextStyle(
-//        fontWeight: FontWeight.w500,
-//        fontSize: 18,
-//        fontFamily: 'ObjectSans',
-//        color: Colors.black,
-//      ),
-//      cursorColor: Colors.black,
-//      cursorRadius: Radius.circular(0),
-//    );
-//  }
 }
