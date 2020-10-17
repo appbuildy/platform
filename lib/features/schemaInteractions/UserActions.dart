@@ -91,8 +91,10 @@ class UserActions {
   Future<void> loadProject() async {
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
-      final Screens screens =
-          LoadedProject(_currentUserStore.project.data['canvas']).load();
+      final Screens screens = LoadedProject(
+              json: _currentUserStore.project.data['canvas'],
+              themeStore: _theme)
+          .load();
       final loadedFirstScreen = screens.all.screens.first;
       _screens.all.createScreen(loadedFirstScreen);
       _screens.selectByName(loadedFirstScreen.name);
