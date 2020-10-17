@@ -58,8 +58,6 @@ class UserActions {
     _theme = themeStore;
     _screens = screens;
     _currentUserStore = currentUserStore;
-
-    this.loadProject();
   }
 
   SchemaStore get currentScreen => _screens.current;

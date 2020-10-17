@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/features/appPreview/AppActions/UndoRedo.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -14,6 +15,7 @@ class AppActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: headerHeight,
       decoration: BoxDecoration(
           color: MyColors.white,
           border: Border(

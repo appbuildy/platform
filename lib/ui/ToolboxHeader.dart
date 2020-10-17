@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class ToolboxHeader extends StatelessWidget {
@@ -24,6 +25,7 @@ class ToolboxHeader extends StatelessWidget {
         );
 
     return Container(
+      height: headerHeight,
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
       child: Padding(
