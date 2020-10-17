@@ -19,9 +19,9 @@ class LoadedProject implements IProjectLoad {
 
   @override
   Screens load() {
-    final screen = SchemaStore(name: 'Home', components: _loadComponents());
-    final store = ScreensStore(screens: [screen]);
-    final current = CurrentScreen(screen);
+    final List<SchemaStore> loadedScreens = _loadScreens();
+    final store = ScreensStore(screens: loadedScreens);
+    final current = CurrentScreen(loadedScreens.first);
     final screens = Screens(store, current);
     _loadTheme();
 
@@ -29,7 +29,6 @@ class LoadedProject implements IProjectLoad {
   }
 
   void _loadTheme() {
-    print(jsonCanvas['theme']);
     if (jsonCanvas['theme'] == null) {
       return;
     }
@@ -37,13 +36,22 @@ class LoadedProject implements IProjectLoad {
     themeStore?.setTheme(MyTheme.fromJson(jsonCanvas['theme']));
   }
 
-  List<SchemaNode> _loadComponents() {
+  List<SchemaStore> _loadScreens() {
+    return jsonCanvas['screens']
+        .map((jsonScreen) {
+          return SchemaStore(
+              name: 'Home', components: _loadComponents(jsonScreen));
+        })
+        .toList()
+        .cast<SchemaStore>();
+  }
+
+  List<SchemaNode> _loadComponents(Map<String, dynamic> screenJson) {
     if (jsonCanvas['screens'] == null) {
       return List<SchemaNode>.of([]);
     }
 
-    return jsonCanvas['screens']
-        .first['components']
+    return screenJson['components']
         .map((component) {
           final loadedComponent = ComponentLoadedFromJson(component).load();
           if (themeStore != null) {

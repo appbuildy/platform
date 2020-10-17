@@ -95,9 +95,10 @@ class UserActions {
               json: _currentUserStore.project.data['canvas'],
               themeStore: _theme)
           .load();
-      final loadedFirstScreen = screens.all.screens.first;
-      _screens.all.createScreen(loadedFirstScreen);
-      _screens.selectByName(loadedFirstScreen.name);
+      screens.all.screens.forEach((screen) {
+        _screens.all.createScreen(screen);
+        _screens.selectByName(screen.name);
+      });
 
       this.startAutoSave();
     } catch (e) {

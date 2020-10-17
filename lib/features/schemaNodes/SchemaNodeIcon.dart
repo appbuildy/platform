@@ -46,7 +46,6 @@ class SchemaNodeIcon extends SchemaNode {
               'BoxShadowColor', this.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
         };
-    ;
   }
 
   @override
