@@ -16,24 +16,29 @@ class ListTemplateSimple extends ListTemplate {
   Widget toWidget(
       {MyTheme currentTheme,
       Map<String, SchemaNodeProperty> properties,
-      bool isPlayMode}) {
+      bool isPlayMode = false}) {
     return Column(
         children: properties['Items']
             .value
             .values
             .map((item) {
-              return GestureDetector(
-                onTap: () {
-                  if (isPlayMode) {
+              if (isPlayMode) {
+                return GestureDetector(
+                  onTap: () {
                     print('ListTemplateSimple');
-                  }
-                },
-                child: widgetFor(
-                    item: item,
-                    elements: properties['Elements'].value,
-                    currentTheme: currentTheme,
-                    properties: properties),
-              );
+                  },
+                  child: widgetFor(
+                      item: item,
+                      elements: properties['Elements'].value,
+                      currentTheme: currentTheme,
+                      properties: properties),
+                );
+              }
+              return widgetFor(
+                  item: item,
+                  elements: properties['Elements'].value,
+                  currentTheme: currentTheme,
+                  properties: properties);
             })
             .toList()
             .cast<Widget>());

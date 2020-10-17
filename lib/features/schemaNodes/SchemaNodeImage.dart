@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
@@ -93,6 +94,10 @@ class SchemaNodeImage extends SchemaNode {
         ),
       ),
     );
+  }
+
+  void updateOnColumnDataChange(UserActions userActions, String newValue) {
+    userActions.changePropertyTo(SchemaStringProperty("Url", newValue), false);
   }
 
   @override

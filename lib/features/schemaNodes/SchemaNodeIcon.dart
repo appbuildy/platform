@@ -19,6 +19,7 @@ class SchemaNodeIcon extends SchemaNode {
     Offset size,
     @required AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
+    GoToScreenAction tapAction,
     IconData icon,
     int iconSize,
     UniqueKey id,
@@ -29,7 +30,8 @@ class SchemaNodeIcon extends SchemaNode {
     this.themeStore = themeStore;
 
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions =
+        actions ?? {'Tap': tapAction ?? GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Icon':

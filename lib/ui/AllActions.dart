@@ -5,6 +5,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/store/userActions/AddScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
@@ -60,6 +61,7 @@ class _AllActionsState extends State<AllActions> {
       SchemaNodeIcon(
           themeStore: themeStore,
           position: Offset(14, 40),
+          tapAction: GoToScreenAction('Tap', detailedInfo.screenId),
           iconSize: 24,
           icon: FontAwesomeIcons.arrowLeft),
       SchemaNodeText(
@@ -91,13 +93,21 @@ class _AllActionsState extends State<AllActions> {
           column: listColumnsSample[3]),
     ];
 
-    widget.userActions.screens.createForList(
+    final addScreenAction = widget.userActions.screens.createForList(
         moveToLastAfterCreated: true,
         name: screenName,
         detailedInfo: detailedInfo,
         detailedComponents: detailedComponents);
 
-    widget.userActions.selectNodeForEdit(null);
+    // fucking async code, right?
+    Future.delayed(Duration(milliseconds: 0), () {
+      widget.userActions.changeActionTo(GoToScreenAction(
+          'Tap', (addScreenAction as AddScreen).createdScreen.id));
+
+      Future.delayed(Duration(milliseconds: 10), () {
+        widget.userActions.selectNodeForEdit(null);
+      });
+    });
   }
 
   @override
@@ -119,6 +129,9 @@ class _AllActionsState extends State<AllActions> {
                     if (selectedNode.type == SchemaNodeType.list) {
                       _createDetailedInfoForList(
                           selectedNode, selectedNode.properties['Table'].value);
+                      Future.delayed(Duration(milliseconds: 50), () {
+                        widget.userActions.selectNodeForEdit(null);
+                      });
                     }
                   }
                   isVisible = !isVisible;

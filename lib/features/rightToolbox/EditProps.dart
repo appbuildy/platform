@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
@@ -126,6 +127,11 @@ class EditProps extends StatelessWidget {
                                   userActions.changePropertyTo(
                                       SchemaStringProperty(
                                           'Column', element.value));
+                                  (selectedNode as SchemaNodeText)
+                                      .updateOnColumnDataChange(
+                                          userActions,
+                                          detailedInfo
+                                              .rowData[element.value].data);
                                 },
                                 options: columns
                                     .map((e) => SelectOption(e, e))

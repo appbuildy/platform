@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
@@ -106,6 +107,10 @@ class SchemaNodeText extends SchemaNode {
         ],
       ),
     );
+  }
+
+  void updateOnColumnDataChange (UserActions userActions, String newValue) {
+    userActions.changePropertyTo(SchemaStringProperty("Text", newValue), false);
   }
 
   @override

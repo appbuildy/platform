@@ -26,20 +26,27 @@ class ListTemplateCards extends ListTemplate {
             .value
             .values
             .map((item) {
-              return GestureDetector(
-                onTap: () {
-                  if (isPlayMode) {
-                    print('ListTemplateSimple');
-                    print('KEK ${item.value}');
-                    (actions['Tap'] as Functionable).toFunction(userActions)();
-                  }
-                },
-                child: widgetFor(
-                    item: item,
-                    elements: properties['Elements'].value,
-                    currentTheme: currentTheme,
-                    properties: properties),
-              );
+              if (isPlayMode) {
+                return GestureDetector(
+                  onTap: () {
+                    if (isPlayMode) {
+                      print('KEK ${item.value}');
+                      (actions['Tap'] as Functionable)
+                          .toFunction(userActions)();
+                    }
+                  },
+                  child: widgetFor(
+                      item: item,
+                      elements: properties['Elements'].value,
+                      currentTheme: currentTheme,
+                      properties: properties),
+                );
+              }
+              return widgetFor(
+                  item: item,
+                  elements: properties['Elements'].value,
+                  currentTheme: currentTheme,
+                  properties: properties);
             })
             .toList()
             .cast<Widget>());
