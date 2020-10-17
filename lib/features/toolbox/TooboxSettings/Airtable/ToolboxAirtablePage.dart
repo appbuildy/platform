@@ -33,7 +33,7 @@ class _BuildToolboxAirtablePageState extends State<BuildToolboxAirtablePage> {
         MyTextField(
           defaultValue: textFieldDefaultValue,
           onChanged: onTextFieldChange,
-          enabled: false,
+          disabled: true,
         ),
         SizedBox(height: 9.0),
         Text(subtitle, style: MyTextStyle.regularCaption),

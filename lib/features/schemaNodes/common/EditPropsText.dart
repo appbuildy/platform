@@ -41,6 +41,8 @@ class EditPropsText extends StatelessWidget {
           child: MyTextField(
             key: id,
             placeholder: placeholder,
+            disabled: properties['Column'] != null &&
+                properties['Column'].value != null,
             defaultValue: properties[propName].value,
             onChanged: (newText) {
               userActions.changePropertyTo(
