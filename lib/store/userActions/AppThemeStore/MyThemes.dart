@@ -80,7 +80,7 @@ class MyTheme {
     this.secondary = secondary;
     this.general = MyThemeProp(name: 'general', color: Color(0xFF111111));
     this.generalSecondary =
-        MyThemeProp(name: 'general_secondary', color: Color(0xFFbdbdbf));
+        MyThemeProp(name: 'general_secondary', color: Color(0xFF808080));
     this.generalInverted =
         MyThemeProp(name: 'general_inverted', color: Color(0xFFf9f9f9));
     this.separators = MyThemeProp(name: 'separators', color: Color(0xFFC2C2C6));

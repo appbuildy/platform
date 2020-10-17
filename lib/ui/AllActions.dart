@@ -51,6 +51,7 @@ class _AllActionsState extends State<AllActions> {
         gravity: Toast.TOP);
 
     final themeStore = widget.userActions.themeStore;
+
     final detailedComponents = [
       SchemaNodeImage(
           position: Offset(0, 0),
@@ -63,21 +64,31 @@ class _AllActionsState extends State<AllActions> {
           icon: FontAwesomeIcons.arrowLeft),
       SchemaNodeText(
           position: Offset(14, 220),
+          size: Offset(343, 35),
           themeStore: themeStore,
           text: detailedInfo.rowData[listColumnsSample[0]].data,
+          fontSize: 24,
+          fontWeight: FontWeight.w600,
           column: listColumnsSample[0]),
       SchemaNodeText(
-          position: Offset(14, 240),
+          position: Offset(14, 260),
+          size: Offset(343, 25),
           themeStore: themeStore,
           text: detailedInfo.rowData[listColumnsSample[1]].data,
+          fontWeight: FontWeight.w400,
+          color: themeStore.currentTheme.generalSecondary,
           column: listColumnsSample[1]),
+      SchemaNodeButton(
+          themeStore: themeStore,
+          position: Offset(14, 295),
+          text: 'Contact Us'),
       SchemaNodeText(
-          position: Offset(14, 380),
+          position: Offset(14, 360),
+          size: Offset(343, 300),
           themeStore: themeStore,
           text: detailedInfo.rowData[listColumnsSample[3]].data,
+          fontWeight: FontWeight.w400,
           column: listColumnsSample[3]),
-      SchemaNodeButton(
-          themeStore: themeStore, position: Offset(20, 300), text: 'Contact Us')
     ];
 
     widget.userActions.screens.createForList(

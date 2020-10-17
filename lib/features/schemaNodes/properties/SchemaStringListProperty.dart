@@ -38,15 +38,17 @@ class SchemaStringListProperty
             column: listColumnsSample[0], data: '\$539,990 | 3 Bedroom'),
         listColumnsSample[1]: ListItem(
           column: listColumnsSample[1],
-          data: '885-891 3rd Ave, San Bruno, CA 94066',
+          data: '885-891 3rd Ave, San Carlos, CA 94066',
         ),
         listColumnsSample[2]: ListItem(
           column: listColumnsSample[2],
           data:
               'https://images.unsplash.com/photo-1570129477492-45c003edd2be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80',
         ),
-        listColumnsSample[3]:
-            ListItem(column: listColumnsSample[3], data: "Lorem impsump"),
+        listColumnsSample[3]: ListItem(
+            column: listColumnsSample[3],
+            data:
+                "Incredible San Carlos 3-bedroom, 2-bathroom ranch style home located in the coveted Beverly Terrace neighborhood with amazing views of Brittan Canyon and the San Carlos hillside on an oversized 0.23 acre lot.  Featuring a completely remodeled kitchen with quartz counter tops, designer cabinetry, glass tile backsplash and stainless steel appliances. Remodeled bathrooms include elevated sinks, bright white makeup lights, expansive mirrors and tile flooring.  Upgraded double pane windows throughout the entire home and 5 "),
       }),
       'house_second': SchemaListItemsProperty('house_second', {
         listColumnsSample[0]: ListItem(
@@ -59,8 +61,10 @@ class SchemaStringListProperty
           data:
               'https://images.unsplash.com/photo-1591474200742-8e512e6f98f8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=80',
         ),
-        listColumnsSample[3]:
-            ListItem(column: listColumnsSample[3], data: "Lorem impsump"),
+        listColumnsSample[3]: ListItem(
+            column: listColumnsSample[3],
+            data:
+                "Welcome to 3939 4rd Ave, San Mateo, CA 94403, a private and incredibly special mid-century modern Eichler gem. Located in the heart of desirable Palo Verde this fully remodeled home's open floor plan and abundance of soothing natural light gives rise to a wonderful flow. All new appliances, countertops and flooring have been added throughout this gorgeous home to add a modern touch, enhancing the traditional intention of this space. The living room bathes in light and frames the serene and private, full wrap around yard, perfect for al-fresco di"),
       }),
       'house_third': SchemaListItemsProperty('house_third', {
         listColumnsSample[0]: ListItem(
@@ -73,8 +77,10 @@ class SchemaStringListProperty
           data:
               'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=80',
         ),
-        listColumnsSample[3]:
-            ListItem(column: listColumnsSample[3], data: "Lorem impsump"),
+        listColumnsSample[3]: ListItem(
+            column: listColumnsSample[3],
+            data:
+                "Unbeatable Palo Alto views and in the acclaimed Woodside School District, this extensively remodeled two-story 4 BR, 3.5 BA home was designed for indoor/outdoor living.  Features a 2-car attached garage, a recently added solar-fed pool/spa complex and cabana, a large rear lawn/playing field, a pergola-covered outdoor dining area, a detached sauna and a 200-vine Bordeaux-blend vineyard, this property feels like you are living in your own private retreat.  Its inviting Spanish Mission revival architecture is complemented by recently upgraded "),
       }),
     });
   }

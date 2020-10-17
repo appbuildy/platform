@@ -12,6 +12,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
@@ -28,6 +29,9 @@ class SchemaNodeText extends SchemaNode {
       Map<String, SchemaNodeProperty> properties,
       String column,
       String text,
+      MyThemeProp color,
+      int fontSize,
+      FontWeight fontWeight,
       UniqueKey id})
       : super() {
     this.type = SchemaNodeType.text;
@@ -41,9 +45,10 @@ class SchemaNodeText extends SchemaNode {
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),
           'FontColor': SchemaMyThemePropProperty(
-              'FontColor', this.themeStore.currentTheme.general),
-          'FontSize': SchemaIntProperty('FontSize', 16),
-          'FontWeight': SchemaFontWeightProperty('FontWeight', FontWeight.w500),
+              'FontColor', color ?? this.themeStore.currentTheme.general),
+          'FontSize': SchemaIntProperty('FontSize', fontSize ?? 16),
+          'FontWeight': SchemaFontWeightProperty(
+              'FontWeight', fontWeight ?? FontWeight.w500),
           'Column': SchemaStringProperty('Column', column ?? null),
           'MainAlignment': SchemaMainAlignmentProperty(
               'MainAlignment', MainAxisAlignment.start),
