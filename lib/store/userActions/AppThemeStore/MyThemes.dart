@@ -14,6 +14,22 @@ class MyThemeProp {
     return name == (other as MyThemeProp).name;
   }
 
+  MyThemeProp.fromJson(Map<String, dynamic> targetJson) {
+    this.color = Color.fromRGBO(targetJson['red'], targetJson['green'],
+        targetJson['blue'], targetJson['opacity']);
+    this.name = targetJson['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'red': color.red,
+      'green': color.green,
+      'blue': color.blue,
+      'opacity': color.opacity,
+      'name': name
+    };
+  }
+
   MyThemeProp({this.name, this.color}) : super();
 }
 
@@ -27,24 +43,43 @@ class MyTheme {
   MyThemeProp separators;
   MyThemeProp background;
 
-  MyThemeProp getThemePropByName(String name) {
-    if (name == 'primary') {
-      return primary;
-    } else if (name == 'secondary') {
-      return secondary;
-    } else if (name == 'general') {
-      return general;
-    } else if (name == 'general_secondary') {
-      return generalSecondary;
-    } else if (name == 'general_inverted') {
-      return generalInverted;
-    } else if (name == 'separators') {
-      return separators;
-    } else if (name == 'background') {
-      return background;
-    }
+  MyTheme.fromJson(Map<String, dynamic> targetJson) {
+    this.name = targetJson['name'];
+    this.primary = MyThemeProp.fromJson(targetJson['primary']);
+    this.secondary = MyThemeProp.fromJson(targetJson['secondary']);
+    this.general = MyThemeProp.fromJson(targetJson['general']);
+    this.generalSecondary =
+        MyThemeProp.fromJson(targetJson['general_secondary']);
+    this.generalInverted = MyThemeProp.fromJson(targetJson['general_inverted']);
+    this.separators = MyThemeProp.fromJson(targetJson['separators']);
+    this.background = MyThemeProp.fromJson(targetJson['background']);
+  }
 
-    return primary;
+  Map<String, dynamic> get props => {
+        'primary': primary,
+        'secondary': secondary,
+        'general': general,
+        'general_secondary': general,
+        'general_inverted': generalInverted,
+        'separators': separators,
+        'background': background
+      };
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': this.name,
+      'primary': primary.toJson(),
+      'secondary': secondary.toJson(),
+      'general': general.toJson(),
+      'general_secondary': general.toJson(),
+      'general_inverted': generalInverted.toJson(),
+      'separators': separators.toJson(),
+      'background': background.toJson()
+    };
+  }
+
+  MyThemeProp getThemePropByName(String name) {
+    return props[name] ?? primary;
   }
 
   List<MyThemeProp> getAllColors() {
