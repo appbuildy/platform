@@ -92,7 +92,7 @@ class UserActions {
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
       final Screens screens =
-      LoadedProject(_currentUserStore.project.data['canvas']).load();
+          LoadedProject(_currentUserStore.project.data['canvas']).load();
       final loadedFirstScreen = screens.all.screens.first;
       _screens.all.createScreen(loadedFirstScreen);
       _screens.selectByName(loadedFirstScreen.name);
@@ -128,7 +128,7 @@ class UserActions {
 
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      final converter = SchemaConverter(screens.all);
+      final converter = SchemaConverter(screens.all, _theme.currentTheme);
       _currentUserStore.project.save(converter, client: http.Client());
     });
   }

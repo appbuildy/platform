@@ -1,6 +1,7 @@
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
@@ -38,7 +39,8 @@ void main() {
       () async {
     final client = MockHttp();
     ScreensStore store = ScreensStore();
-    SchemaConverter converter = SchemaConverter(store);
+    SchemaConverter converter =
+        SchemaConverter(store, MyThemes.allThemes['blue']);
     await project.save(converter, client: client);
 
     verify(client.patch(url,

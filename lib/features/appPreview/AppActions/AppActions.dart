@@ -43,14 +43,7 @@ class AppActions extends StatelessWidget {
                               SelectOption(element.name, element.id))
                           .toList())),
             ),
-            MaterialButton(
-                onPressed: () {
-                  final json = SchemaConverter(userActions.screens.all)
-                      .toJson()
-                      .toString();
-                  print(json);
-                },
-                child: Text('Share')),
+            MaterialButton(onPressed: () {}, child: Text('Share')),
           ],
         ),
       ),
