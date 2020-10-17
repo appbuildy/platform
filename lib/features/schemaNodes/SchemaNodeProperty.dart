@@ -7,6 +7,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaColorProperty.
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListTemplateProperty.dart';
@@ -80,8 +81,7 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
         break;
       case 'SchemaIconProperty':
         {
-          // TODO: implement
-          //return SchemaIconProperty.fromJson(targetJson);
+          return SchemaIconProperty.fromJson(targetJson);
         }
         break;
       case 'SchemaCrossAlignmentProperty':

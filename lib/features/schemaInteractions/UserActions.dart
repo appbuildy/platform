@@ -100,8 +100,8 @@ class UserActions {
       _screens.selectByName(loadedFirstScreen.name);
 
       this.startAutoSave();
-    } catch (_) {
-      print('loadProject() error');
+    } catch (e) {
+      print('loadProject() error $e');
     }
   }
 
@@ -130,6 +130,7 @@ class UserActions {
 
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
+      print("Saved");
       final converter = SchemaConverter(screens.all, _theme.currentTheme);
       _currentUserStore.project.save(converter, client: http.Client());
     });

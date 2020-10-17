@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -34,13 +33,11 @@ class AddScreen extends BaseAction {
     final newBottomTabsVisible =
         bottomTabsVisible != null ? bottomTabsVisible : true;
     createdScreen = SchemaStore(
-      components: newComponents,
-      bottomTabsVisible: newBottomTabsVisible,
-      name: newName,
-      detailedInfo: detailedInfo,
-      backgroundColor: this.backgroundColor ??
-          MyThemeProp(name: 'background', color: Color(0xFFffffff)),
-    );
+        components: newComponents,
+        bottomTabsVisible: newBottomTabsVisible,
+        name: newName,
+        detailedInfo: detailedInfo,
+        backgroundColor: this.backgroundColor);
 
     screensStore.createScreen(createdScreen);
   }

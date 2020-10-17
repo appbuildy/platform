@@ -7,8 +7,8 @@ class SchemaConverter {
   SchemaConverter(this.screens, this.theme);
 
   Map<String, dynamic> toJson() => {
-        'theme': theme.toJson(),
         'canvas': {
+          'theme': theme.toJson(),
           'screens': screens.screens.map((screen) {
             return screen.toJson();
           }).toList()

@@ -29,14 +29,27 @@ class LoadedProject implements IProjectLoad {
   }
 
   void _loadTheme() {
+    print(jsonCanvas['theme']);
+    if (jsonCanvas['theme'] == null) {
+      return;
+    }
+
     themeStore?.setTheme(MyTheme.fromJson(jsonCanvas['theme']));
   }
 
   List<SchemaNode> _loadComponents() {
+    if (jsonCanvas['screens'] == null) {
+      return List<SchemaNode>.of([]);
+    }
+
     return jsonCanvas['screens']
         .first['components']
         .map((component) {
-          return ComponentLoadedFromJson(component).load();
+          final loadedComponent = ComponentLoadedFromJson(component).load();
+          if (themeStore != null) {
+            loadedComponent.themeStore = themeStore;
+          }
+          return loadedComponent;
         })
         .toList()
         .cast<SchemaNode>();

@@ -38,7 +38,8 @@ abstract class _SchemaStore with Store {
     this.detailedInfo = detailedInfo;
     this.id = id ?? UniqueKey();
     this.bottomTabsVisible = bottomTabsVisible ?? true;
-    this.backgroundColor = backgroundColor;
+    this.backgroundColor = backgroundColor ??
+        MyThemeProp(name: 'background', color: Color(0xFFffffff));
   }
 
   @observable

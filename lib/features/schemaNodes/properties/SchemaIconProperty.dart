@@ -17,12 +17,12 @@ class SchemaIconProperty extends SchemaNodeProperty<IconData> {
     };
   }
 
-  SchemaIconProperty.toJson(Map<String, dynamic> jsonTarget)
+  SchemaIconProperty.fromJson(Map<String, dynamic> jsonTarget)
       : super('Icon', null) {
     this.name = jsonTarget['name'];
 
     final jsonValue = jsonTarget['value'];
-    final int iconDataCodePoint = int.parse(jsonValue['codePoint']);
+    final int iconDataCodePoint = int.parse(jsonValue['codePoint'].toString());
     final String iconDataFontFamily = jsonValue['fontFamily'];
     final String iconDataFontPackage = jsonValue['fontPackage'];
     final bool iconDataMatchTextDirection = jsonValue['matchTextDirection'];

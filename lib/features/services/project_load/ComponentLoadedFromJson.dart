@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/services/project_load/IComponentLoader.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -23,6 +26,54 @@ class ComponentLoadedFromJson implements IComponentLoader {
               size: _loadSize(),
               properties: _loadProperies(),
               themeStore: themeStore);
+        }
+
+      case 'SchemaNodeType.text':
+        {
+          return SchemaNodeText(
+              position: _loadPosition(),
+              size: _loadSize(),
+              properties: _loadProperies(),
+              themeStore: themeStore);
+        }
+        break;
+
+      case 'SchemaNodeType.shape':
+        {
+          return SchemaNodeShape(
+              position: _loadPosition(),
+              size: _loadSize(),
+              properties: _loadProperies(),
+              themeStore: themeStore);
+        }
+        break;
+
+      case 'SchemaNodeType.icon':
+        {
+          return SchemaNodeIcon(
+              position: _loadPosition(),
+              size: _loadSize(),
+              properties: _loadProperies(),
+              themeStore: themeStore);
+        }
+        break;
+
+      case 'SchemaNodeType.list':
+        {
+          return SchemaNodeList(
+              listTemplateType: ListTemplateType.cards,
+              position: _loadPosition(),
+              size: _loadSize(),
+              properties: _loadProperies(),
+              themeStore: themeStore);
+        }
+        break;
+      case 'SchemaNodeType.image':
+        {
+          return SchemaNodeImage(
+              position: _loadPosition(),
+              size: _loadSize(),
+              properties: _loadProperies());
         }
         break;
     }
