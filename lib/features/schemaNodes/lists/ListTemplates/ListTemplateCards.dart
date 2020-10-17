@@ -32,7 +32,7 @@ class ListTemplateCards extends ListTemplate {
                     if (isPlayMode) {
                       print('KEK ${item.value}');
                       (actions['Tap'] as Functionable)
-                          .toFunction(userActions)();
+                          .toFunction(userActions)(item.value);
                     }
                   },
                   child: widgetFor(

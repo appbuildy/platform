@@ -78,7 +78,7 @@ class SchemaNodeImage extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({bool isPlayMode, UserActions userActions}) {
     return Container(
       width: size.dx,
       height: size.dy,

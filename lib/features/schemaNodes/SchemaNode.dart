@@ -44,7 +44,7 @@ abstract class SchemaNode {
         'actions': _jsonActions(),
         'type': this.type.toString()
       };
-  Widget toWidget({bool isPlayMode});
+  Widget toWidget({bool isPlayMode, UserActions userActions});
   Widget toEditProps(
     UserActions userActions,
   );

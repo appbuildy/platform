@@ -104,7 +104,7 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({bool isPlayMode, UserActions userActions}) {
     if (isPlayMode) {
       return Container(
           width: this.size.dx,
@@ -113,6 +113,8 @@ class SchemaNodeList extends SchemaNode {
             child: this.properties['Template'].value.toWidget(
                 currentTheme: this.themeStore.currentTheme,
                 properties: this.properties,
+                actions: this.actions,
+                userActions: userActions,
                 isPlayMode: isPlayMode),
           ));
     }

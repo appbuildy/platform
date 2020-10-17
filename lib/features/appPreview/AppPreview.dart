@@ -552,6 +552,10 @@ class _AppPreviewState extends State<AppPreview> {
                             child: GestureDetector(
                                 onTapDown: (details) {
                                   if (widget.isPlayMode) {
+                                    if (node.type == SchemaNodeType.list) {
+                                      // чтобы прокидывать данные на каждый айтем листа
+                                      return;
+                                    }
                                     (node.actions['Tap'] as Functionable)
                                         .toFunction(userActions)();
                                   } else {
@@ -565,7 +569,8 @@ class _AppPreviewState extends State<AppPreview> {
                                 },
                                 child: widget.isPlayMode
                                     ? node.toWidget(
-                                        isPlayMode: widget.isPlayMode)
+                                        isPlayMode: widget.isPlayMode,
+                                        userActions: widget.userActions)
                                     : renderWithSelected(
                                         node: node,
                                       )),

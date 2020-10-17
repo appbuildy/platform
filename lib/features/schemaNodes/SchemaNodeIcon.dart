@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
@@ -73,7 +74,7 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({bool isPlayMode, UserActions userActions}) {
     return Container(
       width: size.dx,
       height: size.dy,
