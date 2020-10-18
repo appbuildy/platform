@@ -4,7 +4,6 @@ import 'package:flutter_app/features/appPreview/AppActions/UndoRedo.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
-import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class AppActions extends StatelessWidget {
@@ -37,6 +36,11 @@ class AppActions extends StatelessWidget {
                       selectedValue: userActions.screens.current.id,
                       onChange: (option) {
                         userActions.screens.selectById(option.value);
+                      },
+                      onAdd: () {
+                        userActions.screens
+                            .create(moveToLastAfterCreated: true);
+                        userActions.selectNodeForEdit(null);
                       },
                       options: userActions.screens.all.screens
                           .map((element) =>

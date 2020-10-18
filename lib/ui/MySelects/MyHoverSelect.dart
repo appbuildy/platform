@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
+import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 import 'SelectOption.dart';
@@ -9,9 +10,10 @@ class MyHoverSelect extends StatefulWidget {
   final dynamic selectedValue;
   final List<SelectOption> options;
   final Function(SelectOption) onChange;
+  final Function() onAdd;
 
   const MyHoverSelect(
-      {Key key, this.selectedValue, this.options, this.onChange})
+      {Key key, this.selectedValue, this.options, this.onChange, this.onAdd})
       : super(key: key);
 
   @override
@@ -178,29 +180,48 @@ class _MyHoverSelectState extends State<MyHoverSelect> {
                     color: Colors.transparent,
                     child: Padding(
                       padding: EdgeInsets.only(top: size.height + 5),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                                width: 1, color: MyColors.borderGray),
-                            borderRadius: BorderRadius.circular(6)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: widget.options
-                              .map((option) => GestureDetector(
-                                    onTap: () {
-                                      widget.onChange(option);
-                                      this._overlayEntry.remove();
-                                      setState(() {
-                                        isOverlayOpen = false;
-                                      });
-                                    },
-                                    child: buildOption(option,
-                                        isFirst: firstValue == option.value,
-                                        isLast: lastValue == option.value),
-                                  ))
-                              .toList(),
-                        ),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    width: 1, color: MyColors.borderGray),
+                                borderRadius: BorderRadius.circular(6)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: widget.options
+                                  .map((option) => GestureDetector(
+                                        onTap: () {
+                                          widget.onChange(option);
+                                          this._overlayEntry.remove();
+                                          setState(() {
+                                            isOverlayOpen = false;
+                                          });
+                                        },
+                                        child: buildOption(option,
+                                            isFirst: firstValue == option.value,
+                                            isLast: lastValue == option.value),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: MyButton(
+                              text: 'Add Page',
+                              icon: Image.network(
+                                  'assets/icons/meta/btn-plus.svg'),
+                              onTap: () {
+                                widget.onAdd();
+                                this._overlayEntry.remove();
+                                setState(() {
+                                  isOverlayOpen = false;
+                                });
+                              },
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
