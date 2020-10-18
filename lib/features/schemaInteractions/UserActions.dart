@@ -44,11 +44,12 @@ class UserActions {
   RemoteSchemaPropertiesBinding _bindings;
   List<String> remoteTableNames;
 
-  UserActions(
-      {Screens screens,
-      CurrentUserStore currentUserStore,
-      BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+  UserActions({
+    Screens screens,
+    CurrentUserStore currentUserStore,
+    BottomNavigationStore bottomNavigationStore,
+    AppThemeStore themeStore
+  }) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
