@@ -19,6 +19,11 @@ class DetailedInfo {
     };
   }
 
+  DetailedInfo.fromJson(Map<String, dynamic> jsonVal) {
+    this.tableName = jsonVal['tableName'];
+    this.screenId = RandomKey.fromJson(jsonVal['screenId']);
+  }
+
   DetailedInfo(
       {@required String tableName,
       @required RandomKey screenId,
