@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaColorProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
@@ -48,81 +49,96 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
 
   static SchemaNodeProperty deserializeFromJson(
       Map<String, dynamic> targetJson) {
-    switch (targetJson['propertyClass']) {
-      case 'SchemaFontWeightProperty':
-        {
-          return SchemaFontWeightProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaDoubleProperty':
-        {
-          return SchemaDoubleProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaIntProperty':
-        {
-          return SchemaIntProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaBoolProperty':
-        {
-          return SchemaBoolProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaColorProperty':
-        {
-          return SchemaColorProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaMyThemePropProperty':
-        {
-          return SchemaMyThemePropProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaIconProperty':
-        {
-          return SchemaIconProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaCrossAlignmentProperty':
-        {
-          return SchemaCrossAlignmentProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaMainAlignmentProperty':
-        {
-          return SchemaMainAlignmentProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaStringProperty':
-        {
-          return SchemaStringProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaListTemplateProperty':
-        {
-          return SchemaListTemplateProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaListItemsProperty':
-        {
-          return SchemaListItemsProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaTextAlignProperty':
-        {
-          return SchemaTextAlignProperty.fromJson(targetJson);
-        }
-        break;
-      case 'SchemaStringListProperty':
-        {
-          return SchemaStringListProperty.fromJson(targetJson);
-        }
-        break;
-      default:
-        {
-          print("Failed to deserialize $targetJson");
-        }
+    try {
+      switch (targetJson['propertyClass']) {
+        case 'SchemaFontWeightProperty':
+          {
+            return SchemaFontWeightProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaDoubleProperty':
+          {
+            return SchemaDoubleProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaIntProperty':
+          {
+            return SchemaIntProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaBoolProperty':
+          {
+            return SchemaBoolProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaColorProperty':
+          {
+            return SchemaColorProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaMyThemePropProperty':
+          {
+            return SchemaMyThemePropProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaIconProperty':
+          {
+            return SchemaIconProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaCrossAlignmentProperty':
+          {
+            return SchemaCrossAlignmentProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaMainAlignmentProperty':
+          {
+            return SchemaMainAlignmentProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaStringProperty':
+          {
+            return SchemaStringProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaListTemplateProperty':
+          {
+            return SchemaListTemplateProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaListItemsProperty':
+          {
+            return SchemaListItemsProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaTextAlignProperty':
+          {
+            return SchemaTextAlignProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaStringListProperty':
+          {
+            return SchemaStringListProperty.fromJson(targetJson);
+          }
+          break;
+        case 'ListElementsProperty':
+          {
+            return ListElementsProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaListTemplateProperty':
+          {
+            return SchemaListTemplateProperty.fromJson(targetJson);
+          }
+          break;
+        default:
+          {
+            print("No .fromJson for $targetJson");
+          }
+      }
+    } catch (e) {
+      print("Failed to deserialize $targetJson");
+      throw (e);
     }
     return null;
   }

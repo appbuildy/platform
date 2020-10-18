@@ -44,12 +44,11 @@ class UserActions {
   RemoteSchemaPropertiesBinding _bindings;
   List<String> remoteTableNames;
 
-  UserActions({
-    Screens screens,
-    CurrentUserStore currentUserStore,
-    BottomNavigationStore bottomNavigationStore,
-    AppThemeStore themeStore
-  }) {
+  UserActions(
+      {Screens screens,
+      CurrentUserStore currentUserStore,
+      BottomNavigationStore bottomNavigationStore,
+      AppThemeStore themeStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -100,10 +99,11 @@ class UserActions {
         _screens.all.createScreen(screen);
         _screens.selectByName(screen.name);
       });
-
-      this.startAutoSave();
     } catch (e) {
       print('loadProject() error $e');
+      print('canvas error ${_currentUserStore.project.data['canvas']}');
+    } finally {
+      this.startAutoSave();
     }
   }
 

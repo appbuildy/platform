@@ -17,7 +17,7 @@ class SchemaListTemplateProperty extends SchemaNodeProperty<ListTemplate> {
       : super('List template', null) {
     this.name = targetJson['name'];
 
-    int index = int.parse(targetJson['value']);
+    int index = int.parse(targetJson['value'].toString());
     ListTemplateType type =
         ListTemplateType.values.firstWhere((type) => type.index == index);
 
