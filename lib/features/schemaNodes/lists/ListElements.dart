@@ -11,6 +11,11 @@ class ListElementsProperty extends SchemaNodeProperty<ListElements> {
   ListElementsProperty(String name, ListElements value) : super(name, value);
 
   @override
+  Map<String, dynamic> toJson() {
+    return {'name': name};
+  }
+
+  @override
   ListElementsProperty copy() {
     return ListElementsProperty(this.name, value);
   }
@@ -228,5 +233,15 @@ class ListElement {
   ListElement({@required String column, @required ListElementType type}) {
     this.column = column;
     this.type = type;
+  }
+
+  ListElement.fromJson(Map<String, dynamic> jsonVar) {
+    this.type = ListElementType.values
+        .firstWhere((el) => el.toString() == jsonVar['type']);
+    this.column = jsonVar['column'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'column': column, 'type': type.toString()};
   }
 }
