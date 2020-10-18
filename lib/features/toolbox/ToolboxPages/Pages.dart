@@ -20,6 +20,7 @@ class Pages extends StatelessWidget {
                   isActive: element.id == userActions.screens.current.id,
                   onTap: () {
                     userActions.screens.selectById(element.id);
+                    userActions.selectNodeForEdit(null);
                   },
                   onDelete: () {
                     userActions.screens.delete(element);

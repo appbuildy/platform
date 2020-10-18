@@ -52,12 +52,24 @@ class _AllActionsState extends State<AllActions> {
         gravity: Toast.TOP);
 
     final themeStore = widget.userActions.themeStore;
+    final listColumns = detailedInfo.tableName != null
+        ? widget.userActions
+            .columnsFor(detailedInfo.tableName)
+            .map((e) => e.name)
+            .toList()
+        : listColumnsSample;
+
+    bool isInRange(int index) {
+      return listColumns.length >= index + 1;
+    }
 
     final detailedComponents = [
       SchemaNodeImage(
           position: Offset(0, 0),
-          url: detailedInfo.rowData[listColumnsSample[2]].data,
-          column: listColumnsSample[2]),
+          url: isInRange(2)
+              ? detailedInfo.rowData[listColumns[2]].data
+              : detailedInfo.rowData[listColumns[0]].data,
+          column: isInRange(2) ? listColumns[2] : listColumns[0]),
       SchemaNodeIcon(
           themeStore: themeStore,
           position: Offset(14, 40),
@@ -68,18 +80,22 @@ class _AllActionsState extends State<AllActions> {
           position: Offset(14, 220),
           size: Offset(343, 35),
           themeStore: themeStore,
-          text: detailedInfo.rowData[listColumnsSample[0]].data,
+          text: isInRange(0)
+              ? detailedInfo.rowData[listColumns[0]].data
+              : detailedInfo.rowData[listColumns[0]].data,
           fontSize: 24,
           fontWeight: FontWeight.w600,
-          column: listColumnsSample[0]),
+          column: isInRange(0) ? listColumns[0] : listColumns[0]),
       SchemaNodeText(
           position: Offset(14, 260),
           size: Offset(343, 25),
           themeStore: themeStore,
-          text: detailedInfo.rowData[listColumnsSample[1]].data,
+          text: isInRange(1)
+              ? detailedInfo.rowData[listColumns[1]].data
+              : detailedInfo.rowData[listColumns[0]].data,
           fontWeight: FontWeight.w400,
           color: themeStore.currentTheme.generalSecondary,
-          column: listColumnsSample[1]),
+          column: isInRange(1) ? listColumns[1] : listColumns[0]),
       SchemaNodeButton(
           themeStore: themeStore,
           position: Offset(14, 295),
@@ -88,9 +104,11 @@ class _AllActionsState extends State<AllActions> {
           position: Offset(14, 360),
           size: Offset(343, 300),
           themeStore: themeStore,
-          text: detailedInfo.rowData[listColumnsSample[3]].data,
+          text: isInRange(3)
+              ? detailedInfo.rowData[listColumns[3]].data
+              : detailedInfo.rowData[listColumns[0]].data,
           fontWeight: FontWeight.w400,
-          column: listColumnsSample[3]),
+          column: isInRange(3) ? listColumns[3] : listColumns[0]),
     ];
 
     final addScreenAction = widget.userActions.screens.createForList(

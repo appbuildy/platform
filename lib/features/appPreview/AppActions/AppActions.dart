@@ -36,6 +36,7 @@ class AppActions extends StatelessWidget {
                       selectedValue: userActions.screens.current.id,
                       onChange: (option) {
                         userActions.screens.selectById(option.value);
+                        userActions.selectNodeForEdit(null);
                       },
                       onAdd: () {
                         userActions.screens
