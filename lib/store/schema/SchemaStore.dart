@@ -1,27 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
+import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:mobx/mobx.dart';
 
 part 'SchemaStore.g.dart';
 
 class SchemaStore = _SchemaStore with _$SchemaStore;
-
-class DetailedInfo {
-  String tableName;
-  UniqueKey screenId;
-  Map<String, ListItem> rowData;
-
-  DetailedInfo(
-      {@required String tableName,
-      @required UniqueKey screenId,
-      @required Map<String, ListItem> rowData}) {
-    this.tableName = tableName;
-    this.screenId = screenId;
-    this.rowData = rowData;
-  }
-}
 
 abstract class _SchemaStore with Store {
   _SchemaStore({
