@@ -11,7 +11,20 @@ import 'package:flutter_app/store/userActions/DeleteScreen.dart';
 class Screens {
   CurrentScreen _current;
   ScreensStore all;
-  Screens(this.all, this._current);
+
+  double screenWidth;
+  double screenHeight;
+  double screenTabsHeight;
+
+  Screens(
+    this.all,
+    this._current,
+  {
+    this.screenWidth = 375.0,
+    this.screenHeight = 812.0,
+    this.screenTabsHeight = 84,
+  }
+  );
 
   BaseAction create({
     bool moveToLastAfterCreated = false,

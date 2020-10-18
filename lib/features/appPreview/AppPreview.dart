@@ -11,23 +11,21 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
 
-const SCREEN_WIDTH = 375.0;
-const SCREEN_HEIGHT = 812.0;
-const SCREEN_HEIGHT_WITH_TABS = SCREEN_HEIGHT - 84;
-
 class AppPreview extends StatefulWidget {
   final UserActions userActions;
   final bool isPlayMode;
   final Function selectPlayModeToFalse;
   final Function selectStateToLayout;
+  final FocusNode focusNode;
 
-  const AppPreview(
-      {Key key,
-      this.userActions,
-      this.isPlayMode,
-      this.selectPlayModeToFalse,
-      this.selectStateToLayout})
-      : super(key: key);
+  const AppPreview({
+    Key key,
+    this.userActions,
+    this.isPlayMode,
+    this.selectPlayModeToFalse,
+    this.selectStateToLayout,
+    this.focusNode,
+  }): super(key: key);
 
   @override
   _AppPreviewState createState() => _AppPreviewState();
@@ -35,7 +33,7 @@ class AppPreview extends StatefulWidget {
 
 class _AppPreviewState extends State<AppPreview> {
   UserActions userActions;
-  Debouncer<SchemaNode> debouncer;
+  // Debouncer<SchemaNode> debouncer;
 
   @override
   void initState() {
@@ -92,8 +90,8 @@ class _AppPreviewState extends State<AppPreview> {
   }
 
   double get maxHeight => userActions.currentScreen.bottomTabsVisible
-      ? SCREEN_HEIGHT_WITH_TABS
-      : SCREEN_HEIGHT;
+      ? userActions.screens.screenHeight + userActions.screens.screenTabsHeight
+      : userActions.screens.screenHeight;
 
   void handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
@@ -106,7 +104,7 @@ class _AppPreviewState extends State<AppPreview> {
             position: node.position.dx,
             value: delta.dx,
             size: node.size.dx,
-            max: SCREEN_WIDTH,
+            max: userActions.screens.screenWidth,
             isDisableWhenMin: true),
         constrainPosition(
             position: node.position.dy,
@@ -119,7 +117,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dx,
             position: node.position.dx,
-            max: SCREEN_WIDTH,
+            max: userActions.screens.screenWidth,
             value: delta.dx,
             isSub: true,
             prevPosition: posX,
@@ -148,7 +146,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dx,
             position: node.position.dx,
-            max: SCREEN_WIDTH,
+            max: userActions.screens.screenWidth,
             value: delta.dx,
           ),
           constrainSize(
@@ -167,7 +165,7 @@ class _AppPreviewState extends State<AppPreview> {
           position: node.position.dx,
           value: delta.dx,
           size: node.size.dx,
-          max: SCREEN_WIDTH,
+          max: userActions.screens.screenWidth,
           isDisableWhenMin: true,
         ),
         node.position.dy,
@@ -177,7 +175,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
               size: node.size.dx,
               position: node.position.dx,
-              max: SCREEN_WIDTH,
+              max: userActions.screens.screenWidth,
               value: delta.dx,
               isSub: true,
               prevPosition: posX),
@@ -196,7 +194,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dx,
             position: node.position.dx,
-            max: SCREEN_WIDTH,
+            max: userActions.screens.screenWidth,
             value: delta.dx,
           ),
           constrainSize(
@@ -209,9 +207,10 @@ class _AppPreviewState extends State<AppPreview> {
 
     userActions.repositionAndResize(node, false);
 
-    debouncer.run(
-        () => userActions.repositionAndResize(node, true, debouncer.prevValue),
-        node.copy());
+    // debouncer.run(
+    //     () => userActions.repositionAndResize(node, true, debouncer.prevValue),
+    //     node.copy(),
+    // );
   }
 
   Widget renderWithSelected({SchemaNode node}) {
@@ -314,10 +313,10 @@ class _AppPreviewState extends State<AppPreview> {
 
                   userActions.repositionAndResize(node, false);
 
-                  debouncer.run(
-                      () => userActions.repositionAndResize(
-                          node, true, debouncer.prevValue),
-                      node.copy());
+                  // debouncer.run(
+                  //     () => userActions.repositionAndResize(
+                  //         node, true, debouncer.prevValue),
+                  //     node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -347,7 +346,7 @@ class _AppPreviewState extends State<AppPreview> {
                     constrainSize(
                       size: node.size.dx,
                       position: node.position.dx,
-                      max: SCREEN_WIDTH,
+                      max: userActions.screens.screenWidth,
                       value: details.delta.dx,
                       prevPosition: posX,
                     ),
@@ -355,10 +354,11 @@ class _AppPreviewState extends State<AppPreview> {
                   );
                   userActions.repositionAndResize(node, false);
 
-                  debouncer.run(
-                      () => userActions.repositionAndResize(
-                          node, true, debouncer.prevValue),
-                      node.copy());
+                  // debouncer.run(
+                  //     () => userActions.repositionAndResize(
+                  //         node, true, debouncer.prevValue),
+                  //     node.copy()
+                  // );
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -391,10 +391,10 @@ class _AppPreviewState extends State<AppPreview> {
                       ));
                   userActions.repositionAndResize(node, false);
 
-                  debouncer.run(
-                      () => userActions.repositionAndResize(
-                          node, true, debouncer.prevValue),
-                      node.copy());
+                  // debouncer.run(
+                  //     () => userActions.repositionAndResize(
+                  //         node, true, debouncer.prevValue),
+                  //     node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -420,7 +420,7 @@ class _AppPreviewState extends State<AppPreview> {
                           position: node.position.dx,
                           value: details.delta.dx,
                           size: node.size.dx,
-                          max: SCREEN_WIDTH,
+                          max: userActions.screens.screenWidth,
                           isDisableWhenMin: true),
                       node.position.dy);
 
@@ -428,7 +428,7 @@ class _AppPreviewState extends State<AppPreview> {
                       constrainSize(
                         size: node.size.dx,
                         position: node.position.dx,
-                        max: SCREEN_WIDTH,
+                        max: userActions.screens.screenWidth,
                         value: details.delta.dx,
                         isSub: true,
                         prevPosition: posX,
@@ -436,10 +436,10 @@ class _AppPreviewState extends State<AppPreview> {
                       node.size.dy);
                   userActions.repositionAndResize(node, false);
 
-                  debouncer.run(
-                      () => userActions.repositionAndResize(
-                          node, true, debouncer.prevValue),
-                      node.copy());
+                  // debouncer.run(
+                  //     () => userActions.repositionAndResize(
+                  //         node, true, debouncer.prevValue),
+                  //     node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -462,12 +462,16 @@ class _AppPreviewState extends State<AppPreview> {
       children: [
         GestureDetector(
           onPanUpdate: (details) {
+            if (!isSelected) {
+              userActions.selectNodeForEdit(node);
+            }
+
             node.position = Offset(
               constrainPosition(
                   position: node.position.dx,
                   value: details.delta.dx,
                   size: node.size.dx,
-                  max: SCREEN_WIDTH),
+                  max: userActions.screens.screenWidth),
               constrainPosition(
                   position: node.position.dy,
                   value: details.delta.dy,
@@ -476,10 +480,10 @@ class _AppPreviewState extends State<AppPreview> {
             );
             userActions.repositionAndResize(node, false);
 
-            debouncer.run(
-                () => userActions.repositionAndResize(
-                    node, true, debouncer.prevValue),
-                node.copy());
+            // debouncer.run(
+            //     () => userActions.repositionAndResize(
+            //         node, true, debouncer.prevValue),
+            //     node.copy());
           },
           child: Cursor(
             cursor: CursorEnum.move,
@@ -501,12 +505,14 @@ class _AppPreviewState extends State<AppPreview> {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(SCREEN_WIDTH, maxHeight, details.data.size);
-        final placedSchemaNode =
-            userActions.placeWidget(details.data, newPosition);
-        debouncer =
-            Debouncer(milliseconds: 500, prevValue: placedSchemaNode.copy());
+            .calculate(userActions.screens.screenWidth, maxHeight, details.data.size);
+        // final placedSchemaNode =
+        userActions.placeWidget(details.data, newPosition);
+        // debouncer =
+        //     Debouncer(milliseconds: 500, prevValue: placedSchemaNode.copy());
         widget.selectPlayModeToFalse();
+
+        widget.focusNode.requestFocus();
       },
       builder: (context, candidateData, rejectedData) {
         final height = MediaQuery.of(context).size.height;
@@ -527,9 +533,9 @@ class _AppPreviewState extends State<AppPreview> {
             scale: scale,
             alignment: Alignment.topCenter,
             child: Container(
-              width: SCREEN_WIDTH + 4,
+              width: userActions.screens.screenWidth + 4,
               // 4px is for border (2 px on both sides)
-              height: SCREEN_HEIGHT + 4,
+              height: userActions.screens.screenHeight + 4,
               // 4px is for border (2 px on both sides)
               decoration: BoxDecoration(
                   color: userActions.screens.current.backgroundColor.color,
@@ -550,30 +556,33 @@ class _AppPreviewState extends State<AppPreview> {
                     ...userActions.screens.current.components.map((node) =>
                         Positioned(
                             child: GestureDetector(
-                                onTapDown: (details) {
-                                  if (widget.isPlayMode) {
-                                    if (node.type == SchemaNodeType.list) {
-                                      // чтобы прокидывать данные на каждый айтем листа
-                                      return;
-                                    }
-                                    (node.actions['Tap'] as Functionable)
-                                        .toFunction(userActions)();
-                                  } else {
-                                    userActions.selectNodeForEdit(node);
-                                    debouncer = Debouncer(
-                                        milliseconds: 500,
-                                        prevValue: node.copy());
-                                    widget
-                                        .selectStateToLayout(); // select menu layout
+                              onTapDown: (details) {
+                                widget.focusNode.requestFocus();
+
+                                if (widget.isPlayMode) {
+                                  if (node.type == SchemaNodeType.list) {
+                                    // чтобы прокидывать данные на каждый айтем листа
+                                    return;
                                   }
-                                },
-                                child: widget.isPlayMode
-                                    ? node.toWidget(
-                                        isPlayMode: widget.isPlayMode,
-                                        userActions: widget.userActions)
-                                    : renderWithSelected(
-                                        node: node,
-                                      )),
+                                  (node.actions['Tap'] as Functionable)
+                                      .toFunction(userActions)();
+                                } else {
+                                  userActions.selectNodeForEdit(node);
+                                  // debouncer = Debouncer(
+                                  //     milliseconds: 500,
+                                  //     prevValue: node.copy());
+                                  widget
+                                      .selectStateToLayout(); // select menu layout
+                                }
+                              },
+                              child: widget.isPlayMode
+                                  ? node.toWidget(
+                                      isPlayMode: widget.isPlayMode,
+                                      userActions: widget.userActions)
+                                  : renderWithSelected(
+                                      node: node,
+                                    )
+                            ),
                             top: node.position.dy,
                             left: node.position.dx)),
                     Positioned(
@@ -593,7 +602,7 @@ class _AppPreviewState extends State<AppPreview> {
                                           color: theme.separators.color))),
                               child: Container(
                                 child: AppTabs(userActions: userActions),
-                                width: SCREEN_WIDTH,
+                                width: userActions.screens.screenWidth,
                                 height: 84,
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,

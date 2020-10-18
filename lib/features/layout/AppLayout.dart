@@ -69,6 +69,16 @@ class _AppLayoutState extends State<AppLayout> {
         return false;
       }
 
+      if (e.logicalKey == LogicalKeyboardKey.arrowUp || e.logicalKey == LogicalKeyboardKey.arrowDown) {
+        final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
+        widget.userActions.moveSelectedNode(Offset(0, isUp ? -1 : 1));
+      }
+
+      if (e.logicalKey == LogicalKeyboardKey.arrowLeft || e.logicalKey == LogicalKeyboardKey.arrowRight) {
+        final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
+        widget.userActions.moveSelectedNode(Offset(isLeft ? -1 : 1, 0));
+      }
+
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
         widget.userActions.deleteNode(selected);
       } else if (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) {
@@ -91,31 +101,21 @@ class _AppLayoutState extends State<AppLayout> {
   Widget build(BuildContext context) {
     _focusNodeAttachment.reparent();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (_focused) {
-                    _focusNode.unfocus();
-                  }
-                },
-                child: Toolbox(
-                    // currentUserStore: currentUserStore,
+    return GestureDetector(
+      onTap: () {
+        _focusNode.requestFocus();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Toolbox(
                     toolboxState: toolboxState,
                     selectState: selectState,
                     userActions: widget.userActions),
-              ),
-              Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    if (!_focused) {
-                      _focusNode.requestFocus();
-                    }
-                  },
+                Flexible(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -141,6 +141,7 @@ class _AppLayoutState extends State<AppLayout> {
                                             left: 30,
                                             right: 30),
                                         child: AppPreview(
+                                          focusNode: _focusNode,
                                           isPlayMode: isPlayMode,
                                           selectStateToLayout: () {
                                             selectState(ToolboxStates.layout);
@@ -186,24 +187,18 @@ class _AppLayoutState extends State<AppLayout> {
                     ],
                   ),
                 ),
-              ),
-              Container(
-                child: GestureDetector(
-                  onTap: () {
-                    if (_focused) {
-                      _focusNode.unfocus();
-                    }
-                  },
+                Container(
                   child: RightToolbox(
                       toolboxState: toolboxState,
                       selectState: selectState,
-                      userActions: widget.userActions),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
+                      userActions: widget.userActions
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
