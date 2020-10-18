@@ -134,34 +134,6 @@ class _MyHoverSelectState extends State<MyHoverSelect> {
         builder: (context) => Stack(
               overflow: Overflow.visible,
               children: [
-                // position a shadow because in main it would be cuted
-                Positioned(
-                  left: offset.dx - 9,
-                  top: offset.dy,
-                  width: size.width + 18,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: 10, right: 10, bottom: 15, top: size.height + 5),
-                    child: Container(
-                        child: Column(
-                            children: widget.options
-                                .map((option) => buildOption(option,
-                                    isFirst: firstValue == option.value,
-                                    isLast: lastValue == option.value))
-                                .toList()),
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(7),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 10,
-                                offset: Offset(0, 2),
-                                spreadRadius: 0,
-                                color: Color(0xFF000000).withOpacity(0.1),
-                              )
-                            ])),
-                  ),
-                ),
                 Positioned(
                     child: MouseRegion(
                   onEnter: (e) {
