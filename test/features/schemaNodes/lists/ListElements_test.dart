@@ -20,7 +20,14 @@ void main() {
     final listElements = ListElements();
     final ListElementsProperty prop =
         ListElementsProperty('Elements', listElements);
+    prop.value.title =
+        ListElement(column: 'title', type: ListElementType.title);
+    prop.value.image =
+        ListElement(column: 'Image', type: ListElementType.image);
+    prop.value.allColumns = List<String>.from(['1']);
 
-    prop.toJson();
+    expect(prop.toJson()['value']['title']['column'], equals('title'));
+    expect(prop.toJson()['value']['title']['navigationIcon'], equals(null));
+    expect(prop.toJson()['value']['allColumns'], equals(['1']));
   });
 }

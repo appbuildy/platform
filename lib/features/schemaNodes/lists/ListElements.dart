@@ -12,7 +12,17 @@ class ListElementsProperty extends SchemaNodeProperty<ListElements> {
 
   @override
   Map<String, dynamic> toJson() {
-    return {'name': name};
+    return {
+      'name': name,
+      'propertyClass': 'ListElementsProperty',
+      'value': {
+        'title': value.title?.toJson(),
+        'subtitle': value.subtitle?.toJson(),
+        'image': value.image?.toJson(),
+        'navigationIcon': value?.navigationIcon,
+        'allColumns': value?.allColumns
+      }
+    };
   }
 
   @override
