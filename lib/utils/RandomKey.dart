@@ -14,6 +14,11 @@ class RandomKey {
     return {'value': value};
   }
 
+  @override
+  String toString() {
+    return value;
+  }
+
   bool operator ==(o) => o is RandomKey && o.value == this.value;
   String _initValue({int length = 30}) {
     const _chars =

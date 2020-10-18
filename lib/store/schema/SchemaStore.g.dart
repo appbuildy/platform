@@ -12,13 +12,13 @@ mixin _$SchemaStore on _SchemaStore, Store {
   final _$idAtom = Atom(name: '_SchemaStore.id');
 
   @override
-  UniqueKey get id {
+  RandomKey get id {
     _$idAtom.reportRead();
     return super.id;
   }
 
   @override
-  set id(UniqueKey value) {
+  set id(RandomKey value) {
     _$idAtom.reportWrite(value, super.id, () {
       super.id = value;
     });

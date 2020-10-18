@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 import 'package:mobx/mobx.dart';
 
 part 'SchemaStore.g.dart';
@@ -21,14 +22,14 @@ abstract class _SchemaStore with Store {
     this.components.addAll(components);
     this.name = name;
     this.detailedInfo = detailedInfo;
-    this.id = id ?? UniqueKey();
+    this.id = id ?? RandomKey();
     this.bottomTabsVisible = bottomTabsVisible ?? true;
     this.backgroundColor = backgroundColor ??
         MyThemeProp(name: 'background', color: Color(0xFFffffff));
   }
 
   @observable
-  UniqueKey id;
+  RandomKey id;
 
   @observable
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();

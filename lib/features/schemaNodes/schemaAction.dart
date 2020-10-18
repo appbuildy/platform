@@ -1,15 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 
 import 'JsonConvertable.dart';
 import 'lists/ListItem.dart';
 
-class GoToScreenAction extends SchemaNodeProperty<UniqueKey>
+class GoToScreenAction extends SchemaNodeProperty<RandomKey>
     implements Functionable, JsonConvertable {
-  GoToScreenAction(String name, UniqueKey value) : super(name, value) {
+  GoToScreenAction(String name, RandomKey value) : super(name, value) {
     this.type = SchemaActionType.goToScreen;
     this.name = name;
     this.value = value;

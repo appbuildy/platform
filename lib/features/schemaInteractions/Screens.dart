@@ -2,11 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
+import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AddScreen.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
 import 'package:flutter_app/store/userActions/DeleteScreen.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 
 class Screens {
   CurrentScreen _current;
@@ -92,7 +94,7 @@ class Screens {
     return screen;
   }
 
-  SchemaStore selectById(UniqueKey id) {
+  SchemaStore selectById(RandomKey id) {
     final screen = all.screens.where((screen) => screen.id == id).first;
     _current.select(screen);
     return screen;

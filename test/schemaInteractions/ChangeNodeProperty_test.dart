@@ -4,6 +4,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -34,7 +35,7 @@ void main() {
         node: text,
         newProp: newProp);
 
-    goToScreen = GoToScreenAction('Tap', UniqueKey());
+    goToScreen = GoToScreenAction('Tap', RandomKey());
     changeBtnAction = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
         schemaStore: schemaStore,

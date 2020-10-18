@@ -1,3 +1,3 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 
-final MAIN_UNIQUE_KEY = UniqueKey();
+final MAIN_UNIQUE_KEY = RandomKey();
