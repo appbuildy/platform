@@ -11,6 +11,9 @@ class DetailedInfo {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rowDataMap = {};
+    rowData.forEach((key, val) {
+      rowDataMap[key] = val.toJson();
+    });
 
     return {
       'tableName': tableName,
@@ -20,8 +23,15 @@ class DetailedInfo {
   }
 
   DetailedInfo.fromJson(Map<String, dynamic> jsonVal) {
+    final Map<String, ListItem> deserializedRowData = {};
+
+    jsonVal['rowData'].forEach((key, value) {
+      deserializedRowData[key] = ListItem.fromJson(value);
+    });
+
     this.tableName = jsonVal['tableName'];
     this.screenId = RandomKey.fromJson(jsonVal['screenId']);
+    this.rowData = deserializedRowData;
   }
 
   DetailedInfo(
