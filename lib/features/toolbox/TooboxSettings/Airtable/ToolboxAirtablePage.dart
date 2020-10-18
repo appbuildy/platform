@@ -52,7 +52,7 @@ class _BuildToolboxAirtablePageState extends State<BuildToolboxAirtablePage> {
             title: 'Airtable',
         ),
         Padding(
-          padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
+          padding: EdgeInsets.only(top: 24.0, left: 20, right: 20),
           child: Container(
             child: Column(
               children: [
