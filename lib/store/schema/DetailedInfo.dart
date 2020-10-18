@@ -1,14 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
+import 'dart:convert';
+
+import 'package:flutter_app/utils/RandomKey.dart';
 
 class DetailedInfo {
   String tableName;
-  UniqueKey screenId;
+  RandomKey screenId;
   Map<String, ListItem> rowData;
+
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rowDataMap = {};
+
+    return {
+      'tableName': tableName,
+      'screenId': screenId.toJson(),
+      'rowData': rowDataMap
+    };
+  }
 
   DetailedInfo(
       {@required String tableName,
-      @required UniqueKey screenId,
+      @required RandomKey screenId,
       @required Map<String, ListItem> rowData}) {
     this.tableName = tableName;
     this.screenId = screenId;
