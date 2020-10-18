@@ -30,4 +30,16 @@ void main() {
     expect(prop.toJson()['value']['title']['navigationIcon'], equals(null));
     expect(prop.toJson()['value']['allColumns'], equals(['1']));
   });
+
+  test('.fromJson()', () {
+    final listElements = ListElements(
+        allColumns: ['1'],
+        title: ListElement(column: '322', type: ListElementType.title));
+    final ListElementsProperty prop =
+        ListElementsProperty('Elements', listElements);
+    final jsonVal = prop.toJson();
+    final deserialized = ListElementsProperty.fromJson(jsonVal);
+    expect(deserialized.name, equals(prop.name));
+    expect(deserialized.value.title.column, equals('322'));
+  });
 }
