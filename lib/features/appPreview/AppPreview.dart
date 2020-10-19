@@ -15,6 +15,7 @@ enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
 class AppPreview extends StatefulWidget {
   final UserActions userActions;
   final bool isPlayMode;
+  final bool isPreview;
   final Function selectPlayModeToFalse;
   final Function selectStateToLayout;
   final FocusNode focusNode;
@@ -24,6 +25,7 @@ class AppPreview extends StatefulWidget {
     this.userActions,
     this.isPlayMode,
     this.selectPlayModeToFalse,
+    this.isPreview = false,
     this.selectStateToLayout,
     this.focusNode,
   }): super(key: key);
@@ -42,10 +44,6 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
-  double get maxHeight => userActions.currentScreen.bottomTabsVisible
-      ? userActions.screens.screenHeight + userActions.screens.screenTabsHeight
-      : userActions.screens.screenHeight;
-
   void handleSizeChange(
       {@required SchemaNode node, Offset delta, SideEnum side}) {
     if (side == SideEnum.topLeft) {
@@ -63,7 +61,7 @@ class _AppPreviewState extends State<AppPreview> {
             position: node.position.dy,
             value: delta.dy,
             size: node.size.dy,
-            max: maxHeight,
+            max: userActions.screens.currentScreenMaxHeight,
             isDisableWhenMin: true),
       );
       node.size = Offset(
@@ -78,7 +76,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: maxHeight,
+            max: userActions.screens.currentScreenMaxHeight,
             value: delta.dy,
             isSub: true,
             prevPosition: posY,
@@ -92,7 +90,7 @@ class _AppPreviewState extends State<AppPreview> {
             position: node.position.dy,
             value: delta.dy,
             size: node.size.dy,
-            max: maxHeight,
+            max: userActions.screens.currentScreenMaxHeight,
             isDisableWhenMin: true),
       );
       node.size = Offset(
@@ -105,7 +103,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: maxHeight,
+            max: userActions.screens.currentScreenMaxHeight,
             value: delta.dy,
             isSub: true,
             prevPosition: posY,
@@ -135,7 +133,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: maxHeight,
+            max: userActions.screens.currentScreenMaxHeight,
             value: delta.dy,
           ));
     } else if (side == SideEnum.bottomRight) {
@@ -153,7 +151,7 @@ class _AppPreviewState extends State<AppPreview> {
           constrainSize(
             size: node.size.dy,
             position: node.position.dy,
-            max: maxHeight,
+            max: userActions.screens.currentScreenMaxHeight,
             value: delta.dy,
           ));
     }
@@ -244,7 +242,7 @@ class _AppPreviewState extends State<AppPreview> {
                         position: node.position.dy,
                         value: details.delta.dy,
                         size: node.size.dy,
-                        max: maxHeight,
+                        max: userActions.screens.currentScreenMaxHeight,
                         isDisableWhenMin: true),
                   );
 
@@ -253,7 +251,7 @@ class _AppPreviewState extends State<AppPreview> {
                       constrainSize(
                         size: node.size.dy,
                         position: node.position.dy,
-                        max: maxHeight,
+                        max: userActions.screens.currentScreenMaxHeight,
                         value: details.delta.dy,
                         isSub: true,
                         prevPosition: posY,
@@ -326,7 +324,7 @@ class _AppPreviewState extends State<AppPreview> {
                       constrainSize(
                         size: node.size.dy,
                         position: node.position.dy,
-                        max: maxHeight,
+                        max: userActions.screens.currentScreenMaxHeight,
                         value: details.delta.dy,
                       ));
                   userActions.repositionAndResize(node, false);
@@ -407,7 +405,7 @@ class _AppPreviewState extends State<AppPreview> {
                   position: node.position.dy,
                   value: details.delta.dy,
                   size: node.size.dy,
-                  max: maxHeight),
+                  max: userActions.screens.currentScreenMaxHeight),
             );
             userActions.repositionAndResize(node, false);
           },
@@ -431,7 +429,7 @@ class _AppPreviewState extends State<AppPreview> {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(userActions.screens.screenWidth, maxHeight, details.data.size);
+            .calculate(userActions.screens.screenWidth, userActions.screens.currentScreenMaxHeight, details.data.size);
         userActions.placeWidget(details.data, newPosition);
         widget.selectPlayModeToFalse();
 
@@ -446,7 +444,11 @@ class _AppPreviewState extends State<AppPreview> {
         final widthScaled = width / 1400;
 
         if (height <= 899 || width <= 1140) {
-          scale = heightScaled < widthScaled ? heightScaled : widthScaled;
+          scale = widget.isPreview
+              ? 1
+              : heightScaled < widthScaled
+                  ? heightScaled
+                  : widthScaled;
         }
 
         return Observer(builder: (context) {
@@ -462,7 +464,9 @@ class _AppPreviewState extends State<AppPreview> {
               // 4px is for border (2 px on both sides)
               decoration: BoxDecoration(
                   color: userActions.screens.current.backgroundColor.color,
-                  borderRadius: BorderRadius.circular(40.0),
+                  borderRadius: widget.isPreview
+                      ? BorderRadius.zero
+                      : BorderRadius.circular(40.0),
                   boxShadow: [
                     BoxShadow(
                         spreadRadius: 0,
@@ -470,9 +474,13 @@ class _AppPreviewState extends State<AppPreview> {
                         offset: Offset(0, 2),
                         color: MyColors.black.withOpacity(0.15))
                   ],
-                  border: Border.all(width: 2, color: MyColors.black)),
+                  border: widget.isPreview
+                      ? Border()
+                      : Border.all(width: 2, color: MyColors.black)),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(39.0),
+                borderRadius: widget.isPreview
+                    ? BorderRadius.zero
+                    : BorderRadius.circular(39.0),
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
@@ -505,11 +513,13 @@ class _AppPreviewState extends State<AppPreview> {
                             ),
                             top: node.position.dy,
                             left: node.position.dx)),
-                    Positioned(
-                        top: 0,
-                        left: 0,
-                        child:
-                            Image.network('assets/icons/meta/status-bar.svg')),
+                    widget.isPreview
+                        ? Container()
+                        : Positioned(
+                            top: 0,
+                            left: 0,
+                            child: Image.network(
+                                'assets/icons/meta/status-bar.svg')),
                     Positioned(
                       bottom: 0,
                       left: 0,
@@ -526,26 +536,30 @@ class _AppPreviewState extends State<AppPreview> {
                                 height: 84,
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(37.0),
-                                      bottomRight: Radius.circular(37.0)),
+                                  borderRadius: widget.isPreview
+                                      ? BorderRadius.zero
+                                      : BorderRadius.only(
+                                          bottomLeft: Radius.circular(37.0),
+                                          bottomRight: Radius.circular(37.0)),
                                 ),
                               ),
                             )
                           : Container(),
                     ),
-                    Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 7.0),
-                          child: Container(
-                            width: 134,
-                            height: 5,
-                            decoration: BoxDecoration(
-                                color: Color(0xFF000000),
-                                borderRadius: BorderRadius.circular(100)),
-                          ),
-                        )),
+                    widget.isPreview
+                        ? Container()
+                        : Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 7.0),
+                              child: Container(
+                                width: 134,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF000000),
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                            )),
                   ],
                 ),
               ),

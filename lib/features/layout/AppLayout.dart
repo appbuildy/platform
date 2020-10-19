@@ -23,6 +23,7 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   bool isPlayMode;
+  bool isPreview;
   FocusNode _focusNode;
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
@@ -33,7 +34,14 @@ class _AppLayoutState extends State<AppLayout> {
   void initState() {
     super.initState();
 
-    isPlayMode = false;
+    final isProjectPreview =
+        Uri.base.queryParameters['project_preview'] != null;
+
+    print('base ${Uri.base}');
+    print('query params ${Uri.base.queryParameters}');
+
+    isPlayMode = isProjectPreview;
+    isPreview = isProjectPreview;
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
@@ -70,41 +78,26 @@ class _AppLayoutState extends State<AppLayout> {
         return false;
       }
 
-
-
-      // void moveSelectedNode(Offset direction) {
-      //   SchemaNode selectedNode = this.selectedNode();
-      //   print(selectedNode.position);
-      //
-      //   selectedNode.position = Offset(
-      //     selectedNode.position.dx + direction.dx,
-      //     selectedNode.position.dy + direction.dy,
-      //   );
-      //
-      //   this.repositionAndResize(selectedNode, false);
-      // }
-
       if (e.logicalKey == LogicalKeyboardKey.arrowUp || e.logicalKey == LogicalKeyboardKey.arrowDown) {
         final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
-        // selectedNode.position = Offset(
-        //   selectedNode.position.dx,
-        //   selectedNode.position.dy + (isUp ? -1 : 1),
-        // );
+
         selectedNode.position = Offset(
           selectedNode.position.dx,
           constrainPosition(
             size: selectedNode.size.dy,
             value: isUp ? -1 : 1,
             position: selectedNode.position.dy,
-            max: widget.userActions.screens.screenHeight,
+            max: widget.userActions.screens.currentScreenMaxHeight,
             isDisableWhenMin: true,
           ),
         );
+
         widget.userActions.repositionAndResize(selectedNode, false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft || e.logicalKey == LogicalKeyboardKey.arrowRight) {
         final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
+
         selectedNode.position = Offset(
           constrainPosition(
             size: selectedNode.size.dx,
@@ -115,6 +108,7 @@ class _AppLayoutState extends State<AppLayout> {
           ),
           selectedNode.position.dy,
         );
+
         widget.userActions.repositionAndResize(selectedNode, false);
       }
 
@@ -138,11 +132,12 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
-    if (isPlayMode) {
+    if (isPreview) {
       return SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: AppPreview(
           isPlayMode: isPlayMode,
+          isPreview: isPreview,
           selectStateToLayout: () {
             selectState(ToolboxStates.layout);
           },

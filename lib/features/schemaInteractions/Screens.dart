@@ -28,6 +28,10 @@ class Screens {
   }
   );
 
+  double get currentScreenMaxHeight => this._current.currentScreen.bottomTabsVisible
+      ? screenHeight - this.screenTabsHeight
+      : this.screenHeight;
+
   BaseAction create({
     bool moveToLastAfterCreated = false,
     String name,

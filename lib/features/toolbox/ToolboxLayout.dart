@@ -46,8 +46,7 @@ class ToolboxLayout extends StatelessWidget {
             Column(
               children: [
                 Observer(builder: (BuildContext context) {
-                  return ToolboxTitle(
-                      userActions.currentUserStore.currentUser.name);
+                  return ToolboxTitle('Components');
                 }),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, right: 10),
