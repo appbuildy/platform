@@ -14,7 +14,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 class AppLayout extends StatefulWidget {
   final UserActions userActions;
 
-  AppLayout({ @required this.userActions });
+  AppLayout({@required this.userActions});
 
   @override
   _AppLayoutState createState() => _AppLayoutState();
@@ -89,6 +89,26 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
+    if (isPlayMode) {
+      return SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: AppPreview(
+          isPlayMode: isPlayMode,
+          selectStateToLayout: () {
+            selectState(ToolboxStates.layout);
+          },
+          userActions: widget.userActions,
+          selectPlayModeToFalse: () {
+            if (isPlayMode == true) {
+              setState(() {
+                isPlayMode = false;
+              });
+            }
+          },
+        ),
+      );
+    }
+
     _focusNodeAttachment.reparent();
 
     return Column(
