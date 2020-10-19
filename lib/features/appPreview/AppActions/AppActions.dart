@@ -1,3 +1,6 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:js' as js;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/features/appPreview/AppActions/UndoRedo.dart';
@@ -59,11 +62,17 @@ class AppActions extends StatelessWidget {
                               onChanged: () {},
                               disabled: false,
                               defaultValue:
-                                  'https://appbuildy.com/project/sdfja123s',
+                                  userActions.currentUserStore.project.slugUrl,
                             ),
                           ),
                           Expanded(child: Container()),
-                          MyButton(text: 'Navigate to the Web App')
+                          MyButton(
+                              onTap: () {
+                                js.context.callMethod('open', [
+                                  userActions.currentUserStore.project.slugUrl
+                                ]);
+                              },
+                              text: 'Navigate to the Web App')
                         ],
                       ),
                     )),
