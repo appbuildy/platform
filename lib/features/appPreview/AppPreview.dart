@@ -18,6 +18,7 @@ const SCREEN_HEIGHT_WITH_TABS = SCREEN_HEIGHT - 84;
 class AppPreview extends StatefulWidget {
   final UserActions userActions;
   final bool isPlayMode;
+  final bool isPreview;
   final Function selectPlayModeToFalse;
   final Function selectStateToLayout;
 
@@ -25,6 +26,7 @@ class AppPreview extends StatefulWidget {
       {Key key,
       this.userActions,
       this.isPlayMode,
+      this.isPreview = false,
       this.selectPlayModeToFalse,
       this.selectStateToLayout})
       : super(key: key);
@@ -517,7 +519,11 @@ class _AppPreviewState extends State<AppPreview> {
         final widthScaled = width / 1400;
 
         if (height <= 899 || width <= 1140) {
-          scale = heightScaled < widthScaled ? heightScaled : widthScaled;
+          scale = widget.isPreview
+              ? 1
+              : heightScaled < widthScaled
+                  ? heightScaled
+                  : widthScaled;
         }
 
         return Observer(builder: (context) {
@@ -533,7 +539,9 @@ class _AppPreviewState extends State<AppPreview> {
               // 4px is for border (2 px on both sides)
               decoration: BoxDecoration(
                   color: userActions.screens.current.backgroundColor.color,
-                  borderRadius: BorderRadius.circular(40.0),
+                  borderRadius: widget.isPreview
+                      ? BorderRadius.zero
+                      : BorderRadius.circular(40.0),
                   boxShadow: [
                     BoxShadow(
                         spreadRadius: 0,
@@ -541,9 +549,13 @@ class _AppPreviewState extends State<AppPreview> {
                         offset: Offset(0, 2),
                         color: MyColors.black.withOpacity(0.15))
                   ],
-                  border: Border.all(width: 2, color: MyColors.black)),
+                  border: widget.isPreview
+                      ? Border()
+                      : Border.all(width: 2, color: MyColors.black)),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(39.0),
+                borderRadius: widget.isPreview
+                    ? BorderRadius.zero
+                    : BorderRadius.circular(39.0),
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
@@ -576,11 +588,13 @@ class _AppPreviewState extends State<AppPreview> {
                                       )),
                             top: node.position.dy,
                             left: node.position.dx)),
-                    Positioned(
-                        top: 0,
-                        left: 0,
-                        child:
-                            Image.network('assets/icons/meta/status-bar.svg')),
+                    widget.isPreview
+                        ? Container()
+                        : Positioned(
+                            top: 0,
+                            left: 0,
+                            child: Image.network(
+                                'assets/icons/meta/status-bar.svg')),
                     Positioned(
                       bottom: 0,
                       left: 0,
@@ -597,26 +611,30 @@ class _AppPreviewState extends State<AppPreview> {
                                 height: 84,
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(37.0),
-                                      bottomRight: Radius.circular(37.0)),
+                                  borderRadius: widget.isPreview
+                                      ? BorderRadius.zero
+                                      : BorderRadius.only(
+                                          bottomLeft: Radius.circular(37.0),
+                                          bottomRight: Radius.circular(37.0)),
                                 ),
                               ),
                             )
                           : Container(),
                     ),
-                    Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 7.0),
-                          child: Container(
-                            width: 134,
-                            height: 5,
-                            decoration: BoxDecoration(
-                                color: Color(0xFF000000),
-                                borderRadius: BorderRadius.circular(100)),
-                          ),
-                        )),
+                    widget.isPreview
+                        ? Container()
+                        : Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 7.0),
+                              child: Container(
+                                width: 134,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF000000),
+                                    borderRadius: BorderRadius.circular(100)),
+                              ),
+                            )),
                   ],
                 ),
               ),

@@ -19,12 +19,14 @@ class AppActions extends StatelessWidget {
   void _showShareModal(context) {
     MyModal.show(
         context: context,
+        width: 700,
         height: 380,
         child: Container(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
+              Flexible(
+                flex: 3,
                 child: Container(
                     height: 380,
                     child: Padding(
@@ -66,7 +68,8 @@ class AppActions extends StatelessWidget {
                       ),
                     )),
               ),
-              Expanded(
+              Flexible(
+                flex: 2,
                 child: Container(
                   height: 380,
                   decoration: BoxDecoration(

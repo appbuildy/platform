@@ -22,6 +22,7 @@ class AppLayout extends StatefulWidget {
 
 class _AppLayoutState extends State<AppLayout> {
   bool isPlayMode;
+  bool isPreview;
   FocusNode _focusNode;
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
@@ -32,7 +33,14 @@ class _AppLayoutState extends State<AppLayout> {
   void initState() {
     super.initState();
 
-    isPlayMode = false;
+    final isProjectPreview =
+        Uri.base.queryParameters['project_preview'] != null;
+
+    print('base ${Uri.base}');
+    print('query params ${Uri.base.queryParameters}');
+
+    isPlayMode = isProjectPreview;
+    isPreview = isProjectPreview;
     _focusNode = FocusNode();
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
@@ -89,11 +97,12 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
-    if (isPlayMode) {
+    if (isPreview) {
       return SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: AppPreview(
           isPlayMode: isPlayMode,
+          isPreview: isPreview,
           selectStateToLayout: () {
             selectState(ToolboxStates.layout);
           },
