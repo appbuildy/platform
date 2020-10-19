@@ -100,6 +100,7 @@ abstract class _SchemaStore with Store {
   }
 
   Map<String, dynamic> toJson() => {
+        'detailedInfo': detailedInfo?.toJson(),
         'components': components
             .map((comp) => comp.toJson())
             .toList()
