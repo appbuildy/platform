@@ -6,7 +6,6 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/constrain.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -36,7 +35,6 @@ class AppPreview extends StatefulWidget {
 
 class _AppPreviewState extends State<AppPreview> {
   UserActions userActions;
-  // Debouncer<SchemaNode> debouncer;
 
   @override
   void initState() {
@@ -533,7 +531,7 @@ class _AppPreviewState extends State<AppPreview> {
                               child: Container(
                                 child: AppTabs(userActions: userActions),
                                 width: userActions.screens.screenWidth,
-                                height: 84,
+                                height: userActions.screens.screenTabsHeight,
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   borderRadius: widget.isPreview
