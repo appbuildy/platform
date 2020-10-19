@@ -65,13 +65,13 @@ class MyModal {
     return closeButton;
   }
 
-  Widget _buildModal(Widget child) {
+  Widget _buildModal(Widget child, double width, double height) {
     final Widget content = GestureDetector(
       onTap: () {},
       child: Stack(overflow: Overflow.visible, children: [
         Container(
-          width: 800,
-          height: double.infinity,
+          width: width ?? 800,
+          height: height ?? double.infinity,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -107,9 +107,12 @@ class MyModal {
     @required BuildContext context,
     @required Widget child,
     @required Function onClose,
+    double width,
+    double height,
   }) {
     this._overlayEntry = OverlayEntry(
-        builder: (BuildContext context) => this._buildModal(child));
+        builder: (BuildContext context) =>
+            this._buildModal(child, width, height));
     this.onClose = onClose;
 
     Overlay.of(context).insert(this._overlayEntry);

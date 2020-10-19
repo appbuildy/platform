@@ -118,7 +118,7 @@ class EditPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: MyTextField(
-                            key: currentScreen.id,
+                            key: Key(currentScreen.id.toString()),
                             onChanged: (text) {
                               currentScreen.setName(text);
                             },

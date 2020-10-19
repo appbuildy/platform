@@ -10,11 +10,12 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/constrain.dart';
 
 class AppLayout extends StatefulWidget {
   final UserActions userActions;
 
-  AppLayout({ @required this.userActions });
+  AppLayout({@required this.userActions});
 
   @override
   _AppLayoutState createState() => _AppLayoutState();
@@ -64,25 +65,63 @@ class _AppLayoutState extends State<AppLayout> {
         return true;
       }
 
-      final selected = widget.userActions.selectedNode();
-      if (selected == null) {
+      final selectedNode = widget.userActions.selectedNode();
+      if (selectedNode == null) {
         return false;
       }
 
+
+
+      // void moveSelectedNode(Offset direction) {
+      //   SchemaNode selectedNode = this.selectedNode();
+      //   print(selectedNode.position);
+      //
+      //   selectedNode.position = Offset(
+      //     selectedNode.position.dx + direction.dx,
+      //     selectedNode.position.dy + direction.dy,
+      //   );
+      //
+      //   this.repositionAndResize(selectedNode, false);
+      // }
+
       if (e.logicalKey == LogicalKeyboardKey.arrowUp || e.logicalKey == LogicalKeyboardKey.arrowDown) {
         final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
-        widget.userActions.moveSelectedNode(Offset(0, isUp ? -1 : 1));
+        // selectedNode.position = Offset(
+        //   selectedNode.position.dx,
+        //   selectedNode.position.dy + (isUp ? -1 : 1),
+        // );
+        selectedNode.position = Offset(
+          selectedNode.position.dx,
+          constrainPosition(
+            size: selectedNode.size.dy,
+            value: isUp ? -1 : 1,
+            position: selectedNode.position.dy,
+            max: widget.userActions.screens.screenHeight,
+            isDisableWhenMin: true,
+          ),
+        );
+        widget.userActions.repositionAndResize(selectedNode, false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft || e.logicalKey == LogicalKeyboardKey.arrowRight) {
         final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
-        widget.userActions.moveSelectedNode(Offset(isLeft ? -1 : 1, 0));
+        selectedNode.position = Offset(
+          constrainPosition(
+            size: selectedNode.size.dx,
+            value: isLeft ? -1 : 1,
+            position: selectedNode.position.dx,
+            max: widget.userActions.screens.screenWidth,
+            isDisableWhenMin: true,
+          ),
+          selectedNode.position.dy,
+        );
+        widget.userActions.repositionAndResize(selectedNode, false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
-        widget.userActions.deleteNode(selected);
+        widget.userActions.deleteNode(selectedNode);
       } else if (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) {
-        widget.userActions.copyNode(selected);
+        widget.userActions.copyNode(selectedNode);
       }
 
       return true;
@@ -99,6 +138,26 @@ class _AppLayoutState extends State<AppLayout> {
 
   @override
   Widget build(BuildContext context) {
+    if (isPlayMode) {
+      return SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: AppPreview(
+          isPlayMode: isPlayMode,
+          selectStateToLayout: () {
+            selectState(ToolboxStates.layout);
+          },
+          userActions: widget.userActions,
+          selectPlayModeToFalse: () {
+            if (isPlayMode == true) {
+              setState(() {
+                isPlayMode = false;
+              });
+            }
+          },
+        ),
+      );
+    }
+
     _focusNodeAttachment.reparent();
 
     return GestureDetector(

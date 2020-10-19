@@ -29,11 +29,8 @@ class ListTemplateCards extends ListTemplate {
               if (isPlayMode) {
                 return GestureDetector(
                   onTap: () {
-                    if (isPlayMode) {
-                      print('KEK ${item.value}');
                       (actions['Tap'] as Functionable)
                           .toFunction(userActions)(item.value);
-                    }
                   },
                   child: widgetFor(
                       item: item,

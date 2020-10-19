@@ -23,6 +23,7 @@ class AppTabs extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           userActions.screens.selectById(tab.target);
+                          userActions.selectNodeForEdit(null);
                         },
                         child: Cursor(
                           cursor: CursorEnum.pointer,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
@@ -16,6 +17,8 @@ class ListTemplateSimple extends ListTemplate {
   Widget toWidget(
       {MyTheme currentTheme,
       Map<String, SchemaNodeProperty> properties,
+      Map<String, SchemaNodeProperty> actions,
+      UserActions userActions,
       bool isPlayMode = false}) {
     return Column(
         children: properties['Items']
@@ -25,7 +28,8 @@ class ListTemplateSimple extends ListTemplate {
               if (isPlayMode) {
                 return GestureDetector(
                   onTap: () {
-                    print('ListTemplateSimple');
+                    (actions['Tap'] as Functionable)
+                        .toFunction(userActions)(item.value);
                   },
                   child: widgetFor(
                       item: item,

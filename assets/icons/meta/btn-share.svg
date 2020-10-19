@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="12px" viewBox="0 0 15 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>btn-share</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#00B2FF" offset="0%"></stop>
+            <stop stop-color="#007AFF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="btn-share" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M6.01494563,3.63304056 L6.01494563,0 L0,6 L6.01494563,12 L6.01494563,8.25778959 C8.8824695,8.25778959 11.7243908,9.23547052 14.5407095,11.1908324 L14.5407851,11.1907234 C14.6768234,11.2851744 14.8636718,11.2514612 14.9581228,11.115423 C15.0172317,11.030288 15.0281876,10.9206655 14.9870964,10.8255164 C13.1462412,6.56289903 10.1555243,4.16540709 6.01494563,3.63304056 Z" id="Shape" fill="url(#linearGradient-1)" fill-rule="nonzero" transform="translate(7.500000, 6.000000) scale(-1, 1) translate(-7.500000, -6.000000) "></path>
+    </g>
+</svg>

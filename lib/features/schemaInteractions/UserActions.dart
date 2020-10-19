@@ -103,10 +103,11 @@ class UserActions {
         _screens.all.createScreen(screen);
         _screens.selectByName(screen.name);
       });
-
-      this.startAutoSave();
     } catch (e) {
       print('loadProject() error $e');
+      print('canvas error ${_currentUserStore.project.data['canvas']}');
+    } finally {
+      this.startAutoSave();
     }
   }
 
@@ -224,18 +225,6 @@ class UserActions {
     }
   }
 
-  void moveSelectedNode(Offset direction) {
-    SchemaNode selectedNode = this.selectedNode();
-    print(selectedNode.position);
-
-    selectedNode.position = Offset(
-      selectedNode.position.dx + direction.dx,
-      selectedNode.position.dy + direction.dy,
-    );
-
-    this.repositionAndResize(selectedNode, false);
-  }
-
   SchemaNode selectedNode() {
     return _currentNode.selectedNode;
   }
@@ -243,7 +232,9 @@ class UserActions {
   void selectNodeForEdit(SchemaNode node) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
 
-    debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
+    if (node != null) {
+      debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
+    }
   }
 
   void bindAttribute(

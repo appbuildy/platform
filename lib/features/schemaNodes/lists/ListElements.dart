@@ -10,6 +10,33 @@ import '../SchemaNodeProperty.dart';
 class ListElementsProperty extends SchemaNodeProperty<ListElements> {
   ListElementsProperty(String name, ListElements value) : super(name, value);
 
+  ListElementsProperty.fromJson(Map<String, dynamic> jsonVal)
+      : super('Elements', null) {
+    this.name = jsonVal['name'];
+    this.value = ListElements(
+        allColumns: List<String>.from(jsonVal['value']['allColumns']),
+        subtitle: ListElement.fromJson(jsonVal['value']['subtitle']),
+        image: ListElement.fromJson(jsonVal['value']['image']),
+        navigationIcon:
+            ListElement.fromJson(jsonVal['value']['navigationIcon']),
+        title: ListElement.fromJson(jsonVal['value']['title']));
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'propertyClass': 'ListElementsProperty',
+      'value': {
+        'title': value.title?.toJson(),
+        'subtitle': value.subtitle?.toJson(),
+        'image': value.image?.toJson(),
+        'navigationIcon': value?.navigationIcon,
+        'allColumns': value?.allColumns
+      }
+    };
+  }
+
   @override
   ListElementsProperty copy() {
     return ListElementsProperty(this.name, value);
@@ -228,5 +255,16 @@ class ListElement {
   ListElement({@required String column, @required ListElementType type}) {
     this.column = column;
     this.type = type;
+  }
+
+  ListElement.fromJson(Map<String, dynamic> jsonVar) {
+    if (jsonVar == null) return;
+    this.type = ListElementType.values
+        .firstWhere((el) => el.toString() == jsonVar['type']);
+    this.column = jsonVar['column'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'column': column, 'type': type.toString()};
   }
 }

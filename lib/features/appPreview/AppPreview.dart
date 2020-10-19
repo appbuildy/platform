@@ -7,6 +7,7 @@ import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDro
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
+import 'package:flutter_app/utils/constrain.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -39,54 +40,6 @@ class _AppPreviewState extends State<AppPreview> {
   void initState() {
     super.initState();
     userActions = widget.userActions;
-  }
-
-  double constrainPosition({
-    @required double size,
-    @required double value,
-    @required double position,
-    @required double max,
-    bool isDisableWhenMin = false,
-  }) {
-    if (isDisableWhenMin && size <= 30.0) {
-      return position;
-    }
-
-    if (value + position <= 0) {
-      return 0;
-    } else if (value + position + size > max) {
-      return (max - size);
-    }
-
-    return value + position;
-  }
-
-  double constrainSize({
-    @required double size,
-    @required double value,
-    @required double position,
-    @required double max,
-    bool isSub = false,
-    double prevPosition,
-  }) {
-    final double realValue = isSub ? value * -1 : value;
-    final int maxInt = max.round();
-
-    if (isSub && position <= 0) {
-      if (realValue < 0) {
-        return size + realValue;
-      }
-
-      return size +
-          prevPosition; // прыжок происходит потому что position уже поменялся и равен 0, а для сайза в таком случае value не прикладывается
-    }
-
-    if (size + realValue + position > maxInt) {
-      return max - position;
-    } else if (size + realValue <= 30.0) {
-      return 30.0;
-    }
-    return size + realValue;
   }
 
   double get maxHeight => userActions.currentScreen.bottomTabsVisible
@@ -206,11 +159,6 @@ class _AppPreviewState extends State<AppPreview> {
     }
 
     userActions.repositionAndResize(node, false);
-
-    // debouncer.run(
-    //     () => userActions.repositionAndResize(node, true, debouncer.prevValue),
-    //     node.copy(),
-    // );
   }
 
   Widget renderWithSelected({SchemaNode node}) {
@@ -312,11 +260,6 @@ class _AppPreviewState extends State<AppPreview> {
                       ));
 
                   userActions.repositionAndResize(node, false);
-
-                  // debouncer.run(
-                  //     () => userActions.repositionAndResize(
-                  //         node, true, debouncer.prevValue),
-                  //     node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -325,8 +268,9 @@ class _AppPreviewState extends State<AppPreview> {
                     height: 10,
                     decoration: BoxDecoration(
                         border: Border(
-                            top: BorderSide(
-                                width: 1, color: MyColors.mainBlue))),
+                            top: BorderSide(width: 1, color: MyColors.mainBlue),
+                        ),
+                    ),
                   ),
                 ),
               ),
@@ -353,22 +297,18 @@ class _AppPreviewState extends State<AppPreview> {
                     node.size.dy,
                   );
                   userActions.repositionAndResize(node, false);
-
-                  // debouncer.run(
-                  //     () => userActions.repositionAndResize(
-                  //         node, true, debouncer.prevValue),
-                  //     node.copy()
-                  // );
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
                   child: Container(
-                      width: 10,
-                      height: node.size.dy,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              right: BorderSide(
-                                  width: 1, color: MyColors.mainBlue)))),
+                    width: 10,
+                    height: node.size.dy,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        right: BorderSide(width: 1, color: MyColors.mainBlue),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -390,11 +330,6 @@ class _AppPreviewState extends State<AppPreview> {
                         value: details.delta.dy,
                       ));
                   userActions.repositionAndResize(node, false);
-
-                  // debouncer.run(
-                  //     () => userActions.repositionAndResize(
-                  //         node, true, debouncer.prevValue),
-                  //     node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -416,13 +351,14 @@ class _AppPreviewState extends State<AppPreview> {
                   final posX = node.position.dx;
 
                   node.position = Offset(
-                      constrainPosition(
-                          position: node.position.dx,
-                          value: details.delta.dx,
-                          size: node.size.dx,
-                          max: userActions.screens.screenWidth,
-                          isDisableWhenMin: true),
-                      node.position.dy);
+                    constrainPosition(
+                        position: node.position.dx,
+                        value: details.delta.dx,
+                        size: node.size.dx,
+                        max: userActions.screens.screenWidth,
+                        isDisableWhenMin: true,
+                    ),
+                    node.position.dy);
 
                   node.size = Offset(
                       constrainSize(
@@ -435,11 +371,6 @@ class _AppPreviewState extends State<AppPreview> {
                       ),
                       node.size.dy);
                   userActions.repositionAndResize(node, false);
-
-                  // debouncer.run(
-                  //     () => userActions.repositionAndResize(
-                  //         node, true, debouncer.prevValue),
-                  //     node.copy());
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -479,11 +410,6 @@ class _AppPreviewState extends State<AppPreview> {
                   max: maxHeight),
             );
             userActions.repositionAndResize(node, false);
-
-            // debouncer.run(
-            //     () => userActions.repositionAndResize(
-            //         node, true, debouncer.prevValue),
-            //     node.copy());
           },
           child: Cursor(
             cursor: CursorEnum.move,
@@ -506,10 +432,7 @@ class _AppPreviewState extends State<AppPreview> {
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
             .calculate(userActions.screens.screenWidth, maxHeight, details.data.size);
-        // final placedSchemaNode =
         userActions.placeWidget(details.data, newPosition);
-        // debouncer =
-        //     Debouncer(milliseconds: 500, prevValue: placedSchemaNode.copy());
         widget.selectPlayModeToFalse();
 
         widget.focusNode.requestFocus();
@@ -568,9 +491,6 @@ class _AppPreviewState extends State<AppPreview> {
                                       .toFunction(userActions)();
                                 } else {
                                   userActions.selectNodeForEdit(node);
-                                  // debouncer = Debouncer(
-                                  //     milliseconds: 500,
-                                  //     prevValue: node.copy());
                                   widget
                                       .selectStateToLayout(); // select menu layout
                                 }

@@ -1,27 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
+import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 import 'package:mobx/mobx.dart';
 
 part 'SchemaStore.g.dart';
 
 class SchemaStore = _SchemaStore with _$SchemaStore;
-
-class DetailedInfo {
-  String tableName;
-  UniqueKey screenId;
-  Map<String, ListItem> rowData;
-
-  DetailedInfo(
-      {@required String tableName,
-      @required UniqueKey screenId,
-      @required Map<String, ListItem> rowData}) {
-    this.tableName = tableName;
-    this.screenId = screenId;
-    this.rowData = rowData;
-  }
-}
 
 abstract class _SchemaStore with Store {
   _SchemaStore({
@@ -36,14 +22,14 @@ abstract class _SchemaStore with Store {
     this.components.addAll(components);
     this.name = name;
     this.detailedInfo = detailedInfo;
-    this.id = id ?? UniqueKey();
+    this.id = id ?? RandomKey();
     this.bottomTabsVisible = bottomTabsVisible ?? true;
     this.backgroundColor = backgroundColor ??
         MyThemeProp(name: 'background', color: Color(0xFFffffff));
   }
 
   @observable
-  UniqueKey id;
+  RandomKey id;
 
   @observable
   ObservableList<SchemaNode> components = ObservableList<SchemaNode>();
@@ -114,6 +100,11 @@ abstract class _SchemaStore with Store {
   }
 
   Map<String, dynamic> toJson() => {
+        'name': name,
+        'backgroundColor': backgroundColor.toJson(),
+        'id': id.toJson(),
+        'bottomTabsVisible': true,
+        'detailedInfo': detailedInfo?.toJson(),
         'components': components
             .map((comp) => comp.toJson())
             .toList()

@@ -8,6 +8,7 @@ class MyTextField extends StatefulWidget {
   final String value;
   final bool disabled;
   final Function onChanged;
+  final maxLines;
 
   const MyTextField({
     Key key,
@@ -16,6 +17,7 @@ class MyTextField extends StatefulWidget {
     this.defaultValue,
     this.value,
     this.disabled = false,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -31,17 +33,6 @@ class _MyTextFieldState extends State<MyTextField> {
         TextEditingController(text: widget.defaultValue ?? '');
   }
 
-//  @override
-//  void didUpdateWidget(MyTextField oldWidget) {
-//    super.didUpdateWidget(oldWidget);
-//    _textEditingController.value = TextEditingValue(
-//      text: widget.defaultValue,
-//      selection: TextSelection.fromPosition(
-//        TextPosition(offset: widget.defaultValue.length),
-//      ),
-//    );
-//  }
-
   @override
   Widget build(BuildContext context) {
     return AbsorbPointer(
@@ -54,10 +45,11 @@ class _MyTextFieldState extends State<MyTextField> {
           },
           enableInteractiveSelection: true,
           placeholder: widget.placeholder,
+          maxLines: widget.maxLines,
           padding:
               const EdgeInsets.only(top: 9, bottom: 8, left: 16, right: 16),
           style: MyTextStyle.regularTitle,
-          placeholderStyle: MyTextStyle.regularTitle,
+          placeholderStyle: TextStyle(color: Color(0xFF777777), fontSize: 16, fontWeight: FontWeight.w500),
           cursorColor: MyColors.black,
           cursorRadius: Radius.circular(0),
           decoration: widget.disabled
@@ -72,24 +64,4 @@ class _MyTextFieldState extends State<MyTextField> {
                   border: Border.all(width: 1, color: MyColors.borderGray))),
     );
   }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return TextField(
-//      controller: _textEditingController,
-//      onChanged: (String value) {
-//        widget.onChanged(value);
-//      },
-//      enableInteractiveSelection: true,
-//      textCapitalization: TextCapitalization.sentences,
-//      style: TextStyle(
-//        fontWeight: FontWeight.w500,
-//        fontSize: 18,
-//        fontFamily: 'ObjectSans',
-//        color: Colors.black,
-//      ),
-//      cursorColor: Colors.black,
-//      cursorRadius: Radius.circular(0),
-//    );
-//  }
 }
