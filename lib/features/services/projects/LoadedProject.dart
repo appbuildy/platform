@@ -43,10 +43,15 @@ class LoadedProject implements IProjectLoad {
         .map((jsonScreen) {
           return SchemaStore(
               name: jsonScreen['name'],
-              id: RandomKey.fromJson(jsonScreen['id']),
-              backgroundColor:
-                  MyThemeProp.fromJson(jsonScreen['backgroundColor']),
-              detailedInfo: DetailedInfo.fromJson(jsonScreen['detailedInfo']),
+              id: jsonScreen['id'] == null
+                  ? null
+                  : RandomKey.fromJson(jsonScreen['id']),
+              backgroundColor: jsonScreen['backgroundColor'] == null
+                  ? null
+                  : MyThemeProp.fromJson(jsonScreen['backgroundColor']),
+              detailedInfo: jsonScreen['detailedInfo'] == null
+                  ? null
+                  : DetailedInfo.fromJson(jsonScreen['detailedInfo']),
               bottomTabsVisible: jsonScreen['bottomTabsVisible'],
               components: _loadComponents(jsonScreen));
         })
