@@ -11,7 +11,7 @@ class Project {
   Map<String, dynamic> _fetchedData;
   Project(this.url, this.user);
   Map<String, dynamic> get data => _fetchedData ?? {};
-  String get slug => _fetchedData['slug'] ?? null;
+  String get slugUrl => _fetchedData['public_url'] ?? null;
 
   bool get _projectDataNotSet => (url.toString().contains('null'));
 
