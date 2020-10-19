@@ -2,11 +2,13 @@ import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/features/services/projects/IProjectLoad.dart';
+import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 
 class LoadedProject implements IProjectLoad {
   Map<String, dynamic> jsonCanvas;
@@ -40,14 +42,22 @@ class LoadedProject implements IProjectLoad {
     return jsonCanvas['screens']
         .map((jsonScreen) {
           return SchemaStore(
-              name: 'Home', components: _loadComponents(jsonScreen));
+              name: jsonScreen['name'],
+              id: RandomKey.fromJson(jsonScreen['id']),
+              backgroundColor:
+                  MyThemeProp.fromJson(jsonScreen['backgroundColor']),
+              detailedInfo: DetailedInfo.fromJson(jsonScreen['detailedInfo']),
+              bottomTabsVisible: jsonScreen['bottomTabsVisible'],
+              components: _loadComponents(jsonScreen));
         })
         .toList()
         .cast<SchemaStore>();
   }
 
   List<SchemaNode> _loadComponents(Map<String, dynamic> screenJson) {
-    if (jsonCanvas['screens'] == null) {
+    if (jsonCanvas['screens'] == null ||
+        screenJson == null ||
+        screenJson['components'] == null) {
       return List<SchemaNode>.of([]);
     }
 
