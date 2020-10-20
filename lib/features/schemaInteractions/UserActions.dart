@@ -10,6 +10,7 @@ import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart'
 import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
 import 'package:flutter_app/features/schemaInteractions/DeleteNode.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
+import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
@@ -213,9 +214,12 @@ class UserActions {
     );
 
     action.execute(prevValue);
+
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
     }
+
+    this.buildQuickGuides();
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
@@ -229,10 +233,21 @@ class UserActions {
     return _currentNode.selectedNode;
   }
 
+  void buildQuickGuides() {
+    this.screens.current.buildQuickGuides(
+      ObjectConstrains(
+        id: UniqueKey(),
+        position: Offset(16, 16),
+        size: Offset(this.screens.screenWidth - 32, this.screens.screenHeight - this.screens.screenTabsHeight - 32),
+      ),
+    );
+  }
+
   void selectNodeForEdit(SchemaNode node) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
 
     if (node != null) {
+      this.buildQuickGuides();
       debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
     }
   }
@@ -254,5 +269,6 @@ class UserActions {
     final removedAction = _actionsDone.actions.removeLast();
     removedAction.undo();
     _actionsUndone.add((removedAction));
+    this.buildQuickGuides();
   }
 }

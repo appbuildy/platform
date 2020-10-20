@@ -482,6 +482,9 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
+                    ...userActions.screens.current.quickGuideManager.buildLines(
+                        screenSize: Offset(widget.userActions.screens.screenWidth, widget.userActions.screens.screenHeight - widget.userActions.screens.screenTabsHeight)
+                    ),
                     ...userActions.screens.current.components.map((node) =>
                         Positioned(
                             child: GestureDetector(

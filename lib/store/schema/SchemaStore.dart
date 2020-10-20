@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -26,6 +27,20 @@ abstract class _SchemaStore with Store {
     this.bottomTabsVisible = bottomTabsVisible ?? true;
     this.backgroundColor = backgroundColor ??
         MyThemeProp(name: 'background', color: Color(0xFFffffff));
+
+    this.quickGuideManager = QuickGuideManager();
+  }
+
+  QuickGuideManager quickGuideManager;
+
+  void buildQuickGuides(ObjectConstrains screenConstrains) {
+    List<ObjectConstrains> objectsConstrains = this.components.map((SchemaNode node) {
+      return ObjectConstrains(id: node.id, position: node.position, size: node.size);
+    }).toList();
+
+    objectsConstrains.add(screenConstrains);
+
+    this.quickGuideManager.buildQuickGuides(objectsConstrains);
   }
 
   @observable
