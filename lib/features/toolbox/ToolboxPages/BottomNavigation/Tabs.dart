@@ -27,6 +27,7 @@ class Tabs extends StatelessWidget {
                     tab: tab,
                     userActions: userActions,
                     selectTab: () {
+                      print('Select Tab');
                       selectTab(tab);
                     }))
                 .toList(),

@@ -3,23 +3,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
+import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
 
 part 'BottomNavigationStore.g.dart';
-
-class TabNavigation {
-  String label;
-  IconData icon;
-  RandomKey target;
-  RandomKey id;
-
-  TabNavigation({this.target, this.label, this.icon, this.id}) {
-    this.id = id ?? RandomKey();
-  }
-}
 
 class BottomNavigationStore = _BottomNavigationStore
     with _$BottomNavigationStore;
