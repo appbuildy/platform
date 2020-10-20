@@ -26,6 +26,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/store/userActions/CurrentEditingElement.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
+import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart';
@@ -44,11 +45,14 @@ class UserActions {
   RemoteSchemaPropertiesBinding _bindings;
   List<String> remoteTableNames;
 
-  UserActions(
-      {Screens screens,
-      CurrentUserStore currentUserStore,
-      BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+  Debouncer<SchemaNode> debouncer;
+
+  UserActions({
+    Screens screens,
+    CurrentUserStore currentUserStore,
+    BottomNavigationStore bottomNavigationStore,
+    AppThemeStore themeStore
+  }) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -202,12 +206,22 @@ class UserActions {
 
   void repositionAndResize(SchemaNode updatedNode,
       [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
-    final action =
-        RepositionAndResize(schemaStore: currentScreen, node: updatedNode);
+    final action = RepositionAndResize(
+      schemaStore: currentScreen,
+      node: updatedNode,
+      onNodeUpdate: (SchemaNode updatedNode) => _currentNode.selectedNode = updatedNode.copy(),
+    );
 
     action.execute(prevValue);
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
+    }
+
+    if (prevValue == null && !isAddedToDoneActions) {
+      debouncer.run(
+            () => this.repositionAndResize(updatedNode, true, debouncer.prevValue),
+        updatedNode.copy(),
+      );
     }
   }
 
@@ -217,6 +231,10 @@ class UserActions {
 
   void selectNodeForEdit(SchemaNode node) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
+
+    if (node != null) {
+      debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
+    }
   }
 
   void bindAttribute(

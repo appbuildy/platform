@@ -13,7 +13,24 @@ import 'package:flutter_app/utils/RandomKey.dart';
 class Screens {
   CurrentScreen _current;
   ScreensStore all;
-  Screens(this.all, this._current);
+
+  double screenWidth;
+  double screenHeight;
+  double screenTabsHeight;
+
+  Screens(
+    this.all,
+    this._current,
+  {
+    this.screenWidth = 375.0,
+    this.screenHeight = 812.0,
+    this.screenTabsHeight = 84,
+  }
+  );
+
+  double get currentScreenMaxHeight => this._current.currentScreen.bottomTabsVisible
+      ? screenHeight - this.screenTabsHeight
+      : this.screenHeight;
 
   BaseAction create({
     bool moveToLastAfterCreated = false,

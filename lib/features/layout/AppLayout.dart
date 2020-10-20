@@ -10,6 +10,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/constrain.dart';
 
 class AppLayout extends StatefulWidget {
   final UserActions userActions;
@@ -72,15 +73,49 @@ class _AppLayoutState extends State<AppLayout> {
         return true;
       }
 
-      final selected = widget.userActions.selectedNode();
-      if (selected == null) {
+      final selectedNode = widget.userActions.selectedNode();
+      if (selectedNode == null) {
         return false;
       }
 
+      if (e.logicalKey == LogicalKeyboardKey.arrowUp || e.logicalKey == LogicalKeyboardKey.arrowDown) {
+        final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
+
+        selectedNode.position = Offset(
+          selectedNode.position.dx,
+          constrainPosition(
+            size: selectedNode.size.dy,
+            value: isUp ? -1 : 1,
+            position: selectedNode.position.dy,
+            max: widget.userActions.screens.currentScreenMaxHeight,
+            isDisableWhenMin: true,
+          ),
+        );
+
+        widget.userActions.repositionAndResize(selectedNode, false);
+      }
+
+      if (e.logicalKey == LogicalKeyboardKey.arrowLeft || e.logicalKey == LogicalKeyboardKey.arrowRight) {
+        final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
+
+        selectedNode.position = Offset(
+          constrainPosition(
+            size: selectedNode.size.dx,
+            value: isLeft ? -1 : 1,
+            position: selectedNode.position.dx,
+            max: widget.userActions.screens.screenWidth,
+            isDisableWhenMin: true,
+          ),
+          selectedNode.position.dy,
+        );
+
+        widget.userActions.repositionAndResize(selectedNode, false);
+      }
+
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
-        widget.userActions.deleteNode(selected);
+        widget.userActions.deleteNode(selectedNode);
       } else if (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) {
-        widget.userActions.copyNode(selected);
+        widget.userActions.copyNode(selectedNode);
       }
 
       return true;
@@ -120,31 +155,21 @@ class _AppLayoutState extends State<AppLayout> {
 
     _focusNodeAttachment.reparent();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  if (_focused) {
-                    _focusNode.unfocus();
-                  }
-                },
-                child: Toolbox(
-                    // currentUserStore: currentUserStore,
+    return GestureDetector(
+      onTap: () {
+        _focusNode.requestFocus();
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Toolbox(
                     toolboxState: toolboxState,
                     selectState: selectState,
                     userActions: widget.userActions),
-              ),
-              Flexible(
-                child: GestureDetector(
-                  onTap: () {
-                    if (!_focused) {
-                      _focusNode.requestFocus();
-                    }
-                  },
+                Flexible(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -170,6 +195,7 @@ class _AppLayoutState extends State<AppLayout> {
                                             left: 30,
                                             right: 30),
                                         child: AppPreview(
+                                          focusNode: _focusNode,
                                           isPlayMode: isPlayMode,
                                           selectStateToLayout: () {
                                             selectState(ToolboxStates.layout);
@@ -215,24 +241,18 @@ class _AppLayoutState extends State<AppLayout> {
                     ],
                   ),
                 ),
-              ),
-              Container(
-                child: GestureDetector(
-                  onTap: () {
-                    if (_focused) {
-                      _focusNode.unfocus();
-                    }
-                  },
+                Container(
                   child: RightToolbox(
                       toolboxState: toolboxState,
                       selectState: selectState,
-                      userActions: widget.userActions),
-                ),
-              )
-            ],
-          ),
-        )
-      ],
+                      userActions: widget.userActions
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

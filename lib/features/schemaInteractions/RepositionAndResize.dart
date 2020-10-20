@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
+import 'package:universal_html/html.dart';
 
 class RepositionAndResizeOffsets {
   Offset position;
@@ -19,11 +20,13 @@ class RepositionAndResize extends BaseAction {
   SchemaNode node;
   SchemaStore schemaStore;
   SchemaNode oldValue;
+  Function onNodeUpdate;
 
-  RepositionAndResize({SchemaStore schemaStore, SchemaNode node}) {
+  RepositionAndResize({SchemaStore schemaStore, SchemaNode node, Function onNodeUpdate}) {
     this.schemaStore = schemaStore;
     this.node = node;
     this.oldValue = node.copy();
+    this.onNodeUpdate = onNodeUpdate;
   }
 
   @override
@@ -49,6 +52,8 @@ class RepositionAndResize extends BaseAction {
     log('old  ${oldValue.id} value x y ${oldValue.position.dx} ${oldValue.position.dy}');
     log('node ${node.id} value x y ${node.position.dx} ${node.position.dy}');
     if (!executed) return;
+
     schemaStore.update(oldValue.copy());
+    onNodeUpdate(oldValue.copy());
   }
 }
