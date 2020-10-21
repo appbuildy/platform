@@ -32,6 +32,11 @@ class Screens {
       ? screenHeight - this.screenTabsHeight
       : this.screenHeight;
 
+  Offset get currentScreenSize => Offset(
+    screenWidth,
+    this.currentScreenMaxHeight,
+  );
+
   BaseAction create({
     bool moveToLastAfterCreated = false,
     String name,

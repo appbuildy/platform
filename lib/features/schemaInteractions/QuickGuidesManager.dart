@@ -1,12 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class ObjectConstrains {
+class PositionAndSize {
   UniqueKey id;
   Offset position;
   Offset size;
 
-  ObjectConstrains({
+  PositionAndSize({
     @required this.id,
     @required this.position,
     @required this.size,
@@ -85,7 +85,7 @@ class ObjectGuides {
     @required this.verticalGuides,
   });
 
-  ObjectGuides.fromObjectConstrains(ObjectConstrains object) {
+  ObjectGuides.fromObjectConstrains(PositionAndSize object) {
     this.id = object.id;
     this.horizontalGuides = AxisGuides.fromObjectConstrains(start: object.position.dy, size: object.size.dy);
     this.verticalGuides = AxisGuides.fromObjectConstrains(start: object.position.dx, size: object.size.dx);
@@ -107,8 +107,8 @@ class ObjectGuides {
 class QuickGuideManager {
   List<ObjectGuides> objects;
 
-  void buildQuickGuides(List<ObjectConstrains> objects) {
-    this.objects = objects.map((ObjectConstrains object) {
+  void buildQuickGuides(List<PositionAndSize> objects) {
+    this.objects = objects.map((PositionAndSize object) {
       return ObjectGuides.fromObjectConstrains(object);
     }).toList();
   }

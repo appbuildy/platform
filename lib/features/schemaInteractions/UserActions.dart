@@ -219,7 +219,7 @@ class UserActions {
       _actionsDone.add(action);
     }
 
-    this.buildQuickGuides();
+    // this.buildQuickGuides();
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
@@ -234,13 +234,13 @@ class UserActions {
   }
 
   void buildQuickGuides() {
-    this.screens.current.buildQuickGuides(
-      ObjectConstrains(
-        id: UniqueKey(),
-        position: Offset(16, 16),
-        size: Offset(this.screens.screenWidth - 32, this.screens.screenHeight - this.screens.screenTabsHeight - 32),
-      ),
+    final screenPaddingPositionAndSize = PositionAndSize(
+      id: UniqueKey(),
+      position: Offset(16, 16),
+      size: Offset(this.screens.screenWidth - 32, this.screens.screenHeight - this.screens.screenTabsHeight - 32),
     );
+
+    this.screens.current.buildQuickGuides(addedPositionAndSize: screenPaddingPositionAndSize, ignoredNodeId: this.selectedNode().id);
   }
 
   void selectNodeForEdit(SchemaNode node) {

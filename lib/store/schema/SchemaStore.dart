@@ -33,14 +33,20 @@ abstract class _SchemaStore with Store {
 
   QuickGuideManager quickGuideManager;
 
-  void buildQuickGuides(ObjectConstrains screenConstrains) {
-    List<ObjectConstrains> objectsConstrains = this.components.map((SchemaNode node) {
-      return ObjectConstrains(id: node.id, position: node.position, size: node.size);
-    }).toList();
+  void buildQuickGuides({ PositionAndSize addedPositionAndSize, UniqueKey ignoredNodeId }) {
+    List<PositionAndSize> nodesPositionAndSize = [];
 
-    objectsConstrains.add(screenConstrains);
+    this.components.forEach((SchemaNode node) {
+      if (ignoredNodeId != null && node.id == ignoredNodeId) return;
 
-    this.quickGuideManager.buildQuickGuides(objectsConstrains);
+      nodesPositionAndSize.add(PositionAndSize(id: node.id, position: node.position, size: node.size));
+    });
+
+    if (addedPositionAndSize != null) {
+      nodesPositionAndSize.add(addedPositionAndSize);
+    }
+
+    this.quickGuideManager.buildQuickGuides(nodesPositionAndSize);
   }
 
   @observable
