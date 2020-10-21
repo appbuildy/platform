@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/WithInfo.dart';

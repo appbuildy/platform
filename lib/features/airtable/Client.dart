@@ -11,11 +11,13 @@ class Client implements IRemoteTable {
   String table;
   String apiUrl;
   http.Client httpClient;
+  static Map<String, dynamic> credentials = {};
 
   factory Client.defaultClient(
-      {String table = 'Table 1',
-      String apiKey = 'keyzl1cUgqEpq4zBB',
-      String base = 'apphUx0izMa4P5pzQ'}) {
+      {String table = 'Table 1', String apiKey, String base}) {
+    final base = credentials['base'] ?? 'apphUx0izMa4P5pzQ';
+    final apiKey = credentials['api_key'] ?? 'keyzl1cUgqEpq4zBB';
+
     return Client(
         table: table, apiKey: apiKey, base: base, httpClient: http.Client());
   }

@@ -4,7 +4,7 @@ import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/TabSe
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/Tabs.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/Pages.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
-import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
+import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
