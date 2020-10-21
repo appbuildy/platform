@@ -39,12 +39,14 @@ class BottomNavigation {
   }
 
   SchemaStore selectByName(String name) {
+    log('screen by name');
     final screen = all.screens.where((screen) => screen.name == name).first;
     _current.select(screen);
     return screen;
   }
 
   SchemaStore _screenByIndex(indexDiff) {
+    log('screen');
     final possibleNextScreen = all.screens[_currentIndex + indexDiff];
 
     if (possibleNextScreen != null) {
