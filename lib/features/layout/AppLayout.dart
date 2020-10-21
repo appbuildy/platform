@@ -7,6 +7,7 @@ import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -83,13 +84,12 @@ class _AppLayoutState extends State<AppLayout> {
 
         selectedNode.position = Offset(
           selectedNode.position.dx,
-          constrainPosition(
-            size: selectedNode.size.dy,
-            value: isUp ? -1 : 1,
-            position: selectedNode.position.dy,
-            max: widget.userActions.screens.currentScreenMaxHeight,
-            isDisableWhenMin: true,
-          ),
+          SchemaNode.axisMove(
+            axisNodePosition: selectedNode.position.dy,
+            axisNodeSize: selectedNode.size.dy,
+            axisDelta: isUp ? -1 : 1,
+            axisScreenSize: widget.userActions.screens.currentScreenWorkspaceSize.dy,
+          )
         );
 
         widget.userActions.repositionAndResize(selectedNode, false);
@@ -99,12 +99,11 @@ class _AppLayoutState extends State<AppLayout> {
         final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
 
         selectedNode.position = Offset(
-          constrainPosition(
-            size: selectedNode.size.dx,
-            value: isLeft ? -1 : 1,
-            position: selectedNode.position.dx,
-            max: widget.userActions.screens.screenWidth,
-            isDisableWhenMin: true,
+          SchemaNode.axisMove(
+            axisNodePosition: selectedNode.position.dx,
+            axisNodeSize: selectedNode.size.dx,
+            axisDelta: isLeft ? -1 : 1,
+            axisScreenSize: widget.userActions.screens.currentScreenWorkspaceSize.dx,
           ),
           selectedNode.position.dy,
         );

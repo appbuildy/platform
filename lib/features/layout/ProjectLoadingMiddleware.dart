@@ -42,6 +42,7 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
   }
 
   void setupProject() async {
+    this.endLoadingAnimation();
     await userActions.loadProject();
 
     this.endLoadingAnimation();

@@ -64,12 +64,12 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeTop(
                       node: node,
                       delta: details.delta.dy,
-                      screenSize: userActions.screens.currentScreenSize.dy,
+                      screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
                   node = SchemaNode.resizeLeft(
                     node: node,
                     delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenSize.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -85,12 +85,12 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeTop(
                     node: node,
                     delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenSize.dy,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
                   node = SchemaNode.resizeRight(
                     node: node,
                     delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenSize.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -106,12 +106,12 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeBottom(
                     node: node,
                     delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenSize.dy,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
                   node = SchemaNode.resizeRight(
                     node: node,
                     delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenSize.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -127,12 +127,12 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeBottom(
                     node: node,
                     delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenSize.dy,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
                   node = SchemaNode.resizeLeft(
                     node: node,
                     delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenSize.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -153,7 +153,7 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeTop(
                       node: node,
                       delta: details.delta.dy,
-                      screenSize: userActions.screens.currentScreenMaxHeight,
+                      screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -180,7 +180,7 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeRight(
                     node: node,
                     delta: details.delta.dx,
-                    screenSize: userActions.screens.screenWidth,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -207,7 +207,7 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeBottom(
                     node: node,
                     delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenMaxHeight,
+                    screenSize: widget.userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -232,7 +232,7 @@ class _AppPreviewState extends State<AppPreview> {
                   node = SchemaNode.resizeLeft(
                     node: node,
                     delta: details.delta.dx,
-                    screenSize: userActions.screens.screenWidth,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
                   userActions.repositionAndResize(node, false);
@@ -265,7 +265,7 @@ class _AppPreviewState extends State<AppPreview> {
             node = SchemaNode.move(
               node: node,
               delta: details.delta,
-              screenSize: userActions.screens.currentScreenSize,
+              screenSize: userActions.screens.currentScreenWorkspaceSize,
             );
 
             userActions.repositionAndResize(node, false);
@@ -290,7 +290,7 @@ class _AppPreviewState extends State<AppPreview> {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(userActions.screens.screenWidth, userActions.screens.currentScreenMaxHeight, details.data.size);
+            .calculate(userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy, details.data.size);
         userActions.placeWidget(details.data, newPosition);
         widget.selectPlayModeToFalse();
 
@@ -319,9 +319,9 @@ class _AppPreviewState extends State<AppPreview> {
             scale: scale,
             alignment: Alignment.topCenter,
             child: Container(
-              width: userActions.screens.screenWidth + 4,
+              width: userActions.screens.currentScreenWorkspaceSize.dx + 4,
               // 4px is for border (2 px on both sides)
-              height: userActions.screens.screenHeight + 4,
+              height: userActions.screens.currentScreenWorkspaceSize.dy + userActions.screens.screenTabsHeight + 4,
               // 4px is for border (2 px on both sides)
               decoration: BoxDecoration(
                   color: userActions.screens.current.backgroundColor.color,
@@ -346,7 +346,7 @@ class _AppPreviewState extends State<AppPreview> {
                   textDirection: TextDirection.ltr,
                   children: [
                     ...userActions.screens.current.quickGuideManager.buildLines(
-                        screenSize: Offset(widget.userActions.screens.screenWidth, widget.userActions.screens.screenHeight - widget.userActions.screens.screenTabsHeight)
+                        screenSize: Offset(widget.userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy)
                     ),
                     ...userActions.screens.current.components.map((node) =>
                         Positioned(
@@ -396,7 +396,7 @@ class _AppPreviewState extends State<AppPreview> {
                                           color: theme.separators.color))),
                               child: Container(
                                 child: AppTabs(userActions: userActions),
-                                width: userActions.screens.screenWidth,
+                                width: userActions.screens.currentScreenWorkspaceSize.dx,
                                 height: userActions.screens.screenTabsHeight,
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,

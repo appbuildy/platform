@@ -133,8 +133,8 @@ abstract class SchemaNode {
       newSize = SchemaNode.minimalSize;
     }
 
-    if (position + size > axisScreenSize) {
-      newSize = axisScreenSize - position;
+    if (position + newSize > axisScreenSize) {
+      newSize = axisScreenSize - position.round();
     }
 
     return newSize;

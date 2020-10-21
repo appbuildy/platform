@@ -14,27 +14,24 @@ class Screens {
   CurrentScreen _current;
   ScreensStore all;
 
-  double screenWidth;
-  double screenHeight;
+  double _screenWidth;
+  double _screenHeight;
   double screenTabsHeight;
 
   Screens(
     this.all,
     this._current,
   {
-    this.screenWidth = 375.0,
-    this.screenHeight = 812.0,
+    double screenWidth = 375.0,
+    double screenHeight = 812.0,
     this.screenTabsHeight = 84,
   }
-  );
+  ) : this._screenWidth = screenWidth,
+        this._screenHeight = screenHeight;
 
-  double get currentScreenMaxHeight => this._current.currentScreen.bottomTabsVisible
-      ? screenHeight - this.screenTabsHeight
-      : this.screenHeight;
-
-  Offset get currentScreenSize => Offset(
-    screenWidth,
-    this.currentScreenMaxHeight,
+  Offset get currentScreenWorkspaceSize => Offset(
+    this._screenWidth,
+    this._screenHeight - this.screenTabsHeight,
   );
 
   BaseAction create({

@@ -237,7 +237,7 @@ class UserActions {
     final screenPaddingPositionAndSize = PositionAndSize(
       id: UniqueKey(),
       position: Offset(16, 16),
-      size: Offset(this.screens.screenWidth - 32, this.screens.screenHeight - this.screens.screenTabsHeight - 32),
+      size: Offset(this.screens.currentScreenWorkspaceSize.dx - 32, this.screens.currentScreenWorkspaceSize.dy - 32),
     );
 
     this.screens.current.buildQuickGuides(addedPositionAndSize: screenPaddingPositionAndSize, ignoredNodeId: this.selectedNode().id);
