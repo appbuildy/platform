@@ -159,6 +159,9 @@ class UserActions {
 
   void rerenderNode() {
     currentScreen.update(selectedNode());
+    if (debouncer != null) {
+      debouncer.stopTimer();
+    }
   }
 
   void copyNode(
@@ -205,8 +208,9 @@ class UserActions {
     return action.newNode;
   }
 
-  void repositionAndResize(SchemaNode updatedNode,
-      [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
+  void repositionAndResize(
+      SchemaNode updatedNode,
+      {bool buildQuickGuides = true, bool isAddedToDoneActions = true, SchemaNode prevValue}) {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
@@ -218,14 +222,20 @@ class UserActions {
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
     }
-
-    this.screens.current.quickGuideManager.searchNearestGuides(
+    if (buildQuickGuides) {
+      this.screens.current.quickGuideManager.searchNearestGuides(
         PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
-    );
+      );
+    }
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
-            () => this.repositionAndResize(updatedNode, true, debouncer.prevValue),
+        () => this.repositionAndResize(
+          updatedNode,
+          isAddedToDoneActions: true,
+          prevValue: debouncer.prevValue,
+          buildQuickGuides: buildQuickGuides,
+        ),
         updatedNode.copy(),
       );
     }
@@ -236,10 +246,18 @@ class UserActions {
   }
 
   void buildQuickGuides() {
+    final double screenTopOffset = 40;
+    final double screenBottomOffset = 20;
+    final double screenLeftOffset = 20;
+    final double screenRightOffset = 20;
+
     final screenPaddingPositionAndSize = PositionAndSize(
       id: UniqueKey(),
-      position: Offset(20, 20),
-      size: Offset(this.screens.currentScreenWorkspaceSize.dx - 40, this.screens.currentScreenWorkspaceSize.dy - 40),
+      position: Offset(screenLeftOffset, screenTopOffset),
+      size: Offset(
+        this.screens.currentScreenWorkspaceSize.dx - screenRightOffset - screenLeftOffset,
+        this.screens.currentScreenWorkspaceSize.dy - screenTopOffset - screenBottomOffset,
+      ),
     );
 
     this.screens.current.buildQuickGuides(addedPositionAndSize: screenPaddingPositionAndSize, ignoredNodeId: this.selectedNode().id);

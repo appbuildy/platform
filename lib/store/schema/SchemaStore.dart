@@ -34,6 +34,7 @@ abstract class _SchemaStore with Store {
   QuickGuideManager quickGuideManager;
 
   void buildQuickGuides({ PositionAndSize addedPositionAndSize, UniqueKey ignoredNodeId }) {
+    print(addedPositionAndSize);
     List<PositionAndSize> nodesPositionAndSize = [];
 
     this.components.forEach((SchemaNode node) {

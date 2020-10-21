@@ -52,7 +52,7 @@ class Guideline {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: Color(0xFF007aff),
+            color: Color(0xFFFF6666),
           ),
         ),
       )
@@ -275,6 +275,11 @@ class QuickGuideManager {
   FoundGuideline horizontalGuideLine;
   FoundGuideline verticalGuideLine;
 
+  void clearVisibleGuidelines() {
+    horizontalGuideLine = null;
+    verticalGuideLine = null;
+  }
+
   void makeAllObjectGuides(List<PositionAndSize> objects) {
     this.allObjectGuides = objects.map((PositionAndSize object) {
       return ObjectGuides.fromPositionAndSize(object);
@@ -282,8 +287,7 @@ class QuickGuideManager {
   }
 
   void searchNearestGuides(PositionAndSize targetObject) {
-    this.horizontalGuideLine = null;
-    this.verticalGuideLine = null;
+    this.clearVisibleGuidelines();
 
     List<FoundGuideline> horizontalGuidesInMagnetZone = [];
     List<FoundGuideline> verticalGuidesInMagnetZone = [];

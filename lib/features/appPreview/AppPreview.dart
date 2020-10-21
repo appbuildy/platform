@@ -72,7 +72,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
@@ -93,7 +93,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
@@ -114,7 +114,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
@@ -135,7 +135,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
@@ -156,7 +156,7 @@ class _AppPreviewState extends State<AppPreview> {
                       screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -183,7 +183,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -210,7 +210,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: widget.userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -235,7 +235,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
                   );
 
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -268,7 +268,11 @@ class _AppPreviewState extends State<AppPreview> {
               screenSize: userActions.screens.currentScreenWorkspaceSize,
             );
 
-            userActions.repositionAndResize(node, false);
+            userActions.repositionAndResize(node, isAddedToDoneActions: false);
+          },
+          onPanEnd: (_) {
+            userActions.currentScreen.quickGuideManager.clearVisibleGuidelines();
+            userActions.rerenderNode();
           },
           child: Cursor(
             cursor: CursorEnum.move,
