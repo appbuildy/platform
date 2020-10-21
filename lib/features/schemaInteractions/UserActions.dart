@@ -219,7 +219,7 @@ class UserActions {
       _actionsDone.add(action);
     }
 
-    this.screens.current..quickGuideManager.searchNearestGuides(
+    this.screens.current.quickGuideManager.searchNearestGuides(
         PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
     );
 

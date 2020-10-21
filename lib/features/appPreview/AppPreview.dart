@@ -345,7 +345,7 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.screens.current.quickGuideManager.buildAllLines(
+                    ...userActions.screens.current.quickGuideManager.buildMagnetLines(
                         screenSize: Offset(widget.userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy)
                     ),
                     ...userActions.screens.current.components.map((node) =>

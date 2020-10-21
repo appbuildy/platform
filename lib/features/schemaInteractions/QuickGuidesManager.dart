@@ -52,7 +52,7 @@ class Guideline {
           width: width,
           height: height,
           decoration: BoxDecoration(
-            color: Colors.red,
+            color: Color(0xFF007aff),
           ),
         ),
       )
@@ -121,10 +121,6 @@ class GuideLines {
     final double centerDelta = (this.center.axisPosition.abs() - position.abs()).abs().roundToDouble();
     final double endDelta = (this.end.axisPosition.abs() - position.abs()).abs().roundToDouble();
 
-    // print(startDelta);
-    // print(centerDelta);
-    // print(endDelta);
-
     if (
       startDelta <= magnetZone
       && startDelta < centerDelta
@@ -168,8 +164,6 @@ class GuideLines {
     final double end = start + size;
     final double center = start + (end - start) / 2;
 
-    FoundGuideline nearestGuideline;
-
     final FoundGuideline startGuideline = this.findNearestGuideLineByPosition(position: start, magnetZone: magnetZone, positionType: PositionTypes.start);
     final FoundGuideline centerGuideline = this.findNearestGuideLineByPosition(position: center, magnetZone: magnetZone, positionType: PositionTypes.center);
     final FoundGuideline endGuideline = this.findNearestGuideLineByPosition(position: end, magnetZone: magnetZone, positionType: PositionTypes.end);
@@ -197,6 +191,8 @@ class GuideLines {
     ) {
       return endGuideline;
     }
+
+    return null;
   }
 
   @override
@@ -276,7 +272,8 @@ class ObjectGuides {
 class QuickGuideManager {
   List<ObjectGuides> allObjectGuides;
 
-  List<Widget> currentMagnetLines = [];
+  FoundGuideline horizontalGuideLine;
+  FoundGuideline verticalGuideLine;
 
   void makeAllObjectGuides(List<PositionAndSize> objects) {
     this.allObjectGuides = objects.map((PositionAndSize object) {
@@ -285,28 +282,39 @@ class QuickGuideManager {
   }
 
   void searchNearestGuides(PositionAndSize targetObject) {
-     List<FoundGuideline> horizontalGuidesInMagnetZone = [];
-     List<FoundGuideline> verticalGuidesInMagnetZone = [];
+    this.horizontalGuideLine = null;
+    this.verticalGuideLine = null;
 
-     this.allObjectGuides.forEach((ObjectGuides object) {
-       final FoundGuideline nearestHorizontalGuideLine = object.findNearestGuideLineByOrientation(
-         targetObject: targetObject,
-         orientation: OrientationTypes.horizontal,
-       );
+    List<FoundGuideline> horizontalGuidesInMagnetZone = [];
+    List<FoundGuideline> verticalGuidesInMagnetZone = [];
 
-       final FoundGuideline nearestVerticalGuideLine = object.findNearestGuideLineByOrientation(
-         targetObject: targetObject,
-         orientation: OrientationTypes.vertical,
-       );
+    this.allObjectGuides.forEach((ObjectGuides object) {
+      final FoundGuideline nearestHorizontalGuideLine = object.findNearestGuideLineByOrientation(
+        targetObject: targetObject,
+        orientation: OrientationTypes.horizontal,
+      );
+
+      final FoundGuideline nearestVerticalGuideLine = object.findNearestGuideLineByOrientation(
+        targetObject: targetObject,
+        orientation: OrientationTypes.vertical,
+      );
 
       if (nearestHorizontalGuideLine != null) horizontalGuidesInMagnetZone.add(nearestHorizontalGuideLine);
 
       if (nearestVerticalGuideLine != null) verticalGuidesInMagnetZone.add(nearestVerticalGuideLine);
-       print('                 -----                       ');
-       print(nearestHorizontalGuideLine);
-       print(nearestVerticalGuideLine);
-       print('                 -----                       ');
-     });
+    });
+
+    if (horizontalGuidesInMagnetZone.isNotEmpty) {
+      horizontalGuidesInMagnetZone.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
+
+      this.horizontalGuideLine = horizontalGuidesInMagnetZone[0];
+    }
+
+    if (verticalGuidesInMagnetZone.isNotEmpty) {
+      verticalGuidesInMagnetZone.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
+
+      this.verticalGuideLine = verticalGuidesInMagnetZone[0];
+    }
   }
 
   List<Widget> buildAllLines({ @required Offset screenSize }) {
@@ -316,6 +324,10 @@ class QuickGuideManager {
   }
 
   List<Widget> buildMagnetLines({ @required Offset screenSize }) {
-    return [Container()];
+
+    return [
+      this.horizontalGuideLine?.guideline?.buildLine(screenSize: screenSize) ?? Container(),
+      this.verticalGuideLine?.guideline?.buildLine(screenSize: screenSize) ?? Container(),
+    ];
   }
 }
