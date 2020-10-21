@@ -1,5 +1,7 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 
+import 'Client.dart';
+
 class AirtableTable implements IRemoteTable {
   @override
   String table;
@@ -8,6 +10,6 @@ class AirtableTable implements IRemoteTable {
 
   @override
   Future<Map<String, dynamic>> records() async {
-    return {};
+    return await Client.defaultClient(table: table, base: base).records();
   }
 }
