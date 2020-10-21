@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_app/features/airtable/airtable_table.dart';
 import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:http/http.dart';
@@ -13,9 +14,10 @@ class Project {
   Map<String, dynamic> get data => _fetchedData ?? {};
   Map<String, dynamic> get airtableCredentials =>
       _fetchedData['airtable_credentials'] ?? {};
-  List<String> get airtableTables =>
-      _fetchedData['tables'].map((r) => r['name']).toList().cast<String>() ??
-      {};
+  List<AirtableTable> get airtableTables => _fetchedData['tables']
+      .map((r) => AirtableTable(r['name'].toString(), r['base'].toString()))
+      .toList()
+      .cast<AirtableTable>();
   String get slugUrl => _fetchedData['public_url'] ?? null;
 
   bool get _projectDataNotSet => (url.toString().contains('null'));
