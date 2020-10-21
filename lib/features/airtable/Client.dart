@@ -15,7 +15,7 @@ class Client implements IRemoteTable {
 
   factory Client.defaultClient(
       {String table = 'Table 1', String apiKey, String base}) {
-    final base = credentials['base'] ?? 'apphUx0izMa4P5pzQ';
+    base ??= 'apphUx0izMa4P5pzQ';
     final apiKey = credentials['api_key'] ?? 'keyzl1cUgqEpq4zBB';
 
     return Client(
@@ -29,10 +29,12 @@ class Client implements IRemoteTable {
       this.base,
       this.httpClient});
 
+  String get requestUrl => '${this.apiUrl}${this.base}/${this.table}';
+
   @override
   Future<Map<String, dynamic>> records() async {
-    final response = await this.httpClient.get(
-        '${this.apiUrl}${this.base}/${this.table}',
+    print("Requesting $requestUrl}");
+    final response = await this.httpClient.get(requestUrl,
         headers: {HttpHeaders.authorizationHeader: "Bearer ${this.apiKey}"});
     return json.decode(response.body);
   }

@@ -39,11 +39,13 @@ abstract class _RemoteAttributes with Store {
 
   @action
   Future<void> update([IRemoteTable fetchClient]) async {
+    print('FUCKING UPDATE');
     IRemoteTable client = fetchClient ?? Client.defaultClient();
     final columns = Map<String, RemoteList>();
     tables[client.table] = columns;
 
     final records = await client.records();
+    print(records);
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {
         _addColumnUniq(columns, key);
