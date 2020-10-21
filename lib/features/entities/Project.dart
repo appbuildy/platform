@@ -15,7 +15,7 @@ class Project {
   Map<String, dynamic> get airtableCredentials =>
       _fetchedData['airtable_credentials'] ?? {};
   List<AirtableTable> get airtableTables => _fetchedData['tables']
-      .map((r) => AirtableTable(r['name'].toString(), r['base'].toString()))
+      .map((r) => AirtableTable(r['name'].toString(), r['base']))
       .toList()
       .cast<AirtableTable>();
   String get slugUrl => _fetchedData['public_url'] ?? null;
