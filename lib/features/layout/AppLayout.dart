@@ -11,7 +11,6 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/constrain.dart';
 
 class AppLayout extends StatefulWidget {
   final UserActions userActions;

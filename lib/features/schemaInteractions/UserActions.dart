@@ -219,7 +219,9 @@ class UserActions {
       _actionsDone.add(action);
     }
 
-    // this.buildQuickGuides();
+    this.screens.current..quickGuideManager.searchNearestGuides(
+        PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
+    );
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
@@ -236,8 +238,8 @@ class UserActions {
   void buildQuickGuides() {
     final screenPaddingPositionAndSize = PositionAndSize(
       id: UniqueKey(),
-      position: Offset(16, 16),
-      size: Offset(this.screens.currentScreenWorkspaceSize.dx - 32, this.screens.currentScreenWorkspaceSize.dy - 32),
+      position: Offset(20, 20),
+      size: Offset(this.screens.currentScreenWorkspaceSize.dx - 40, this.screens.currentScreenWorkspaceSize.dy - 40),
     );
 
     this.screens.current.buildQuickGuides(addedPositionAndSize: screenPaddingPositionAndSize, ignoredNodeId: this.selectedNode().id);

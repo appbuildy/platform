@@ -46,7 +46,7 @@ abstract class _SchemaStore with Store {
       nodesPositionAndSize.add(addedPositionAndSize);
     }
 
-    this.quickGuideManager.buildQuickGuides(nodesPositionAndSize);
+    this.quickGuideManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
   @observable
