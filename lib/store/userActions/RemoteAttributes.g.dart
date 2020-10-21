@@ -50,8 +50,8 @@ mixin _$RemoteAttributes on _RemoteAttributes, Store {
   final _$fetchTablesAsyncAction = AsyncAction('_RemoteAttributes.fetchTables');
 
   @override
-  Future<void> fetchTables(List<String> tableNames) {
-    return _$fetchTablesAsyncAction.run(() => super.fetchTables(tableNames));
+  Future<void> fetchTables(List<AirtableTable> tables) {
+    return _$fetchTablesAsyncAction.run(() => super.fetchTables(tables));
   }
 
   final _$updateAsyncAction = AsyncAction('_RemoteAttributes.update');
