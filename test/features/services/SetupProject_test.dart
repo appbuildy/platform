@@ -22,7 +22,7 @@ class MockSettings extends Mock implements SettingsParser {
 class MockAttributes extends Mock implements RemoteAttributes {}
 
 final responseBody =
-    '{ "airtable_credentials" : { "api_key": "key123", "base":"base123" } }';
+    '{ "tables": [],"airtable_credentials" : { "api_key": "key123", "base":"base123" } }';
 
 class MockedClient extends MockClient {
   MockedClient(fn) : super(fn);

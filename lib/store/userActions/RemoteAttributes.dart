@@ -4,6 +4,7 @@ import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/airtable/RemoteList.dart';
+import 'package:flutter_app/features/airtable/airtable_table.dart';
 import 'package:mobx/mobx.dart';
 
 part 'RemoteAttributes.g.dart';
@@ -27,10 +28,9 @@ abstract class _RemoteAttributes with Store {
       ObservableMap<String, Map<String, RemoteList>>();
 
   @action
-  Future<void> fetchTables(List<String> tableNames) async {
-    print("Fetch $tableNames");
-    tableNames.forEach((name) {
-      this.update(Client.defaultClient(table: name));
+  Future<void> fetchTables(List<AirtableTable> tables) async {
+    tables.forEach((table) {
+      this.update(table);
     });
   }
 
@@ -39,11 +39,13 @@ abstract class _RemoteAttributes with Store {
 
   @action
   Future<void> update([IRemoteTable fetchClient]) async {
+    print('FUCKING UPDATE');
     IRemoteTable client = fetchClient ?? Client.defaultClient();
     final columns = Map<String, RemoteList>();
     tables[client.table] = columns;
 
     final records = await client.records();
+    print(records);
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {
         _addColumnUniq(columns, key);

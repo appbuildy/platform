@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
@@ -128,13 +127,13 @@ class SchemaNodeList extends SchemaNode {
   }
 
   Future<void> updateData(String tableName, UserActions userActions) async {
-    final client = Client.defaultClient(table: tableName);
-    print(properties['Items'].value);
+    print('updateData');
+    final client = userActions.currentUserStore.project.airtableTables
+        .firstWhere((element) => element.table == tableName);
+    print("Client: $client");
 
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
     userActions.changePropertyTo(newProp);
-
-    print(properties['Items'].value);
   }
 
   @override
