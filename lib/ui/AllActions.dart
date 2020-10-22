@@ -37,7 +37,6 @@ class _AllActionsState extends State<AllActions> {
 
   void _createDetailedInfoForList(SchemaNode selectedNode, String tableName) {
     final screenName = 'Details for ${widget.userActions.currentScreen.name}';
-    print('rowData ${selectedNode.properties['Items'].value.values.toList()}');
     final detailedInfo = DetailedInfo(
       tableName: tableName,
       rowData: selectedNode.properties['Items'].value.values
