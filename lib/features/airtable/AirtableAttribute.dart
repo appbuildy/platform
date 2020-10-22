@@ -35,7 +35,6 @@ class AirtableAttribute implements IRemoteAttribute {
   @override
   void updateValues() {
     this.connectedProperties.forEach((element) {
-      print("Update $element value to $value");
       element.value = this.value;
     });
   }

@@ -15,8 +15,8 @@ class Client implements IRemoteTable {
 
   factory Client.defaultClient(
       {String table = 'Table 1', String apiKey, String base}) {
-    base ??= 'apphUx0izMa4P5pzQ';
-    final apiKey = credentials['api_key'] ?? 'keyzl1cUgqEpq4zBB';
+    print(credentials);
+    apiKey = credentials['api_key'];
 
     return Client(
         table: table, apiKey: apiKey, base: base, httpClient: http.Client());

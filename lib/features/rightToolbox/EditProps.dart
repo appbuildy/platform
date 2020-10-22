@@ -40,8 +40,6 @@ class EditProps extends StatelessWidget {
               : [...listColumnsSample];
         }
 
-        print('detailedInfo $detailedInfo');
-
         if (selectedNode == null) {
           return EditPage(
             userActions: userActions,

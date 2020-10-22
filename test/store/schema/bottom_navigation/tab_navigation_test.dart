@@ -15,7 +15,6 @@ void main() {
         label: 'Home', icon: FontAwesomeIcons.home, target: MAIN_UNIQUE_KEY);
 
     final jsonGen = tab.toJson();
-    print(jsonGen);
     expect(TabNavigation.fromJson(jsonGen).icon, equals(tab.icon));
   });
 }

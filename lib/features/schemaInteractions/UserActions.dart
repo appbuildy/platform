@@ -47,12 +47,11 @@ class UserActions {
 
   Debouncer<SchemaNode> debouncer;
 
-  UserActions({
-    Screens screens,
-    CurrentUserStore currentUserStore,
-    BottomNavigationStore bottomNavigationStore,
-    AppThemeStore themeStore
-  }) {
+  UserActions(
+      {Screens screens,
+      CurrentUserStore currentUserStore,
+      BottomNavigationStore bottomNavigationStore,
+      AppThemeStore themeStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -136,7 +135,6 @@ class UserActions {
 
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      print("Saved");
       final converter = SchemaConverter(screens.all, _theme.currentTheme);
       _currentUserStore.project.save(converter, client: http.Client());
     });
@@ -209,7 +207,8 @@ class UserActions {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
-      onNodeUpdate: (SchemaNode updatedNode) => _currentNode.selectedNode = updatedNode.copy(),
+      onNodeUpdate: (SchemaNode updatedNode) =>
+          _currentNode.selectedNode = updatedNode.copy(),
     );
 
     action.execute(prevValue);
@@ -219,7 +218,7 @@ class UserActions {
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
-            () => this.repositionAndResize(updatedNode, true, debouncer.prevValue),
+        () => this.repositionAndResize(updatedNode, true, debouncer.prevValue),
         updatedNode.copy(),
       );
     }

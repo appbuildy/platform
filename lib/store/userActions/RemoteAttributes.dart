@@ -1,6 +1,5 @@
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/AirtableColumn.dart';
-import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/airtable/RemoteList.dart';
@@ -39,8 +38,7 @@ abstract class _RemoteAttributes with Store {
 
   @action
   Future<void> update([IRemoteTable fetchClient]) async {
-    print('FUCKING UPDATE');
-    IRemoteTable client = fetchClient ?? Client.defaultClient();
+    IRemoteTable client = fetchClient;
     final columns = Map<String, RemoteList>();
     tables[client.table] = columns;
 

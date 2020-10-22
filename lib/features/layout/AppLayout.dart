@@ -37,9 +37,6 @@ class _AppLayoutState extends State<AppLayout> {
     final isProjectPreview =
         Uri.base.queryParameters['project_preview'] != null;
 
-    print('base ${Uri.base}');
-    print('query params ${Uri.base.queryParameters}');
-
     isPlayMode = isProjectPreview;
     isPreview = isProjectPreview;
     _focusNode = FocusNode();
@@ -78,7 +75,8 @@ class _AppLayoutState extends State<AppLayout> {
         return false;
       }
 
-      if (e.logicalKey == LogicalKeyboardKey.arrowUp || e.logicalKey == LogicalKeyboardKey.arrowDown) {
+      if (e.logicalKey == LogicalKeyboardKey.arrowUp ||
+          e.logicalKey == LogicalKeyboardKey.arrowDown) {
         final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
 
         selectedNode.position = Offset(
@@ -95,7 +93,8 @@ class _AppLayoutState extends State<AppLayout> {
         widget.userActions.repositionAndResize(selectedNode, false);
       }
 
-      if (e.logicalKey == LogicalKeyboardKey.arrowLeft || e.logicalKey == LogicalKeyboardKey.arrowRight) {
+      if (e.logicalKey == LogicalKeyboardKey.arrowLeft ||
+          e.logicalKey == LogicalKeyboardKey.arrowRight) {
         final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
 
         selectedNode.position = Offset(
@@ -245,8 +244,7 @@ class _AppLayoutState extends State<AppLayout> {
                   child: RightToolbox(
                       toolboxState: toolboxState,
                       selectState: selectState,
-                      userActions: widget.userActions
-                  ),
+                      userActions: widget.userActions),
                 )
               ],
             ),
