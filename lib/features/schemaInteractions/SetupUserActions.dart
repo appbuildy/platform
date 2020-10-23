@@ -12,7 +12,7 @@ import 'Screens.dart';
 
 UserActions setupUserActions() {
   final SchemaStore schemaStore =
-  SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
+      SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
 
   final CurrentScreen currentScreen = CurrentScreen(schemaStore);
   final ScreensStore screensStore = ScreensStore();
@@ -30,8 +30,6 @@ UserActions setupUserActions() {
       screens: screens,
       bottomNavigationStore: bottomNavigationStore,
       themeStore: themeStore);
-
-  userActions.updateRemoteAttributeValues();
 
   userActions.setTheme(MyThemes.allThemes['blue']);
 

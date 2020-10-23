@@ -23,8 +23,8 @@ class SetupProject {
 
     final project = Project(settings.projectUrl, userStore.currentUser);
     await project.getData(httpClient);
-    await _fetchTables(project.airtableTables);
     Client.credentials = project.airtableCredentials;
+    await _fetchTables(project.airtableTables);
     return project;
   }
 
