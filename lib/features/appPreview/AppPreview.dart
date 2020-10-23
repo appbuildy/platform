@@ -6,7 +6,6 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/constrain.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -42,121 +41,6 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
-  void handleSizeChange(
-      {@required SchemaNode node, Offset delta, SideEnum side}) {
-    if (side == SideEnum.topLeft) {
-      final posX = node.position.dx;
-      final posY = node.position.dy;
-
-      node.position = Offset(
-        constrainPosition(
-            position: node.position.dx,
-            value: delta.dx,
-            size: node.size.dx,
-            max: userActions.screens.screenWidth,
-            isDisableWhenMin: true),
-        constrainPosition(
-            position: node.position.dy,
-            value: delta.dy,
-            size: node.size.dy,
-            max: userActions.screens.currentScreenMaxHeight,
-            isDisableWhenMin: true),
-      );
-      node.size = Offset(
-          constrainSize(
-            size: node.size.dx,
-            position: node.position.dx,
-            max: userActions.screens.screenWidth,
-            value: delta.dx,
-            isSub: true,
-            prevPosition: posX,
-          ),
-          constrainSize(
-            size: node.size.dy,
-            position: node.position.dy,
-            max: userActions.screens.currentScreenMaxHeight,
-            value: delta.dy,
-            isSub: true,
-            prevPosition: posY,
-          ));
-    } else if (side == SideEnum.topRight) {
-      final posY = node.position.dy;
-
-      node.position = Offset(
-        node.position.dx,
-        constrainPosition(
-            position: node.position.dy,
-            value: delta.dy,
-            size: node.size.dy,
-            max: userActions.screens.currentScreenMaxHeight,
-            isDisableWhenMin: true),
-      );
-      node.size = Offset(
-          constrainSize(
-            size: node.size.dx,
-            position: node.position.dx,
-            max: userActions.screens.screenWidth,
-            value: delta.dx,
-          ),
-          constrainSize(
-            size: node.size.dy,
-            position: node.position.dy,
-            max: userActions.screens.currentScreenMaxHeight,
-            value: delta.dy,
-            isSub: true,
-            prevPosition: posY,
-          ));
-    } else if (side == SideEnum.bottomLeft) {
-      final posX = node.position.dx;
-
-      node.position = Offset(
-        constrainPosition(
-          position: node.position.dx,
-          value: delta.dx,
-          size: node.size.dx,
-          max: userActions.screens.screenWidth,
-          isDisableWhenMin: true,
-        ),
-        node.position.dy,
-      );
-
-      node.size = Offset(
-          constrainSize(
-              size: node.size.dx,
-              position: node.position.dx,
-              max: userActions.screens.screenWidth,
-              value: delta.dx,
-              isSub: true,
-              prevPosition: posX),
-          constrainSize(
-            size: node.size.dy,
-            position: node.position.dy,
-            max: userActions.screens.currentScreenMaxHeight,
-            value: delta.dy,
-          ));
-    } else if (side == SideEnum.bottomRight) {
-      node.position = Offset(
-        node.position.dx,
-        node.position.dy,
-      );
-      node.size = Offset(
-          constrainSize(
-            size: node.size.dx,
-            position: node.position.dx,
-            max: userActions.screens.screenWidth,
-            value: delta.dx,
-          ),
-          constrainSize(
-            size: node.size.dy,
-            position: node.position.dy,
-            max: userActions.screens.currentScreenMaxHeight,
-            value: delta.dy,
-          ));
-    }
-
-    userActions.repositionAndResize(node, false);
-  }
-
   Widget renderWithSelected({SchemaNode node}) {
     final isSelected = userActions.selectedNode() != null &&
         userActions.selectedNode().id == node.id;
@@ -177,8 +61,18 @@ class _AppPreviewState extends State<AppPreview> {
               left: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  handleSizeChange(
-                      node: node, delta: details.delta, side: SideEnum.topLeft);
+                  node = SchemaNode.resizeTop(
+                      node: node,
+                      delta: details.delta.dy,
+                      screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                  );
+                  node = SchemaNode.resizeLeft(
+                    node: node,
+                    delta: details.delta.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                  );
+
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
@@ -188,10 +82,18 @@ class _AppPreviewState extends State<AppPreview> {
               right: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  handleSizeChange(
-                      node: node,
-                      delta: details.delta,
-                      side: SideEnum.topRight);
+                  node = SchemaNode.resizeTop(
+                    node: node,
+                    delta: details.delta.dy,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                  );
+                  node = SchemaNode.resizeRight(
+                    node: node,
+                    delta: details.delta.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                  );
+
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
@@ -201,10 +103,18 @@ class _AppPreviewState extends State<AppPreview> {
               right: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  handleSizeChange(
-                      node: node,
-                      delta: details.delta,
-                      side: SideEnum.bottomRight);
+                  node = SchemaNode.resizeBottom(
+                    node: node,
+                    delta: details.delta.dy,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                  );
+                  node = SchemaNode.resizeRight(
+                    node: node,
+                    delta: details.delta.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                  );
+
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
@@ -214,10 +124,18 @@ class _AppPreviewState extends State<AppPreview> {
               left: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  handleSizeChange(
-                      node: node,
-                      delta: details.delta,
-                      side: SideEnum.bottomLeft);
+                  node = SchemaNode.resizeBottom(
+                    node: node,
+                    delta: details.delta.dy,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                  );
+                  node = SchemaNode.resizeLeft(
+                    node: node,
+                    delta: details.delta.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                  );
+
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
@@ -232,30 +150,13 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final posY = node.position.dy;
-
-                  node.position = Offset(
-                    node.position.dx,
-                    constrainPosition(
-                        position: node.position.dy,
-                        value: details.delta.dy,
-                        size: node.size.dy,
-                        max: userActions.screens.currentScreenMaxHeight,
-                        isDisableWhenMin: true),
+                  node = SchemaNode.resizeTop(
+                      node: node,
+                      delta: details.delta.dy,
+                      screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
-                  node.size = Offset(
-                      node.size.dx,
-                      constrainSize(
-                        size: node.size.dy,
-                        position: node.position.dy,
-                        max: userActions.screens.currentScreenMaxHeight,
-                        value: details.delta.dy,
-                        isSub: true,
-                        prevPosition: posY,
-                      ));
-
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -276,23 +177,13 @@ class _AppPreviewState extends State<AppPreview> {
               right: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final posX = node.position.dx;
+                  node = SchemaNode.resizeRight(
+                    node: node,
+                    delta: details.delta.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                  );
 
-                  node.position = Offset(
-                    node.position.dx,
-                    node.position.dy,
-                  );
-                  node.size = Offset(
-                    constrainSize(
-                      size: node.size.dx,
-                      position: node.position.dx,
-                      max: userActions.screens.screenWidth,
-                      value: details.delta.dx,
-                      prevPosition: posX,
-                    ),
-                    node.size.dy,
-                  );
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -313,19 +204,13 @@ class _AppPreviewState extends State<AppPreview> {
               bottom: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node.position = Offset(
-                    node.position.dx,
-                    node.position.dy,
+                  node = SchemaNode.resizeBottom(
+                    node: node,
+                    delta: details.delta.dy,
+                    screenSize: widget.userActions.screens.currentScreenWorkspaceSize.dy,
                   );
-                  node.size = Offset(
-                      node.size.dx,
-                      constrainSize(
-                        size: node.size.dy,
-                        position: node.position.dy,
-                        max: userActions.screens.currentScreenMaxHeight,
-                        value: details.delta.dy,
-                      ));
-                  userActions.repositionAndResize(node, false);
+
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -344,29 +229,13 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final posX = node.position.dx;
+                  node = SchemaNode.resizeLeft(
+                    node: node,
+                    delta: details.delta.dx,
+                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                  );
 
-                  node.position = Offset(
-                    constrainPosition(
-                        position: node.position.dx,
-                        value: details.delta.dx,
-                        size: node.size.dx,
-                        max: userActions.screens.screenWidth,
-                        isDisableWhenMin: true,
-                    ),
-                    node.position.dy);
-
-                  node.size = Offset(
-                      constrainSize(
-                        size: node.size.dx,
-                        position: node.position.dx,
-                        max: userActions.screens.screenWidth,
-                        value: details.delta.dx,
-                        isSub: true,
-                        prevPosition: posX,
-                      ),
-                      node.size.dy);
-                  userActions.repositionAndResize(node, false);
+                  userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -393,19 +262,17 @@ class _AppPreviewState extends State<AppPreview> {
               userActions.selectNodeForEdit(node);
             }
 
-            node.position = Offset(
-              constrainPosition(
-                  position: node.position.dx,
-                  value: details.delta.dx,
-                  size: node.size.dx,
-                  max: userActions.screens.screenWidth),
-              constrainPosition(
-                  position: node.position.dy,
-                  value: details.delta.dy,
-                  size: node.size.dy,
-                  max: userActions.screens.currentScreenMaxHeight),
+            node = SchemaNode.move(
+              node: node,
+              delta: details.delta,
+              screenSize: userActions.screens.currentScreenWorkspaceSize,
             );
-            userActions.repositionAndResize(node, false);
+
+            userActions.repositionAndResize(node, isAddedToDoneActions: false);
+          },
+          onPanEnd: (_) {
+            userActions.currentScreen.quickGuideManager.clearVisibleGuidelines();
+            userActions.rerenderNode();
           },
           child: Cursor(
             cursor: CursorEnum.move,
@@ -427,7 +294,7 @@ class _AppPreviewState extends State<AppPreview> {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(userActions.screens.screenWidth, userActions.screens.currentScreenMaxHeight, details.data.size);
+            .calculate(userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy, details.data.size);
         userActions.placeWidget(details.data, newPosition);
         widget.selectPlayModeToFalse();
 
@@ -456,9 +323,9 @@ class _AppPreviewState extends State<AppPreview> {
             scale: scale,
             alignment: Alignment.topCenter,
             child: Container(
-              width: userActions.screens.screenWidth + 4,
+              width: userActions.screens.currentScreenWorkspaceSize.dx + 4,
               // 4px is for border (2 px on both sides)
-              height: userActions.screens.screenHeight + 4,
+              height: userActions.screens.currentScreenWorkspaceSize.dy + userActions.screens.screenTabsHeight + 4,
               // 4px is for border (2 px on both sides)
               decoration: BoxDecoration(
                   color: userActions.screens.current.backgroundColor.color,
@@ -482,6 +349,9 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
+                    ...userActions.screens.current.quickGuideManager.buildMagnetLines(
+                        screenSize: Offset(widget.userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy)
+                    ),
                     ...userActions.screens.current.components.map((node) =>
                         Positioned(
                             child: GestureDetector(
@@ -530,7 +400,7 @@ class _AppPreviewState extends State<AppPreview> {
                                           color: theme.separators.color))),
                               child: Container(
                                 child: AppTabs(userActions: userActions),
-                                width: userActions.screens.screenWidth,
+                                width: userActions.screens.currentScreenWorkspaceSize.dx,
                                 height: userActions.screens.screenTabsHeight,
                                 decoration: BoxDecoration(
                                   color: Colors.transparent,

@@ -10,6 +10,7 @@ import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart'
 import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
 import 'package:flutter_app/features/schemaInteractions/DeleteNode.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
+import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
@@ -156,6 +157,9 @@ class UserActions {
 
   void rerenderNode() {
     currentScreen.update(selectedNode());
+    if (debouncer != null) {
+      debouncer.stopTimer();
+    }
   }
 
   void copyNode(
@@ -202,8 +206,9 @@ class UserActions {
     return action.newNode;
   }
 
-  void repositionAndResize(SchemaNode updatedNode,
-      [bool isAddedToDoneActions = true, SchemaNode prevValue]) {
+  void repositionAndResize(
+      SchemaNode updatedNode,
+      {bool buildQuickGuides = true, bool isAddedToDoneActions = true, SchemaNode prevValue}) {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
@@ -212,13 +217,24 @@ class UserActions {
     );
 
     action.execute(prevValue);
+
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
+    }
+    if (buildQuickGuides) {
+      this.screens.current.quickGuideManager.searchNearestGuides(
+        PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
+      );
     }
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
-        () => this.repositionAndResize(updatedNode, true, debouncer.prevValue),
+        () => this.repositionAndResize(
+          updatedNode,
+          isAddedToDoneActions: true,
+          prevValue: debouncer.prevValue,
+          buildQuickGuides: buildQuickGuides,
+        ),
         updatedNode.copy(),
       );
     }
@@ -228,10 +244,29 @@ class UserActions {
     return _currentNode.selectedNode;
   }
 
+  void buildQuickGuides() {
+    final double screenTopOffset = 40;
+    final double screenBottomOffset = 20;
+    final double screenLeftOffset = 20;
+    final double screenRightOffset = 20;
+
+    final screenPaddingPositionAndSize = PositionAndSize(
+      id: UniqueKey(),
+      position: Offset(screenLeftOffset, screenTopOffset),
+      size: Offset(
+        this.screens.currentScreenWorkspaceSize.dx - screenRightOffset - screenLeftOffset,
+        this.screens.currentScreenWorkspaceSize.dy - screenTopOffset - screenBottomOffset,
+      ),
+    );
+
+    this.screens.current.buildQuickGuides(addedPositionAndSize: screenPaddingPositionAndSize, ignoredNodeId: this.selectedNode().id);
+  }
+
   void selectNodeForEdit(SchemaNode node) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
 
     if (node != null) {
+      this.buildQuickGuides();
       debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
     }
   }
@@ -253,5 +288,6 @@ class UserActions {
     final removedAction = _actionsDone.actions.removeLast();
     removedAction.undo();
     _actionsUndone.add((removedAction));
+    this.buildQuickGuides();
   }
 }

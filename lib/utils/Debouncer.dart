@@ -8,6 +8,7 @@ class Debouncer<T> {
   Timer _timer;
   T prevValue;
 
+  void stopTimer() => _timer.cancel();
   Debouncer({this.milliseconds, this.prevValue});
 
   run(VoidCallback action, dynamic updatedPrevValue) {
