@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
+import 'package:flutter_app/features/schemaInteractions/Guideliner/Guidelines.dart';
+import 'package:flutter_app/features/schemaInteractions/Guideliner/Rays.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -156,6 +158,11 @@ class _AppPreviewState extends State<AppPreview> {
                       screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
+                  //List<Ray> nodeRays = Ray.allVertical(position: node.position, size: node.size);
+
+                  // userActions.screens.current.guidelines.searchNearestHorizontalOnDirectionGuidelineFromRays(
+                  //     rays, direction
+                  // );
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(

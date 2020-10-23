@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/schemaInteractions/Guideliner/Guidelines.dart';
 import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
@@ -32,6 +33,8 @@ abstract class _SchemaStore with Store {
   }
 
   QuickGuideManager quickGuideManager;
+
+  Guidelines guidelines = Guidelines();
 
   void buildQuickGuides({ PositionAndSize addedPositionAndSize, UniqueKey ignoredNodeId }) {
     print(addedPositionAndSize);
