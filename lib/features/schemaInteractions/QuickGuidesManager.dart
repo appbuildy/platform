@@ -2,22 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dart:core';
 
-class PositionAndSize {
-  UniqueKey id;
-  Offset position;
-  Offset size;
-
-  PositionAndSize({
-    @required this.id,
-    @required this.position,
-    @required this.size,
-  });
-
-  @override
-  String toString() {
-    return '{ position: $position, size: $size }';
-  }
-}
+import 'Guideliner/PositionAndSize.dart';
 
 enum PositionTypes { start, center, end }
 enum OrientationTypes { horizontal, vertical }

@@ -33,6 +33,7 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart';
 
 import 'ConnectToRemoteAttribute.dart';
+import 'Guideliner/PositionAndSize.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
@@ -208,7 +209,7 @@ class UserActions {
 
   void repositionAndResize(
       SchemaNode updatedNode,
-      {bool buildQuickGuides = true, bool isAddedToDoneActions = true, SchemaNode prevValue}) {
+      {bool isAddedToDoneActions = true, SchemaNode prevValue}) {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
@@ -221,11 +222,11 @@ class UserActions {
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
     }
-    if (buildQuickGuides) {
-      this.screens.current.quickGuideManager.searchNearestGuides(
-        PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
-      );
-    }
+    // if (buildQuickGuides) {
+    //   this.screens.current.guidelines.searchNearestHorizontalOnDirectionGuidelineFromRays(
+    //     PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
+    //   );
+    // }
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
@@ -233,7 +234,6 @@ class UserActions {
           updatedNode,
           isAddedToDoneActions: true,
           prevValue: debouncer.prevValue,
-          buildQuickGuides: buildQuickGuides,
         ),
         updatedNode.copy(),
       );

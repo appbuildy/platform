@@ -15,9 +15,9 @@ class FoundGuidelines {
     this.clearVertical();
   }
 
-  set setHorizontal(FoundGuideline guideline) => this._horizontalGuideLine = guideline;
+  void setHorizontal(FoundGuideline guideline) => this._horizontalGuideLine = guideline;
 
-  set seVertical(FoundGuideline guideline) => this._verticalGuideLine = guideline;
+  void setVertical(FoundGuideline guideline) => this._verticalGuideLine = guideline;
 
   List<Widget> toWidgets({ @required Offset screenSize }) {
 

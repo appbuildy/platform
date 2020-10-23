@@ -89,7 +89,7 @@ class _AppLayoutState extends State<AppLayout> {
           )
         );
 
-        widget.userActions.repositionAndResize(selectedNode, isAddedToDoneActions: false, buildQuickGuides: false);
+        widget.userActions.repositionAndResize(selectedNode, isAddedToDoneActions: false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft ||
@@ -106,7 +106,7 @@ class _AppLayoutState extends State<AppLayout> {
           selectedNode.position.dy,
         );
 
-        widget.userActions.repositionAndResize(selectedNode, isAddedToDoneActions: false, buildQuickGuides: false);
+        widget.userActions.repositionAndResize(selectedNode, isAddedToDoneActions: false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {

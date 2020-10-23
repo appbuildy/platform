@@ -158,11 +158,20 @@ class _AppPreviewState extends State<AppPreview> {
                       screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
                   );
 
-                  //List<Ray> nodeRays = Ray.allVertical(position: node.position, size: node.size);
+                  if (details.delta.dy != 0) {
+                    List<Ray> horizontalRays = Ray.getOrientedRays(
+                        startPosition: node.position.dy,
+                        objectSize: node.size.dy,
+                        raysOrientation: OrientationTypes.horizontal);
 
-                  // userActions.screens.current.guidelines.searchNearestHorizontalOnDirectionGuidelineFromRays(
-                  //     rays, direction
-                  // );
+                    userActions.screens.current.guidelines.searchNearestHorizontalOnDirectionGuidelineFromRays(
+                      rays: horizontalRays,
+                      direction: details.delta.dy > 0 ? MoveDirections.forward : MoveDirections.backward,
+                    );
+                  }
+
+
+
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 child: Cursor(
@@ -278,7 +287,7 @@ class _AppPreviewState extends State<AppPreview> {
             userActions.repositionAndResize(node, isAddedToDoneActions: false);
           },
           onPanEnd: (_) {
-            userActions.currentScreen.quickGuideManager.clearVisibleGuidelines();
+            userActions.currentScreen.guidelines.foundGuidelines.clear();
             userActions.rerenderNode();
           },
           child: Cursor(
@@ -356,7 +365,7 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.screens.current.quickGuideManager.buildMagnetLines(
+                    ...userActions.screens.current.guidelines.buildMagnetLines(
                         screenSize: Offset(widget.userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy)
                     ),
                     ...userActions.screens.current.components.map((node) =>

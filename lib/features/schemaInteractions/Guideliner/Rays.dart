@@ -5,17 +5,17 @@ import 'Guidelines.dart';
 class Ray {
   double axisPosition;
   OrientationTypes orientation;
-  PositionTypes type;
+  PositionTypes positionType;
 
   Ray({
     @required this.axisPosition,
     @required this.orientation,
-    @required this.type,
+    @required this.positionType,
   });
 
   @override
   String toString() {
-    return '{ position: $axisPosition, orientation: $orientation, type: $type }';
+    return '{ position: $axisPosition, orientation: $orientation, type: $positionType }';
   }
 
   Widget buildLine({ @required Offset screenSize }) {
@@ -39,7 +39,24 @@ class Ray {
     );
   }
 
-  static Map<PositionTypes, Ray> getRays({ @required double position, @required double size }) {
+  static List<Ray> getOrientedRays({
+    @required double startPosition,
+    @required double objectSize,
+    @required OrientationTypes raysOrientation
+  }) {
+    final double end = startPosition + objectSize;
+    final double center = startPosition + (end - startPosition) / 2;
 
+    return [
+      Ray(axisPosition: startPosition,
+          orientation: raysOrientation,
+          positionType: PositionTypes.start),
+      Ray(axisPosition: center,
+          orientation: raysOrientation,
+          positionType: PositionTypes.center),
+      Ray(axisPosition: end,
+          orientation: raysOrientation,
+          positionType: PositionTypes.end),
+    ];
   }
 }
