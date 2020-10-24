@@ -10,7 +10,6 @@ import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart'
 import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
 import 'package:flutter_app/features/schemaInteractions/DeleteNode.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
-import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
@@ -33,7 +32,7 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart';
 
 import 'ConnectToRemoteAttribute.dart';
-import 'Guideliner/PositionAndSize.dart';
+import 'GuidelinesManager/PositionAndSize.dart';
 
 class UserActions {
   ActionsDone _actionsDone;

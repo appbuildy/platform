@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/schemaInteractions/Guideliner/Guidelines.dart';
-import 'package:flutter_app/features/schemaInteractions/Guideliner/PositionAndSize.dart';
-import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/PositionAndSize.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -35,7 +34,7 @@ abstract class _SchemaStore with Store {
 
   //QuickGuideManager quickGuideManager;
 
-  Guidelines guidelines = Guidelines();
+  GuidelinesManager guidelineManager = GuidelinesManager();
 
   void buildQuickGuides({ PositionAndSize addedPositionAndSize, UniqueKey ignoredNodeId }) {
     List<PositionAndSize> nodesPositionAndSize = [];
@@ -50,8 +49,7 @@ abstract class _SchemaStore with Store {
       nodesPositionAndSize.add(addedPositionAndSize);
     }
 
-    this.guidelines.makeAllObjectGuides(nodesPositionAndSize);
-    //this.quickGuideManager.makeAllObjectGuides(nodesPositionAndSize);
+    this.guidelineManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
   @observable

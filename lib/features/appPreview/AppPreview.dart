@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
-import 'package:flutter_app/features/schemaInteractions/Guideliner/Guidelines.dart';
-import 'package:flutter_app/features/schemaInteractions/Guideliner/Rays.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/Rays.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -164,13 +164,11 @@ class _AppPreviewState extends State<AppPreview> {
                         objectSize: node.size.dy,
                         raysOrientation: OrientationTypes.horizontal);
 
-                    userActions.screens.current.guidelines.searchNearestHorizontalOnDirectionGuidelineFromRays(
+                    userActions.screens.current.guidelineManager.searchNearestHorizontalOnDirectionGuidelineFromRays(
                       rays: horizontalRays,
                       direction: details.delta.dy > 0 ? MoveDirections.forward : MoveDirections.backward,
                     );
                   }
-
-
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
@@ -278,16 +276,24 @@ class _AppPreviewState extends State<AppPreview> {
               userActions.selectNodeForEdit(node);
             }
 
-            node = SchemaNode.move(
+            node = SchemaNode.magnetHorizontalMove(
               node: node,
-              delta: details.delta,
-              screenSize: userActions.screens.currentScreenWorkspaceSize,
+              deltaDx: details.delta.dx,
+              screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+              guidelinesManager: userActions.screens.current.guidelineManager,
+            );
+
+            node = SchemaNode.magnetVerticalMove(
+              node: node,
+              deltaDy: details.delta.dy,
+              screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+              guidelinesManager: userActions.screens.current.guidelineManager,
             );
 
             userActions.repositionAndResize(node, isAddedToDoneActions: false);
           },
           onPanEnd: (_) {
-            userActions.currentScreen.guidelines.foundGuidelines.clear();
+            userActions.currentScreen.guidelineManager.foundGuidelines.clear();
             userActions.rerenderNode();
           },
           child: Cursor(
@@ -365,7 +371,7 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.screens.current.guidelines.buildMagnetLines(
+                    ...userActions.screens.current.guidelineManager.buildMagnetLines(
                         screenSize: Offset(widget.userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy)
                     ),
                     ...userActions.screens.current.components.map((node) =>

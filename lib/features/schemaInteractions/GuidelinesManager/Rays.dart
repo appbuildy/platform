@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
-import 'Guidelines.dart';
+import 'GuidelinesManager.dart';
 
 class Ray {
   double axisPosition;
   OrientationTypes orientation;
-  PositionTypes positionType;
+  OnObjectPositionTypes onObjectPositionType;
 
   Ray({
     @required this.axisPosition,
     @required this.orientation,
-    @required this.positionType,
+    @required this.onObjectPositionType,
   });
 
   @override
   String toString() {
-    return '{ position: $axisPosition, orientation: $orientation, type: $positionType }';
+    return '{ position: $axisPosition, orientation: $orientation, type: $onObjectPositionType }';
   }
 
   Widget buildLine({ @required Offset screenSize }) {
@@ -50,13 +50,13 @@ class Ray {
     return [
       Ray(axisPosition: startPosition,
           orientation: raysOrientation,
-          positionType: PositionTypes.start),
+          onObjectPositionType: OnObjectPositionTypes.start),
       Ray(axisPosition: center,
           orientation: raysOrientation,
-          positionType: PositionTypes.center),
+          onObjectPositionType: OnObjectPositionTypes.center),
       Ray(axisPosition: end,
           orientation: raysOrientation,
-          positionType: PositionTypes.end),
+          onObjectPositionType: OnObjectPositionTypes.end),
     ];
   }
 }

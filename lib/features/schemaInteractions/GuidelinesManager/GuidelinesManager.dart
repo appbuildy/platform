@@ -6,13 +6,13 @@ import 'FoundGuidelines.dart';
 import 'PositionAndSize.dart';
 import 'Rays.dart';
 
-enum PositionTypes { start, center, end }
+enum OnObjectPositionTypes { start, center, end }
 enum OrientationTypes { horizontal, vertical }
 enum MoveDirections { forward, backward }
 
 class FoundGuideline {
   Ray guideline;
-  PositionTypes foundByPositionType;
+  OnObjectPositionTypes foundByPositionType;
   double deltaFromObjectToGuideline;
 
   FoundGuideline({
@@ -46,17 +46,17 @@ class AxisRays {
     this.start = Ray(
       axisPosition: start,
       orientation: orientation,
-      positionType: PositionTypes.start,
+      onObjectPositionType: OnObjectPositionTypes.start,
     );
     this.end = Ray(
       axisPosition: this.start.axisPosition + size,
       orientation: orientation,
-      positionType: PositionTypes.end,
+      onObjectPositionType: OnObjectPositionTypes.end,
     );
     this.center = Ray(
       axisPosition: this.start.axisPosition + (this.end.axisPosition - this.start.axisPosition) / 2,
       orientation: orientation,
-      positionType: PositionTypes.center,
+      onObjectPositionType: OnObjectPositionTypes.center,
     );
   }
 
@@ -112,71 +112,6 @@ class ObjectGuides {
     return '{ horizontalGuides: ${horizontalGuides.toString()}, verticalGuides: ${verticalGuides.toString()} }';
   }
 
-  FoundGuideline searchNearestOnDirectionGuideline({
-    @required List<Ray> rays,
-    @required MoveDirections direction,
-    @required double magnetZone,
-    @required AxisRays existingRays,
-  }) {
-    List<FoundGuideline> foundGuidelines = [];
-
-    existingRays.toRayList().forEach((Ray existingRay) {
-      rays.forEach((Ray compareRay) {
-
-        final isOnDirection = direction == MoveDirections.forward
-            ? existingRay.axisPosition >= compareRay.axisPosition
-            : existingRay.axisPosition <= compareRay.axisPosition;
-
-        if (isOnDirection) {
-          final double delta = (existingRay.axisPosition.abs() - compareRay.axisPosition.abs()).abs();
-
-          if (delta <= magnetZone) {
-            foundGuidelines.add(
-              FoundGuideline(
-                guideline: existingRay,
-                foundByPositionType: compareRay.positionType,
-                deltaFromObjectToGuideline: delta,
-              )
-            );
-          }
-        }
-      });
-    });
-
-    if (foundGuidelines.isNotEmpty) {
-      foundGuidelines.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
-      return foundGuidelines[0];
-    }
-
-    return null;
-  }
-
-  FoundGuideline searchNearestHorizontalOnDirectionGuidelineFromRays({
-    @required List<Ray> rays,
-    @required MoveDirections direction,
-    @required double magnetZone,
-  }) {
-    return this.searchNearestOnDirectionGuideline(
-        rays: rays,
-        direction: direction,
-        magnetZone: magnetZone,
-        existingRays: this.horizontalGuides,
-    );
-  }
-
-  FoundGuideline searchNearestVerticalOnDirectionGuidelineFromRays({
-    @required List<Ray> rays,
-    @required MoveDirections direction,
-    @required double magnetZone,
-  }) {
-    return this.searchNearestOnDirectionGuideline(
-      rays: rays,
-      direction: direction,
-      magnetZone: magnetZone,
-      existingRays: this.verticalGuides,
-    );
-  }
-
   List<Widget> buildAllLines({ @required Offset screenSize }) {
 
     return [
@@ -186,7 +121,7 @@ class ObjectGuides {
   }
 }
 
-class Guidelines {
+class GuidelinesManager {
   List<ObjectGuides> allObjectGuides = [];
 
   double magnetZone = 8;
@@ -199,6 +134,39 @@ class Guidelines {
     }).toList();
   }
 
+  List<FoundGuideline> _searchNearestOnDirectionGuidelines({
+    @required List<Ray> rays,
+    @required existingRays,
+    @required MoveDirections direction,
+  }) {
+    List<FoundGuideline> foundGuidelines = [];
+
+    existingRays.forEach((Ray existingRay) {
+      rays.forEach((Ray compareRay) {
+        final isOnDirection = direction == MoveDirections.forward
+            ? existingRay.axisPosition >= compareRay.axisPosition
+            : existingRay.axisPosition <= compareRay.axisPosition;
+
+        if (isOnDirection) {
+          final double delta = (existingRay.axisPosition.abs() -
+              compareRay.axisPosition.abs()).abs();
+
+          if (delta <= magnetZone) {
+            foundGuidelines.add(
+                FoundGuideline(
+                  guideline: existingRay,
+                  foundByPositionType: compareRay.onObjectPositionType,
+                  deltaFromObjectToGuideline: delta,
+                )
+            );
+          }
+        }
+      });
+    });
+
+    return foundGuidelines;
+  }
+
   void searchNearestHorizontalOnDirectionGuidelineFromRays({
     @required List<Ray> rays,
     @required MoveDirections direction,
@@ -207,20 +175,15 @@ class Guidelines {
 
     if (rays == null || rays.isEmpty) return;
 
-    List<FoundGuideline> foundGuidelines = [];
+    List<Ray> allRays = [];
 
     this.allObjectGuides.forEach((ObjectGuides object) {
-      FoundGuideline foundGuideline = object
-        .searchNearestHorizontalOnDirectionGuidelineFromRays(
-          rays: rays,
-          direction: direction,
-          magnetZone: this.magnetZone,
-      );
-
-      if (foundGuideline != null)
-        foundGuidelines.add(foundGuideline);
+      allRays.addAll(object.horizontalGuides.toRayList());
     });
 
+    if (allRays.isEmpty) return;
+
+    List<FoundGuideline> foundGuidelines = _searchNearestOnDirectionGuidelines(rays:  rays, existingRays: allRays, direction: direction);
 
     if (foundGuidelines.isNotEmpty) {
       foundGuidelines.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
@@ -233,23 +196,83 @@ class Guidelines {
 
     if (rays == null || rays.isEmpty) return;
 
-    List<FoundGuideline> foundGuidelines = [];
+    List<Ray> allRays = [];
 
     this.allObjectGuides.forEach((ObjectGuides object) {
-      FoundGuideline foundGuideline = object
-        .searchNearestVerticalOnDirectionGuidelineFromRays(
-          rays: rays,
-          direction: direction,
-          magnetZone: this.magnetZone,
-      );
-
-      if (foundGuideline != null)
-        foundGuidelines.add(foundGuideline);
+      allRays.addAll(object.verticalGuides.toRayList());
     });
 
+    if (allRays.isEmpty) return;
+
+    List<FoundGuideline> foundGuidelines = _searchNearestOnDirectionGuidelines(rays:  rays, existingRays: allRays, direction: direction);
 
     if (foundGuidelines.isNotEmpty) {
       foundGuidelines.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
+      this.foundGuidelines.setVertical(foundGuidelines[0]);
+    }
+  }
+
+  List<FoundGuideline> _searchGuidelinesUnderRays({
+    @required List<Ray> rays,
+    @required existingRays,
+  }) {
+    List<FoundGuideline> foundGuidelines = [];
+
+    existingRays.forEach((Ray existingRay) {
+      rays.forEach((Ray compareRay) {
+        if (existingRay.axisPosition == compareRay.axisPosition) {
+          foundGuidelines.add(
+              FoundGuideline(
+                guideline: existingRay,
+                foundByPositionType: compareRay.onObjectPositionType,
+                deltaFromObjectToGuideline: 0,
+              )
+          );
+        }
+      });
+    });
+
+    return foundGuidelines;
+
+  }
+
+  void searchGuidelinesUnderHorizontalRays({ @required List<Ray> rays }) {
+    this.foundGuidelines.clearHorizontal();
+
+    if (rays == null || rays.isEmpty) return;
+
+    List<Ray> allRays = [];
+
+    this.allObjectGuides.forEach((ObjectGuides object) {
+      allRays.addAll(object.horizontalGuides.toRayList());
+    });
+
+    if (allRays.isEmpty) return;
+
+    List<FoundGuideline> foundGuidelines = _searchGuidelinesUnderRays(rays: rays, existingRays: allRays);
+
+    if (foundGuidelines.isNotEmpty) {
+      this.foundGuidelines.setHorizontal(foundGuidelines[0]);
+    }
+
+  }
+
+  void searchGuidelinesUnderVerticalRays({ @required List<Ray> rays }) {
+    this.foundGuidelines.clearVertical();
+
+    if (rays == null || rays.isEmpty) return;
+
+    List<Ray> allRays = [];
+
+    this.allObjectGuides.forEach((ObjectGuides object) {
+      allRays.addAll(object.verticalGuides.toRayList());
+    });
+
+    if (allRays.isEmpty) return;
+
+    List<FoundGuideline> foundGuidelines = _searchGuidelinesUnderRays(rays: rays, existingRays: allRays);
+
+    if (foundGuidelines.isNotEmpty) {
       this.foundGuidelines.setVertical(foundGuidelines[0]);
     }
   }

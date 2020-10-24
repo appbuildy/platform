@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'dart:core';
 
-import 'Guideliner/PositionAndSize.dart';
+import 'GuidelinesManager/PositionAndSize.dart';
 
 enum PositionTypes { start, center, end }
 enum OrientationTypes { horizontal, vertical }

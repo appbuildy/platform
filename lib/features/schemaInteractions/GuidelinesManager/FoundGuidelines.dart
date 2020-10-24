@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'Guidelines.dart';
+import 'GuidelinesManager.dart';
 
 class FoundGuidelines {
   FoundGuideline _horizontalGuideLine;
@@ -18,6 +18,10 @@ class FoundGuidelines {
   void setHorizontal(FoundGuideline guideline) => this._horizontalGuideLine = guideline;
 
   void setVertical(FoundGuideline guideline) => this._verticalGuideLine = guideline;
+
+  FoundGuideline get horizontal => this._horizontalGuideLine;
+
+  FoundGuideline get vertical => this._verticalGuideLine;
 
   List<Widget> toWidgets({ @required Offset screenSize }) {
 
