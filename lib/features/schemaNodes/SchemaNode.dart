@@ -372,7 +372,81 @@ abstract class SchemaNode {
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
   }) {
+    final OrientationTypes raysOrientation = OrientationTypes.horizontal;
 
+    final List<Ray> startRays = Ray.getOrientedRays(
+      startPosition: node.position.dy,
+      objectSize: node.size.dy,
+      raysOrientation: raysOrientation,
+    ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+
+    guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
+
+    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < 3) {
+      return node;
+    }
+
+    node = SchemaNode.resizeTop(node: node, delta: deltaDy, screenSize: screenSizeDy);
+
+    final List<Ray> movedRays = Ray.getOrientedRays(
+      startPosition: node.position.dy,
+      objectSize: node.size.dy,
+      raysOrientation: raysOrientation,
+    ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+
+    if (deltaDy != 0) {
+      guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays(rays: movedRays, direction: deltaDy > 0 ? MoveDirections.forward : MoveDirections.backward);
+
+      final FoundGuideline foundGuideline = guidelinesManager.foundGuidelines.horizontal;
+
+      if (foundGuideline == null) return node;
+
+      Offset magnetizedNodePosition = node.position;
+      Offset magnetizedNodeSize = node.size;
+
+      if (foundGuideline.foundByPositionType == OnObjectPositionTypes.start) {
+        final resizeDelta = magnetizedNodePosition.dy - foundGuideline.guideline.axisPosition;
+
+        magnetizedNodePosition = Offset(
+          magnetizedNodePosition.dx,
+          magnetizedNodePosition.dy - resizeDelta,
+        );
+
+        magnetizedNodeSize = Offset(
+          magnetizedNodeSize.dx,
+          magnetizedNodeSize.dy + resizeDelta,
+        );
+      }
+
+      if (foundGuideline.foundByPositionType == OnObjectPositionTypes.center) {
+        final resizeDelta = (magnetizedNodePosition.dy + magnetizedNodeSize.dy / 2 - foundGuideline.guideline.axisPosition) * 2;
+
+        magnetizedNodePosition = Offset(
+          magnetizedNodePosition.dx,
+          magnetizedNodePosition.dy - resizeDelta,
+        );
+
+        magnetizedNodeSize = Offset(
+          magnetizedNodeSize.dx,
+          magnetizedNodeSize.dy + resizeDelta,
+        );
+
+      }
+
+      final isOverflowed = magnetizedNodePosition.dy < 0 || magnetizedNodePosition.dy + magnetizedNodeSize.dy > screenSizeDy;
+      if (magnetizedNodeSize.dy < SchemaNode.minimalSize || isOverflowed) {
+        guidelinesManager.foundGuidelines.clearHorizontal();
+        return node;
+      }
+
+      node.position = magnetizedNodePosition;
+      node.size = magnetizedNodeSize;
+
+      return node;
+
+    }
+
+    return node;
   }
 
   Map<String, dynamic> toJson() => {

@@ -152,23 +152,18 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeTop(
-                      node: node,
-                      delta: details.delta.dy,
-                      screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                  // node = SchemaNode.resizeTop(
+                  //     node: node,
+                  //     delta: details.delta.dy,
+                  //     screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                  // );
+
+                  node = SchemaNode.magnetTopResize(
+                    node: node,
+                    deltaDy: details.delta.dy,
+                    screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
-
-                  if (details.delta.dy != 0) {
-                    List<Ray> horizontalRays = Ray.getOrientedRays(
-                        startPosition: node.position.dy,
-                        objectSize: node.size.dy,
-                        raysOrientation: OrientationTypes.horizontal);
-
-                    userActions.screens.current.guidelineManager.searchNearestHorizontalOnDirectionGuidelineFromRays(
-                      rays: horizontalRays,
-                      direction: details.delta.dy > 0 ? MoveDirections.forward : MoveDirections.backward,
-                    );
-                  }
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
