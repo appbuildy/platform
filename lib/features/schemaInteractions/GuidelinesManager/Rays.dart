@@ -6,6 +6,7 @@ class Ray {
   double axisPosition;
   OrientationTypes orientation;
   OnObjectPositionTypes onObjectPositionType;
+  bool isVisible = false;
 
   Ray({
     @required this.axisPosition,
@@ -32,7 +33,7 @@ class Ray {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: Color(0xFFFF6666),
+              color: this.isVisible ? Color(0xFFFF6666) : Colors.transparent,
             ),
           ),
         )

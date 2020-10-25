@@ -318,7 +318,7 @@ abstract class SchemaNode {
         nodeAxisRays: movedRays,
         searchNearestOnDirectionGuidelineFromRays: guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays,
         getFoundGuideline: () => guidelinesManager.foundGuidelines.vertical,
-        clearFoundGuideline: guidelinesManager.foundGuidelines.clearVertical,
+        clearFoundGuideline: guidelinesManager.clearVertical,
         searchGuidelinesUnderRays: guidelinesManager.searchGuidelinesUnderVerticalRays,
       ),
       node.position.dy,
@@ -358,7 +358,7 @@ abstract class SchemaNode {
         nodeAxisRays: movedRays,
         searchNearestOnDirectionGuidelineFromRays: guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays,
         getFoundGuideline: () => guidelinesManager.foundGuidelines.horizontal,
-        clearFoundGuideline: guidelinesManager.foundGuidelines.clearHorizontal,
+        clearFoundGuideline: guidelinesManager.clearHorizontal,
         searchGuidelinesUnderRays: guidelinesManager.searchGuidelinesUnderHorizontalRays,
       ),
     );
@@ -422,6 +422,14 @@ abstract class SchemaNode {
 
     magnetizedNodeSize += resizeDelta;
 
+
+    final isOverflowed = position + magnetizedNodeSize > axisScreenSize;
+
+    if (magnetizedNodeSize < SchemaNode.minimalSize || isOverflowed) {
+      clearGuideline();
+      return size;
+    }
+
     return magnetizedNodeSize;
   }
 
@@ -465,7 +473,7 @@ abstract class SchemaNode {
         size: node.size.dy,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
-        clearGuideline: guidelinesManager.foundGuidelines.clearHorizontal,
+        clearGuideline: guidelinesManager.clearHorizontal,
       );
 
       final double newPositionDy = magnetizedNodePositionAndSize[0];
@@ -527,7 +535,7 @@ abstract class SchemaNode {
         size: node.size.dx,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDx,
-        clearGuideline: guidelinesManager.foundGuidelines.clearHorizontal,
+        clearGuideline: guidelinesManager.clearVertical,
       );
 
       node.size = Offset(
@@ -582,7 +590,7 @@ abstract class SchemaNode {
         size: node.size.dy,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
-        clearGuideline: guidelinesManager.foundGuidelines.clearHorizontal,
+        clearGuideline: guidelinesManager.clearVertical,
       );
 
       node.size = Offset(
@@ -636,7 +644,7 @@ abstract class SchemaNode {
         size: node.size.dx,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDx,
-        clearGuideline: guidelinesManager.foundGuidelines.clearHorizontal,
+        clearGuideline: guidelinesManager.clearHorizontal,
       );
 
       final double newPositionDx = magnetizedNodePositionAndSize[0];

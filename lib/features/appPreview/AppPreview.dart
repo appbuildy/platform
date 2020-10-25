@@ -162,7 +162,7 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
                 child: Cursor(
@@ -194,7 +194,7 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
                 child: Cursor(
@@ -226,7 +226,7 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
                 child: Cursor(
@@ -252,11 +252,10 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
-
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
                 child: Cursor(
@@ -301,7 +300,7 @@ class _AppPreviewState extends State<AppPreview> {
             userActions.repositionAndResize(node, isAddedToDoneActions: false);
           },
           onPanEnd: (_) {
-            userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+            userActions.currentScreen.guidelineManager.setAllInvisible();
             userActions.rerenderNode();
           },
           child: Cursor(
@@ -349,6 +348,10 @@ class _AppPreviewState extends State<AppPreview> {
         return Observer(builder: (context) {
           final theme = userActions.currentTheme;
 
+          // final guidelines = userActions.screens.current.guidelineManager.buildMagnetLines(
+          //     screenSize: widget.userActions.screens.currentScreenWorkspaceSize
+          // );
+
           return Transform.scale(
             scale: scale,
             alignment: Alignment.topCenter,
@@ -379,9 +382,7 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.screens.current.guidelineManager.buildMagnetLines(
-                        screenSize: Offset(widget.userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy)
-                    ),
+                    ...userActions.currentScreen.guidelineManager.buildAllLines(screenSize: widget.userActions.screens.currentScreenWorkspaceSize),
                     ...userActions.screens.current.components.map((node) =>
                         Positioned(
                             child: GestureDetector(

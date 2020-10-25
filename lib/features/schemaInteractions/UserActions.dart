@@ -221,11 +221,6 @@ class UserActions {
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
     }
-    // if (buildQuickGuides) {
-    //   this.screens.current.guidelines.searchNearestHorizontalOnDirectionGuidelineFromRays(
-    //     PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
-    //   );
-    // }
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(

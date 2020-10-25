@@ -171,7 +171,7 @@ class GuidelinesManager {
     @required List<Ray> rays,
     @required MoveDirections direction,
   }) {
-    this.foundGuidelines.clearHorizontal();
+    this.clearHorizontal();
 
     if (rays == null || rays.isEmpty) return;
 
@@ -188,11 +188,34 @@ class GuidelinesManager {
     if (foundGuidelines.isNotEmpty) {
       foundGuidelines.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
       this.foundGuidelines.setHorizontal(foundGuidelines[0]);
+      foundGuidelines[0].guideline.isVisible = true;
     }
   }
 
-  void searchNearestVerticalOnDirectionGuidelineFromRays({ @required List<Ray> rays, @required MoveDirections direction}) {
+  clearHorizontal() {
+    this.foundGuidelines.clearHorizontal();
+    this.allObjectGuides.forEach((element) {
+      element.horizontalGuides.toRayList().forEach((element) => element.isVisible = false);
+    });
+  }
+
+  void clearVertical() {
     this.foundGuidelines.clearVertical();
+    this.allObjectGuides.forEach((element) {
+      element.verticalGuides.toRayList().forEach((element) => element.isVisible = false);
+      element.horizontalGuides.toRayList().forEach((element) => element.isVisible = false);
+    });
+  }
+
+  void setAllInvisible() {
+    this.allObjectGuides.forEach((element) {
+      element.verticalGuides.toRayList().forEach((element) => element.isVisible = false);
+      element.horizontalGuides.toRayList().forEach((element) => element.isVisible = false);
+    });
+  }
+
+  void searchNearestVerticalOnDirectionGuidelineFromRays({ @required List<Ray> rays, @required MoveDirections direction}) {
+    this.clearVertical();
 
     if (rays == null || rays.isEmpty) return;
 
@@ -209,6 +232,7 @@ class GuidelinesManager {
     if (foundGuidelines.isNotEmpty) {
       foundGuidelines.sort((a, b) => a.deltaFromObjectToGuideline.compareTo(b.deltaFromObjectToGuideline));
       this.foundGuidelines.setVertical(foundGuidelines[0]);
+      foundGuidelines[0].guideline.isVisible = true;
     }
   }
 
@@ -236,7 +260,7 @@ class GuidelinesManager {
   }
 
   void searchGuidelinesUnderHorizontalRays({ @required List<Ray> rays }) {
-    this.foundGuidelines.clearHorizontal();
+    this.clearHorizontal();
 
     if (rays == null || rays.isEmpty) return;
 
@@ -252,12 +276,13 @@ class GuidelinesManager {
 
     if (foundGuidelines.isNotEmpty) {
       this.foundGuidelines.setHorizontal(foundGuidelines[0]);
-      this.foundGuidelines.horizontalFoundUnderRays.addAll(foundGuidelines);
     }
+
+    foundGuidelines.forEach((element) => element.guideline.isVisible = true);
   }
 
   void searchGuidelinesUnderVerticalRays({ @required List<Ray> rays }) {
-    this.foundGuidelines.clearVertical();
+    this.clearVertical();
 
     if (rays == null || rays.isEmpty) return;
 
@@ -273,8 +298,8 @@ class GuidelinesManager {
 
     if (foundGuidelines.isNotEmpty) {
       this.foundGuidelines.setVertical(foundGuidelines[0]);
-      this.foundGuidelines.verticalFoundUnderRays.addAll(foundGuidelines);
     }
+    foundGuidelines.forEach((element) => element.guideline.isVisible = true);
   }
 
   List<Widget> buildAllLines({ @required Offset screenSize }) {
@@ -283,9 +308,5 @@ class GuidelinesManager {
     return allObjectGuides.map(
             (ObjectGuides object) => object.buildAllLines(screenSize: screenSize)
     ).expand((element) => element).toList();
-  }
-
-  List<Widget> buildMagnetLines({ @required Offset screenSize }) {
-    return this.foundGuidelines.toWidgets(screenSize: screenSize);
   }
 }
