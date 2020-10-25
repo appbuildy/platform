@@ -590,7 +590,7 @@ abstract class SchemaNode {
         size: node.size.dy,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
-        clearGuideline: guidelinesManager.clearVertical,
+        clearGuideline: guidelinesManager.clearHorizontal,
       );
 
       node.size = Offset(

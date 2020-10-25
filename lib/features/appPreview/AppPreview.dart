@@ -63,18 +63,24 @@ class _AppPreviewState extends State<AppPreview> {
               left: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeTop(
-                      node: node,
-                      delta: details.delta.dy,
-                      screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
-                  );
-                  node = SchemaNode.resizeLeft(
+                  node = SchemaNode.magnetTopResize(
                     node: node,
-                    delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                    deltaDy: details.delta.dy,
+                    screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
+                  );
+                  node = SchemaNode.magnetLeftResize(
+                    node: node,
+                    deltaDx: details.delta.dx,
+                    screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
@@ -84,18 +90,24 @@ class _AppPreviewState extends State<AppPreview> {
               right: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeTop(
+                  node = SchemaNode.magnetTopResize(
                     node: node,
-                    delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                    deltaDy: details.delta.dy,
+                    screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
-                  node = SchemaNode.resizeRight(
+                  node = SchemaNode.magnetRightResize(
                     node: node,
-                    delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                    deltaDx: details.delta.dx,
+                    screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
@@ -105,18 +117,24 @@ class _AppPreviewState extends State<AppPreview> {
               right: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeBottom(
+                  node = SchemaNode.magnetBottomResize(
                     node: node,
-                    delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                    deltaDy: details.delta.dy,
+                    screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
-                  node = SchemaNode.resizeRight(
+                  node = SchemaNode.magnetRightResize(
                     node: node,
-                    delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                    deltaDx: details.delta.dx,
+                    screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
               ),
@@ -126,18 +144,24 @@ class _AppPreviewState extends State<AppPreview> {
               left: -2,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeBottom(
+                  node = SchemaNode.magnetBottomResize(
                     node: node,
-                    delta: details.delta.dy,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
+                    deltaDy: details.delta.dy,
+                    screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
-                  node = SchemaNode.resizeLeft(
+                  node = SchemaNode.magnetLeftResize(
                     node: node,
-                    delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                    deltaDx: details.delta.dx,
+                    screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.setAllInvisible();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(cursor: CursorEnum.neswResize, child: circle),
               ),
@@ -252,6 +276,7 @@ class _AppPreviewState extends State<AppPreview> {
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
+
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
                 },
                 onPanEnd: (_) {
