@@ -152,12 +152,6 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  // node = SchemaNode.resizeTop(
-                  //     node: node,
-                  //     delta: details.delta.dy,
-                  //     screenSize: userActions.screens.currentScreenWorkspaceSize.dy,
-                  // );
-
                   node = SchemaNode.magnetTopResize(
                     node: node,
                     deltaDy: details.delta.dy,
@@ -166,6 +160,10 @@ class _AppPreviewState extends State<AppPreview> {
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -186,13 +184,18 @@ class _AppPreviewState extends State<AppPreview> {
               right: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeRight(
+                  node = SchemaNode.magnetRightResize(
                     node: node,
-                    delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                    deltaDx: details.delta.dx,
+                    screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
@@ -213,13 +216,18 @@ class _AppPreviewState extends State<AppPreview> {
               bottom: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeBottom(
+                  node = SchemaNode.magnetBottomResize(
                     node: node,
-                    delta: details.delta.dy,
-                    screenSize: widget.userActions.screens.currentScreenWorkspaceSize.dy,
+                    deltaDy: details.delta.dy,
+                    screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(
                   cursor: CursorEnum.nsResize,
@@ -238,13 +246,18 @@ class _AppPreviewState extends State<AppPreview> {
               left: 0,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  node = SchemaNode.resizeLeft(
+                  node = SchemaNode.magnetLeftResize(
                     node: node,
-                    delta: details.delta.dx,
-                    screenSize: userActions.screens.currentScreenWorkspaceSize.dx,
+                    deltaDx: details.delta.dx,
+                    screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
+                    guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                },
+                onPanEnd: (_) {
+                  userActions.currentScreen.guidelineManager.foundGuidelines.clear();
+                  userActions.rerenderNode();
                 },
                 child: Cursor(
                   cursor: CursorEnum.ewResize,

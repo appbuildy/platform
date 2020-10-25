@@ -6,9 +6,18 @@ class FoundGuidelines {
   FoundGuideline _horizontalGuideLine;
   FoundGuideline _verticalGuideLine;
 
-  void clearHorizontal() => this._horizontalGuideLine = null;
+  List<FoundGuideline> horizontalFoundUnderRays = [];
+  List<FoundGuideline> verticalFoundUnderRays = [];
 
-  void clearVertical() => this._verticalGuideLine = null;
+  void clearHorizontal() {
+    this._horizontalGuideLine = null;
+    this.horizontalFoundUnderRays = [];
+  }
+
+  void clearVertical() {
+    this._verticalGuideLine = null;
+    this.verticalFoundUnderRays = [];
+  }
 
   void clear() {
     this.clearHorizontal();
@@ -24,10 +33,12 @@ class FoundGuidelines {
   FoundGuideline get vertical => this._verticalGuideLine;
 
   List<Widget> toWidgets({ @required Offset screenSize }) {
-
+  print(this.verticalFoundUnderRays);
     return [
       this._horizontalGuideLine?.guideline?.buildLine(screenSize: screenSize) ?? Container(),
       this._verticalGuideLine?.guideline?.buildLine(screenSize: screenSize) ?? Container(),
+      ...this.horizontalFoundUnderRays.map((e) => e.guideline.buildLine(screenSize: screenSize)).toList(),
+      ...this.verticalFoundUnderRays.map((e) => e.guideline.buildLine(screenSize: screenSize)).toList(),
     ];
   }
 }

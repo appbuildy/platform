@@ -124,7 +124,7 @@ class ObjectGuides {
 class GuidelinesManager {
   List<ObjectGuides> allObjectGuides = [];
 
-  double magnetZone = 8;
+  double magnetZone = 3;
 
   FoundGuidelines foundGuidelines = FoundGuidelines();
 
@@ -222,18 +222,17 @@ class GuidelinesManager {
       rays.forEach((Ray compareRay) {
         if (existingRay.axisPosition == compareRay.axisPosition) {
           foundGuidelines.add(
-              FoundGuideline(
-                guideline: existingRay,
-                foundByPositionType: compareRay.onObjectPositionType,
-                deltaFromObjectToGuideline: 0,
-              )
+            FoundGuideline(
+              guideline: existingRay,
+              foundByPositionType: compareRay.onObjectPositionType,
+              deltaFromObjectToGuideline: 0,
+            )
           );
         }
       });
     });
 
     return foundGuidelines;
-
   }
 
   void searchGuidelinesUnderHorizontalRays({ @required List<Ray> rays }) {
@@ -253,8 +252,8 @@ class GuidelinesManager {
 
     if (foundGuidelines.isNotEmpty) {
       this.foundGuidelines.setHorizontal(foundGuidelines[0]);
+      this.foundGuidelines.horizontalFoundUnderRays.addAll(foundGuidelines);
     }
-
   }
 
   void searchGuidelinesUnderVerticalRays({ @required List<Ray> rays }) {
@@ -274,6 +273,7 @@ class GuidelinesManager {
 
     if (foundGuidelines.isNotEmpty) {
       this.foundGuidelines.setVertical(foundGuidelines[0]);
+      this.foundGuidelines.verticalFoundUnderRays.addAll(foundGuidelines);
     }
   }
 
