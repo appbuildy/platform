@@ -1,4 +1,5 @@
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -16,8 +17,10 @@ void main() {
       final SchemaNodeButton btn =
           SchemaNodeButton(position: Offset(2222, 2), size: Offset(22, 33));
       schemaStore.add(btn);
-      final SchemaConverter converter =
-          SchemaConverter(screens, MyThemes.allThemes['blue']);
+      final SchemaConverter converter = SchemaConverter(
+          screens: screens,
+          theme: MyThemes.allThemes['blue'],
+          bottomNavigationStore: BottomNavigationStore());
 
       final json = converter.toJson();
       expect(json['canvas'], isNotNull);

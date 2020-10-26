@@ -10,6 +10,7 @@ class SchemaConverter {
 
   Map<String, dynamic> toJson() => {
         'canvas': {
+          'bottomNavigation': bottomNavigationStore.toJson(),
           'theme': theme.toJson(),
           'screens': screens.screens.map((screen) {
             return screen.toJson();
