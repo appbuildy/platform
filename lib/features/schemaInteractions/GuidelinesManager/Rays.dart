@@ -8,6 +8,8 @@ class Ray {
   OnObjectPositionTypes onObjectPositionType;
   bool isVisible = false;
 
+  double positionCorrection = 0;
+
   Ray({
     @required this.axisPosition,
     @required this.orientation,
@@ -25,10 +27,12 @@ class Ray {
     final width = isVertical ? 1 : screenSize.dx;
     final height = isVertical ? screenSize.dy : 1;
 
+    final double axisPosition = this.axisPosition + this.positionCorrection;
+
     return this.isVisible ? (
         Positioned(
-          top: isVertical ? 0 : this.axisPosition,
-          left: isVertical ? this.axisPosition : 0,
+          top: isVertical ? 0 : axisPosition,
+          left: isVertical ? axisPosition : 0,
           child: Container(
             width: width,
             height: height,

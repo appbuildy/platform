@@ -152,6 +152,7 @@ class GuidelinesManager {
               compareRay.axisPosition.abs()).abs();
 
           if (delta <= magnetZone) {
+            existingRay.positionCorrection = compareRay.onObjectPositionType == OnObjectPositionTypes.end ? -1 : 0;
             foundGuidelines.add(
                 FoundGuideline(
                   guideline: existingRay,
@@ -245,6 +246,7 @@ class GuidelinesManager {
     existingRays.forEach((Ray existingRay) {
       rays.forEach((Ray compareRay) {
         if (existingRay.axisPosition == compareRay.axisPosition) {
+          existingRay.positionCorrection = compareRay.onObjectPositionType == OnObjectPositionTypes.end ? -1 : 0;
           foundGuidelines.add(
             FoundGuideline(
               guideline: existingRay,
