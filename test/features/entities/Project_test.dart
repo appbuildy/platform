@@ -1,6 +1,7 @@
 import 'package:flutter_app/features/airtable/airtable_table.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/entities/User.dart';
+import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
@@ -48,8 +49,10 @@ void main() {
       () async {
     final client = MockHttp();
     ScreensStore store = ScreensStore();
-    SchemaConverter converter =
-        SchemaConverter(store, MyThemes.allThemes['blue']);
+    SchemaConverter converter = SchemaConverter(
+        screens: store,
+        theme: MyThemes.allThemes['blue'],
+        bottomNavigationStore: BottomNavigationStore());
     await project.save(converter, client: client);
 
     verify(client.patch(url,
