@@ -96,6 +96,7 @@ class UserActions {
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
       final Screens screens = LoadedProject(
+              bottomNav: _bottomNavigation,
               json: _currentUserStore.project.data['canvas'],
               themeStore: _theme)
           .load();
@@ -136,7 +137,10 @@ class UserActions {
 
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      final converter = SchemaConverter(screens.all, _theme.currentTheme);
+      final converter = SchemaConverter(
+          bottomNavigationStore: _bottomNavigation,
+          screens: screens.all,
+          theme: _theme.currentTheme);
       _currentUserStore.project.save(converter, client: http.Client());
     });
   }
@@ -206,9 +210,10 @@ class UserActions {
     return action.newNode;
   }
 
-  void repositionAndResize(
-      SchemaNode updatedNode,
-      {bool buildQuickGuides = true, bool isAddedToDoneActions = true, SchemaNode prevValue}) {
+  void repositionAndResize(SchemaNode updatedNode,
+      {bool buildQuickGuides = true,
+      bool isAddedToDoneActions = true,
+      SchemaNode prevValue}) {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
@@ -223,8 +228,11 @@ class UserActions {
     }
     if (buildQuickGuides) {
       this.screens.current.quickGuideManager.searchNearestGuides(
-        PositionAndSize(id: updatedNode.id, position: updatedNode.position, size: updatedNode.size),
-      );
+            PositionAndSize(
+                id: updatedNode.id,
+                position: updatedNode.position,
+                size: updatedNode.size),
+          );
     }
 
     if (prevValue == null && !isAddedToDoneActions) {
@@ -254,12 +262,18 @@ class UserActions {
       id: UniqueKey(),
       position: Offset(screenLeftOffset, screenTopOffset),
       size: Offset(
-        this.screens.currentScreenWorkspaceSize.dx - screenRightOffset - screenLeftOffset,
-        this.screens.currentScreenWorkspaceSize.dy - screenTopOffset - screenBottomOffset,
+        this.screens.currentScreenWorkspaceSize.dx -
+            screenRightOffset -
+            screenLeftOffset,
+        this.screens.currentScreenWorkspaceSize.dy -
+            screenTopOffset -
+            screenBottomOffset,
       ),
     );
 
-    this.screens.current.buildQuickGuides(addedPositionAndSize: screenPaddingPositionAndSize, ignoredNodeId: this.selectedNode().id);
+    this.screens.current.buildQuickGuides(
+        addedPositionAndSize: screenPaddingPositionAndSize,
+        ignoredNodeId: this.selectedNode().id);
   }
 
   void selectNodeForEdit(SchemaNode node) {
