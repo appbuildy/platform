@@ -251,8 +251,8 @@ class _AppPreviewState extends State<AppPreview> {
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
-                  final double endDx = node.position.dx + node.size.dx;
 
+                  final double endDx = node.position.dx + node.size.dx;
                   return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
                 },
                 onPanEnd: (_) {
@@ -333,12 +333,16 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Cursor(
                   cursor: CursorEnum.ewResize,
                   child: Container(
-                      width: 10,
-                      height: node.size.dy,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              left: BorderSide(
-                                  width: 1, color: MyColors.mainBlue)))),
+                    width: 10,
+                    height: node.size.dy,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                         width: 1, color: MyColors.mainBlue
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -349,27 +353,34 @@ class _AppPreviewState extends State<AppPreview> {
       overflow: Overflow.visible,
       alignment: Alignment.center,
       children: [
-        GestureDetector(
-          onPanUpdate: (details) {
+        DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
             if (!isSelected) {
               userActions.selectNodeForEdit(node);
             }
 
+            final startDx = node.position.dx;
+            final startDy = node.position.dy;
+
             node = SchemaNode.magnetHorizontalMove(
               node: node,
-              deltaDx: details.delta.dx,
+              deltaDx: delta.dx,
               screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
               guidelinesManager: userActions.screens.current.guidelineManager,
             );
 
             node = SchemaNode.magnetVerticalMove(
               node: node,
-              deltaDy: details.delta.dy,
+              deltaDy: delta.dy,
               screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
               guidelinesManager: userActions.screens.current.guidelineManager,
             );
 
             userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+            final endDx = node.position.dx;
+            final endDy = node.position.dy;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
           },
           onPanEnd: (_) {
             userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -420,10 +431,6 @@ class _AppPreviewState extends State<AppPreview> {
         return Observer(builder: (context) {
           final theme = userActions.currentTheme;
 
-          // final guidelines = userActions.screens.current.guidelineManager.buildMagnetLines(
-          //     screenSize: widget.userActions.screens.currentScreenWorkspaceSize
-          // );
-
           return Transform.scale(
             scale: scale,
             alignment: Alignment.topCenter,
@@ -454,7 +461,9 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.currentScreen.guidelineManager.buildAllLines(screenSize: widget.userActions.screens.currentScreenWorkspaceSize),
+                    ...userActions.currentScreen.guidelineManager.buildAllLines(
+                        screenSize: widget.userActions.screens.currentScreenWorkspaceSize
+                    ),
                     ...userActions.screens.current.components.map((node) =>
                         Positioned(
                             child: GestureDetector(

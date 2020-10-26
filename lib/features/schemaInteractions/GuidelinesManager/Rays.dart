@@ -25,7 +25,7 @@ class Ray {
     final width = isVertical ? 1 : screenSize.dx;
     final height = isVertical ? screenSize.dy : 1;
 
-    return (
+    return this.isVisible ? (
         Positioned(
           top: isVertical ? 0 : this.axisPosition,
           left: isVertical ? this.axisPosition : 0,
@@ -33,11 +33,11 @@ class Ray {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: this.isVisible ? Color(0xFFFF6666) : Colors.transparent,
+              color: Color(0xFFFF6666),
             ),
           ),
         )
-    );
+    ) : Container();
   }
 
   static List<Ray> getOrientedRays({

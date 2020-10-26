@@ -42,7 +42,17 @@ abstract class SchemaNode {
 
   static double minimalSize = 30.0;
 
-  static double demagnetizeDelta = 10;
+  static double demagnetizeSideDelta = 8;
+
+  static bool canDemagnetize({FoundGuideline foundGuideline, double delta}) {
+    final double absDelta = delta.abs();
+
+    if (foundGuideline != null && absDelta < SchemaNode.demagnetizeSideDelta) {
+      return false;
+    }
+
+    return true;
+  }
 
   static double axisMove({
     @required double axisNodePosition,
@@ -302,7 +312,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeDelta) {
+    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeSideDelta) {
       return node;
     }
 
@@ -326,6 +336,10 @@ abstract class SchemaNode {
       node.position.dy,
     );
 
+    final List<Ray> endRays = Ray.getOrientedRays(startPosition: node.position.dx, objectSize: node.size.dx, raysOrientation: raysOrientation);
+
+    guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
+
     return node;
   }
 
@@ -341,7 +355,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeDelta) {
+    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeSideDelta) {
       return node;
     }
 
@@ -451,7 +465,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeDelta) {
+    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.horizontal, delta: deltaDy)) {
       return node;
     }
 
@@ -491,6 +505,14 @@ abstract class SchemaNode {
         newSizeDy,
       );
 
+      final List<Ray> endRays = Ray.getOrientedRays(
+        startPosition: node.position.dy,
+        objectSize: node.size.dy,
+        raysOrientation: raysOrientation,
+      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+
+      guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: endRays);
+
       return node;
     }
 
@@ -513,7 +535,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeDelta) {
+    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.vertical, delta: deltaDx)) {
       return node;
     }
 
@@ -545,6 +567,14 @@ abstract class SchemaNode {
         node.size.dy,
       );
 
+      final List<Ray> endRays = Ray.getOrientedRays(
+        startPosition: node.position.dx,
+        objectSize: node.size.dx,
+        raysOrientation: raysOrientation,
+      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+
+      guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
+
       return node;
 
     }
@@ -568,7 +598,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeDelta) {
+    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.horizontal, delta: deltaDy)) {
       return node;
     }
 
@@ -600,6 +630,14 @@ abstract class SchemaNode {
         newSizeDy,
       );
 
+      final List<Ray> endRays = Ray.getOrientedRays(
+        startPosition: node.position.dy,
+        objectSize: node.size.dy,
+        raysOrientation: raysOrientation,
+      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+
+      guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: endRays);
+
       return node;
     }
 
@@ -622,7 +660,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeDelta) {
+    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.vertical, delta: deltaDx)) {
       return node;
     }
 
@@ -661,6 +699,14 @@ abstract class SchemaNode {
         newSizeDx,
         node.size.dy,
       );
+
+      final List<Ray> endRays = Ray.getOrientedRays(
+        startPosition: node.position.dx,
+        objectSize: node.size.dx,
+        raysOrientation: raysOrientation,
+      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+
+      guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
       return node;
     }

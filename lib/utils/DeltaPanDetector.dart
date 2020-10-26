@@ -30,9 +30,6 @@ class DeltaFromAnchorPointPanDetector extends StatefulWidget {
 }
 
 class _DeltaFromAnchorPointPanDetectorState extends State<DeltaFromAnchorPointPanDetector> {
-  // double _cursorDxPosition;
-  // double _cursorDyPosition;
-
   double _deltaDx = 0;
   double _deltaDy = 0;
 
@@ -44,8 +41,6 @@ class _DeltaFromAnchorPointPanDetectorState extends State<DeltaFromAnchorPointPa
 
   void clearDeltaDx() => _deltaDx = 0;
   void clearDeltaDy() => _deltaDy = 0;
-
-
 
   void onPanUpdate(details) {
     this.addDeltaDx(details.delta.dx);
@@ -65,10 +60,6 @@ class _DeltaFromAnchorPointPanDetectorState extends State<DeltaFromAnchorPointPa
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onPanStart: (details) {
-        // cursorDxPosition = details.globalPosition.dx;
-        // cursorDyPosition = details.globalPosition.dy;
-      },
       onPanUpdate: this.onPanUpdate,
       onPanEnd: (_) {
         this.clearDeltaDx();

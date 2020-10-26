@@ -124,7 +124,7 @@ class ObjectGuides {
 class GuidelinesManager {
   List<ObjectGuides> allObjectGuides = [];
 
-  double magnetZone = 8;
+  double magnetZone = 4;
 
   FoundGuidelines foundGuidelines = FoundGuidelines();
 
@@ -302,8 +302,23 @@ class GuidelinesManager {
     foundGuidelines.forEach((element) => element.guideline.isVisible = true);
   }
 
+  void filterVisibleRays(List<Ray> raysToFilter) {
+    Map<double, bool> filterMap = {};
+
+    raysToFilter.forEach((Ray ray) {
+      if (filterMap[ray.axisPosition] == true) {
+        ray.isVisible = false;
+      } else {
+        filterMap[ray.axisPosition] = true;
+      }
+    });
+  }
+
   List<Widget> buildAllLines({ @required Offset screenSize }) {
     if (allObjectGuides == null) return [Container()];
+
+    this.filterVisibleRays(this.allObjectGuides.map((o) => o.horizontalGuides.toRayList().toList()).expand((e) => e).toList());
+    this.filterVisibleRays(this.allObjectGuides.map((o) => o.verticalGuides.toRayList().toList()).expand((e) => e).toList());
 
     return allObjectGuides.map(
             (ObjectGuides object) => object.buildAllLines(screenSize: screenSize)
