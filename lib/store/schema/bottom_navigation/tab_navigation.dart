@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/utils/FontAwesomeIconsExtension.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class TabNavigation {
   String label;

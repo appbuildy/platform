@@ -14,11 +14,20 @@ class BottomNavigationStore = _BottomNavigationStore
     with _$BottomNavigationStore;
 
 abstract class _BottomNavigationStore with Store {
-  _BottomNavigationStore() {
+  _BottomNavigationStore([List<TabNavigation> tabs]) {
     this.tabs.addAll([
-      TabNavigation(
-          label: 'Home', icon: FontAwesomeIcons.home, target: MAIN_UNIQUE_KEY),
+      tabs ??
+          TabNavigation(
+              label: 'Home',
+              icon: FontAwesomeIcons.home,
+              target: MAIN_UNIQUE_KEY),
     ]);
+  }
+
+  _BottomNavigationStore.fromJson(Map<String, dynamic> jsonVal) {}
+
+  Map<String, dynamic> toJson() {
+    return {'tabs': tabs.map((tab) => tab.toJson()).toList()};
   }
 
   @observable
