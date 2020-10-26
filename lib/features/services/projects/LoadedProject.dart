@@ -2,6 +2,7 @@ import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/features/services/projects/IProjectLoad.dart';
+import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
@@ -13,10 +14,15 @@ import 'package:flutter_app/utils/RandomKey.dart';
 class LoadedProject implements IProjectLoad {
   Map<String, dynamic> jsonCanvas;
   AppThemeStore themeStore;
+  BottomNavigationStore bottomNav;
 
-  LoadedProject({Map<String, dynamic> json, AppThemeStore themeStore}) {
+  LoadedProject(
+      {Map<String, dynamic> json,
+      AppThemeStore themeStore,
+      BottomNavigationStore bottomNav}) {
     this.jsonCanvas = json;
     this.themeStore = themeStore;
+    this.bottomNav = bottomNav;
   }
 
   @override
@@ -26,8 +32,18 @@ class LoadedProject implements IProjectLoad {
     final current = CurrentScreen(loadedScreens.first);
     final screens = Screens(store, current);
     _loadTheme();
+    _loadBottomNavigation();
 
     return screens;
+  }
+
+  void _loadBottomNavigation() {
+    if (jsonCanvas['bottomNavigation'] == null) {
+      return;
+    }
+
+    this.bottomNav =
+        BottomNavigationStore.fromJson(jsonCanvas['bottomNavigation']);
   }
 
   void _loadTheme() {
