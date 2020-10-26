@@ -42,6 +42,8 @@ abstract class SchemaNode {
 
   static double minimalSize = 30.0;
 
+  static double demagnetizeDelta = 10;
+
   static double axisMove({
     @required double axisNodePosition,
     @required double axisNodeSize,
@@ -300,7 +302,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < 3) {
+    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeDelta) {
       return node;
     }
 
@@ -339,7 +341,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < 3) {
+    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeDelta) {
       return node;
     }
 
@@ -449,7 +451,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < 3) {
+    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeDelta) {
       return node;
     }
 
@@ -511,7 +513,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < 3) {
+    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeDelta) {
       return node;
     }
 
@@ -566,7 +568,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < 3) {
+    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeDelta) {
       return node;
     }
 
@@ -620,7 +622,7 @@ abstract class SchemaNode {
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < 3) {
+    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeDelta) {
       return node;
     }
 

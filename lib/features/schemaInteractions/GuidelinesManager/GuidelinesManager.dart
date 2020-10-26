@@ -124,7 +124,7 @@ class ObjectGuides {
 class GuidelinesManager {
   List<ObjectGuides> allObjectGuides = [];
 
-  double magnetZone = 3;
+  double magnetZone = 8;
 
   FoundGuidelines foundGuidelines = FoundGuidelines();
 

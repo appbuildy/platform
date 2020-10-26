@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
-import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
-import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/Rays.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/DeltaPanDetector.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -61,22 +60,30 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: -2,
               left: -2,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDy = node.position.dy;
+                  final double startDx = node.position.dx;
+
                   node = SchemaNode.magnetTopResize(
                     node: node,
-                    deltaDy: details.delta.dy,
+                    deltaDy: delta.dy,
                     screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
                   node = SchemaNode.magnetLeftResize(
                     node: node,
-                    deltaDx: details.delta.dx,
+                    deltaDx: delta.dx,
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDy = node.position.dy;
+                  final double endDx = node.position.dx;
+
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -88,22 +95,29 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: -2,
               right: -2,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDy = node.position.dy;
+                  final double startDx = node.position.dx + node.size.dx;
+
                   node = SchemaNode.magnetTopResize(
                     node: node,
-                    deltaDy: details.delta.dy,
+                    deltaDy: delta.dy,
                     screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
                   node = SchemaNode.magnetRightResize(
                     node: node,
-                    deltaDx: details.delta.dx,
+                    deltaDx: delta.dx,
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDy = node.position.dy;
+                  final double endDx = node.position.dx + node.size.dx;
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -115,22 +129,29 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               bottom: -2,
               right: -2,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDx = node.position.dx + node.size.dx;
+                  final double startDy = node.position.dy + node.size.dy;
+
                   node = SchemaNode.magnetBottomResize(
                     node: node,
-                    deltaDy: details.delta.dy,
+                    deltaDy: delta.dy,
                     screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
                   node = SchemaNode.magnetRightResize(
                     node: node,
-                    deltaDx: details.delta.dx,
+                    deltaDx: delta.dx,
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDx = node.position.dx + node.size.dx;
+                  final double endDy = node.position.dy + node.size.dy;
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -142,22 +163,29 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               bottom: -2,
               left: -2,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDx = node.position.dx;
+                  final double startDy = node.position.dy + node.size.dy;
+
                   node = SchemaNode.magnetBottomResize(
                     node: node,
-                    deltaDy: details.delta.dy,
+                    deltaDy: delta.dy,
                     screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
                   node = SchemaNode.magnetLeftResize(
                     node: node,
-                    deltaDx: details.delta.dx,
+                    deltaDx: delta.dx,
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDx = node.position.dx;
+                  final double endDy = node.position.dy + node.size.dy;
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -174,16 +202,21 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: 0,
               left: 0,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (Offset delta) {
+                  final double startDy = node.position.dy;
+
                   node = SchemaNode.magnetTopResize(
                     node: node,
-                    deltaDy: details.delta.dy,
+                    deltaDy: delta.dy,
                     screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDy = node.position.dy;
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dy: startDy - endDy);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -206,16 +239,21 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: 0,
               right: 0,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDx = node.position.dx + node.size.dx;
+
                   node = SchemaNode.magnetRightResize(
                     node: node,
-                    deltaDx: details.delta.dx,
+                    deltaDx: delta.dx,
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+                  final double endDx = node.position.dx + node.size.dx;
+
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -238,16 +276,21 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               left: 0,
               bottom: 0,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDy = node.position.dy + node.size.dy;
+
                   node = SchemaNode.magnetBottomResize(
                     node: node,
-                    deltaDy: details.delta.dy,
+                    deltaDy: delta.dy,
                     screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDy = node.position.dy + node.size.dy;
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dy: startDy - endDy);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
@@ -268,16 +311,20 @@ class _AppPreviewState extends State<AppPreview> {
             Positioned(
               top: 0,
               left: 0,
-              child: GestureDetector(
-                onPanUpdate: (details) {
+              child: DeltaFromAnchorPointPanDetector(
+                onPanUpdate: (delta) {
+                  final double startDx = node.position.dx;
                   node = SchemaNode.magnetLeftResize(
                     node: node,
-                    deltaDx: details.delta.dx,
+                    deltaDx: delta.dx,
                     screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
                     guidelinesManager: userActions.screens.current.guidelineManager,
                   );
 
                   userActions.repositionAndResize(node, isAddedToDoneActions: false);
+
+                  final double endDx = node.position.dx;
+                  return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
                 },
                 onPanEnd: (_) {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
