@@ -23,4 +23,13 @@ void main() {
     var store = BottomNavigationStore();
     expect(store.toJson()['tabs'][0]['label'], equals(store.tabs[0].label));
   });
+
+  test('.fromJson', () {
+    var storeJson = BottomNavigationStore();
+    var storeSerialized = storeJson.toJson();
+
+    var storeDeserialized = BottomNavigationStore.fromJson(storeSerialized);
+
+    expect(storeJson.tabs.first.id, equals(storeDeserialized.tabs.first.id));
+  });
 }

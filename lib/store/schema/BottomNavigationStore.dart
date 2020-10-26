@@ -24,7 +24,13 @@ abstract class _BottomNavigationStore with Store {
     ]);
   }
 
-  _BottomNavigationStore.fromJson(Map<String, dynamic> jsonVal) {}
+  _BottomNavigationStore.fromJson(Map<String, dynamic> jsonVal) {
+    var tabs = jsonVal['tabs']
+        .map((tab) => TabNavigation.fromJson(tab))
+        .toList()
+        .cast<TabNavigation>();
+    this.tabs.addAll(tabs);
+  }
 
   Map<String, dynamic> toJson() {
     return {'tabs': tabs.map((tab) => tab.toJson()).toList()};
