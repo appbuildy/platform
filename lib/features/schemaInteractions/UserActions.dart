@@ -10,7 +10,6 @@ import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart'
 import 'package:flutter_app/features/schemaInteractions/CopyNode.dart';
 import 'package:flutter_app/features/schemaInteractions/DeleteNode.dart';
 import 'package:flutter_app/features/schemaInteractions/PlaceWidget.dart';
-import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/RepositionAndResize.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.dart';
@@ -33,6 +32,7 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart';
 
 import 'ConnectToRemoteAttribute.dart';
+import 'GuidelinesManager/PositionAndSize.dart';
 
 class UserActions {
   ActionsDone _actionsDone;
@@ -210,10 +210,9 @@ class UserActions {
     return action.newNode;
   }
 
-  void repositionAndResize(SchemaNode updatedNode,
-      {bool buildQuickGuides = true,
-      bool isAddedToDoneActions = true,
-      SchemaNode prevValue}) {
+  void repositionAndResize(
+      SchemaNode updatedNode,
+      {bool isAddedToDoneActions = true, SchemaNode prevValue}) {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
@@ -226,14 +225,6 @@ class UserActions {
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
     }
-    if (buildQuickGuides) {
-      this.screens.current.quickGuideManager.searchNearestGuides(
-            PositionAndSize(
-                id: updatedNode.id,
-                position: updatedNode.position,
-                size: updatedNode.size),
-          );
-    }
 
     if (prevValue == null && !isAddedToDoneActions) {
       debouncer.run(
@@ -241,7 +232,6 @@ class UserActions {
           updatedNode,
           isAddedToDoneActions: true,
           prevValue: debouncer.prevValue,
-          buildQuickGuides: buildQuickGuides,
         ),
         updatedNode.copy(),
       );

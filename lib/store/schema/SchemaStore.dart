@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/schemaInteractions/QuickGuidesManager.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/PositionAndSize.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -28,13 +29,14 @@ abstract class _SchemaStore with Store {
     this.backgroundColor = backgroundColor ??
         MyThemeProp(name: 'background', color: Color(0xFFffffff));
 
-    this.quickGuideManager = QuickGuideManager();
+   // this.quickGuideManager = QuickGuideManager();
   }
 
-  QuickGuideManager quickGuideManager;
+  //QuickGuideManager quickGuideManager;
+
+  GuidelinesManager guidelineManager = GuidelinesManager();
 
   void buildQuickGuides({ PositionAndSize addedPositionAndSize, UniqueKey ignoredNodeId }) {
-    print(addedPositionAndSize);
     List<PositionAndSize> nodesPositionAndSize = [];
 
     this.components.forEach((SchemaNode node) {
@@ -47,7 +49,7 @@ abstract class _SchemaStore with Store {
       nodesPositionAndSize.add(addedPositionAndSize);
     }
 
-    this.quickGuideManager.makeAllObjectGuides(nodesPositionAndSize);
+    this.guidelineManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
   @observable
