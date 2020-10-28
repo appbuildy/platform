@@ -95,11 +95,14 @@ class UserActions {
   Future<void> loadProject() async {
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
-      final Screens screens = LoadedProject(
-              bottomNav: _bottomNavigation,
-              json: _currentUserStore.project.data['canvas'],
-              themeStore: _theme)
-          .load();
+      var loadedProject = LoadedProject(
+          bottomNav: _bottomNavigation,
+          json: _currentUserStore.project.data['canvas'],
+          themeStore: _theme);
+      final Screens screens = loadedProject.load();
+      _bottomNavigation = loadedProject.bottomNav;
+      print(_bottomNavigation.toJson());
+
       screens.all.screens.forEach((screen) {
         _screens.all.createScreen(screen);
         _screens.selectByName(screen.name);
@@ -210,8 +213,7 @@ class UserActions {
     return action.newNode;
   }
 
-  void repositionAndResize(
-      SchemaNode updatedNode,
+  void repositionAndResize(SchemaNode updatedNode,
       {bool isAddedToDoneActions = true, SchemaNode prevValue}) {
     final action = RepositionAndResize(
       schemaStore: currentScreen,
