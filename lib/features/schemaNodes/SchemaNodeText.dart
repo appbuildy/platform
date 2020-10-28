@@ -28,6 +28,7 @@ class SchemaNodeText extends SchemaNode {
       Offset size,
       AppThemeStore themeStore,
       Map<String, SchemaNodeProperty> properties,
+      Map<String, SchemaNodeProperty> actions,
       String column,
       String text,
       MyThemeProp color,

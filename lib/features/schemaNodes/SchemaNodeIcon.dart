@@ -22,6 +22,7 @@ class SchemaNodeIcon extends SchemaNode {
     Map<String, SchemaNodeProperty> properties,
     GoToScreenAction tapAction,
     IconData icon,
+    Map<String, SchemaNodeProperty> actions,
     int iconSize,
     UniqueKey id,
   }) : super() {

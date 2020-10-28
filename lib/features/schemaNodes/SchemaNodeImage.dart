@@ -20,6 +20,7 @@ class SchemaNodeImage extends SchemaNode {
       Offset size,
       Map<String, SchemaNodeProperty> properties,
       String column,
+      Map<String, SchemaNodeProperty> actions,
       String url,
       UniqueKey id})
       : super() {

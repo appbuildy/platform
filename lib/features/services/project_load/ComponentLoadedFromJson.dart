@@ -25,6 +25,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
               position: _loadPosition(),
               size: _loadSize(),
               properties: _loadProperies(),
+              actions: _loadActions(),
               themeStore: themeStore);
         }
 
@@ -33,6 +34,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
           return SchemaNodeText(
               position: _loadPosition(),
               size: _loadSize(),
+              actions: _loadActions(),
               properties: _loadProperies(),
               themeStore: themeStore);
         }
@@ -43,6 +45,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
           return SchemaNodeShape(
               position: _loadPosition(),
               size: _loadSize(),
+              actions: _loadActions(),
               properties: _loadProperies(),
               themeStore: themeStore);
         }
@@ -52,6 +55,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
         {
           return SchemaNodeIcon(
               position: _loadPosition(),
+              actions: _loadActions(),
               size: _loadSize(),
               properties: _loadProperies(),
               themeStore: themeStore);
@@ -62,6 +66,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
         {
           return SchemaNodeList(
               listTemplateType: ListTemplateType.cards,
+              actions: _loadActions(),
               position: _loadPosition(),
               size: _loadSize(),
               properties: _loadProperies(),
@@ -71,6 +76,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
       case 'SchemaNodeType.image':
         {
           return SchemaNodeImage(
+              actions: _loadActions(),
               position: _loadPosition(),
               size: _loadSize(),
               properties: _loadProperies());
@@ -97,6 +103,14 @@ class ComponentLoadedFromJson implements IComponentLoader {
     final Map<String, SchemaNodeProperty> deserialized = {};
     jsonComponent['properties'].forEach((key, val) {
       deserialized[key] = SchemaNodeProperty.deserializeFromJson(val);
+    });
+    return deserialized;
+  }
+
+  Map<String, SchemaNodeProperty> _loadActions() {
+    final Map<String, SchemaNodeProperty> deserialized = {};
+    jsonComponent['properties'].forEach((key, val) {
+      deserialized[key] = SchemaNodeProperty.deserializeActionFromJson(val);
     });
     return deserialized;
   }

@@ -16,6 +16,7 @@ class SchemaNodeShape extends SchemaNode {
     Offset size,
     @required AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
     UniqueKey id,
   }) : super() {
     this.type = SchemaNodeType.shape;

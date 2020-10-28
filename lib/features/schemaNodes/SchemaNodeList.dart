@@ -29,6 +29,7 @@ class SchemaNodeList extends SchemaNode {
       @required AppThemeStore themeStore,
       @required ListTemplateType listTemplateType,
       Map<String, SchemaNodeProperty> properties,
+      Map<String, SchemaNodeProperty> actions,
       UniqueKey id})
       : super() {
     this.type = SchemaNodeType.list;
