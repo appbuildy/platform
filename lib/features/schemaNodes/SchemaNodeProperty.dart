@@ -16,6 +16,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentP
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaTextAlignProperty.dart';
+import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 
 import 'properties/SchemaStringProperty.dart';
 
@@ -45,6 +46,27 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
   @override
   Map<String, dynamic> toJson() {
     return {'name': value.toString()};
+  }
+
+  static SchemaNodeProperty deserializeActionFromJson(
+      Map<String, dynamic> targetJson) {
+    try {
+      switch (targetJson['propertyClass']) {
+        case 'GoToScreenAction':
+          {
+            return GoToScreenAction.fromJson(targetJson);
+          }
+          break;
+        default:
+          {
+            print('Failed to deserialize action: no deserializer');
+            return MyDoNothingAction();
+          }
+      }
+    } catch (e) {
+      print('Failed to deserialize action with exception: $e');
+      return MyDoNothingAction();
+    }
   }
 
   static SchemaNodeProperty deserializeFromJson(

@@ -57,9 +57,17 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
   @override
   SchemaActionType type;
 
+  GoToScreenAction.fromJson(Map<String, dynamic> jsonVal)
+      : super('Prop', null) {
+    this.name = jsonVal['action'];
+    this.type = SchemaActionType.goToScreen;
+    this.value = jsonVal['value'];
+  }
+
   @override
   Map<String, dynamic> toJson() {
     return {
+      'propertyClass': 'GoToScreenAction',
       'action': this.name,
       'type': this.type.toString(),
       'value': this.value
