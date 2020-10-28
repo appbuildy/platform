@@ -2,35 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 extension JsonSerializationIconData on IconData {
-  static IconData fromJson(Map<String, dynamic> val) {
-    switch (val['class']) {
-      case 'IconDataBrands':
-        {
-          return IconDataBrands(val['codePoint']);
-        }
-        break;
-
-      case 'IconDataSolid':
-        {
-          return IconDataSolid(val['codePoint']);
-        }
-        break;
-
-      case 'IconDataRegular':
-        {
-          return IconDataRegular(val['codePoint']);
-        }
-        break;
-
-      default:
-        {
-          return IconData(val['codePoint']);
-        }
-        break;
-    }
+  static IconData fromJson(Map<String, dynamic> jsonValue) {
+    final int iconDataCodePoint = int.parse(jsonValue['codePoint'].toString());
+    final String iconDataFontFamily = jsonValue['fontFamily'];
+    final String iconDataFontPackage = jsonValue['fontPackage'];
+    final bool iconDataMatchTextDirection = jsonValue['matchTextDirection'];
+    return IconData(
+      iconDataCodePoint,
+      fontFamily: iconDataFontFamily,
+      fontPackage: iconDataFontPackage,
+      matchTextDirection: iconDataMatchTextDirection,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    return {'codePoint': this.codePoint, 'class': runtimeType.toString()};
+    return {
+      'codePoint': codePoint,
+      'fontFamily': fontFamily,
+      'fontPackage': fontPackage,
+      'matchTextDirection': matchTextDirection,
+    };
   }
 }
