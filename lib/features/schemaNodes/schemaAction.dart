@@ -4,15 +4,24 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
-import 'JsonConvertable.dart';
 import 'lists/ListItem.dart';
 
 class GoToScreenAction extends SchemaNodeProperty<RandomKey>
-    implements Functionable, JsonConvertable {
+    implements Functionable {
   GoToScreenAction(String name, RandomKey value) : super(name, value) {
     this.type = SchemaActionType.goToScreen;
     this.name = name;
     this.value = value;
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'propertyClass': 'GoToScreenAction',
+      'action': this.name,
+      'type': this.type.toString(),
+      'value': this.value == null ? null : this.value.toJson()
+    };
   }
 
   Function toFunction(UserActions userActions) {
@@ -61,34 +70,6 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
       : super('Prop', null) {
     this.name = jsonVal['action'];
     this.type = SchemaActionType.goToScreen;
-    this.value = jsonVal['value'];
+    this.value = RandomKey.fromJson(jsonVal['value']);
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      'propertyClass': 'GoToScreenAction',
-      'action': this.name,
-      'type': this.type.toString(),
-      'value': this.value
-    };
-  }
-}
-
-class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
-  MyDoNothingAction() : super('', 'myDoNothingAction') {
-    this.type = SchemaActionType.doNothing;
-  }
-
-  Function toFunction(UserActions userActions) {
-    return () {};
-  }
-
-  @override
-  SchemaNodeProperty copy() {
-    return MyDoNothingAction();
-  }
-
-  @override
-  SchemaActionType type;
 }

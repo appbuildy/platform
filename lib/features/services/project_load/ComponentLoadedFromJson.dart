@@ -109,7 +109,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
 
   Map<String, SchemaNodeProperty> _loadActions() {
     final Map<String, SchemaNodeProperty> deserialized = {};
-    jsonComponent['properties'].forEach((key, val) {
+    jsonComponent['actions'].forEach((key, val) {
       deserialized[key] = SchemaNodeProperty.deserializeActionFromJson(val);
     });
     return deserialized;

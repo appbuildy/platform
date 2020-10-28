@@ -124,6 +124,8 @@ class UserActions {
         node: selectedNode(),
         newProp: prop);
 
+    print('332323');
+    print(prop.value);
     action.execute(prevValue);
     if (isAddedToDoneActions) {
       _actionsDone.add(action);

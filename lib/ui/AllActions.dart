@@ -185,6 +185,7 @@ class _AllActionsState extends State<AllActions> {
                           selectedValue:
                               selectedNode.actions['Tap'].value ?? null,
                           onChange: (screen) {
+                            print(screen.value.toString());
                             widget.userActions.changeActionTo(
                                 GoToScreenAction('Tap', screen.value));
                           },

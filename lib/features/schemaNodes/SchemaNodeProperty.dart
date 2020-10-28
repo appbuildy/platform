@@ -18,6 +18,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProp
 import 'package:flutter_app/features/schemaNodes/properties/SchemaTextAlignProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 
+import 'my_do_nothing_action.dart';
 import 'properties/SchemaStringProperty.dart';
 
 class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {

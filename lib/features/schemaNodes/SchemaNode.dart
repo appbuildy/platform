@@ -1,10 +1,11 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/Rays.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'dart:core';
 
 export 'SchemaNodeButton.dart';
 export 'SchemaNodeImage.dart';
@@ -159,7 +160,6 @@ abstract class SchemaNode {
     @required double delta,
     @required double screenSize,
   }) {
-
     List<double> newPositionAndSize = resizeSideWithAnchorPoint(
       position: node.position.dy,
       size: node.size.dy,
@@ -258,16 +258,28 @@ abstract class SchemaNode {
     @required Function clearFoundGuideline,
     @required Function searchGuidelinesUnderRays,
   }) {
-    final double nodeStartPosition = nodeAxisRays.firstWhere((Ray ray) => ray.onObjectPositionType == OnObjectPositionTypes.start).axisPosition;
+    final double nodeStartPosition = nodeAxisRays
+        .firstWhere((Ray ray) =>
+            ray.onObjectPositionType == OnObjectPositionTypes.start)
+        .axisPosition;
 
-    final double nodeCenterPosition = nodeAxisRays.firstWhere((Ray ray) => ray.onObjectPositionType == OnObjectPositionTypes.center).axisPosition;
+    final double nodeCenterPosition = nodeAxisRays
+        .firstWhere((Ray ray) =>
+            ray.onObjectPositionType == OnObjectPositionTypes.center)
+        .axisPosition;
 
-    final double nodeEndPosition = nodeAxisRays.firstWhere((Ray ray) => ray.onObjectPositionType == OnObjectPositionTypes.end).axisPosition;
+    final double nodeEndPosition = nodeAxisRays
+        .firstWhere(
+            (Ray ray) => ray.onObjectPositionType == OnObjectPositionTypes.end)
+        .axisPosition;
 
     final double nodeSize = nodeEndPosition - nodeStartPosition;
 
     if (axisDelta != 0) {
-      searchNearestOnDirectionGuidelineFromRays(rays: nodeAxisRays, direction: axisDelta > 0 ? MoveDirections.forward : MoveDirections.backward);
+      searchNearestOnDirectionGuidelineFromRays(
+          rays: nodeAxisRays,
+          direction:
+              axisDelta > 0 ? MoveDirections.forward : MoveDirections.backward);
 
       final FoundGuideline foundGuideline = getFoundGuideline();
 
@@ -280,14 +292,17 @@ abstract class SchemaNode {
       }
 
       if (foundGuideline.foundByPositionType == OnObjectPositionTypes.center) {
-        newStartPosition = foundGuideline.guideline.axisPosition - (nodeCenterPosition - nodeStartPosition);
+        newStartPosition = foundGuideline.guideline.axisPosition -
+            (nodeCenterPosition - nodeStartPosition);
       }
 
       if (foundGuideline.foundByPositionType == OnObjectPositionTypes.end) {
-        newStartPosition = foundGuideline.guideline.axisPosition - (nodeEndPosition - nodeStartPosition);
+        newStartPosition = foundGuideline.guideline.axisPosition -
+            (nodeEndPosition - nodeStartPosition);
       }
 
-      final isOverflowed = newStartPosition < 0 || newStartPosition + nodeSize > axisScreenSize;
+      final isOverflowed =
+          newStartPosition < 0 || newStartPosition + nodeSize > axisScreenSize;
 
       if (isOverflowed) {
         clearFoundGuideline();
@@ -308,35 +323,51 @@ abstract class SchemaNode {
   }) {
     final OrientationTypes raysOrientation = OrientationTypes.vertical;
 
-    final List<Ray> startRays = Ray.getOrientedRays(startPosition: node.position.dx, objectSize: node.size.dx, raysOrientation: raysOrientation);
+    final List<Ray> startRays = Ray.getOrientedRays(
+        startPosition: node.position.dx,
+        objectSize: node.size.dx,
+        raysOrientation: raysOrientation);
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.vertical != null && deltaDx.abs() < SchemaNode.demagnetizeSideDelta) {
+    if (guidelinesManager.foundGuidelines.vertical != null &&
+        deltaDx.abs() < SchemaNode.demagnetizeSideDelta) {
       return node;
     }
 
     node.position = Offset(
-      SchemaNode.axisMove(axisNodePosition: node.position.dx, axisNodeSize: node.size.dx, axisDelta: deltaDx, axisScreenSize: screenSizeDx),
+      SchemaNode.axisMove(
+          axisNodePosition: node.position.dx,
+          axisNodeSize: node.size.dx,
+          axisDelta: deltaDx,
+          axisScreenSize: screenSizeDx),
       node.position.dy,
     );
 
-    final List<Ray> movedRays = Ray.getOrientedRays(startPosition: node.position.dx, objectSize: node.size.dx, raysOrientation: raysOrientation);
+    final List<Ray> movedRays = Ray.getOrientedRays(
+        startPosition: node.position.dx,
+        objectSize: node.size.dx,
+        raysOrientation: raysOrientation);
 
     node.position = Offset(
       SchemaNode.magnetAxisAfterMove(
         axisDelta: deltaDx,
         axisScreenSize: screenSizeDx,
         nodeAxisRays: movedRays,
-        searchNearestOnDirectionGuidelineFromRays: guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays,
+        searchNearestOnDirectionGuidelineFromRays:
+            guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays,
         getFoundGuideline: () => guidelinesManager.foundGuidelines.vertical,
         clearFoundGuideline: guidelinesManager.clearVertical,
-        searchGuidelinesUnderRays: guidelinesManager.searchGuidelinesUnderVerticalRays,
+        searchGuidelinesUnderRays:
+            guidelinesManager.searchGuidelinesUnderVerticalRays,
       ),
       node.position.dy,
     );
 
-    final List<Ray> endRays = Ray.getOrientedRays(startPosition: node.position.dx, objectSize: node.size.dx, raysOrientation: raysOrientation);
+    final List<Ray> endRays = Ray.getOrientedRays(
+        startPosition: node.position.dx,
+        objectSize: node.size.dx,
+        raysOrientation: raysOrientation);
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
@@ -351,20 +382,31 @@ abstract class SchemaNode {
   }) {
     final OrientationTypes raysOrientation = OrientationTypes.horizontal;
 
-    final List<Ray> startRays = Ray.getOrientedRays(startPosition: node.position.dy, objectSize: node.size.dy, raysOrientation: raysOrientation);
+    final List<Ray> startRays = Ray.getOrientedRays(
+        startPosition: node.position.dy,
+        objectSize: node.size.dy,
+        raysOrientation: raysOrientation);
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (guidelinesManager.foundGuidelines.horizontal != null && deltaDy.abs() < SchemaNode.demagnetizeSideDelta) {
+    if (guidelinesManager.foundGuidelines.horizontal != null &&
+        deltaDy.abs() < SchemaNode.demagnetizeSideDelta) {
       return node;
     }
 
     node.position = Offset(
       node.position.dx,
-      SchemaNode.axisMove(axisNodePosition: node.position.dy, axisNodeSize: node.size.dy, axisDelta: deltaDy, axisScreenSize: screenSizeDy),
+      SchemaNode.axisMove(
+          axisNodePosition: node.position.dy,
+          axisNodeSize: node.size.dy,
+          axisDelta: deltaDy,
+          axisScreenSize: screenSizeDy),
     );
 
-    final List<Ray> movedRays = Ray.getOrientedRays(startPosition: node.position.dy, objectSize: node.size.dy, raysOrientation: raysOrientation);
+    final List<Ray> movedRays = Ray.getOrientedRays(
+        startPosition: node.position.dy,
+        objectSize: node.size.dy,
+        raysOrientation: raysOrientation);
 
     node.position = Offset(
       node.position.dx,
@@ -372,10 +414,12 @@ abstract class SchemaNode {
         axisDelta: deltaDy,
         axisScreenSize: screenSizeDy,
         nodeAxisRays: movedRays,
-        searchNearestOnDirectionGuidelineFromRays: guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays,
+        searchNearestOnDirectionGuidelineFromRays: guidelinesManager
+            .searchNearestHorizontalOnDirectionGuidelineFromRays,
         getFoundGuideline: () => guidelinesManager.foundGuidelines.horizontal,
         clearFoundGuideline: guidelinesManager.clearHorizontal,
-        searchGuidelinesUnderRays: guidelinesManager.searchGuidelinesUnderHorizontalRays,
+        searchGuidelinesUnderRays:
+            guidelinesManager.searchGuidelinesUnderHorizontalRays,
       ),
     );
 
@@ -399,14 +443,17 @@ abstract class SchemaNode {
     }
 
     if (foundGuideline.foundByPositionType == OnObjectPositionTypes.center) {
-      final double centerPosition = magnetizedNodePosition + magnetizedNodeSize / 2;
-      resizeDelta = (centerPosition - foundGuideline.guideline.axisPosition) * 2;
+      final double centerPosition =
+          magnetizedNodePosition + magnetizedNodeSize / 2;
+      resizeDelta =
+          (centerPosition - foundGuideline.guideline.axisPosition) * 2;
     }
 
     magnetizedNodePosition -= resizeDelta;
     magnetizedNodeSize += resizeDelta;
 
-    final isOverflowed = magnetizedNodePosition < 0 || magnetizedNodePosition + magnetizedNodeSize > axisScreenSize;
+    final isOverflowed = magnetizedNodePosition < 0 ||
+        magnetizedNodePosition + magnetizedNodeSize > axisScreenSize;
 
     if (magnetizedNodeSize < SchemaNode.minimalSize || isOverflowed) {
       clearGuideline();
@@ -433,11 +480,11 @@ abstract class SchemaNode {
 
     if (foundGuideline.foundByPositionType == OnObjectPositionTypes.center) {
       final double centerPosition = position + size / 2;
-      resizeDelta = (foundGuideline.guideline.axisPosition - centerPosition) * 2;
+      resizeDelta =
+          (foundGuideline.guideline.axisPosition - centerPosition) * 2;
     }
 
     magnetizedNodeSize += resizeDelta;
-
 
     final isOverflowed = position + magnetizedNodeSize > axisScreenSize;
 
@@ -461,30 +508,44 @@ abstract class SchemaNode {
       startPosition: node.position.dy,
       objectSize: node.size.dy,
       raysOrientation: raysOrientation,
-    ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+    )
+        .where(
+            (Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end)
+        .toList();
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.horizontal, delta: deltaDy)) {
+    if (!SchemaNode.canDemagnetize(
+        foundGuideline: guidelinesManager.foundGuidelines.horizontal,
+        delta: deltaDy)) {
       return node;
     }
 
-    node = SchemaNode.resizeTop(node: node, delta: deltaDy, screenSize: screenSizeDy);
+    node = SchemaNode.resizeTop(
+        node: node, delta: deltaDy, screenSize: screenSizeDy);
 
     if (deltaDy != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
         startPosition: node.position.dy,
         objectSize: node.size.dy,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.end)
+          .toList();
 
-      guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays(rays: movedRays, direction: deltaDy > 0 ? MoveDirections.forward : MoveDirections.backward);
+      guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays(
+          rays: movedRays,
+          direction:
+              deltaDy > 0 ? MoveDirections.forward : MoveDirections.backward);
 
-      final FoundGuideline foundGuideline = guidelinesManager.foundGuidelines.horizontal;
+      final FoundGuideline foundGuideline =
+          guidelinesManager.foundGuidelines.horizontal;
 
       if (foundGuideline == null) return node;
 
-      final List<double> magnetizedNodePositionAndSize = SchemaNode.magnetResizeSizeWithAnchorPoint(
+      final List<double> magnetizedNodePositionAndSize =
+          SchemaNode.magnetResizeSizeWithAnchorPoint(
         position: node.position.dy,
         size: node.size.dy,
         foundGuideline: foundGuideline,
@@ -509,7 +570,10 @@ abstract class SchemaNode {
         startPosition: node.position.dy,
         objectSize: node.size.dy,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.end)
+          .toList();
 
       guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: endRays);
 
@@ -531,26 +595,39 @@ abstract class SchemaNode {
       startPosition: node.position.dx,
       objectSize: node.size.dx,
       raysOrientation: raysOrientation,
-    ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+    )
+        .where((Ray ray) =>
+            ray.onObjectPositionType != OnObjectPositionTypes.start)
+        .toList();
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.vertical, delta: deltaDx)) {
+    if (!SchemaNode.canDemagnetize(
+        foundGuideline: guidelinesManager.foundGuidelines.vertical,
+        delta: deltaDx)) {
       return node;
     }
 
-    node = SchemaNode.resizeRight(node: node, delta: deltaDx, screenSize: screenSizeDx);
+    node = SchemaNode.resizeRight(
+        node: node, delta: deltaDx, screenSize: screenSizeDx);
 
     if (deltaDx != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
         startPosition: node.position.dx,
         objectSize: node.size.dx,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.start)
+          .toList();
 
-      guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays(rays: movedRays, direction: deltaDx > 0 ? MoveDirections.forward : MoveDirections.backward);
+      guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays(
+          rays: movedRays,
+          direction:
+              deltaDx > 0 ? MoveDirections.forward : MoveDirections.backward);
 
-      final FoundGuideline foundGuideline = guidelinesManager.foundGuidelines.vertical;
+      final FoundGuideline foundGuideline =
+          guidelinesManager.foundGuidelines.vertical;
 
       if (foundGuideline == null) return node;
 
@@ -571,12 +648,14 @@ abstract class SchemaNode {
         startPosition: node.position.dx,
         objectSize: node.size.dx,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.start)
+          .toList();
 
       guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
       return node;
-
     }
 
     return node;
@@ -594,26 +673,39 @@ abstract class SchemaNode {
       startPosition: node.position.dy,
       objectSize: node.size.dy,
       raysOrientation: raysOrientation,
-    ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+    )
+        .where((Ray ray) =>
+            ray.onObjectPositionType != OnObjectPositionTypes.start)
+        .toList();
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
-    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.horizontal, delta: deltaDy)) {
+    if (!SchemaNode.canDemagnetize(
+        foundGuideline: guidelinesManager.foundGuidelines.horizontal,
+        delta: deltaDy)) {
       return node;
     }
 
-    node = SchemaNode.resizeBottom(node: node, delta: deltaDy, screenSize: screenSizeDy);
+    node = SchemaNode.resizeBottom(
+        node: node, delta: deltaDy, screenSize: screenSizeDy);
 
     if (deltaDy != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
         startPosition: node.position.dy,
         objectSize: node.size.dy,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.start)
+          .toList();
 
-      guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays(rays: movedRays, direction: deltaDy > 0 ? MoveDirections.forward : MoveDirections.backward);
+      guidelinesManager.searchNearestHorizontalOnDirectionGuidelineFromRays(
+          rays: movedRays,
+          direction:
+              deltaDy > 0 ? MoveDirections.forward : MoveDirections.backward);
 
-      final FoundGuideline foundGuideline = guidelinesManager.foundGuidelines.horizontal;
+      final FoundGuideline foundGuideline =
+          guidelinesManager.foundGuidelines.horizontal;
 
       if (foundGuideline == null) return node;
 
@@ -634,7 +726,10 @@ abstract class SchemaNode {
         startPosition: node.position.dy,
         objectSize: node.size.dy,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.start).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.start)
+          .toList();
 
       guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: endRays);
 
@@ -656,30 +751,44 @@ abstract class SchemaNode {
       startPosition: node.position.dx,
       objectSize: node.size.dx,
       raysOrientation: raysOrientation,
-    ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+    )
+        .where(
+            (Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end)
+        .toList();
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
-    if (!SchemaNode.canDemagnetize(foundGuideline: guidelinesManager.foundGuidelines.vertical, delta: deltaDx)) {
+    if (!SchemaNode.canDemagnetize(
+        foundGuideline: guidelinesManager.foundGuidelines.vertical,
+        delta: deltaDx)) {
       return node;
     }
 
-    node = SchemaNode.resizeLeft(node: node, delta: deltaDx, screenSize: screenSizeDx);
+    node = SchemaNode.resizeLeft(
+        node: node, delta: deltaDx, screenSize: screenSizeDx);
 
     if (deltaDx != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
         startPosition: node.position.dx,
         objectSize: node.size.dx,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.end)
+          .toList();
 
-      guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays(rays: movedRays, direction: deltaDx > 0 ? MoveDirections.forward : MoveDirections.backward);
+      guidelinesManager.searchNearestVerticalOnDirectionGuidelineFromRays(
+          rays: movedRays,
+          direction:
+              deltaDx > 0 ? MoveDirections.forward : MoveDirections.backward);
 
-      final FoundGuideline foundGuideline = guidelinesManager.foundGuidelines.vertical;
+      final FoundGuideline foundGuideline =
+          guidelinesManager.foundGuidelines.vertical;
 
       if (foundGuideline == null) return node;
 
-      final List<double> magnetizedNodePositionAndSize = SchemaNode.magnetResizeSizeWithAnchorPoint(
+      final List<double> magnetizedNodePositionAndSize =
+          SchemaNode.magnetResizeSizeWithAnchorPoint(
         position: node.position.dx,
         size: node.size.dx,
         foundGuideline: foundGuideline,
@@ -704,7 +813,10 @@ abstract class SchemaNode {
         startPosition: node.position.dx,
         objectSize: node.size.dx,
         raysOrientation: raysOrientation,
-      ).where((Ray ray) => ray.onObjectPositionType != OnObjectPositionTypes.end).toList();
+      )
+          .where((Ray ray) =>
+              ray.onObjectPositionType != OnObjectPositionTypes.end)
+          .toList();
 
       guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
@@ -715,12 +827,12 @@ abstract class SchemaNode {
   }
 
   Map<String, dynamic> toJson() => {
-    'position': {'x': position.dx, 'y': position.dy},
-    'size': {'x': size.dx, 'y': size.dy},
-    'properties': _jsonProperties(),
-    'actions': _jsonActions(),
-    'type': this.type.toString()
-  };
+        'position': {'x': position.dx, 'y': position.dy},
+        'size': {'x': size.dx, 'y': size.dy},
+        'properties': _jsonProperties(),
+        'actions': _jsonActions(),
+        'type': this.type.toString()
+      };
   Widget toWidget({bool isPlayMode, UserActions userActions});
   Widget toEditProps(
     UserActions userActions,
@@ -728,6 +840,7 @@ abstract class SchemaNode {
 
   Map<String, dynamic> _jsonActions() {
     final Map<String, dynamic> map = {};
+    print(actions.values.map((v) => v.toJson()));
     actions.forEach((k, v) => map[k] = v.toJson());
     return map;
   }
