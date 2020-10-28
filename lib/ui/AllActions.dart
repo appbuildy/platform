@@ -66,10 +66,10 @@ class _AllActionsState extends State<AllActions> {
     final detailedComponents = [
       SchemaNodeImage(
           position: Offset(0, 0),
-          url: isInRange(2)
-              ? detailedInfo.rowData[listColumns[2]].data
+          url: isInRange(0)
+              ? detailedInfo.rowData[listColumns[0]].data
               : detailedInfo.rowData[listColumns[0]].data,
-          column: isInRange(2) ? listColumns[2] : listColumns[0]),
+          column: isInRange(0) ? listColumns[0] : listColumns[0]),
       SchemaNodeIcon(
           themeStore: themeStore,
           position: Offset(14, 40),
@@ -80,12 +80,12 @@ class _AllActionsState extends State<AllActions> {
           position: Offset(14, 220),
           size: Offset(343, 35),
           themeStore: themeStore,
-          text: isInRange(0)
-              ? detailedInfo.rowData[listColumns[0]].data
+          text: isInRange(2)
+              ? detailedInfo.rowData[listColumns[2]].data
               : detailedInfo.rowData[listColumns[0]].data,
           fontSize: 24,
           fontWeight: FontWeight.w600,
-          column: isInRange(0) ? listColumns[0] : listColumns[0]),
+          column: isInRange(2) ? listColumns[2] : listColumns[0]),
       SchemaNodeText(
           position: Offset(14, 260),
           size: Offset(343, 25),
