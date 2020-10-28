@@ -4,7 +4,6 @@ import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
-
 class ProjectSetupMiddleware extends StatefulWidget {
   @override
   _ProjectSetupMiddlewareState createState() => _ProjectSetupMiddlewareState();
@@ -38,21 +37,25 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
   }
 
   OverlayEntry _renderLoadingOverlay() {
-    return OverlayEntry(builder: (BuildContext context) => ProjectLoadingAnimation());
+    return OverlayEntry(
+        builder: (BuildContext context) => ProjectLoadingAnimation());
   }
 
   void setupProject() async {
-    this.endLoadingAnimation();
-    await userActions.loadProject();
-
-    this.endLoadingAnimation();
+    try {
+      await userActions.loadProject();
+      this.endLoadingAnimation();
+    } catch (e) {
+      this.endLoadingAnimation();
+    }
   }
 
   void endLoadingAnimation() async {
     int elapsedTime = animationStopwatch.elapsedMilliseconds;
 
     if (elapsedTime < minLoadingAnimationDurationTime) {
-      await Future.delayed(Duration(milliseconds: minLoadingAnimationDurationTime - elapsedTime));
+      await Future.delayed(Duration(
+          milliseconds: minLoadingAnimationDurationTime - elapsedTime));
     }
 
     _overlayEntry.remove();
