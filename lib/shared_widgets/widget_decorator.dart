@@ -10,9 +10,9 @@ class WidgetDecorator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: onTap,
-        child: Positioned(
-            child: this.widget, left: position.dx, top: position.dy));
+    return Positioned(
+        left: position.dx,
+        top: position.dy,
+        child: GestureDetector(onTap: onTap, child: this.widget));
   }
 }
