@@ -72,29 +72,31 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(userActions) {
-    return Column(
-      children: [
-        ColumnDivider(
-          name: 'Shape Style',
-        ),
-        EditPropsColor(
-          currentTheme: themeStore.currentTheme,
-          properties: properties,
-          propName: 'Color',
-          userActions: userActions,
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        EditPropsCorners(
-          value: properties['BorderRadiusValue'].value,
-          onChanged: (int value) {
-            userActions.changePropertyTo(
-                SchemaIntProperty('BorderRadiusValue', value));
-          },
-        )
-      ],
+  Widget toEditProps(userActions, wrapInRootProps) {
+    return wrapInRootProps(
+      Column(
+        children: [
+          ColumnDivider(
+            name: 'Shape Style',
+          ),
+          EditPropsColor(
+            currentTheme: themeStore.currentTheme,
+            properties: properties,
+            propName: 'Color',
+            userActions: userActions,
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          EditPropsCorners(
+            value: properties['BorderRadiusValue'].value,
+            onChanged: (int value) {
+              userActions.changePropertyTo(
+                  SchemaIntProperty('BorderRadiusValue', value));
+            },
+          )
+        ],
+      )
     );
   }
 }

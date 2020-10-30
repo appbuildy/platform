@@ -102,58 +102,60 @@ class SchemaNodeImage extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(userActions) {
-    return Column(children: [
-      ColumnDivider(
-        name: 'Image Style',
-      ),
-      EditPropsText(
-          title: 'Url',
-          id: id,
-          properties: properties,
-          propName: 'Url',
-          userActions: userActions,
-          textDebouncer: textDebouncer),
-      SizedBox(
-        height: 10,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            width: 59,
-            child: Text(
-              'Resize',
-              style: MyTextStyle.regularCaption,
+  Widget toEditProps(userActions, wrapInRootProps) {
+    return wrapInRootProps(
+      Column(children: [
+        ColumnDivider(
+          name: 'Image Style',
+        ),
+        EditPropsText(
+            title: 'Url',
+            id: id,
+            properties: properties,
+            propName: 'Url',
+            userActions: userActions,
+            textDebouncer: textDebouncer),
+        SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 59,
+              child: Text(
+                'Resize',
+                style: MyTextStyle.regularCaption,
+              ),
             ),
-          ),
-          Expanded(
-            child: MyClickSelect(
-              options: [
-                SelectOption('Fill', 'Fill'),
-                SelectOption('Cover', 'Cover'),
-                SelectOption('Contain', 'Contain'),
-                SelectOption('None', 'None')
-              ],
-              selectedValue: properties['Fit'].value,
-              onChange: (SelectOption option) {
-                userActions.changePropertyTo(
-                    SchemaStringProperty('Fit', option.value));
-              },
+            Expanded(
+              child: MyClickSelect(
+                options: [
+                  SelectOption('Fill', 'Fill'),
+                  SelectOption('Cover', 'Cover'),
+                  SelectOption('Contain', 'Contain'),
+                  SelectOption('None', 'None')
+                ],
+                selectedValue: properties['Fit'].value,
+                onChange: (SelectOption option) {
+                  userActions.changePropertyTo(
+                      SchemaStringProperty('Fit', option.value));
+                },
+              ),
             ),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 12,
-      ),
-      EditPropsCorners(
-        value: properties['BorderRadiusValue'].value,
-        onChanged: (int value) {
-          userActions
-              .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
-        },
-      ),
-    ]);
+          ],
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        EditPropsCorners(
+          value: properties['BorderRadiusValue'].value,
+          onChanged: (int value) {
+            userActions
+                .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+          },
+        ),
+      ])
+    );
   }
 }

@@ -95,25 +95,27 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(userActions) {
-    return Column(children: [
-      ColumnDivider(
-        name: 'Icon Style',
-      ),
-      EditPropsIconStyle(
-        currentTheme: themeStore.currentTheme,
-        userActions: userActions,
-        properties: properties,
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      SelectIconList(
-          subListHeight: 470,
-          selectedIcon: properties['Icon'].value,
-          onChanged: (IconData icon) {
-            userActions.changePropertyTo(SchemaIconProperty('Icon', icon));
-          })
-    ]);
+  Widget toEditProps(userActions, wrapInRootProps) {
+    return wrapInRootProps(
+      Column(children: [
+        ColumnDivider(
+          name: 'Icon Style',
+        ),
+        EditPropsIconStyle(
+          currentTheme: themeStore.currentTheme,
+          userActions: userActions,
+          properties: properties,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        SelectIconList(
+            subListHeight: 470,
+            selectedIcon: properties['Icon'].value,
+            onChanged: (IconData icon) {
+              userActions.changePropertyTo(SchemaIconProperty('Icon', icon));
+            })
+      ])
+    );
   }
 }

@@ -49,6 +49,7 @@ class ListElements {
     UserActions userActions,
     AppThemeStore themeStore,
     Function onNodeSettingsClick,
+    Function onListElementsUpdate,
   }) {
     return Column(
       children: [
@@ -57,7 +58,7 @@ class ListElements {
           icon: Image.network('assets/icons/meta/btn-plus.svg'),
           onTap: () {
             listElements.add(ListElementNode(userActions: userActions, node: SchemaNodeButton(themeStore: themeStore), name: 'Button'));
-            userActions.changePropertyTo(ListElementsProperty('Elements', this));
+            onListElementsUpdate(this);
           },
        ),
         ...listElements.map((ListElementNode element) => element.buildSettingsButton(onNodeSettingsClick)),
@@ -95,8 +96,8 @@ class ListElementNode {
     );
   }
 
-  Widget buildWidgetToEditProps() {
-    return node.toEditProps(this.userActions);
+  Widget buildWidgetToEditProps(Function wrapInRoot) {
+    return node.toEditProps(this.userActions, wrapInRoot);
   }
 
   Widget buildWidget() {

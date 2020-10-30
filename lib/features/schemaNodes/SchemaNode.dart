@@ -836,12 +836,9 @@ abstract class SchemaNode {
 
   Widget toWidget({bool isPlayMode, UserActions userActions});
 
-  Widget toEditPropsWithWrap(UserActions userActions, Function wrapFunc) {
-    return wrapFunc(this.toEditProps(userActions));
-  }
-
   Widget toEditProps(
     UserActions userActions,
+    Function wrapInRootProps,
   );
 
   Map<String, dynamic> _jsonActions() {

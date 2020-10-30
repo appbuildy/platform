@@ -14,9 +14,11 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
+import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
@@ -36,7 +38,14 @@ class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTick
   @override
   void initState() {
     super.initState();
-    this._pageSliderController = PageSliderController(vsync: this, rootPage: widget.rootPage, pagesMap: widget.pages);
+    this._pageSliderController = PageSliderController(vsync: this, buildRoot: widget.rootPage, pagesMap: widget.pages);
+  }
+
+  @override
+  void didUpdateWidget(covariant EditPropsAnimation oldWidget) {
+    this._pageSliderController.pages = widget.pages;
+
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -172,75 +181,144 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toEditPropsWithWrap(UserActions userActions, Function wrapFunc) {
+  Widget toEditProps(UserActions userActions, wrapInRootProps) {
+    return ListToEditProps(schemaNodeList: this, userActions: userActions, wrapInRootProps: wrapInRootProps);
+  }
+}
 
-    final Map<UniqueKey, BuildWidgetFunction> pages = {};
+class ListToEditProps extends StatefulWidget {
+  final SchemaNodeList schemaNodeList;
+  final UserActions userActions;
+  final Function wrapInRootProps;
 
-    (properties['Elements'].value as ListElements).listElements.forEach((ListElementNode e) => pages[e.nodeId] = e.buildWidgetToEditProps);
-    print(pages);
+  ListToEditProps({
+    @required this.schemaNodeList,
+    @required this.userActions,
+    @required this.wrapInRootProps,
+  });
+  @override
+  _ListToEditPropsState createState() => _ListToEditPropsState();
+}
 
-    return EditPropsAnimation(rootPage: wrapFunc(this.toEditProps(userActions)), pages: pages);
+class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProviderStateMixin {
+  PageSliderController _pageSliderController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    this._pageSliderController = PageSliderController(
+      vsync: this,
+      buildRoot: this._buildRoot,
+      pagesMap: this.getPageSliderPages(),
+    );
+  }
+
+  Map<UniqueKey, BuildWidgetFunction> getPageSliderPages() {
+    Map<UniqueKey, BuildWidgetFunction> pages = {};
+
+    (widget.schemaNodeList.properties['Elements'].value as ListElements).listElements.forEach(
+      (ListElementNode elementNode) => pages[elementNode.nodeId] = () => elementNode.buildWidgetToEditProps(getPageWrap(elementNode.name)),
+    );
+
+    return pages;
+  }
+
+  Function getPageWrap(nodeName) {
+    return (Widget child) {
+      return Column(
+        children: [
+          ToolboxHeader(
+              leftWidget: IconCircleButton(
+                  onTap: _pageSliderController.toRoot,
+                  assetPath: 'assets/icons/meta/btn-back.svg'),
+              title: nodeName),
+          Padding(
+            padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
+            child: child,
+          ),
+        ],
+      );
+    };
+  }
+
+  Widget _buildRoot() {
+    return widget.wrapInRootProps(
+        Column(children: [
+          ColumnDivider(
+            name: 'Data Source',
+          ),
+          Row(
+            children: [
+              Text(
+                'Table from',
+                style: MyTextStyle.regularCaption,
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                child: MyClickSelect(
+                    placeholder: 'Select Table',
+                    selectedValue: widget.schemaNodeList.properties['Table'].value ?? null,
+                    onChange: (screen) async {
+                      await widget.schemaNodeList.updateData(screen.value, widget.userActions);
+                      widget.userActions.changePropertyTo(
+                          SchemaStringProperty('Table', screen.value));
+
+                      widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
+                          widget.userActions
+                              .columnsFor(screen.value)
+                              .map((e) => e.name)
+                              .toList());
+                    },
+                    options: widget.userActions.tables
+                        .map((element) => SelectOption(element, element))
+                        .toList()),
+              )
+            ],
+          ),
+          ColumnDivider(
+            name: 'Row Elements',
+          ),
+          (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
+              userActions: widget.userActions,
+              themeStore: widget.schemaNodeList.themeStore,
+              onNodeSettingsClick: (UniqueKey id) {
+                _pageSliderController.to(id);
+              },
+              onListElementsUpdate: (ListElements listElements) {
+                widget.userActions.changePropertyTo(ListElementsProperty('Elements', listElements));
+                _pageSliderController.pages = getPageSliderPages();
+              }
+          ),
+          ColumnDivider(
+            name: 'Row Style',
+          ),
+          EditPropsColor(
+            currentTheme: widget.schemaNodeList.themeStore.currentTheme,
+            properties: widget.schemaNodeList.properties,
+            propName: 'ItemColor',
+            userActions: widget.userActions,
+          ),
+          widget.schemaNodeList.properties['Template'].value.rowStyle(
+              userActions: widget.userActions,
+              properties: widget.schemaNodeList.properties,
+              currentTheme: widget.schemaNodeList.themeStore.currentTheme),
+          SizedBox(
+            height: 10,
+          ),
+        ])
+    );
   }
 
   @override
-  Widget toEditProps(UserActions userActions) {
-    return Column(children: [
-      ColumnDivider(
-        name: 'Data Source',
-      ),
-      Row(
-        children: [
-          Text(
-            'Table from',
-            style: MyTextStyle.regularCaption,
-          ),
-          SizedBox(
-            width: 15,
-          ),
-          Expanded(
-            child: MyClickSelect(
-                placeholder: 'Select Table',
-                selectedValue: properties['Table'].value ?? null,
-                onChange: (screen) async {
-                  await updateData(screen.value, userActions);
-                  userActions.changePropertyTo(
-                      SchemaStringProperty('Table', screen.value));
-
-                  properties['Elements'].value.updateAllColumns(userActions
-                      .columnsFor(screen.value)
-                      .map((e) => e.name)
-                      .toList());
-                },
-                options: userActions.tables
-                    .map((element) => SelectOption(element, element))
-                    .toList()),
-          )
-        ],
-      ),
-      ColumnDivider(
-        name: 'Row Elements',
-      ),
-      (properties['Elements'].value as ListElements).toEditProps(
-        userActions: userActions,
-        themeStore: themeStore,
-        onNodeSettingsClick: (UniqueKey id) { print(id); }
-      ),
-      ColumnDivider(
-        name: 'Row Style',
-      ),
-      EditPropsColor(
-        currentTheme: themeStore.currentTheme,
-        properties: properties,
-        propName: 'ItemColor',
-        userActions: userActions,
-      ),
-      this.properties['Template'].value.rowStyle(
-          userActions: userActions,
-          properties: properties,
-          currentTheme: themeStore.currentTheme),
-      SizedBox(
-        height: 10,
-      ),
-    ]);
+  Widget build(BuildContext context) {
+    return PageSliderAnimator(
+      pageSliderController: _pageSliderController,
+      maxSlide: 300,
+      slidesWidth: 311,
+    );
   }
 }
+

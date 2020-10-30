@@ -138,56 +138,58 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(userActions) {
-    return Column(children: [
-      ColumnDivider(name: 'Text Style'),
-      EditPropsText(
-          id: id,
-          properties: properties,
-          propName: 'Text',
+  Widget toEditProps(userActions, wrapInRootProps) {
+    return wrapInRootProps(
+        Column(children: [
+        ColumnDivider(name: 'Text Style'),
+        EditPropsText(
+            id: id,
+            properties: properties,
+            propName: 'Text',
+            userActions: userActions,
+            textDebouncer: textDebouncer),
+        SizedBox(
+          height: 10,
+        ),
+        EditPropsFontStyle(
+          currentTheme: themeStore.currentTheme,
           userActions: userActions,
-          textDebouncer: textDebouncer),
-      SizedBox(
-        height: 10,
-      ),
-      EditPropsFontStyle(
-        currentTheme: themeStore.currentTheme,
-        userActions: userActions,
-        properties: properties,
-      ),
-      ColumnDivider(name: 'Shape Style'),
-      EditPropsColor(
-        currentTheme: themeStore.currentTheme,
-        properties: properties,
-        userActions: userActions,
-        propName: 'BackgroundColor',
-      ),
-      SizedBox(
-        height: 12,
-      ),
-      EditPropsCorners(
-        value: properties['BorderRadiusValue'].value,
-        onChanged: (int value) {
-          userActions
-              .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
-        },
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      EditPropsBorder(
-        key: id,
-        properties: properties,
-        userActions: userActions,
-        currentTheme: themeStore.currentTheme,
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      EditPropsShadow(
+          properties: properties,
+        ),
+        ColumnDivider(name: 'Shape Style'),
+        EditPropsColor(
+          currentTheme: themeStore.currentTheme,
           properties: properties,
           userActions: userActions,
-          currentTheme: themeStore.currentTheme)
-    ]);
+          propName: 'BackgroundColor',
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        EditPropsCorners(
+          value: properties['BorderRadiusValue'].value,
+          onChanged: (int value) {
+            userActions
+                .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+          },
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        EditPropsBorder(
+          key: id,
+          properties: properties,
+          userActions: userActions,
+          currentTheme: themeStore.currentTheme,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        EditPropsShadow(
+            properties: properties,
+            userActions: userActions,
+            currentTheme: themeStore.currentTheme)
+      ])
+    );
   }
 }

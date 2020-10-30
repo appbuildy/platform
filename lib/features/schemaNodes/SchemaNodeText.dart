@@ -115,31 +115,33 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(userActions) {
+  Widget toEditProps(userActions, wrapInRootProps) {
     log(userActions.remoteAttributeList().toString());
-    return Column(children: [
-      ColumnDivider(
-        name: 'Text Style',
-      ),
-      EditPropsText(
-          id: id,
-          properties: properties,
-          propName: 'Text',
+    return wrapInRootProps(
+      Column(children: [
+        ColumnDivider(
+          name: 'Text Style',
+        ),
+        EditPropsText(
+            id: id,
+            properties: properties,
+            propName: 'Text',
+            userActions: userActions,
+            textDebouncer: textDebouncer),
+        SizedBox(
+          height: 10,
+        ),
+        EditPropsFontStyle(
+          currentTheme: themeStore.currentTheme,
           userActions: userActions,
-          textDebouncer: textDebouncer),
-      SizedBox(
-        height: 10,
-      ),
-      EditPropsFontStyle(
-        currentTheme: themeStore.currentTheme,
-        userActions: userActions,
-        properties: properties,
-      ),
-//      SizedBox(
-//        height: 10,
-//      ),
-//      RemoteAttributesSelect(
-//          property: properties['Text'], userActions: userActions),
-    ]);
+          properties: properties,
+        ),
+  //      SizedBox(
+  //        height: 10,
+  //      ),
+  //      RemoteAttributesSelect(
+  //          property: properties['Text'], userActions: userActions),
+      ])
+    );
   }
 }

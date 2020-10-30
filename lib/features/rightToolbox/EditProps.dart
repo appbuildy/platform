@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
@@ -150,7 +151,7 @@ class EditProps extends StatelessWidget {
           ]);
         }
 
-        return selectedNode.toEditPropsWithWrap(userActions, wrapInRootEditProps);
+        return selectedNode.toEditProps(userActions, wrapInRootEditProps);
       },
     );
   }

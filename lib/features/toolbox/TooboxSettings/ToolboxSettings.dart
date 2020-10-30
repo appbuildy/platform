@@ -36,7 +36,7 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
 
     pageSliderController = PageSliderController<SettingsEnum>(
       vsync: this,
-      rootPage: _buildMain,
+      buildRoot: _buildMain,
       pagesMap: sliderAnimationPages,
     );
   }

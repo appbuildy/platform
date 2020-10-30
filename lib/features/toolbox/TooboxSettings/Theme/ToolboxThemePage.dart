@@ -39,7 +39,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 
     pageSliderController = PageSliderController<String>(
         vsync: this,
-        rootPage: _buildMain,
+        buildRoot: _buildMain,
         pagesMap: sliderAnimationPages,
     );
   }
