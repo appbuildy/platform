@@ -18,6 +18,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentP
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
+import 'package:flutter_app/shared_widgets/button.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
@@ -95,46 +96,8 @@ class SchemaNodeButton extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode, UserActions userActions}) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
-      decoration: BoxDecoration(
-          color: getThemeColor(
-              themeStore.currentTheme, properties['BackgroundColor']),
-          boxShadow: properties['BoxShadow'].value
-              ? [
-                  BoxShadow(
-                      color: getThemeColor(themeStore.currentTheme,
-                              properties['BoxShadowColor'])
-                          .withOpacity(properties['BoxShadowOpacity'].value),
-                      blurRadius: properties['BoxShadowBlur'].value,
-                      offset: Offset(0.0, 2.0),
-                      spreadRadius: 0)
-                ]
-              : [],
-          borderRadius: BorderRadius.circular(
-              properties['BorderRadiusValue'].value.toDouble()),
-          border: properties['Border'].value
-              ? Border.all(
-                  width: properties['BorderWidth'].value,
-                  color: getThemeColor(
-                      themeStore.currentTheme, properties['BorderColor']))
-              : null),
-      child: Column(
-        mainAxisAlignment: properties['MainAlignment'].value,
-        crossAxisAlignment: properties['CrossAlignment'].value,
-        children: [
-          Text(
-            properties['Text'].value,
-            style: TextStyle(
-                fontWeight: properties['FontWeight'].value,
-                fontSize: properties['FontSize'].value.toDouble(),
-                color: getThemeColor(
-                    themeStore.currentTheme, properties['FontColor'])),
-          ),
-        ],
-      ),
-    );
+    return Button(
+        properties: properties, theme: themeStore.currentTheme, size: size);
   }
 
   @override
