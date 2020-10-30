@@ -92,53 +92,7 @@ class ListTemplateSimple extends ListTemplate {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  elements.image != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                              item.value[elements.image.column]?.data ?? '',
-                              fit: BoxFit.cover,
-                              width: 36,
-                              height: 36,
-                            ),
-                          ),
-                        )
-                      : Container(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      elements.title != null
-                          ? Text(
-                              item.value[elements.title.column]?.data ?? '',
-                              style: MyTextStyle.regularTitle,
-                            )
-                          : Container(),
-                      elements.subtitle != null
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 3),
-                              child: Text(
-                                item.value[elements.subtitle.column]?.data ??
-                                    '',
-                                style: MyTextStyle.regularCaption,
-                              ),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                  elements.navigationIcon != null
-                      ? Expanded(
-                          child: Container(),
-                        )
-                      : Container(),
-                  elements.navigationIcon != null
-                      ? FaIcon(
-                          FontAwesomeIcons.chevronRight,
-                          color: currentTheme.separators.color,
-                          size: 18,
-                        )
-                      : Container()
+                  ...elements.listElements.map((ListElementNode el) => el.buildWidget())
                 ],
               ),
             ),

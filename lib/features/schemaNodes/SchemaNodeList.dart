@@ -50,17 +50,20 @@ class SchemaNodeList extends SchemaNode {
               'Elements',
               ListElements(
                   allColumns: listColumnsSample,
-                  title: ListElement(
-                      type: ListElementType.title,
-                      column: listColumnsSample[0]),
-                  subtitle: ListElement(
-                      type: ListElementType.subtitle,
-                      column: listColumnsSample[1]),
-                  image: ListElement(
-                      type: ListElementType.image,
-                      column: listColumnsSample[2]),
-                  navigationIcon: ListElement(
-                      type: ListElementType.navigationIcon, column: 'true'))),
+                  // title: ListElement(
+                  //     type: ListElementType.title,
+                  //     column: listColumnsSample[0]),
+                  // subtitle: ListElement(
+                  //     type: ListElementType.subtitle,
+                  //     column: listColumnsSample[1]),
+                  // image: ListElement(
+                  //     type: ListElementType.image,
+                  //     column: listColumnsSample[2]),
+                  // navigationIcon: ListElement(
+                  //     type: ListElementType.navigationIcon, column: 'true',
+                  // ),
+              ),
+          ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', this.themeStore.currentTheme.general),
           'ItemColor': SchemaMyThemePropProperty(
@@ -175,7 +178,11 @@ class SchemaNodeList extends SchemaNode {
       ColumnDivider(
         name: 'Row Elements',
       ),
-      (properties['Elements'].value as ListElements).toEditProps(userActions),
+      (properties['Elements'].value as ListElements).toEditProps(
+        userActions: userActions,
+        themeStore: themeStore,
+        onNodeSettingsClick: (UniqueKey id) { print(id); }
+      ),
       ColumnDivider(
         name: 'Row Style',
       ),

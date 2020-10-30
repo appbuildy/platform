@@ -20,10 +20,6 @@ void main() {
     final listElements = ListElements();
     final ListElementsProperty prop =
         ListElementsProperty('Elements', listElements);
-    prop.value.title =
-        ListElement(column: 'title', type: ListElementType.title);
-    prop.value.image =
-        ListElement(column: 'Image', type: ListElementType.image);
     prop.value.allColumns = List<String>.from(['1']);
 
     expect(prop.toJson()['value']['title']['column'], equals('title'));
@@ -34,12 +30,11 @@ void main() {
   test('.fromJson()', () {
     final listElements = ListElements(
         allColumns: ['1'],
-        title: ListElement(column: '322', type: ListElementType.title));
+    );
     final ListElementsProperty prop =
         ListElementsProperty('Elements', listElements);
     final jsonVal = prop.toJson();
     final deserialized = ListElementsProperty.fromJson(jsonVal);
     expect(deserialized.name, equals(prop.name));
-    expect(deserialized.value.title.column, equals('322'));
   });
 }
