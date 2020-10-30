@@ -6,9 +6,9 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
+import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
-import 'package:flutter_app/utils/getThemeColor.dart';
 
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
@@ -58,17 +58,8 @@ class SchemaNodeShape extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode, UserActions userActions}) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
-      decoration: BoxDecoration(
-          color: getThemeColor(
-            themeStore.currentTheme,
-            properties['Color'],
-          ),
-          borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value)),
-    );
+    return Shared.Shape(
+        properties: properties, theme: themeStore.currentTheme, size: size);
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.d
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
+import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
@@ -75,23 +76,8 @@ class SchemaNodeIcon extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode, UserActions userActions}) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
-      decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value)),
-      child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(properties['BorderRadiusValue'].value),
-        child: FaIcon(
-          properties['Icon'].value,
-          size: properties['IconSize'].value,
-          color:
-              getThemeColor(themeStore.currentTheme, properties['IconColor']),
-        ),
-      ),
-    );
+    return Shared.Icon(
+        properties: properties, theme: themeStore.currentTheme, size: size);
   }
 
   @override
