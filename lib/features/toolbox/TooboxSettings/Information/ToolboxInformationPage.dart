@@ -110,7 +110,7 @@ class _BuildToolboxInformationPageState extends State<BuildToolboxInformationPag
                 _buildTextField(
                   title: 'App Name',
                   onTextFieldChange: () {},
-                  textFieldDefaultValue: widget.userActions.currentUserStore.project?.data['name'] ?? '',
+                  textFieldDefaultValue: '',
                   textFieldPlaceholder: 'Untitled'
                 ),
                 SizedBox(height: 17.0),

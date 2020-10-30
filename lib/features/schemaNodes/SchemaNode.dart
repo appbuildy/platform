@@ -833,7 +833,13 @@ abstract class SchemaNode {
         'actions': _jsonActions(),
         'type': this.type.toString()
       };
+
   Widget toWidget({bool isPlayMode, UserActions userActions});
+
+  Widget toEditPropsWithWrap(UserActions userActions, Function wrapFunc) {
+    return wrapFunc(this.toEditProps(userActions));
+  }
+
   Widget toEditProps(
     UserActions userActions,
   );

@@ -2,22 +2,27 @@ import 'package:flutter/material.dart';
 
 import 'MyColors.dart';
 
+typedef BuildWidgetFunction = Widget Function();
+
 class PageSliderController<T> {
   Animation animation;
   AnimationController controller;
 
-  Widget rootPage;
-  Map<T, Widget> pagesMap;
+  BuildWidgetFunction rootPage;
+  Map<T, BuildWidgetFunction> pagesMap;
   TickerProvider vsync;
 
   bool _isPageSelected = false;
-  Widget _selectedPage;
+  BuildWidgetFunction _selectedPage;
 
   PageSliderController({
     @required vsync,
-    @required rootPage,
-    @required pagesMap,
+    @required BuildWidgetFunction rootPage,
+    @required Map<T, BuildWidgetFunction> pagesMap,
   }) {
+    print(vsync);
+    print(rootPage);
+    print(pagesMap);
     this.controller = AnimationController(
         value: 1,
         vsync: vsync,
@@ -34,7 +39,7 @@ class PageSliderController<T> {
     this.pagesMap = pagesMap;
   }
 
-  Widget getSelectedPage() => _selectedPage;
+  Widget getSelectedPage() => _selectedPage();
 
   void to(T) {
     _selectedPage = pagesMap[T];
@@ -55,10 +60,10 @@ class PageSliderController<T> {
     });
   }
 
-  void updatePage(T, Widget updatedWidget) {
-    pagesMap[T] = updatedWidget;
-    _selectedPage = pagesMap[T];
-  }
+  // void updatePage(T, Widget updatedWidget) {
+  //   pagesMap[T] = updatedWidget;
+  //   _selectedPage = pagesMap[T];
+  // }
 }
 
 class PageSliderAnimator extends StatelessWidget {
@@ -84,7 +89,7 @@ class PageSliderAnimator extends StatelessWidget {
                   : Container(
                       color: MyColors.white,
                       width: slidesWidth,
-                      child: pageSliderController.rootPage,
+                      child: pageSliderController.rootPage(),
                   ),
           ),
         ),

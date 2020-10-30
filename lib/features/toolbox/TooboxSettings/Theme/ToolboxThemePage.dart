@@ -31,15 +31,15 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
   void initState() {
     super.initState();
 
-    Map<String, Widget> sliderAnimationPages = {};
+    Map<String, BuildWidgetFunction> sliderAnimationPages = {};
 
     MyThemes.allThemes.forEach((String key, MyTheme value) {
-      sliderAnimationPages[key] = _buildThemeItemSettings(key);
+      sliderAnimationPages[key] = () => _buildThemeItemSettings(key);
     });
 
     pageSliderController = PageSliderController<String>(
         vsync: this,
-        rootPage: _buildMain(),
+        rootPage: _buildMain,
         pagesMap: sliderAnimationPages,
     );
   }
@@ -80,9 +80,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
         widget.userActions.currentTheme.getThemePropByName(oldColorName).color =
             newColor;
         widget.userActions.setTheme(widget.userActions.currentTheme);
-        setState(() {
-          pageSliderController.updatePage(themeKey, _buildThemeItemSettings(themeKey));
-        });
+        setState(() {});
       };
     }
 

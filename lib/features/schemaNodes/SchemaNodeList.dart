@@ -18,6 +18,37 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
+import 'package:flutter_app/ui/PageSliderAnimator.dart';
+
+class EditPropsAnimation extends StatefulWidget {
+  final BuildWidgetFunction rootPage;
+  final Map<UniqueKey, BuildWidgetFunction> pages;
+
+  EditPropsAnimation({ this.rootPage, this.pages });
+
+  @override
+  _EditPropsAnimationState createState() => _EditPropsAnimationState();
+}
+
+class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTickerProviderStateMixin {
+  PageSliderController _pageSliderController;
+
+  @override
+  void initState() {
+    super.initState();
+    this._pageSliderController = PageSliderController(vsync: this, rootPage: widget.rootPage, pagesMap: widget.pages);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageSliderAnimator(
+      pageSliderController: this._pageSliderController,
+      maxSlide: 300,
+      slidesWidth: 311,
+    );
+  }
+}
+
 
 class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
@@ -138,6 +169,17 @@ class SchemaNodeList extends SchemaNode {
 
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
     userActions.changePropertyTo(newProp);
+  }
+
+  @override
+  Widget toEditPropsWithWrap(UserActions userActions, Function wrapFunc) {
+
+    final Map<UniqueKey, BuildWidgetFunction> pages = {};
+
+    (properties['Elements'].value as ListElements).listElements.forEach((ListElementNode e) => pages[e.nodeId] = e.buildWidgetToEditProps);
+    print(pages);
+
+    return EditPropsAnimation(rootPage: wrapFunc(this.toEditProps(userActions)), pages: pages);
   }
 
   @override
