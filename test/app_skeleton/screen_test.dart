@@ -5,15 +5,18 @@ import 'package:flutter_app/shared_widgets/widget_decorator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final btn =
-      WidgetDecorator(position: Offset(55, 55), widget: SharedWidget.button());
+  final btn = WidgetDecorator(
+      position: Offset(55, 55), widget: SharedWidget.button(text: 'test'));
   final app = MaterialApp(
       title: 'Test',
       home: Scaffold(
           body: Center(
         child: Screen(widgets: [btn]),
       )));
+
   testWidgets('it renders', (WidgetTester tester) async {
     await tester.pumpWidget(app);
+    final textFinder = find.text('test');
+    expect(textFinder, findsOneWidget);
   });
 }
