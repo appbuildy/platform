@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
+import 'package:flutter_app/shared_widgets/image.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
@@ -66,35 +67,9 @@ class SchemaNodeImage extends SchemaNode {
     return newProps;
   }
 
-  BoxFit getFitOnString(String fit) {
-    if (fit == 'Contain') {
-      return BoxFit.contain;
-    } else if (fit == 'Cover') {
-      return BoxFit.cover;
-    } else if (fit == 'Fill') {
-      return BoxFit.fill;
-    } else if (fit == 'None') {
-      return BoxFit.none;
-    }
-  }
-
   @override
   Widget toWidget({bool isPlayMode, UserActions userActions}) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
-      decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value)),
-      child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(properties['BorderRadiusValue'].value),
-        child: Image.network(
-          properties['Url'].value,
-          fit: getFitOnString(properties['Fit'].value),
-        ),
-      ),
-    );
+    return Shared.Image(properties: properties, size: size);
   }
 
   void updateOnColumnDataChange(UserActions userActions, String newValue) {
