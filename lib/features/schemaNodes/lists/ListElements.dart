@@ -1,14 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyButton.dart';
-import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
-import 'package:flutter_app/ui/MySelects/MySelects.dart';
-import 'package:flutter_app/ui/MySwitch.dart';
 
 import '../SchemaNode.dart';
 import '../SchemaNodeProperty.dart';
@@ -47,7 +41,6 @@ class ListElements {
 
   Widget toEditProps({
     UserActions userActions,
-    AppThemeStore themeStore,
     Function onNodeSettingsClick,
     Function onListElementsUpdate,
   }) {
@@ -57,7 +50,13 @@ class ListElements {
           text: 'Add Element',
           icon: Image.network('assets/icons/meta/btn-plus.svg'),
           onTap: () {
-            listElements.add(ListElementNode(userActions: userActions, node: SchemaNodeButton(themeStore: themeStore), name: 'Button'));
+            listElements.add(
+              ListElementNode(
+                userActions: userActions,
+                node: userActions.schemaNodeSpawner.spawnSchemaNodeButton(),
+                name: 'Button',
+              ),
+            );
             onListElementsUpdate(this);
           },
        ),
@@ -97,11 +96,11 @@ class ListElementNode {
   }
 
   Widget buildWidgetToEditProps(Function wrapInRoot) {
-    return node.toEditProps(this.userActions, wrapInRoot);
+    return node.toEditProps(wrapInRoot);
   }
 
   Widget buildWidget() {
-    return node.toWidget(userActions: this.userActions);
+    return node.toWidget();
   }
 }
 

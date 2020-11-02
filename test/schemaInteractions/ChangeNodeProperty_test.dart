@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaInteractions/ChangeNodeProperty.dart';
+import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -20,8 +22,10 @@ void main() {
 
   setUp(() {
     schemaStore = SchemaStore(components: []);
-    text = SchemaNodeText();
-    btn = SchemaNodeButton(position: Offset(1, 2));
+    SchemaNodeSpawner nodeSpawner = SchemaNodeSpawner(userActions: setupUserActions());
+
+    text = nodeSpawner.spawnSchemaNodeText();
+    btn = nodeSpawner.spawnSchemaNodeButton(position: Offset(1, 2));
 
     schemaStore.add(text);
     schemaStore.add(btn);

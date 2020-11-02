@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
@@ -128,7 +127,6 @@ class EditProps extends StatelessWidget {
                                           'Column', element.value));
                                   (selectedNode as dynamic)
                                       .updateOnColumnDataChange(
-                                      userActions,
                                       detailedInfo
                                           .rowData[element.value].data);
                                 },
@@ -151,7 +149,7 @@ class EditProps extends StatelessWidget {
           ]);
         }
 
-        return selectedNode.toEditProps(userActions, wrapInRootEditProps);
+        return selectedNode.toEditProps(wrapInRootEditProps);
       },
     );
   }

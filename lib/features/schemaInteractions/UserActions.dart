@@ -16,6 +16,7 @@ import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.d
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/projects/LoadedProject.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
@@ -44,8 +45,9 @@ class UserActions {
   CurrentUserStore _currentUserStore;
   RemoteAttributes _remoteAttributes;
   RemoteSchemaPropertiesBinding _bindings;
-  List<String> remoteTableNames;
 
+  List<String> remoteTableNames;
+  SchemaNodeSpawner schemaNodeSpawner;
   Debouncer<SchemaNode> debouncer;
 
   UserActions(
@@ -62,6 +64,8 @@ class UserActions {
     _theme = themeStore;
     _screens = screens;
     _currentUserStore = currentUserStore;
+
+    schemaNodeSpawner = SchemaNodeSpawner(userActions: this);
   }
 
   SchemaStore get currentScreen => _screens.current;
@@ -96,9 +100,11 @@ class UserActions {
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
       var loadedProject = LoadedProject(
-          bottomNav: _bottomNavigation,
-          json: _currentUserStore.project.data['canvas'],
-          themeStore: _theme);
+        bottomNav: _bottomNavigation,
+        json: _currentUserStore.project.data['canvas'],
+        themeStore: this.themeStore,
+        schemaNodeSpawner: this.schemaNodeSpawner,
+      );
       final Screens screens = loadedProject.load();
       _bottomNavigation = loadedProject.bottomNav;
       print(_bottomNavigation.toJson());

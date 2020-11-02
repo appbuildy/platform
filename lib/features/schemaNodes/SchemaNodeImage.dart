@@ -13,18 +13,22 @@ import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
+import 'SchemaNodeSpawner.dart';
+
 class SchemaNodeImage extends SchemaNode {
   Debouncer<String> textDebouncer;
 
-  SchemaNodeImage(
-      {Offset position,
-      Offset size,
-      Map<String, SchemaNodeProperty> properties,
-      String column,
-      Map<String, SchemaNodeProperty> actions,
-      String url,
-      UniqueKey id})
-      : super() {
+  SchemaNodeImage({
+    @required SchemaNodeSpawner parent,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    String column,
+    Map<String, SchemaNodeProperty> actions,
+    String url,
+    UniqueKey id
+  }) : super() {
+    this.parent = parent;
     this.type = SchemaNodeType.image;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 210.0);
@@ -50,7 +54,7 @@ class SchemaNodeImage extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return SchemaNodeImage(
+    return parent.spawnSchemaNodeImage(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
@@ -68,16 +72,16 @@ class SchemaNodeImage extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({ bool isPlayMode }) {
     return Shared.Image(properties: properties, size: size);
   }
 
-  void updateOnColumnDataChange(UserActions userActions, String newValue) {
-    userActions.changePropertyTo(SchemaStringProperty("Url", newValue), false);
+  void updateOnColumnDataChange(String newValue) {
+    parent.userActions.changePropertyTo(SchemaStringProperty("Url", newValue), false);
   }
 
   @override
-  Widget toEditProps(userActions, wrapInRootProps) {
+  Widget toEditProps(wrapInRootProps) {
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(
@@ -88,7 +92,7 @@ class SchemaNodeImage extends SchemaNode {
             id: id,
             properties: properties,
             propName: 'Url',
-            userActions: userActions,
+            userActions: parent.userActions,
             textDebouncer: textDebouncer),
         SizedBox(
           height: 10,
@@ -113,7 +117,7 @@ class SchemaNodeImage extends SchemaNode {
                 ],
                 selectedValue: properties['Fit'].value,
                 onChange: (SelectOption option) {
-                  userActions.changePropertyTo(
+                  parent.userActions.changePropertyTo(
                       SchemaStringProperty('Fit', option.value));
                 },
               ),
@@ -126,7 +130,7 @@ class SchemaNodeImage extends SchemaNode {
         EditPropsCorners(
           value: properties['BorderRadiusValue'].value,
           onChanged: (int value) {
-            userActions
+            parent.userActions
                 .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
           },
         ),

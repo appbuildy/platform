@@ -484,9 +484,7 @@ class _AppPreviewState extends State<AppPreview> {
                                 }
                               },
                               child: widget.isPlayMode
-                                  ? node.toWidget(
-                                      isPlayMode: widget.isPlayMode,
-                                      userActions: widget.userActions)
+                                  ? node.toWidget(isPlayMode: widget.isPlayMode)
                                   : renderWithSelected(
                                       node: node,
                                     )

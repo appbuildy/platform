@@ -7,31 +7,29 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
-import 'package:flutter_app/utils/getThemeColor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'SchemaNodeSpawner.dart';
 import 'common/EditPropsIconStyle.dart';
 
 class SchemaNodeIcon extends SchemaNode {
   SchemaNodeIcon({
+    @required SchemaNodeSpawner parent,
+    UniqueKey id,
     Offset position,
     Offset size,
-    @required AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
     GoToScreenAction tapAction,
     IconData icon,
     Map<String, SchemaNodeProperty> actions,
     int iconSize,
-    UniqueKey id,
   }) : super() {
+    this.parent = parent;
     this.type = SchemaNodeType.icon;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
-    this.themeStore = themeStore;
-
     this.id = id ?? UniqueKey();
     this.actions =
         actions ?? {'Tap': tapAction ?? GoToScreenAction('Tap', null)};
@@ -40,12 +38,12 @@ class SchemaNodeIcon extends SchemaNode {
           'Icon':
               SchemaIconProperty('Icon', icon ?? FontAwesomeIcons.arrowRight),
           'IconColor': SchemaMyThemePropProperty(
-              'IconColor', this.themeStore.currentTheme.primary),
+              'IconColor', parent.userActions.currentTheme.primary),
           'IconSize': SchemaIntProperty('IconSize', iconSize ?? 36),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty(
-              'BoxShadowColor', this.themeStore.currentTheme.general),
+              'BoxShadowColor', parent.userActions.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
         };
   }
@@ -56,11 +54,10 @@ class SchemaNodeIcon extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return SchemaNodeIcon(
+    return parent.spawnSchemaNodeIcon(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
-      themeStore: this.themeStore,
       properties: saveProperties ? this._copyProperties() : null,
     );
   }
@@ -75,21 +72,21 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({ bool isPlayMode }) {
     return Shared.Icon(
-        properties: properties, theme: themeStore.currentTheme, size: size);
+        properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
   }
 
   @override
-  Widget toEditProps(userActions, wrapInRootProps) {
+  Widget toEditProps(wrapInRootProps) {
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(
           name: 'Icon Style',
         ),
         EditPropsIconStyle(
-          currentTheme: themeStore.currentTheme,
-          userActions: userActions,
+          currentTheme: parent.userActions.themeStore.currentTheme,
+          userActions: parent.userActions,
           properties: properties,
         ),
         SizedBox(
@@ -99,7 +96,7 @@ class SchemaNodeIcon extends SchemaNode {
             subListHeight: 470,
             selectedIcon: properties['Icon'].value,
             onChanged: (IconData icon) {
-              userActions.changePropertyTo(SchemaIconProperty('Icon', icon));
+              parent.userActions.changePropertyTo(SchemaIconProperty('Icon', icon));
             })
       ])
     );

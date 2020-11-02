@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/ui/Cursor.dart';
@@ -17,11 +15,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 class ToolboxLayout extends StatelessWidget {
   final UserActions userActions;
 
-  // final CurrentUserStore currentUserStore;
-
   const ToolboxLayout(
       {Key key,
-      // this.currentUserStore,
       this.userActions})
       : super(key: key);
 
@@ -34,8 +29,6 @@ class ToolboxLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeStore = userActions.themeStore;
-
     return Container(
       width: toolboxWidth,
       height: MediaQuery.of(context).size.height,
@@ -57,27 +50,26 @@ class ToolboxLayout extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ToolboxComponent(
-                            schemaNode:
-                                SchemaNodeButton(themeStore: themeStore),
+                              schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeButton(),
                           ),
                           ToolboxComponent(
-                              schemaNode:
-                                  SchemaNodeText(themeStore: themeStore)),
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeText(),
+                          ),
                           ToolboxComponent(
-                              schemaNode:
-                                  SchemaNodeIcon(themeStore: themeStore)),
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeIcon(),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ToolboxComponent(schemaNode: SchemaNodeImage()),
+                          ToolboxComponent(schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeImage()),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
-                              schemaNode:
-                                  SchemaNodeShape(themeStore: themeStore)),
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeShape(),
+                          ),
                         ],
                       ),
                       ToolBoxCaption('Listing'),
@@ -85,21 +77,22 @@ class ToolboxLayout extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ToolboxComponent(
-                              defaultTitle: 'List',
-                              defaultType: SchemaNodeType.listDefault,
-                              schemaNode: SchemaNodeList(
-                                themeStore: themeStore,
-                                listTemplateType: ListTemplateType.simple,
-                              )),
+                            defaultTitle: 'List',
+                            defaultType: SchemaNodeType.listDefault,
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeList(
+                              listTemplateType: ListTemplateType.simple,
+                            ),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
                               defaultTitle: 'Cards',
                               defaultType: SchemaNodeType.listCards,
-                              schemaNode: SchemaNodeList(
-                                  themeStore: themeStore,
-                                  listTemplateType: ListTemplateType.cards))
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeList(
+                              listTemplateType: ListTemplateType.cards,
+                            ),
+                          )
                         ],
                       ),
                     ],

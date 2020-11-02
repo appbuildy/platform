@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/text.dart' as Shared;
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
@@ -23,31 +23,30 @@ import 'common/EditPropsText.dart';
 class SchemaNodeText extends SchemaNode {
   Debouncer<String> textDebouncer;
 
-  SchemaNodeText(
-      {Offset position,
-      Offset size,
-      AppThemeStore themeStore,
-      Map<String, SchemaNodeProperty> properties,
-      Map<String, SchemaNodeProperty> actions,
-      String column,
-      String text,
-      MyThemeProp color,
-      int fontSize,
-      FontWeight fontWeight,
-      UniqueKey id})
-      : super() {
+  SchemaNodeText({
+    @required SchemaNodeSpawner parent,
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+    String column,
+    String text,
+    MyThemeProp color,
+    int fontSize,
+    FontWeight fontWeight,
+  }) : super() {
+    this.parent = parent;
     this.type = SchemaNodeType.text;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(343.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.themeStore = themeStore ?? AppThemeStore();
-
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),
           'FontColor': SchemaMyThemePropProperty(
-              'FontColor', color ?? this.themeStore.currentTheme.general),
+              'FontColor', color ?? parent.userActions.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', fontSize ?? 16),
           'FontWeight': SchemaFontWeightProperty(
               'FontWeight', fontWeight ?? FontWeight.w500),
@@ -68,12 +67,12 @@ class SchemaNodeText extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return SchemaNodeText(
-        position: position ?? this.position,
-        id: id ?? this.id,
-        size: size ?? this.size,
-        properties: saveProperties ? this._copyProperties() : null,
-        themeStore: this.themeStore);
+    return parent.spawnSchemaNodeText(
+      position: position ?? this.position,
+      id: id ?? this.id,
+      size: size ?? this.size,
+      properties: saveProperties ? this._copyProperties() : null,
+    );
   }
 
   Map<String, SchemaNodeProperty> _copyProperties() {
@@ -86,18 +85,18 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({ bool isPlayMode }) {
     return Shared.Text(
-        properties: properties, theme: themeStore.currentTheme, size: size);
+        properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
   }
 
-  void updateOnColumnDataChange(UserActions userActions, String newValue) {
-    userActions.changePropertyTo(SchemaStringProperty("Text", newValue), false);
+  void updateOnColumnDataChange(String newValue) {
+    parent.userActions.changePropertyTo(SchemaStringProperty("Text", newValue), false);
   }
 
   @override
-  Widget toEditProps(userActions, wrapInRootProps) {
-    log(userActions.remoteAttributeList().toString());
+  Widget toEditProps(wrapInRootProps) {
+    log(parent.userActions.remoteAttributeList().toString());
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(
@@ -107,21 +106,16 @@ class SchemaNodeText extends SchemaNode {
             id: id,
             properties: properties,
             propName: 'Text',
-            userActions: userActions,
+            userActions: parent.userActions,
             textDebouncer: textDebouncer),
         SizedBox(
           height: 10,
         ),
         EditPropsFontStyle(
-          currentTheme: themeStore.currentTheme,
-          userActions: userActions,
+          currentTheme: parent.userActions.themeStore.currentTheme,
+          userActions: parent.userActions,
           properties: properties,
         ),
-  //      SizedBox(
-  //        height: 10,
-  //      ),
-  //      RemoteAttributesSelect(
-  //          property: properties['Text'], userActions: userActions),
       ])
     );
   }

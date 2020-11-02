@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/features/services/projects/IProjectLoad.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
@@ -14,27 +16,39 @@ import 'package:flutter_app/utils/RandomKey.dart';
 class LoadedProject implements IProjectLoad {
   Map<String, dynamic> jsonCanvas;
   AppThemeStore themeStore;
+  SchemaNodeSpawner schemaNodeSpawner;
   BottomNavigationStore bottomNav;
 
-  LoadedProject(
-      {Map<String, dynamic> json,
-      AppThemeStore themeStore,
-      BottomNavigationStore bottomNav}) {
+  LoadedProject({
+    Map<String, dynamic> json,
+    @required AppThemeStore themeStore,
+    @required SchemaNodeSpawner schemaNodeSpawner,
+    BottomNavigationStore bottomNav,
+  }) {
     this.jsonCanvas = json;
     this.themeStore = themeStore;
+    this.schemaNodeSpawner = schemaNodeSpawner;
     this.bottomNav = bottomNav;
   }
 
   @override
   Screens load() {
+    _loadTheme();
     final List<SchemaStore> loadedScreens = _loadScreens();
     final store = ScreensStore(screens: loadedScreens);
     final current = CurrentScreen(loadedScreens.first);
     final screens = Screens(store, current);
-    _loadTheme();
     _loadBottomNavigation();
 
     return screens;
+  }
+
+  void _loadTheme() {
+    if (jsonCanvas['theme'] == null) {
+      return;
+    }
+
+    themeStore.setTheme(MyTheme.fromJson(jsonCanvas['theme']));
   }
 
   void _loadBottomNavigation() {
@@ -44,14 +58,6 @@ class LoadedProject implements IProjectLoad {
 
     this.bottomNav =
         BottomNavigationStore.fromJson(jsonCanvas['bottomNavigation']);
-  }
-
-  void _loadTheme() {
-    if (jsonCanvas['theme'] == null) {
-      return;
-    }
-
-    themeStore?.setTheme(MyTheme.fromJson(jsonCanvas['theme']));
   }
 
   List<SchemaStore> _loadScreens() {
@@ -84,10 +90,11 @@ class LoadedProject implements IProjectLoad {
 
     return screenJson['components']
         .map((component) {
-          final loadedComponent = ComponentLoadedFromJson(component).load();
-          if (themeStore != null) {
-            loadedComponent.themeStore = themeStore;
-          }
+          final loadedComponent = ComponentLoadedFromJson(
+            jsonComponent: component,
+            schemaNodeSpawner: this.schemaNodeSpawner,
+          ).load();
+
           return loadedComponent;
         })
         .toList()

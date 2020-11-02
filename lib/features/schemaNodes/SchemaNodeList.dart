@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -63,22 +63,21 @@ class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
   ListTemplateType listTemplateType;
 
-  SchemaNodeList(
-      {Offset position,
-      Offset size,
-      @required AppThemeStore themeStore,
-      @required ListTemplateType listTemplateType,
-      Map<String, SchemaNodeProperty> properties,
-      Map<String, SchemaNodeProperty> actions,
-      UniqueKey id})
-      : super() {
+  SchemaNodeList({
+    @required SchemaNodeSpawner parent,
+    @required ListTemplateType listTemplateType,
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+  }) : super() {
+    this.parent = parent;
     this.type = SchemaNodeType.list;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
-    this.themeStore = themeStore;
     this.listTemplateType = listTemplateType;
-
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
@@ -90,30 +89,18 @@ class SchemaNodeList extends SchemaNode {
               'Elements',
               ListElements(
                   allColumns: listColumnsSample,
-                  // title: ListElement(
-                  //     type: ListElementType.title,
-                  //     column: listColumnsSample[0]),
-                  // subtitle: ListElement(
-                  //     type: ListElementType.subtitle,
-                  //     column: listColumnsSample[1]),
-                  // image: ListElement(
-                  //     type: ListElementType.image,
-                  //     column: listColumnsSample[2]),
-                  // navigationIcon: ListElement(
-                  //     type: ListElementType.navigationIcon, column: 'true',
-                  // ),
               ),
           ),
           'TextColor': SchemaMyThemePropProperty(
-              'TextColor', this.themeStore.currentTheme.general),
+              'TextColor', parent.userActions.themeStore.currentTheme.general),
           'ItemColor': SchemaMyThemePropProperty(
-              'ItemColor', this.themeStore.currentTheme.background),
+              'ItemColor', parent.userActions.themeStore.currentTheme.background),
           'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
           'SeparatorsColor': SchemaMyThemePropProperty(
-              'SeparatorsColor', this.themeStore.currentTheme.separators),
+              'SeparatorsColor', parent.userActions.themeStore.currentTheme.separators),
           'BoxShadow': SchemaBoolProperty('BoxShadow', true),
           'BoxShadowColor': SchemaMyThemePropProperty(
-              'BoxShadowColor', this.themeStore.currentTheme.general),
+              'BoxShadowColor', parent.userActions.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
         };
@@ -127,12 +114,11 @@ class SchemaNodeList extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return SchemaNodeList(
+    return parent.spawnSchemaNodeList(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
       properties: saveProperties ? this._copyProperties() : null,
-      themeStore: this.themeStore,
       listTemplateType: this.listTemplateType,
     );
   }
@@ -147,17 +133,17 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({ bool isPlayMode }) {
     if (isPlayMode) {
       return Container(
           width: this.size.dx,
           height: this.size.dy,
           child: SingleChildScrollView(
             child: this.properties['Template'].value.toWidget(
-                currentTheme: this.themeStore.currentTheme,
+                currentTheme: parent.userActions.themeStore.currentTheme,
                 properties: this.properties,
                 actions: this.actions,
-                userActions: userActions,
+                userActions: parent.userActions,
                 isPlayMode: isPlayMode),
           ));
     }
@@ -166,7 +152,7 @@ class SchemaNodeList extends SchemaNode {
         width: this.size.dx,
         height: this.size.dy,
         child: this.properties['Template'].value.toWidget(
-            currentTheme: this.themeStore.currentTheme,
+            currentTheme: parent.userActions.themeStore.currentTheme,
             properties: this.properties));
   }
 
@@ -181,8 +167,8 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(UserActions userActions, wrapInRootProps) {
-    return ListToEditProps(schemaNodeList: this, userActions: userActions, wrapInRootProps: wrapInRootProps);
+  Widget toEditProps(wrapInRootProps) {
+    return ListToEditProps(schemaNodeList: this, userActions: parent.userActions, wrapInRootProps: wrapInRootProps);
   }
 }
 
@@ -283,7 +269,6 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
           ),
           (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
               userActions: widget.userActions,
-              themeStore: widget.schemaNodeList.themeStore,
               onNodeSettingsClick: (UniqueKey id) {
                 _pageSliderController.to(id);
               },
@@ -296,7 +281,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
             name: 'Row Style',
           ),
           EditPropsColor(
-            currentTheme: widget.schemaNodeList.themeStore.currentTheme,
+            currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme,
             properties: widget.schemaNodeList.properties,
             propName: 'ItemColor',
             userActions: widget.userActions,
@@ -304,7 +289,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
           widget.schemaNodeList.properties['Template'].value.rowStyle(
               userActions: widget.userActions,
               properties: widget.schemaNodeList.properties,
-              currentTheme: widget.schemaNodeList.themeStore.currentTheme),
+              currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme),
           SizedBox(
             height: 10,
           ),

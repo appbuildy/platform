@@ -43,8 +43,7 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
             Future.delayed(Duration(milliseconds: 0), () {
               userActions.selectNodeForEdit(
                   component); // TODO refac из-за того что в changePropertyTo нельзя прокинуть редактируемую ноду, надо выбирать текущий скрин
-              (component as dynamic).updateOnColumnDataChange(userActions,
-                  rowData[component.properties['Column'].value].data);
+              (component as dynamic).updateOnColumnDataChange(rowData[component.properties['Column'].value].data);
             });
           }
         });

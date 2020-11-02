@@ -1,4 +1,6 @@
+import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
@@ -14,8 +16,10 @@ void main() {
       final ScreensStore screens =
           ScreensStore(screens: [schemaStore, anotherScreen]);
 
+      SchemaNodeSpawner nodeSpawner = SchemaNodeSpawner(userActions: setupUserActions());
+
       final SchemaNodeButton btn =
-          SchemaNodeButton(position: Offset(2222, 2), size: Offset(22, 33));
+          nodeSpawner.spawnSchemaNodeButton(position: Offset(2222, 2), size: Offset(22, 33));
       schemaStore.add(btn);
       final SchemaConverter converter = SchemaConverter(
           screens: screens,

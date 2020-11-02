@@ -1,81 +1,78 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/services/project_load/IComponentLoader.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class ComponentLoadedFromJson implements IComponentLoader {
   Map<String, dynamic> jsonComponent;
+  SchemaNodeSpawner schemaNodeSpawner;
 
-  ComponentLoadedFromJson(this.jsonComponent);
+  ComponentLoadedFromJson({
+    @required this.jsonComponent,
+    @required this.schemaNodeSpawner,
+  });
 
   @override
   SchemaNode load() {
-    final themeStore = AppThemeStore();
-    themeStore
-        .setTheme(MyThemes.allThemes['blue']); //TODO: Загружать тему нормально
-
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':
         {
-          return SchemaNodeButton(
-              position: _loadPosition(),
-              size: _loadSize(),
-              properties: _loadProperies(),
-              actions: _loadActions(),
-              themeStore: themeStore);
+          return schemaNodeSpawner.spawnSchemaNodeButton(
+            position: _loadPosition(),
+            size: _loadSize(),
+            properties: _loadProperies(),
+            actions: _loadActions(),
+          );
         }
 
       case 'SchemaNodeType.text':
         {
-          return SchemaNodeText(
-              position: _loadPosition(),
-              size: _loadSize(),
-              actions: _loadActions(),
-              properties: _loadProperies(),
-              themeStore: themeStore);
+          return schemaNodeSpawner.spawnSchemaNodeText(
+            position: _loadPosition(),
+            size: _loadSize(),
+            actions: _loadActions(),
+            properties: _loadProperies(),
+          );
         }
         break;
 
       case 'SchemaNodeType.shape':
         {
-          return SchemaNodeShape(
-              position: _loadPosition(),
-              size: _loadSize(),
-              actions: _loadActions(),
-              properties: _loadProperies(),
-              themeStore: themeStore);
+          return schemaNodeSpawner.spawnSchemaNodeShape(
+            position: _loadPosition(),
+            size: _loadSize(),
+            actions: _loadActions(),
+            properties: _loadProperies(),
+          );
         }
         break;
 
       case 'SchemaNodeType.icon':
         {
-          return SchemaNodeIcon(
-              position: _loadPosition(),
-              actions: _loadActions(),
-              size: _loadSize(),
-              properties: _loadProperies(),
-              themeStore: themeStore);
+          return schemaNodeSpawner.spawnSchemaNodeIcon(
+            position: _loadPosition(),
+            actions: _loadActions(),
+            size: _loadSize(),
+            properties: _loadProperies(),
+          );
         }
         break;
 
       case 'SchemaNodeType.list':
         {
-          return SchemaNodeList(
-              listTemplateType: ListTemplateType.cards,
-              actions: _loadActions(),
-              position: _loadPosition(),
-              size: _loadSize(),
-              properties: _loadProperies(),
-              themeStore: themeStore);
+          return schemaNodeSpawner.spawnSchemaNodeList(
+            listTemplateType: ListTemplateType.cards,
+            actions: _loadActions(),
+            position: _loadPosition(),
+            size: _loadSize(),
+            properties: _loadProperies(),
+          );
         }
         break;
       case 'SchemaNodeType.image':
         {
-          return SchemaNodeImage(
+          return schemaNodeSpawner.spawnSchemaNodeImage(
               actions: _loadActions(),
               position: _loadPosition(),
               size: _loadSize(),
@@ -83,8 +80,10 @@ class ComponentLoadedFromJson implements IComponentLoader {
         }
         break;
     }
-    return SchemaNodeButton(
-        position: _loadPosition(), size: _loadSize(), themeStore: themeStore);
+    return schemaNodeSpawner.spawnSchemaNodeButton(
+      position: _loadPosition(),
+      size: _loadSize(),
+    );
   }
 
   Offset _loadPosition() {
