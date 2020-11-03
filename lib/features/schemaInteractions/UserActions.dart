@@ -156,8 +156,10 @@ class UserActions {
     });
   }
 
-  void changePropertyTo(ChangeableProperty prop,
-      [bool isAddedToDoneActions = true, prevValue]) {
+  void changePropertyTo(
+    ChangeableProperty prop,
+    [bool isAddedToDoneActions = true, prevValue]
+  ) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: selectNodeForEdit,
         schemaStore: currentScreen,

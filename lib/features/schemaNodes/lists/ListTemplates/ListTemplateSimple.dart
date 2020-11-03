@@ -48,20 +48,23 @@ class ListTemplateSimple extends ListTemplate {
             .cast<Widget>());
   }
 
-  Widget rowStyle(
-      {Map<String, SchemaNodeProperty> properties,
-      UserActions userActions,
-      MyTheme currentTheme}) {
+  Widget rowStyle({
+    Map<String, SchemaNodeProperty> properties,
+    //UserActions userActions,
+    Function(SchemaNodeProperty) onPropertyChange,
+    MyTheme currentTheme,
+  }) {
     return Column(children: [
       SizedBox(
         height: 15,
       ),
       EditPropsColor(
-          title: 'Separators',
-          currentTheme: currentTheme,
-          userActions: userActions,
-          propName: 'SeparatorsColor',
-          properties: properties)
+        title: 'Separators',
+        currentTheme: currentTheme,
+        onPropertyChange: onPropertyChange,
+        propName: 'SeparatorsColor',
+        properties: properties,
+      )
     ]);
   }
 

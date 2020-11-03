@@ -17,15 +17,18 @@ abstract class ListTemplate {
       Map<String, SchemaNodeProperty> properties,
       bool isPlayMode});
 
-  Widget rowStyle(
-      {Map<String, SchemaNodeProperty> properties,
-      UserActions userActions,
-      MyTheme currentTheme});
+  Widget rowStyle({
+    Map<String, SchemaNodeProperty> properties,
+    // UserActions userActions,
+    Function(SchemaNodeProperty) onPropertyChange,
+    MyTheme currentTheme,
+  });
 
-  Widget widgetFor(
-      {SchemaListItemsProperty item,
-      ListElements elements,
-      MyTheme currentTheme});
+  Widget widgetFor({
+    SchemaListItemsProperty item,
+    ListElements elements,
+    MyTheme currentTheme,
+  });
 }
 
 ListTemplate getListTemplateByType(ListTemplateType type) {

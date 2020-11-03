@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
@@ -100,29 +99,32 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
     return wrapInRootProps(
         Column(children: [
         ColumnDivider(name: 'Text Style'),
         EditPropsText(
-            id: id,
-            properties: properties,
-            propName: 'Text',
-            userActions: parent.userActions,
-            textDebouncer: textDebouncer),
+          id: id,
+          properties: properties,
+          propName: 'Text',
+          onPropertyChange: onPropertyChange,
+          //userActions: parent.userActions,
+          textDebouncer: textDebouncer,
+        ),
         SizedBox(
           height: 10,
         ),
         EditPropsFontStyle(
           currentTheme: parent.userActions.currentTheme,
-          userActions: parent.userActions,
+          onPropertyChange: onPropertyChange,
+          // userActions: parent.userActions,
           properties: properties,
         ),
         ColumnDivider(name: 'Shape Style'),
         EditPropsColor(
           currentTheme: parent.userActions.currentTheme,
           properties: properties,
-          userActions: parent.userActions,
+          onPropertyChange: onPropertyChange,
           propName: 'BackgroundColor',
         ),
         SizedBox(
@@ -131,8 +133,7 @@ class SchemaNodeButton extends SchemaNode {
         EditPropsCorners(
           value: properties['BorderRadiusValue'].value,
           onChanged: (int value) {
-            parent.userActions
-                .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+           onPropertyChange(SchemaIntProperty('BorderRadiusValue', value));
           },
         ),
         SizedBox(
@@ -141,16 +142,18 @@ class SchemaNodeButton extends SchemaNode {
         EditPropsBorder(
           key: id,
           properties: properties,
-          userActions: parent.userActions,
+          //userActions: parent.userActions,
+          onPropertyChange: onPropertyChange,
           currentTheme: parent.userActions.currentTheme,
         ),
         SizedBox(
           height: 15,
         ),
         EditPropsShadow(
-            properties: properties,
-            userActions: parent.userActions,
-            currentTheme: parent.userActions.currentTheme)
+          properties: properties,
+          onPropertyChange: onPropertyChange,
+          currentTheme: parent.userActions.currentTheme,
+        )
       ])
     );
   }

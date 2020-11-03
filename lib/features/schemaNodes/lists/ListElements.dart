@@ -164,7 +164,7 @@ class ListElementNode {
   }
 
   Widget buildWidgetToEditProps(Function wrapInRoot) {
-    return node.toEditProps(wrapInRoot);
+    return node.toEditProps(wrapInRoot, (SchemaNodeProperty changedProperty) => print(changedProperty));
   }
 
   Widget buildWidget() {

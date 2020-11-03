@@ -64,7 +64,7 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
     return wrapInRootProps(
       Column(
         children: [
@@ -75,7 +75,7 @@ class SchemaNodeShape extends SchemaNode {
             currentTheme: parent.userActions.themeStore.currentTheme,
             properties: properties,
             propName: 'Color',
-            userActions: parent.userActions,
+            onPropertyChange: onPropertyChange,
           ),
           SizedBox(
             height: 12,

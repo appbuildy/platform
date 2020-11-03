@@ -78,7 +78,7 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(
@@ -86,18 +86,19 @@ class SchemaNodeIcon extends SchemaNode {
         ),
         EditPropsIconStyle(
           currentTheme: parent.userActions.themeStore.currentTheme,
-          userActions: parent.userActions,
+          // userActions: parent.userActions,
+          onPropertyChange: onPropertyChange,
           properties: properties,
         ),
         SizedBox(
           height: 10,
         ),
         SelectIconList(
-            subListHeight: 470,
-            selectedIcon: properties['Icon'].value,
-            onChanged: (IconData icon) {
-              parent.userActions.changePropertyTo(SchemaIconProperty('Icon', icon));
-            })
+          subListHeight: 470,
+          selectedIcon: properties['Icon'].value,
+          onChanged: (IconData icon) {
+            onPropertyChange(SchemaIconProperty('Icon', icon));
+          })
       ])
     );
   }

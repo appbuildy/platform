@@ -167,8 +167,13 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps) {
-    return ListToEditProps(schemaNodeList: this, userActions: parent.userActions, wrapInRootProps: wrapInRootProps);
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
+    return ListToEditProps(
+      schemaNodeList: this,
+      userActions: parent.userActions,
+      wrapInRootProps: wrapInRootProps,
+      onPropertyChange: onPropertyChange,
+    );
   }
 }
 
@@ -176,11 +181,13 @@ class ListToEditProps extends StatefulWidget {
   final SchemaNodeList schemaNodeList;
   final UserActions userActions;
   final Function wrapInRootProps;
+  final Function(SchemaNodeProperty) onPropertyChange;
 
   ListToEditProps({
     @required this.schemaNodeList,
     @required this.userActions,
     @required this.wrapInRootProps,
+    @required this.onPropertyChange,
   });
   @override
   _ListToEditPropsState createState() => _ListToEditPropsState();
@@ -284,7 +291,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
             currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme,
             properties: widget.schemaNodeList.properties,
             propName: 'ItemColor',
-            userActions: widget.userActions,
+            onPropertyChange: widget.onPropertyChange,
           ),
           widget.schemaNodeList.properties['Template'].value.rowStyle(
               userActions: widget.userActions,

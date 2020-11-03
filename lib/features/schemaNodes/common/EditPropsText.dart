@@ -12,7 +12,8 @@ class EditPropsText extends StatelessWidget {
   final String propName;
   final String title;
   final String placeholder;
-  final UserActions userActions;
+  //final UserActions userActions;
+  final Function(SchemaNodeProperty) onPropertyChange;
   final Debouncer textDebouncer;
 
   const EditPropsText(
@@ -20,7 +21,8 @@ class EditPropsText extends StatelessWidget {
       @required this.id,
       @required this.properties,
       @required this.propName,
-      @required this.userActions,
+      //@required this.userActions,
+      @required this.onPropertyChange,
       this.title,
       this.placeholder,
       @required this.textDebouncer})
@@ -45,15 +47,16 @@ class EditPropsText extends StatelessWidget {
                 properties['Column'].value != null,
             defaultValue: properties[propName].value,
             onChanged: (newText) {
-              userActions.changePropertyTo(
-                  SchemaStringProperty(propName, newText), false);
-
-              textDebouncer.run(
-                  () => userActions.changePropertyTo(
-                      SchemaStringProperty(propName, newText),
-                      true,
-                      textDebouncer.prevValue),
-                  newText);
+              onPropertyChange(SchemaStringProperty(propName, newText));
+              // userActions.changePropertyTo(
+              //     SchemaStringProperty(propName, newText), false);
+              //
+              // textDebouncer.run(
+              //     () => userActions.changePropertyTo(
+              //         SchemaStringProperty(propName, newText),
+              //         true,
+              //         textDebouncer.prevValue),
+              //     newText);
             },
           ),
         ),

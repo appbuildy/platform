@@ -95,7 +95,7 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
     log(parent.userActions.remoteAttributeList().toString());
     return wrapInRootProps(
       Column(children: [
@@ -103,17 +103,18 @@ class SchemaNodeText extends SchemaNode {
           name: 'Text Style',
         ),
         EditPropsText(
-            id: id,
-            properties: properties,
-            propName: 'Text',
-            userActions: parent.userActions,
-            textDebouncer: textDebouncer),
+          id: id,
+          properties: properties,
+          propName: 'Text',
+          onPropertyChange: onPropertyChange,
+          textDebouncer: textDebouncer,
+        ),
         SizedBox(
           height: 10,
         ),
         EditPropsFontStyle(
           currentTheme: parent.userActions.themeStore.currentTheme,
-          userActions: parent.userActions,
+          onPropertyChange: onPropertyChange,
           properties: properties,
         ),
       ])
