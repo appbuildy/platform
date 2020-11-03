@@ -50,7 +50,7 @@ class ToolboxLayout extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ToolboxComponent(
-                              schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeButton(),
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeButton(),
                           ),
                           ToolboxComponent(
                             schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeText(),

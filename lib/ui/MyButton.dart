@@ -3,13 +3,14 @@ import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
-class MyButton extends StatelessWidget {
+class MyButtonUI extends StatelessWidget {
   final String text;
   final Widget icon;
-  final Function onTap;
 
-  const MyButton({Key key, @required this.text, this.icon, this.onTap})
-      : super(key: key);
+  MyButtonUI({
+    @required this.text,
+    this.icon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,39 +23,54 @@ class MyButton extends StatelessWidget {
         gradient: MyGradients.mainLightBlue,
         boxShadow: []);
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Cursor(
-        cursor: CursorEnum.pointer,
-        child: HoverDecoration(
-          defaultDecoration: defaultDecoration,
-          hoverDecoration: hoverDecoration,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 9, bottom: 8),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                        color: MyColors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                  ),
+    return Cursor(
+      cursor: CursorEnum.pointer,
+      child: HoverDecoration(
+        defaultDecoration: defaultDecoration,
+        hoverDecoration: hoverDecoration,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 9, bottom: 8),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  this.text,
+                  style: TextStyle(
+                      color: MyColors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
                 ),
-                icon != null
-                    ? Positioned(
-                        left: 13,
-                        top: 1,
-                        child: Center(child: icon),
-                      )
-                    : Container(),
-              ],
-            ),
+              ),
+              this.icon != null
+                  ? Positioned(
+                left: 13,
+                top: 1,
+                child: Center(child: this.icon),
+              )
+                  : Container(),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class MyButton extends StatelessWidget {
+  final String text;
+  final Widget icon;
+  final Function onTap;
+
+  const MyButton({Key key, @required this.text, this.icon, this.onTap})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return GestureDetector(
+      onTap: onTap,
+      child: MyButtonUI(text: this.text, icon: this.icon),
     );
   }
 }
