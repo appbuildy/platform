@@ -11,7 +11,7 @@ class EditPropsColor extends StatelessWidget {
   //final UserActions userActions;
   final String propName;
   final Map<String, SchemaNodeProperty> properties;
-  final Function(SchemaNodeProperty) onPropertyChange;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final String title;
 
   const EditPropsColor({
@@ -19,7 +19,7 @@ class EditPropsColor extends StatelessWidget {
     @required this.currentTheme,
     this.title,
     //@required this.userActions,
-    @required this.onPropertyChange,
+    @required this.changePropertyTo,
     @required this.propName,
     @required this.properties,
   }) : super(key: key);
@@ -40,7 +40,7 @@ class EditPropsColor extends StatelessWidget {
             currentTheme: currentTheme,
             selectedValue: properties[propName].value,
             onChange: (option) {
-              onPropertyChange(
+              changePropertyTo(
                   SchemaMyThemePropProperty(propName, option.value));
             },
           ),

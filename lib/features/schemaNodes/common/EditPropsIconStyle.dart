@@ -10,13 +10,13 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 class EditPropsIconStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   // final UserActions userActions;
-  final Function(SchemaNodeProperty) onPropertyChange;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final MyTheme currentTheme;
 
   const EditPropsIconStyle(
       {Key key,
       @required this.properties,
-      @required this.onPropertyChange,
+      @required this.changePropertyTo,
       @required this.currentTheme})
       : super(key: key);
 
@@ -28,7 +28,7 @@ class EditPropsIconStyle extends StatelessWidget {
         EditPropsColor(
           currentTheme: currentTheme,
           properties: properties,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           propName: 'IconColor',
         ),
         SizedBox(
@@ -57,7 +57,7 @@ class EditPropsIconStyle extends StatelessWidget {
                   SelectOption('96', 96),
                 ],
                 onChange: (SelectOption option) {
-                  onPropertyChange(
+                  changePropertyTo(
                       SchemaIntProperty('IconSize', option.value));
                 }),
           )

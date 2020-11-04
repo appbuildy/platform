@@ -837,7 +837,7 @@ abstract class SchemaNode {
 
   Widget toEditProps(
     Function wrapInRootProps,
-    Function(SchemaNodeProperty) onPropertyChange,
+    Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo,
   );
 
   Map<String, dynamic> _jsonActions() {

@@ -38,7 +38,7 @@ class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTick
   @override
   void initState() {
     super.initState();
-    this._pageSliderController = PageSliderController(vsync: this, buildRoot: widget.rootPage, pagesMap: widget.pages);
+    this._pageSliderController = PageSliderController(vsync: this, buildRoot: widget.rootPage, buildPages: widget.pages);
   }
 
   @override
@@ -85,7 +85,7 @@ class SchemaNodeList extends SchemaNode {
           'Items': SchemaStringListProperty.sample(),
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
-          'Elements': ListElementsProperty(
+          'Elements': SchemaListElementsProperty(
               'Elements',
               ListElements(
                   allColumns: listColumnsSample,
@@ -167,12 +167,12 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return ListToEditProps(
       schemaNodeList: this,
       userActions: parent.userActions,
       wrapInRootProps: wrapInRootProps,
-      onPropertyChange: onPropertyChange,
+      changePropertyTo: changePropertyTo,
     );
   }
 }
@@ -181,13 +181,13 @@ class ListToEditProps extends StatefulWidget {
   final SchemaNodeList schemaNodeList;
   final UserActions userActions;
   final Function wrapInRootProps;
-  final Function(SchemaNodeProperty) onPropertyChange;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
 
   ListToEditProps({
     @required this.schemaNodeList,
     @required this.userActions,
     @required this.wrapInRootProps,
-    @required this.onPropertyChange,
+    @required this.changePropertyTo,
   });
   @override
   _ListToEditPropsState createState() => _ListToEditPropsState();
@@ -203,21 +203,16 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
     this._pageSliderController = PageSliderController(
       vsync: this,
       buildRoot: this._buildRoot,
-      pagesMap: this.getPageSliderPages(),
+      buildPages: this.getPageSliderPages(),
     );
   }
 
-  Map<UniqueKey, BuildWidgetFunction> getPageSliderPages() {
-    Map<UniqueKey, BuildWidgetFunction> pages = {};
-
-    (widget.schemaNodeList.properties['Elements'].value as ListElements).listElements.forEach(
-      (ListElementNode elementNode) => pages[elementNode.nodeId] = () => elementNode.buildWidgetToEditProps(getPageWrap(elementNode.name)),
+  Map<UniqueKey, BuildWidgetFunction> getPageSliderPages() => (widget.schemaNodeList.properties['Elements'].value as ListElements)
+    .getSettingsPagesBuildFunctions(
+      getPageWrapFunction: getPageWrap,
     );
 
-    return pages;
-  }
-
-  Function getPageWrap(nodeName) {
+  WrapFunction getPageWrap(String nodeName) {
     return (Widget child) {
       return Column(
         children: [
@@ -256,7 +251,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
                     selectedValue: widget.schemaNodeList.properties['Table'].value ?? null,
                     onChange: (screen) async {
                       await widget.schemaNodeList.updateData(screen.value, widget.userActions);
-                      widget.userActions.changePropertyTo(
+                      widget.changePropertyTo(
                           SchemaStringProperty('Table', screen.value));
 
                       widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
@@ -279,8 +274,8 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
               onNodeSettingsClick: (UniqueKey id) {
                 _pageSliderController.to(id);
               },
-              onListElementsUpdate: (ListElements listElements) {
-                widget.userActions.changePropertyTo(ListElementsProperty('Elements', listElements));
+              onListElementsUpdate: () {
+                widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
                 _pageSliderController.pages = getPageSliderPages();
               }
           ),
@@ -291,12 +286,13 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
             currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme,
             properties: widget.schemaNodeList.properties,
             propName: 'ItemColor',
-            onPropertyChange: widget.onPropertyChange,
+            changePropertyTo: widget.changePropertyTo,
           ),
-          widget.schemaNodeList.properties['Template'].value.rowStyle(
-              userActions: widget.userActions,
-              properties: widget.schemaNodeList.properties,
-              currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme),
+          (widget.schemaNodeList.properties['Template'].value as ListTemplate).rowStyle(
+            changePropertyTo: widget.changePropertyTo,
+            properties: widget.schemaNodeList.properties,
+            currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme,
+          ),
           SizedBox(
             height: 10,
           ),

@@ -146,7 +146,7 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
           break;
         case 'ListElementsProperty':
           {
-            return ListElementsProperty.fromJson(targetJson);
+            return SchemaListElementsProperty.fromJson(targetJson);
           }
           break;
         case 'SchemaListTemplateProperty':

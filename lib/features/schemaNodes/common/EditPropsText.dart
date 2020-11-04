@@ -13,7 +13,7 @@ class EditPropsText extends StatelessWidget {
   final String title;
   final String placeholder;
   //final UserActions userActions;
-  final Function(SchemaNodeProperty) onPropertyChange;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final Debouncer textDebouncer;
 
   const EditPropsText(
@@ -22,7 +22,7 @@ class EditPropsText extends StatelessWidget {
       @required this.properties,
       @required this.propName,
       //@required this.userActions,
-      @required this.onPropertyChange,
+      @required this.changePropertyTo,
       this.title,
       this.placeholder,
       @required this.textDebouncer})
@@ -47,16 +47,15 @@ class EditPropsText extends StatelessWidget {
                 properties['Column'].value != null,
             defaultValue: properties[propName].value,
             onChanged: (newText) {
-              onPropertyChange(SchemaStringProperty(propName, newText));
-              // userActions.changePropertyTo(
-              //     SchemaStringProperty(propName, newText), false);
-              //
-              // textDebouncer.run(
-              //     () => userActions.changePropertyTo(
-              //         SchemaStringProperty(propName, newText),
-              //         true,
-              //         textDebouncer.prevValue),
-              //     newText);
+              changePropertyTo(SchemaStringProperty(propName, newText), false);
+              textDebouncer.run(
+                () => changePropertyTo(
+                  SchemaStringProperty(propName, newText),
+                  true,
+                  textDebouncer.prevValue,
+                ),
+                newText,
+              );
             },
           ),
         ),

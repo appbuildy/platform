@@ -8,7 +8,7 @@ class PageSliderController<T> {
   Animation animation;
   AnimationController controller;
 
-  BuildWidgetFunction rootPage;
+  BuildWidgetFunction buildRootPage;
   Map<T, BuildWidgetFunction> pages;
   TickerProvider vsync;
 
@@ -18,7 +18,7 @@ class PageSliderController<T> {
   PageSliderController({
     @required vsync,
     @required BuildWidgetFunction buildRoot,
-    @required Map<T, BuildWidgetFunction> pagesMap,
+    @required Map<T, BuildWidgetFunction> buildPages,
   }) {
     this.controller = AnimationController(
         value: 1,
@@ -32,8 +32,8 @@ class PageSliderController<T> {
       reverseCurve: Curves.easeInOutQuad,
     );
 
-    this.rootPage = buildRoot;
-    this.pages = pagesMap;
+    this.buildRootPage = buildRoot;
+    this.pages = buildPages;
   }
 
   Widget getSelectedPage() => _selectedPage();
@@ -81,7 +81,7 @@ class PageSliderAnimator extends StatelessWidget {
                   : Container(
                       color: MyColors.white,
                       width: slidesWidth,
-                      child: pageSliderController.rootPage(),
+                      child: pageSliderController.buildRootPage(),
                   ),
           ),
         ),

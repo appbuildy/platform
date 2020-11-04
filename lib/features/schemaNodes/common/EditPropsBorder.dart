@@ -12,13 +12,13 @@ import 'package:flutter_app/ui/MySwitch.dart';
 class EditPropsBorder extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
   //final UserActions userActions;
-  final Function(SchemaNodeProperty) onPropertyChange;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final MyTheme currentTheme;
 
   const EditPropsBorder(
       {Key key,
       @required this.properties,
-      @required this.onPropertyChange,
+      @required this.changePropertyTo,
       @required this.currentTheme})
       : super(key: key);
 
@@ -32,7 +32,7 @@ class EditPropsBorder extends StatelessWidget {
         ),
         EditPropsColor(
           currentTheme: currentTheme,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           propName: 'BorderColor',
           properties: properties,
         ),
@@ -63,7 +63,7 @@ class EditPropsBorder extends StatelessWidget {
                     SelectOption('10', 10),
                   ],
                   onChange: (SelectOption option) {
-                    onPropertyChange(
+                    changePropertyTo(
                         SchemaIntProperty('BorderWidth', option.value));
                   }),
             ),
@@ -82,7 +82,7 @@ class EditPropsBorder extends StatelessWidget {
             MySwitch(
               value: properties['Border'].value,
               onTap: () {
-                onPropertyChange(
+                changePropertyTo(
                     SchemaBoolProperty('Border', !properties['Border'].value));
               },
             ),

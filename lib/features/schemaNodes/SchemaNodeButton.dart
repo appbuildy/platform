@@ -99,7 +99,7 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
         Column(children: [
         ColumnDivider(name: 'Text Style'),
@@ -107,7 +107,7 @@ class SchemaNodeButton extends SchemaNode {
           id: id,
           properties: properties,
           propName: 'Text',
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           //userActions: parent.userActions,
           textDebouncer: textDebouncer,
         ),
@@ -116,7 +116,7 @@ class SchemaNodeButton extends SchemaNode {
         ),
         EditPropsFontStyle(
           currentTheme: parent.userActions.currentTheme,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           // userActions: parent.userActions,
           properties: properties,
         ),
@@ -124,7 +124,7 @@ class SchemaNodeButton extends SchemaNode {
         EditPropsColor(
           currentTheme: parent.userActions.currentTheme,
           properties: properties,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           propName: 'BackgroundColor',
         ),
         SizedBox(
@@ -133,7 +133,7 @@ class SchemaNodeButton extends SchemaNode {
         EditPropsCorners(
           value: properties['BorderRadiusValue'].value,
           onChanged: (int value) {
-           onPropertyChange(SchemaIntProperty('BorderRadiusValue', value));
+           changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
           },
         ),
         SizedBox(
@@ -143,7 +143,7 @@ class SchemaNodeButton extends SchemaNode {
           key: id,
           properties: properties,
           //userActions: parent.userActions,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           currentTheme: parent.userActions.currentTheme,
         ),
         SizedBox(
@@ -151,7 +151,7 @@ class SchemaNodeButton extends SchemaNode {
         ),
         EditPropsShadow(
           properties: properties,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           currentTheme: parent.userActions.currentTheme,
         )
       ])

@@ -91,11 +91,11 @@ class SchemaNodeText extends SchemaNode {
   }
 
   void updateOnColumnDataChange(String newValue) {
-    parent.userActions.changePropertyTo(SchemaStringProperty("Text", newValue), false);
+    parent.userActions.changePropertyTo(SchemaStringProperty("Text", newValue));
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     log(parent.userActions.remoteAttributeList().toString());
     return wrapInRootProps(
       Column(children: [
@@ -106,7 +106,7 @@ class SchemaNodeText extends SchemaNode {
           id: id,
           properties: properties,
           propName: 'Text',
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           textDebouncer: textDebouncer,
         ),
         SizedBox(
@@ -114,7 +114,7 @@ class SchemaNodeText extends SchemaNode {
         ),
         EditPropsFontStyle(
           currentTheme: parent.userActions.themeStore.currentTheme,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           properties: properties,
         ),
       ])

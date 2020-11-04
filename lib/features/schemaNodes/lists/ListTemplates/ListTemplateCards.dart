@@ -50,7 +50,7 @@ class ListTemplateCards extends ListTemplate {
 
   Widget rowStyle({
     Map<String, SchemaNodeProperty> properties,
-    Function(SchemaNodeProperty) onPropertyChange,
+    Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo,
     MyTheme currentTheme,
   }) {
     return Column(
@@ -61,7 +61,7 @@ class ListTemplateCards extends ListTemplate {
         EditPropsCorners(
           value: properties['ItemRadiusValue'].value,
           onChanged: (int value) {
-            onPropertyChange(SchemaIntProperty('ItemRadiusValue', value));
+            changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
           },
         ),
         SizedBox(
@@ -69,7 +69,7 @@ class ListTemplateCards extends ListTemplate {
         ),
         EditPropsShadow(
           properties: properties,
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           currentTheme: currentTheme,
         )
       ],

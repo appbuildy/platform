@@ -64,7 +64,7 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
       Column(
         children: [
@@ -75,7 +75,7 @@ class SchemaNodeShape extends SchemaNode {
             currentTheme: parent.userActions.themeStore.currentTheme,
             properties: properties,
             propName: 'Color',
-            onPropertyChange: onPropertyChange,
+            changePropertyTo: changePropertyTo,
           ),
           SizedBox(
             height: 12,
@@ -83,7 +83,7 @@ class SchemaNodeShape extends SchemaNode {
           EditPropsCorners(
             value: properties['BorderRadiusValue'].value,
             onChanged: (int value) {
-              parent.userActions.changePropertyTo(
+              changePropertyTo(
                   SchemaIntProperty('BorderRadiusValue', value));
             },
           )

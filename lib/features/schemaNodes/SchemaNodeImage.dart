@@ -81,7 +81,7 @@ class SchemaNodeImage extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty) onPropertyChange) {
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(
@@ -92,7 +92,7 @@ class SchemaNodeImage extends SchemaNode {
           id: id,
           properties: properties,
           propName: 'Url',
-          onPropertyChange: onPropertyChange,
+          changePropertyTo: changePropertyTo,
           textDebouncer: textDebouncer,
         ),
         SizedBox(
@@ -118,7 +118,7 @@ class SchemaNodeImage extends SchemaNode {
                 ],
                 selectedValue: properties['Fit'].value,
                 onChange: (SelectOption option) {
-                  onPropertyChange(
+                  changePropertyTo(
                       SchemaStringProperty('Fit', option.value));
                 },
               ),
@@ -131,7 +131,7 @@ class SchemaNodeImage extends SchemaNode {
         EditPropsCorners(
           value: properties['BorderRadiusValue'].value,
           onChanged: (int value) {
-            onPropertyChange(SchemaIntProperty('BorderRadiusValue', value));
+            changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
           },
         ),
       ])

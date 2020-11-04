@@ -7,14 +7,15 @@ import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
+import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
 import '../SchemaNode.dart';
 import '../SchemaNodeProperty.dart';
 
-class ListElementsProperty extends SchemaNodeProperty<ListElements> {
-  ListElementsProperty(String name, ListElements value) : super(name, value);
+class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
+  SchemaListElementsProperty(String name, ListElements value) : super(name, value);
 
-  ListElementsProperty.fromJson(Map<String, dynamic> jsonVal)
+  SchemaListElementsProperty.fromJson(Map<String, dynamic> jsonVal)
       : super('Elements', null) {
     this.name = jsonVal['name'];
     this.value = ListElements(
@@ -34,10 +35,14 @@ class ListElementsProperty extends SchemaNodeProperty<ListElements> {
   }
 
   @override
-  ListElementsProperty copy() {
-    return ListElementsProperty(this.name, value);
+  SchemaListElementsProperty copy() {
+    return SchemaListElementsProperty(this.name, value);
   }
 }
+
+typedef WrapFunction = Widget Function(Widget);
+
+typedef GetPageWrapFunction = WrapFunction Function(String);
 
 class ListElements {
   List<String> allColumns;
@@ -49,6 +54,26 @@ class ListElements {
       height: 18,
       child: Image.network(iconPath),
     );
+  }
+
+  Map<UniqueKey, BuildWidgetFunction> getSettingsPagesBuildFunctions({GetPageWrapFunction getPageWrapFunction}) {
+    Map<UniqueKey, BuildWidgetFunction> pages = {};
+
+    this.listElements.forEach(
+      (ListElementNode elementNode) {
+        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(getPageWrapFunction(elementNode.name));
+      },
+    );
+
+    return pages;
+  }
+
+  Function(SchemaNodeProperty, [bool, dynamic]) getChangePropertyToFn(UniqueKey listElementNodeId, Function onListElementsUpdate) {
+    return (SchemaNodeProperty changedProperty, [bool, dynamic]) {
+      listElements.firstWhere((ListElementNode listElementNode) => listElementNode.id == listElementNodeId)
+          .node.properties[changedProperty.name] = changedProperty;
+      onListElementsUpdate();
+    };
   }
 
   Widget toEditProps({
@@ -69,15 +94,18 @@ class ListElements {
             SelectOption('Image', userActions.schemaNodeSpawner.spawnSchemaNodeImage, _buildOptionPreview('assets/icons/layout/image.svg')),
           ],
           onChange: (SelectOption option) {
+            final SchemaNode node = option.value();
+
             listElements.add(
               ListElementNode(
-                node: option.value(),
+                id: node.id,
+                node: node,
                 name: option.name,
                 iconPreview: option.leftWidget,
-                userActions: userActions,
+                changePropertyTo: getChangePropertyToFn(node.id, () => onListElementsUpdate()),
               )
             );
-            onListElementsUpdate(this);
+            onListElementsUpdate();
           },
           defaultPreview: MyButtonUI(
             text: 'Add Element',
@@ -101,8 +129,9 @@ class ListElements {
 class ListElementNode {
   final SchemaNode node;
   final String name;
-  final UniqueKey nodeId;
-  final UserActions userActions;
+  final UniqueKey id;
+  //final UserActions userActions;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final Widget iconPreview;
 
   ListElementNode({
@@ -110,8 +139,10 @@ class ListElementNode {
     @required this.node,
     @required this.iconPreview,
     @required this.name,
-    @required this.userActions,
-  }) : this.nodeId = node.id;
+    @required this.id,
+    //@required this.userActions,
+    this.changePropertyTo,
+  });
 
   Widget buildSettingsButton(Function onNodeSettingsClick) {
 
@@ -131,7 +162,7 @@ class ListElementNode {
       cursor: CursorEnum.pointer,
       child: GestureDetector(
         onTap: () {
-          onNodeSettingsClick(this.nodeId);
+          onNodeSettingsClick(this.id);
         },
         child: Expanded(
           child: HoverDecoration(
@@ -164,7 +195,7 @@ class ListElementNode {
   }
 
   Widget buildWidgetToEditProps(Function wrapInRoot) {
-    return node.toEditProps(wrapInRoot, (SchemaNodeProperty changedProperty) => print(changedProperty));
+    return node.toEditProps(wrapInRoot, this.changePropertyTo);
   }
 
   Widget buildWidget() {

@@ -152,7 +152,7 @@ class EditProps extends StatelessWidget {
 
         return selectedNode.toEditProps(
           wrapInRootEditProps,
-          (SchemaNodeProperty changedProp) => userActions.changePropertyTo(changedProp, false),
+          userActions.changePropertyTo,
         );
       },
     );

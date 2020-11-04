@@ -51,7 +51,7 @@ class ListTemplateSimple extends ListTemplate {
   Widget rowStyle({
     Map<String, SchemaNodeProperty> properties,
     //UserActions userActions,
-    Function(SchemaNodeProperty) onPropertyChange,
+    Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo,
     MyTheme currentTheme,
   }) {
     return Column(children: [
@@ -61,18 +61,19 @@ class ListTemplateSimple extends ListTemplate {
       EditPropsColor(
         title: 'Separators',
         currentTheme: currentTheme,
-        onPropertyChange: onPropertyChange,
+        changePropertyTo: changePropertyTo,
         propName: 'SeparatorsColor',
         properties: properties,
       )
     ]);
   }
 
-  Widget widgetFor(
-      {SchemaListItemsProperty item,
-      ListElements elements,
-      MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties}) {
+  Widget widgetFor({
+    SchemaListItemsProperty item,
+    ListElements elements,
+    MyTheme currentTheme,
+    Map<String, SchemaNodeProperty> properties
+  }) {
     return Row(
       children: [
         Expanded(
