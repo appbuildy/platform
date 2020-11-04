@@ -19,7 +19,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
       : super('Elements', null) {
     this.name = jsonVal['name'];
     this.value = ListElements(
-        allColumns: List<String>.from(jsonVal['value']['allColumns']),
+        //allColumns: List<String>.from(jsonVal['value']['allColumns']),
     );
   }
 
@@ -29,7 +29,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
       'name': name,
       'propertyClass': 'ListElementsProperty',
       'value': {
-        'allColumns': value?.allColumns
+        'allColumns': '',//value?.allColumns
       }
     };
   }
@@ -45,7 +45,6 @@ typedef WrapFunction = Widget Function(Widget);
 typedef GetPageWrapFunction = WrapFunction Function(String);
 
 class ListElements {
-  List<String> allColumns;
   List<ListElementNode> listElements = [];
 
   _buildOptionPreview(String iconPath) {
@@ -117,13 +116,10 @@ class ListElements {
             SizedBox(height: 8),
             element.buildSettingsButton(onNodeSettingsClick),
           ],
-        ),
-        ),
+        )),
       ],
     );
   }
-
-  ListElements({ this.allColumns });
 }
 
 class ListElementNode {
@@ -164,28 +160,26 @@ class ListElementNode {
         onTap: () {
           onNodeSettingsClick(this.id);
         },
-        child: Expanded(
-          child: HoverDecoration(
-            defaultDecoration: defaultDecoration,
-            hoverDecoration: hoverDecoration,
-            child: Container(
-              height: 36.0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: this.iconPreview,
-                    ),
-                    Text(
-                      this.name,
-                      style: MyTextStyle.regularTitle,
-                    ),
-                  ],
-                ),
+        child: HoverDecoration(
+          defaultDecoration: defaultDecoration,
+          hoverDecoration: hoverDecoration,
+          child: Container(
+            height: 36.0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 8),
+                    child: this.iconPreview,
+                  ),
+                  Text(
+                    this.name,
+                    style: MyTextStyle.regularTitle,
+                  ),
+                ],
               ),
             ),
           ),

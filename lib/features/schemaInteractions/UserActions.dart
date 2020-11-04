@@ -161,7 +161,7 @@ class UserActions {
     [bool isAddedToDoneActions = true, prevValue]
   ) {
     final action = ChangeNodeProperty(
-        selectNodeForEdit: selectNodeForEdit,
+        selectNodeForEdit: this.selectNodeForEdit,
         schemaStore: currentScreen,
         node: selectedNode(),
         newProp: prop);

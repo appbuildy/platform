@@ -87,9 +87,7 @@ class SchemaNodeList extends SchemaNode {
               'Template', getListTemplateByType(listTemplateType)),
           'Elements': SchemaListElementsProperty(
               'Elements',
-              ListElements(
-                  allColumns: listColumnsSample,
-              ),
+              ListElements(),
           ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),
