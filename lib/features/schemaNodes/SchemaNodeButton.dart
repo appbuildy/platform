@@ -8,6 +8,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
@@ -23,7 +24,7 @@ import 'package:flutter_app/utils/Debouncer.dart';
 
 import 'SchemaNodeSpawner.dart';
 
-class SchemaNodeButton extends SchemaNode {
+class SchemaNodeButton extends SchemaNode implements DataContainer {
   Debouncer<String> textDebouncer;
 
   SchemaNodeButton({
@@ -95,66 +96,79 @@ class SchemaNodeButton extends SchemaNode {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Button(
+        properties: this.properties, theme: this.parent.userActions.themeStore.currentTheme, size: this.size);
+  }
+
+  Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
+    var properties = this._copyProperties();
+    properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
+
+    return Shared.Button(
         properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
   }
 
   @override
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
-        Column(children: [
-        ColumnDivider(name: 'Text Style'),
-        EditPropsText(
-          id: id,
-          properties: properties,
-          propName: 'Text',
-          changePropertyTo: changePropertyTo,
-          //userActions: parent.userActions,
-          textDebouncer: textDebouncer,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        EditPropsFontStyle(
-          currentTheme: parent.userActions.currentTheme,
-          changePropertyTo: changePropertyTo,
-          // userActions: parent.userActions,
-          properties: properties,
-        ),
-        ColumnDivider(name: 'Shape Style'),
-        EditPropsColor(
-          currentTheme: parent.userActions.currentTheme,
-          properties: properties,
-          changePropertyTo: changePropertyTo,
-          propName: 'BackgroundColor',
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        EditPropsCorners(
-          value: properties['BorderRadiusValue'].value,
-          onChanged: (int value) {
-           changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
-          },
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        EditPropsBorder(
-          key: id,
-          properties: properties,
-          //userActions: parent.userActions,
-          changePropertyTo: changePropertyTo,
-          currentTheme: parent.userActions.currentTheme,
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        EditPropsShadow(
-          properties: properties,
-          changePropertyTo: changePropertyTo,
-          currentTheme: parent.userActions.currentTheme,
+        Column(
+          children: [
+            ColumnDivider(name: 'Edit Data'),
+            EditPropsText(
+              id: id,
+              properties: properties,
+              propName: 'Text',
+              changePropertyTo: changePropertyTo,
+              textDebouncer: textDebouncer,
+            ),
+            this.toEditOnlyStyle(changePropertyTo),
+          ],
         )
-      ])
     );
+  }
+
+  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+   return Column(
+     children: [
+       ColumnDivider(name: 'Text Style'),
+       EditPropsFontStyle(
+         currentTheme: parent.userActions.currentTheme,
+         changePropertyTo: changePropertyTo,
+         properties: properties,
+       ),
+       ColumnDivider(name: 'Shape Style'),
+       EditPropsColor(
+         currentTheme: parent.userActions.currentTheme,
+         properties: properties,
+         changePropertyTo: changePropertyTo,
+         propName: 'BackgroundColor',
+       ),
+       SizedBox(
+         height: 12,
+       ),
+       EditPropsCorners(
+         value: properties['BorderRadiusValue'].value,
+         onChanged: (int value) {
+           changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+         },
+       ),
+       SizedBox(
+         height: 20,
+       ),
+       EditPropsBorder(
+         key: id,
+         properties: properties,
+         changePropertyTo: changePropertyTo,
+         currentTheme: parent.userActions.currentTheme,
+       ),
+       SizedBox(
+         height: 15,
+       ),
+       EditPropsShadow(
+         properties: properties,
+         changePropertyTo: changePropertyTo,
+         currentTheme: parent.userActions.currentTheme,
+       )
+     ],
+   );
   }
 }

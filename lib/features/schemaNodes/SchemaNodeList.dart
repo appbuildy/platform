@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
@@ -86,8 +87,7 @@ class SchemaNodeList extends SchemaNode {
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
           'Elements': SchemaListElementsProperty(
-              'Elements',
-              ListElements(),
+              'Elements', ListElements(listColumnsSample),
           ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),

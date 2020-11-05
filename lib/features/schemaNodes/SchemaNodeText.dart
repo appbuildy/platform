@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
@@ -20,7 +21,7 @@ import 'package:flutter_app/utils/Debouncer.dart';
 
 import 'common/EditPropsText.dart';
 
-class SchemaNodeText extends SchemaNode {
+class SchemaNodeText extends SchemaNode implements DataContainer {
   Debouncer<String> textDebouncer;
 
   SchemaNodeText({
@@ -87,7 +88,19 @@ class SchemaNodeText extends SchemaNode {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Text(
-        properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
+      properties: this.properties,
+      theme: this.parent.userActions.themeStore.currentTheme,
+      size: this.size,
+    );
+  }
+
+
+
+  Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
+    var properties = this._copyProperties();
+    properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
+
+    return Shared.Text(properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
   }
 
   void updateOnColumnDataChange(String newValue) {
@@ -99,9 +112,7 @@ class SchemaNodeText extends SchemaNode {
     log(parent.userActions.remoteAttributeList().toString());
     return wrapInRootProps(
       Column(children: [
-        ColumnDivider(
-          name: 'Text Style',
-        ),
+        ColumnDivider(name: 'Edit Data'),
         EditPropsText(
           id: id,
           properties: properties,
@@ -109,15 +120,21 @@ class SchemaNodeText extends SchemaNode {
           changePropertyTo: changePropertyTo,
           textDebouncer: textDebouncer,
         ),
-        SizedBox(
-          height: 10,
-        ),
-        EditPropsFontStyle(
-          currentTheme: parent.userActions.themeStore.currentTheme,
-          changePropertyTo: changePropertyTo,
-          properties: properties,
-        ),
+        this.toEditOnlyStyle(changePropertyTo),
       ])
     );
+  }
+
+  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+    return Column(children: [
+      ColumnDivider(
+        name: 'Text Style',
+      ),
+      EditPropsFontStyle(
+        currentTheme: parent.userActions.themeStore.currentTheme,
+        changePropertyTo: changePropertyTo,
+        properties: properties,
+      ),
+    ]);
   }
 }

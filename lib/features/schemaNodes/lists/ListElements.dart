@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyButton.dart';
@@ -18,8 +22,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty.fromJson(Map<String, dynamic> jsonVal)
       : super('Elements', null) {
     this.name = jsonVal['name'];
-    this.value = ListElements(
-        //allColumns: List<String>.from(jsonVal['value']['allColumns']),
+    this.value = ListElements(List<String>.from(jsonVal['value']['allColumns']),
     );
   }
 
@@ -46,6 +49,9 @@ typedef GetPageWrapFunction = WrapFunction Function(String);
 
 class ListElements {
   List<ListElementNode> listElements = [];
+  List<String> allColumns;
+
+  ListElements(List<String> allColumns) : this.allColumns = allColumns ?? [];
 
   _buildOptionPreview(String iconPath) {
     return Container(
@@ -60,7 +66,7 @@ class ListElements {
 
     this.listElements.forEach(
       (ListElementNode elementNode) {
-        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(getPageWrapFunction(elementNode.name));
+        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(getPageWrapFunction(elementNode.name), allColumns);
       },
     );
 
@@ -102,6 +108,7 @@ class ListElements {
                 name: option.name,
                 iconPreview: option.leftWidget,
                 changePropertyTo: getChangePropertyToFn(node.id, () => onListElementsUpdate()),
+                onColumnRelationChange: () => onListElementsUpdate(),
               )
             );
             onListElementsUpdate();
@@ -126,9 +133,11 @@ class ListElementNode {
   final SchemaNode node;
   final String name;
   final UniqueKey id;
-  //final UserActions userActions;
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final Widget iconPreview;
+  final Function onColumnRelationChange;
+
+  String columnRelation;
 
   ListElementNode({
     Key key,
@@ -137,7 +146,8 @@ class ListElementNode {
     @required this.name,
     @required this.id,
     //@required this.userActions,
-    this.changePropertyTo,
+    @required this.changePropertyTo,
+    @required this.onColumnRelationChange,
   });
 
   Widget buildSettingsButton(Function onNodeSettingsClick) {
@@ -188,35 +198,69 @@ class ListElementNode {
     );
   }
 
-  Widget buildWidgetToEditProps(Function wrapInRoot) {
+  Widget buildWidgetToEditProps(Function wrapInRoot, List<String> allColumns) {
+    if (node is DataContainer) {
+      return wrapInRoot(
+        Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 58,
+                  child: Text(
+                    'Data',
+                    style: MyTextStyle.regularCaption,
+                  ),
+                ),
+                Expanded(
+                  child: MyClickSelect(
+                    selectedValue: this.columnRelation,
+                    options: allColumns.map((String column) => SelectOption(column, column)).toList(),
+                    onChange: (SelectOption pickedColumn) {
+                      this.columnRelation = pickedColumn.value;
+                      this.onColumnRelationChange();
+                    },
+                    placeholder: 'Select column',
+                    defaultIcon: Container(
+                      child: Image.network(
+                        'assets/icons/meta/btn-detailed-info-big.svg',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            (node as DataContainer).toEditOnlyStyle(this.changePropertyTo),
+          ],
+        )
+      );
+    }
+
     return node.toEditProps(wrapInRoot, this.changePropertyTo);
   }
-
-  Widget buildWidget() {
-    return node.toWidget();
-  }
 }
 
 
-enum ListElementType { title, subtitle, image, navigationIcon }
-
-class ListElement {
-  String column;
-  ListElementType type;
-
-  ListElement({@required String column, @required ListElementType type}) {
-    this.column = column;
-    this.type = type;
-  }
-
-  ListElement.fromJson(Map<String, dynamic> jsonVar) {
-    if (jsonVar == null) return;
-    this.type = ListElementType.values
-        .firstWhere((el) => el.toString() == jsonVar['type']);
-    this.column = jsonVar['column'];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'column': column, 'type': type.toString()};
-  }
-}
+// enum ListElementType { title, subtitle, image, navigationIcon }
+//
+// class ListElement {
+//   String column;
+//   ListElementType type;
+//
+//   ListElement({@required String column, @required ListElementType type}) {
+//     this.column = column;
+//     this.type = type;
+//   }
+//
+//   ListElement.fromJson(Map<String, dynamic> jsonVar) {
+//     if (jsonVar == null) return;
+//     this.type = ListElementType.values
+//         .firstWhere((el) => el.toString() == jsonVar['type']);
+//     this.column = jsonVar['column'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     return {'column': column, 'type': type.toString()};
+//   }
+// }

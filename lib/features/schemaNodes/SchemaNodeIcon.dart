@@ -86,7 +86,6 @@ class SchemaNodeIcon extends SchemaNode {
         ),
         EditPropsIconStyle(
           currentTheme: parent.userActions.themeStore.currentTheme,
-          // userActions: parent.userActions,
           changePropertyTo: changePropertyTo,
           properties: properties,
         ),

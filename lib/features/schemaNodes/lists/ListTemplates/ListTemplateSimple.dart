@@ -50,7 +50,6 @@ class ListTemplateSimple extends ListTemplate {
 
   Widget rowStyle({
     Map<String, SchemaNodeProperty> properties,
-    //UserActions userActions,
     Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo,
     MyTheme currentTheme,
   }) {
@@ -96,7 +95,7 @@ class ListTemplateSimple extends ListTemplate {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ...elements.listElements.map((ListElementNode el) => el.buildWidget())
+                  ...elements.listElements.map((ListElementNode el) => el.node.toWidget())
                 ],
               ),
             ),

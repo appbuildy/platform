@@ -4,6 +4,7 @@ import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
@@ -14,12 +15,13 @@ import 'package:flutter_app/utils/getThemeColor.dart';
 class ListTemplateCards extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.cards;
 
-  Widget toWidget(
-      {MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties,
-      Map<String, SchemaNodeProperty> actions,
-      UserActions userActions,
-      bool isPlayMode = false}) {
+  Widget toWidget({
+    MyTheme currentTheme,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+    UserActions userActions,
+    bool isPlayMode = false,
+  }) {
     return Column(
         children: properties['Items']
             .value
@@ -76,12 +78,13 @@ class ListTemplateCards extends ListTemplate {
     );
   }
 
-  Widget widgetFor(
-      {SchemaListItemsProperty item,
-      ListElements elements,
-      MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties,
-      bool isPlayMode}) {
+  Widget widgetFor({
+    SchemaListItemsProperty item,
+    ListElements elements,
+    MyTheme currentTheme,
+    Map<String, SchemaNodeProperty> properties,
+    bool isPlayMode
+  }) {
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(
@@ -110,7 +113,14 @@ class ListTemplateCards extends ListTemplate {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ...elements.listElements.map((ListElementNode el) => el.buildWidget())
+                  ...elements.listElements.map((ListElementNode el) {
+                    if (el.node is DataContainer) {
+                      final String data = item.value[el.columnRelation]?.data;
+                      print(data);
+                      return (el.node as DataContainer).toWidgetWithReplacedData(data: data);
+                    }
+                    return el.node.toWidget();
+                  })
                 ],
               ),
             ),

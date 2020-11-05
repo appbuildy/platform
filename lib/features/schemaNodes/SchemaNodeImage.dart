@@ -14,8 +14,11 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
 import 'SchemaNodeSpawner.dart';
+import 'implementations.dart';
 
-class SchemaNodeImage extends SchemaNode {
+const String defaultPicture = 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b';
+
+class SchemaNodeImage extends SchemaNode implements DataContainer {
   Debouncer<String> textDebouncer;
 
   SchemaNodeImage({
@@ -38,8 +41,7 @@ class SchemaNodeImage extends SchemaNode {
         {
           'Url': SchemaStringProperty(
               'Url',
-              url ??
-                  'https://images.unsplash.com/photo-1549880338-65ddcdfd017b'),
+              url ?? defaultPicture),
           'Column': SchemaStringProperty('Column', column ?? null),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Fit': SchemaStringProperty('Fit', 'Cover')
@@ -73,6 +75,13 @@ class SchemaNodeImage extends SchemaNode {
 
   @override
   Widget toWidget({ bool isPlayMode }) {
+    return Shared.Image(properties: this.properties, size: this.size);
+  }
+
+  Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
+    var properties = this._copyProperties();
+    properties['Url'] = SchemaStringProperty('Url', data ?? 'no_data');
+
     return Shared.Image(properties: properties, size: size);
   }
 
@@ -84,9 +93,7 @@ class SchemaNodeImage extends SchemaNode {
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
       Column(children: [
-        ColumnDivider(
-          name: 'Image Style',
-        ),
+        ColumnDivider(name: 'Edit Data'),
         EditPropsText(
           title: 'Url',
           id: id,
@@ -95,46 +102,52 @@ class SchemaNodeImage extends SchemaNode {
           changePropertyTo: changePropertyTo,
           textDebouncer: textDebouncer,
         ),
-        SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 59,
-              child: Text(
-                'Resize',
-                style: MyTextStyle.regularCaption,
-              ),
-            ),
-            Expanded(
-              child: MyClickSelect(
-                options: [
-                  SelectOption('Fill', 'Fill'),
-                  SelectOption('Cover', 'Cover'),
-                  SelectOption('Contain', 'Contain'),
-                  SelectOption('None', 'None')
-                ],
-                selectedValue: properties['Fit'].value,
-                onChange: (SelectOption option) {
-                  changePropertyTo(
-                      SchemaStringProperty('Fit', option.value));
-                },
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        EditPropsCorners(
-          value: properties['BorderRadiusValue'].value,
-          onChanged: (int value) {
-            changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
-          },
-        ),
+        this.toEditOnlyStyle(changePropertyTo),
       ])
     );
+  }
+
+  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+    return Column(children: [
+      ColumnDivider(
+        name: 'Image Style',
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: 59,
+            child: Text(
+              'Resize',
+              style: MyTextStyle.regularCaption,
+            ),
+          ),
+          Expanded(
+            child: MyClickSelect(
+              options: [
+                SelectOption('Fill', 'Fill'),
+                SelectOption('Cover', 'Cover'),
+                SelectOption('Contain', 'Contain'),
+                SelectOption('None', 'None')
+              ],
+              selectedValue: properties['Fit'].value,
+              onChange: (SelectOption option) {
+                changePropertyTo(
+                    SchemaStringProperty('Fit', option.value));
+              },
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 12,
+      ),
+      EditPropsCorners(
+        value: properties['BorderRadiusValue'].value,
+        onChanged: (int value) {
+          changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+        },
+      ),
+    ]);
   }
 }
