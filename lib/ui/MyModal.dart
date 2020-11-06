@@ -8,8 +8,22 @@ import 'package:flutter_app/ui/Cursor.dart';
 class MyModal {
   OverlayEntry _overlayEntry;
   Function onClose;
+  BuildContext context;
 
   bool isCloseActive = true;
+
+  MyModal(
+      {@required BuildContext context,
+      @required Widget child,
+      @required Function onClose,
+      width,
+      height}) {
+    this._overlayEntry = OverlayEntry(
+        builder: (BuildContext context) =>
+            this._buildModal(child, width, height));
+
+    this.onClose = onClose;
+  }
 
   void close() {
     this._overlayEntry.remove();
@@ -101,6 +115,10 @@ class MyModal {
         ),
       ),
     );
+  }
+
+  void show() {
+    Overlay.of(this.context).insert(this._overlayEntry);
   }
 
   MyModal.show({

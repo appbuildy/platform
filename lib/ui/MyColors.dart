@@ -76,6 +76,15 @@ class MyGradients {
     colors: [Color(0xFFe9fbff), Color(0xFFc5eaff)],
   );
 
+  static LinearGradient mainSuperLight = LinearGradient(
+    begin: AlignmentDirectional.topCenter,
+    end: AlignmentDirectional.bottomCenter,
+    colors: [
+      Color(0xFF61e5ff).withOpacity(0.3),
+      Color(0xFF00a2ff).withOpacity(0.35)
+    ],
+  );
+
   static LinearGradient mainBlue = LinearGradient(
     begin: AlignmentDirectional.topCenter,
     end: AlignmentDirectional.bottomCenter,
@@ -101,7 +110,7 @@ class MyTextStyle {
   );
 
   static TextStyle giantTitle = TextStyle(
-      color: MyColors.black, fontSize: 38, fontWeight: FontWeight.w600);
+      color: MyColors.black, fontSize: 36, fontWeight: FontWeight.w600);
 
   static TextStyle mediumTitle = TextStyle(
       color: MyColors.black, fontSize: 16, fontWeight: FontWeight.w500);
