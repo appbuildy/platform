@@ -63,14 +63,14 @@ class AppActions extends StatelessWidget {
                               onChanged: () {},
                               disabled: false,
                               defaultValue:
-                                  userActions.currentUserStore.project.slugUrl,
+                                  userActions.currentUserStore?.project?.slugUrl ?? '',
                             ),
                           ),
                           Expanded(child: Container()),
                           MyButton(
                               onTap: () {
                                 js.context.callMethod('open', [
-                                  userActions.currentUserStore.project.slugUrl
+                                  userActions.currentUserStore?.project?.slugUrl ?? ''
                                 ]);
                               },
                               text: 'Navigate to the Web App')
