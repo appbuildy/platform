@@ -36,6 +36,8 @@ class ToolboxLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeStore = userActions.themeStore;
 
+    final MyModal modal = MyModal();
+
     return Container(
       width: toolboxWidth,
       height: MediaQuery.of(context).size.height,
@@ -153,25 +155,26 @@ class ToolboxLayout extends StatelessWidget {
                               cursor: CursorEnum.pointer,
                               child: GestureDetector(
                                 onTap: () {
-                                  MyModal.show(
-                                      context: context,
-                                      child: Container(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 20,
-                                              right: 0,
-                                            ),
-                                            child: IFrame(
-                                              src:
-                                                  'https://www.appbuildy.com/upvoty',
-                                            ),
-                                          )),
-                                      onClose: () {
-                                        print('kekmek');
-                                      });
+                                  modal.show(
+                                    context: context,
+                                    child: Container(
+                                        height: MediaQuery.of(context)
+                                            .size
+                                            .height,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 20,
+                                            right: 0,
+                                          ),
+                                          child: IFrame(
+                                            src:
+                                                'https://www.appbuildy.com/upvoty',
+                                          ),
+                                        )),
+                                    onClose: () {
+                                      print('kekmek');
+                                    }
+                                  );
                                 },
                                 child: HoverOpacity(
                                   child: Container(

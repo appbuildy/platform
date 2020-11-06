@@ -40,12 +40,19 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
     } else {
       setState(() {
         error = '';
-        MyModal.show(
-            context: context,
-            width: 980,
-            height: 443,
-            child: renderBase(),
-            onClose: () {});
+
+        // теперь юзается так:
+        // final MyModal createdModal = MyModal();
+        //
+        // createdModal.show(
+        //     context: context,
+        //     width: 980,
+        //     height: 443,
+        //     child: renderBase(),
+        //     onClose: () {},
+        // );
+        //
+        // createdModal.close();
       });
     }
   }
@@ -275,13 +282,14 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
             height: 17,
           ),
           onTap: () {
-            final newModal = MyModal(
-                context: context,
-                width: 980,
-                height: 443,
-                child: renderToken(),
-                onClose: () {});
-            newModal.show();
+            final newModal = MyModal();
+            newModal.show(
+              context: context,
+              width: 980,
+              height: 443,
+              child: renderToken(),
+              onClose: () {}
+            );
 
 //            setState(() {
 //              modal = newModal;

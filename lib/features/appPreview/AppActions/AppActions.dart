@@ -20,7 +20,8 @@ class AppActions extends StatelessWidget {
   const AppActions({Key key, this.userActions}) : super(key: key);
 
   void _showShareModal(context) {
-    MyModal.show(
+    final MyModal modal = MyModal();
+    modal.show(
         context: context,
         width: 700,
         height: 380,
