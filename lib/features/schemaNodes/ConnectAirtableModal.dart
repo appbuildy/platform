@@ -26,7 +26,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
     base = '';
     isBase = false;
     error = '';
-    modal = null;
+    modal = MyModal();
 
     super.initState();
   }
@@ -37,22 +37,21 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
       setState(() {
         error = 'API Key should not be empty';
       });
+      modal.show(
+          context: context,
+          width: 980,
+          height: 425,
+          child: renderToken(),
+          onClose: () {});
     } else {
       setState(() {
         error = '';
-
-        // теперь юзается так:
-        // final MyModal createdModal = MyModal();
-        //
-        // createdModal.show(
-        //     context: context,
-        //     width: 980,
-        //     height: 443,
-        //     child: renderBase(),
-        //     onClose: () {},
-        // );
-        //
-        // createdModal.close();
+        modal.show(
+            context: context,
+            width: 980,
+            height: 475,
+            child: renderBase(),
+            onClose: () {});
       });
     }
   }
@@ -64,8 +63,14 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
       setState(() {
         error = 'Base Link should not be empty';
       });
+      modal.show(
+          context: context,
+          width: 980,
+          height: 475,
+          child: renderBase(),
+          onClose: () {});
     } else {
-      Overlay.of(context).dispose();
+      modal.close();
       print('kek lol 4eba $base, $token');
     }
   }
@@ -77,7 +82,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
         children: [
           Flexible(
             child: Container(
-                height: 443,
+                height: 425,
                 child: Padding(
                   padding: const EdgeInsets.only(
                     top: 25,
@@ -112,11 +117,14 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
                         },
                       ),
                       error.length > 0
-                          ? Text(error,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.red))
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(error,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.red)),
+                            )
                           : Container(),
                       Expanded(child: Container()),
                       MyButton(
@@ -129,7 +137,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           ),
           Flexible(
             child: Container(
-              height: 443,
+              height: 425,
               decoration: BoxDecoration(gradient: MyGradients.mainSuperLight),
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -181,7 +189,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
         children: [
           Flexible(
             child: Container(
-                height: 443,
+                height: 475,
                 child: Padding(
                   padding: const EdgeInsets.only(
                     top: 25,
@@ -216,11 +224,14 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
                         },
                       ),
                       error.length > 0
-                          ? Text(error,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.red))
+                          ? Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(error,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.red)),
+                            )
                           : Container(),
                       Expanded(child: Container()),
                       MyButton(
@@ -233,7 +244,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           ),
           Flexible(
             child: Container(
-              height: 443,
+              height: 475,
               decoration: BoxDecoration(gradient: MyGradients.mainSuperLight),
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -282,18 +293,12 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
             height: 17,
           ),
           onTap: () {
-            final newModal = MyModal();
-            newModal.show(
-              context: context,
-              width: 980,
-              height: 443,
-              child: renderToken(),
-              onClose: () {}
-            );
-
-//            setState(() {
-//              modal = newModal;
-//            });
+            modal.show(
+                context: context,
+                width: 980,
+                height: 425,
+                child: renderToken(),
+                onClose: () {});
           },
         ),
         SizedBox(
