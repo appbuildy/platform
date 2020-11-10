@@ -5,6 +5,9 @@ import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/Guidel
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/Rays.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
+import 'package:flutter_app/ui/Cursor.dart';
+import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/utils/DeltaPanDetector.dart';
 
 export 'SchemaNodeButton.dart';
 export 'SchemaNodeImage.dart';
@@ -851,5 +854,352 @@ abstract class SchemaNode {
     final Map<String, dynamic> map = {};
     properties.forEach((k, v) => map[k] = v.toJson());
     return map;
+  }
+
+  Widget renderWithSelected({
+    @required Function onPanEnd,
+    @required Function repositionAndResize,
+    @required GuidelinesManager guidelinesManager,
+    @required Offset currentScreenWorkspaceSize,
+    @required bool isPlayMode,
+    @required bool isSelected,
+  }) {
+    final Widget circle = Container(
+      width: 11,
+      height: 11,
+      decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: MyColors.white,
+          border: Border.all(width: 2, color: MyColors.mainBlue)),
+    );
+
+    final List<Widget> dots = isSelected ? [
+      Positioned(
+        top: -2,
+        left: -2,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDy = node.position.dy;
+            final double startDx = node.position.dx;
+
+            node = SchemaNode.magnetTopResize(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+            node = SchemaNode.magnetLeftResize(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDy = node.position.dy;
+            final double endDx = node.position.dx;
+
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
+        ),
+      ),
+      Positioned(
+        top: -2,
+        right: -2,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDy = node.position.dy;
+            final double startDx = node.position.dx + node.size.dx;
+
+            node = SchemaNode.magnetTopResize(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+            node = SchemaNode.magnetRightResize(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDy = node.position.dy;
+            final double endDx = node.position.dx + node.size.dx;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(cursor: CursorEnum.neswResize, child: circle),
+        ),
+      ),
+      Positioned(
+        bottom: -2,
+        right: -2,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDx = node.position.dx + node.size.dx;
+            final double startDy = node.position.dy + node.size.dy;
+
+            node = SchemaNode.magnetBottomResize(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+            node = SchemaNode.magnetRightResize(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDx = node.position.dx + node.size.dx;
+            final double endDy = node.position.dy + node.size.dy;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
+        ),
+      ),
+      Positioned(
+        bottom: -2,
+        left: -2,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDx = node.position.dx;
+            final double startDy = node.position.dy + node.size.dy;
+
+            node = SchemaNode.magnetBottomResize(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+            node = SchemaNode.magnetLeftResize(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDx = node.position.dx;
+            final double endDy = node.position.dy + node.size.dy;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(cursor: CursorEnum.neswResize, child: circle),
+        ),
+      ),
+    ] : [Container()];
+
+    final lines = isSelected ? [
+      Positioned(
+        top: 0,
+        left: 0,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (Offset delta) {
+            SchemaNode node = this;
+
+            final double startDy = node.position.dy;
+
+            node = SchemaNode.magnetTopResize(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDy = node.position.dy;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(
+            cursor: CursorEnum.nsResize,
+            child: Container(
+              width: this.size.dx,
+              height: 10,
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(width: 1, color: MyColors.mainBlue),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      Positioned(
+        top: 0,
+        right: 0,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDx = node.position.dx + node.size.dx;
+
+            node = SchemaNode.magnetRightResize(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDx = node.position.dx + node.size.dx;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(
+            cursor: CursorEnum.ewResize,
+            child: Container(
+              width: 10,
+              height: this.size.dy,
+              decoration: BoxDecoration(
+                border: Border(
+                  right: BorderSide(width: 1, color: MyColors.mainBlue),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      Positioned(
+        left: 0,
+        bottom: 0,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDy = node.position.dy + node.size.dy;
+
+            node = SchemaNode.magnetBottomResize(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDy = node.position.dy + node.size.dy;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(
+            cursor: CursorEnum.nsResize,
+            child: Container(
+                width: this.size.dx,
+                height: 10,
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 1, color: MyColors.mainBlue)))),
+          ),
+        ),
+      ),
+      Positioned(
+        top: 0,
+        left: 0,
+        child: DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final double startDx = node.position.dx;
+            node = SchemaNode.magnetLeftResize(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final double endDx = node.position.dx;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(
+            cursor: CursorEnum.ewResize,
+            child: Container(
+              width: 10,
+              height: this.size.dy,
+              decoration: BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                      width: 1, color: MyColors.mainBlue
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ] : [Container()];
+
+    return Stack(
+      overflow: Overflow.visible,
+      alignment: Alignment.center,
+      children: [
+        DeltaFromAnchorPointPanDetector(
+          onPanUpdate: (delta) {
+            SchemaNode node = this;
+
+            final startDx = node.position.dx;
+            final startDy = node.position.dy;
+            print('move');
+
+            node = SchemaNode.magnetHorizontalMove(
+              node: node,
+              deltaDx: delta.dx,
+              screenSizeDx: currentScreenWorkspaceSize.dx,
+              guidelinesManager: guidelinesManager,
+            );
+
+            node = SchemaNode.magnetVerticalMove(
+              node: node,
+              deltaDy: delta.dy,
+              screenSizeDy: currentScreenWorkspaceSize.dy,
+              guidelinesManager: guidelinesManager,
+            );
+
+            repositionAndResize(node, isAddedToDoneActions: false);
+
+            final endDx = node.position.dx;
+            final endDy = node.position.dy;
+            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
+          },
+          onPanEnd: onPanEnd,
+          child: Cursor(
+            cursor: CursorEnum.move,
+            child: Container(
+              width: this.size.dx,
+              height: this.size.dy,
+              child: this.toWidget(isPlayMode: isPlayMode),
+            ),
+          ),
+        ),
+        ...lines,
+        ...dots,
+      ],
+    );
   }
 }

@@ -122,11 +122,19 @@ class ListTemplateCards extends ListTemplate {
               child: Stack(
                 children: [
                   ...elements.listElements.map((ListElementNode el) {
+                    Widget renderedWidget;
+
                     if (el.node is DataContainer && el.columnRelation != null) {
                       final String data = item.value[el.columnRelation]?.data;
-                      return (el.node as DataContainer).toWidgetWithReplacedData(data: data);
+                      renderedWidget = (el.node as DataContainer).toWidgetWithReplacedData(data: data);
                     }
-                    return el.node.toWidget();
+                    renderedWidget = el.node.toWidget();
+
+                    return Positioned(
+                      top: el.node.position.dy,
+                      left: el.node.position.dx,
+                      child: renderedWidget,
+                    );
                   })
                 ],
               ),

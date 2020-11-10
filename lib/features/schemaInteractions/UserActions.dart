@@ -225,6 +225,9 @@ class UserActions {
 
   void repositionAndResize(SchemaNode updatedNode,
       {bool isAddedToDoneActions = true, SchemaNode prevValue}) {
+
+    if (selectedNode().id != updatedNode.id) this.selectNodeForEdit(updatedNode);
+
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
