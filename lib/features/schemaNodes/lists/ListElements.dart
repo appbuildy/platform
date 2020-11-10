@@ -101,17 +101,18 @@ class ListElements {
           onChange: (SelectOption option) {
             final SchemaNode node = option.value();
 
-            listElements.add(
-              ListElementNode(
-                id: node.id,
-                node: node,
-                name: option.name,
-                iconPreview: option.leftWidget,
-                changePropertyTo: getChangePropertyToFn(node.id, () => onListElementsUpdate()),
-                onColumnRelationChange: () => onListElementsUpdate(),
-              )
+            final ListElementNode createdNode = ListElementNode(
+              id: node.id,
+              node: node,
+              name: option.name,
+              iconPreview: option.leftWidget,
+              changePropertyTo: getChangePropertyToFn(node.id, () => onListElementsUpdate()),
+              onColumnRelationChange: onListElementsUpdate,
             );
+
+            listElements.add(createdNode);
             onListElementsUpdate();
+            onNodeSettingsClick(createdNode.id);
           },
           defaultPreview: MyButtonUI(
             text: 'Add Element',
@@ -145,13 +146,11 @@ class ListElementNode {
     @required this.iconPreview,
     @required this.name,
     @required this.id,
-    //@required this.userActions,
     @required this.changePropertyTo,
     @required this.onColumnRelationChange,
   });
 
   Widget buildSettingsButton(Function onNodeSettingsClick) {
-
     BoxDecoration defaultDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(6),
       gradient: MyGradients.buttonLightGray,
@@ -215,7 +214,10 @@ class ListElementNode {
                 Expanded(
                   child: MyClickSelect(
                     selectedValue: this.columnRelation,
-                    options: allColumns.map((String column) => SelectOption(column, column)).toList(),
+                    options: [
+                      SelectOption('Select option', null),
+                      ...allColumns.map((String column) => SelectOption(column, column)).toList(),
+                    ],
                     onChange: (SelectOption pickedColumn) {
                       this.columnRelation = pickedColumn.value;
                       this.onColumnRelationChange();
@@ -231,7 +233,7 @@ class ListElementNode {
                 ),
               ],
             ),
-            (node as DataContainer).toEditOnlyStyle(this.changePropertyTo),
+            node.toEditProps((e) => e, onPropertyChanged),
           ],
         )
       );
@@ -239,28 +241,12 @@ class ListElementNode {
 
     return node.toEditProps(wrapInRoot, this.changePropertyTo);
   }
+
+  void onPropertyChanged(SchemaNodeProperty changedProperty, [bool, dynamic]) {
+    if (changedProperty.name == 'Text' || changedProperty.name == 'Url') {
+      this.columnRelation = null;
+    }
+
+    this.changePropertyTo(changedProperty);
+  }
 }
-
-
-// enum ListElementType { title, subtitle, image, navigationIcon }
-//
-// class ListElement {
-//   String column;
-//   ListElementType type;
-//
-//   ListElement({@required String column, @required ListElementType type}) {
-//     this.column = column;
-//     this.type = type;
-//   }
-//
-//   ListElement.fromJson(Map<String, dynamic> jsonVar) {
-//     if (jsonVar == null) return;
-//     this.type = ListElementType.values
-//         .firstWhere((el) => el.toString() == jsonVar['type']);
-//     this.column = jsonVar['column'];
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     return {'column': column, 'type': type.toString()};
-//   }
-// }

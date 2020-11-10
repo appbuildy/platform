@@ -114,9 +114,8 @@ class ListTemplateCards extends ListTemplate {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ...elements.listElements.map((ListElementNode el) {
-                    if (el.node is DataContainer) {
+                    if (el.node is DataContainer && el.columnRelation != null) {
                       final String data = item.value[el.columnRelation]?.data;
-                      print(data);
                       return (el.node as DataContainer).toWidgetWithReplacedData(data: data);
                     }
                     return el.node.toWidget();

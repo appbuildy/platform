@@ -3,6 +3,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/services/project_load/IComponentLoader.dart';
+import 'package:flutter_app/features/services/project_load/properties_loader.dart';
 
 class ComponentLoadedFromJson implements IComponentLoader {
   Map<String, dynamic> jsonComponent;
@@ -99,11 +100,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
   }
 
   Map<String, SchemaNodeProperty> _loadProperies() {
-    final Map<String, SchemaNodeProperty> deserialized = {};
-    jsonComponent['properties'].forEach((key, val) {
-      deserialized[key] = SchemaNodeProperty.deserializeFromJson(val);
-    });
-    return deserialized;
+    return PropertiesLoader(jsonComponent).load();
   }
 
   Map<String, SchemaNodeProperty> _loadActions() {
