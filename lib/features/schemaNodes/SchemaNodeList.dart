@@ -101,6 +101,7 @@ class SchemaNodeList extends SchemaNode {
               'BoxShadowColor', parent.userActions.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
+          'ListItemHeight': SchemaDoubleProperty('ListItemHeight', 100),
         };
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');

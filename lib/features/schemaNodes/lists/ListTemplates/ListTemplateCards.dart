@@ -7,9 +7,11 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
 class ListTemplateCards extends ListTemplate {
@@ -66,6 +68,13 @@ class ListTemplateCards extends ListTemplate {
             changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
           },
         ),
+        // todo: style this sh
+        MyTextField(
+          defaultValue: properties['ListItemHeight'].value.toString(),
+          onChanged: (String value) {
+            changePropertyTo(SchemaDoubleProperty('ListItemHeight', double.parse(value)));
+          }
+        ),
         SizedBox(
           height: 15,
         ),
@@ -91,9 +100,9 @@ class ListTemplateCards extends ListTemplate {
         children: [
           Expanded(
             child: Container(
+              height: properties['ListItemHeight'].value,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      properties['ItemRadiusValue'].value),
+                  borderRadius: BorderRadius.circular(properties['ItemRadiusValue'].value),
                   color: getThemeColor(
                     currentTheme,
                     properties['ItemColor'],
@@ -110,8 +119,7 @@ class ListTemplateCards extends ListTemplate {
                               spreadRadius: 0)
                         ]
                       : []),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Stack(
                 children: [
                   ...elements.listElements.map((ListElementNode el) {
                     if (el.node is DataContainer && el.columnRelation != null) {
