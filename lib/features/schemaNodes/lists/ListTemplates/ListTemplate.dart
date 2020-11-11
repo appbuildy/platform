@@ -7,15 +7,18 @@ import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplat
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
+import '../../SchemaNodeList.dart';
+
 enum ListTemplateType { simple, cards }
 
 abstract class ListTemplate {
   ListTemplateType getType();
 
   Widget toWidget({
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties,
-      bool isPlayMode,
+    @required SchemaNodeList schemaNodeList,
+    // MyTheme currentTheme,
+    // Map<String, SchemaNodeProperty> properties,
+    @required bool isPlayMode,
   });
 
   Widget rowStyle({
@@ -25,9 +28,11 @@ abstract class ListTemplate {
   });
 
   Widget widgetFor({
-    SchemaListItemsProperty item,
-    ListElements elements,
-    MyTheme currentTheme,
+    @required SchemaListItemsProperty item,
+    @required SchemaNodeList schemaNodeList,
+    @required bool isPlayMode,
+    // ListElements elements,
+    // MyTheme currentTheme,
   });
 }
 

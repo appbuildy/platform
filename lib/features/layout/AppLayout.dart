@@ -163,9 +163,10 @@ class _AppLayoutState extends State<AppLayout> {
             child: Row(
               children: [
                 Toolbox(
-                    toolboxState: toolboxState,
-                    selectState: selectState,
-                    userActions: widget.userActions),
+                  toolboxState: toolboxState,
+                  selectState: selectState,
+                  userActions: widget.userActions,
+                ),
                 Flexible(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -187,10 +188,11 @@ class _AppLayoutState extends State<AppLayout> {
                                       physics: NeverScrollableScrollPhysics(),
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 20.0,
-                                            bottom: 20,
-                                            left: 30,
-                                            right: 30),
+                                          top: 20.0,
+                                          bottom: 20,
+                                          left: 30,
+                                          right: 30,
+                                        ),
                                         child: AppPreview(
                                           focusNode: _focusNode,
                                           isPlayMode: isPlayMode,
@@ -212,25 +214,26 @@ class _AppLayoutState extends State<AppLayout> {
                                 ),
                               ),
                               Positioned(
-                                  bottom: 13.0,
-                                  left: 13.0,
-                                  child: Container(
-                                    width: 196,
-                                    child: SingleChildScrollView(
-                                      child: PlayModeSwitch(
-                                          isPlayMode: isPlayMode,
-                                          selectPlayMode: (bool newIsPlayMode) {
-                                            setState(() {
-                                              isPlayMode = newIsPlayMode;
+                                bottom: 13.0,
+                                left: 13.0,
+                                child: Container(
+                                  width: 196,
+                                  child: SingleChildScrollView(
+                                    child: PlayModeSwitch(
+                                      isPlayMode: isPlayMode,
+                                      selectPlayMode: (bool newIsPlayMode) {
+                                        setState(() {
+                                          isPlayMode = newIsPlayMode;
 
-                                              if (newIsPlayMode) {
-                                                widget.userActions
-                                                    .selectNodeForEdit(null);
-                                              }
-                                            });
-                                          }),
+                                          if (newIsPlayMode) {
+                                            widget.userActions.selectNodeForEdit(null);
+                                          }
+                                        });
+                                      },
                                     ),
-                                  ))
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -240,9 +243,10 @@ class _AppLayoutState extends State<AppLayout> {
                 ),
                 Container(
                   child: RightToolbox(
-                      toolboxState: toolboxState,
-                      selectState: selectState,
-                      userActions: widget.userActions),
+                    toolboxState: toolboxState,
+                    selectState: selectState,
+                    userActions: widget.userActions,
+                  ),
                 )
               ],
             ),

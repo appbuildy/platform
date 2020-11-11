@@ -856,14 +856,17 @@ abstract class SchemaNode {
     return map;
   }
 
-  Widget renderWithSelected({
+  static Widget renderWithSelected({
+    @required SchemaNode node,
     @required Function onPanEnd,
     @required Function repositionAndResize,
-    @required GuidelinesManager guidelinesManager,
     @required Offset currentScreenWorkspaceSize,
     @required bool isPlayMode,
     @required bool isSelected,
+    @required Function toWidgetFunction,
   }) {
+    final GuidelinesManager guidelinesManager = node.parent.userActions.currentScreen.guidelineManager;
+
     final Widget circle = Container(
       width: 11,
       height: 11,
@@ -879,8 +882,6 @@ abstract class SchemaNode {
         left: -2,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDy = node.position.dy;
             final double startDx = node.position.dx;
 
@@ -913,8 +914,6 @@ abstract class SchemaNode {
         right: -2,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDy = node.position.dy;
             final double startDx = node.position.dx + node.size.dx;
 
@@ -946,8 +945,6 @@ abstract class SchemaNode {
         right: -2,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDx = node.position.dx + node.size.dx;
             final double startDy = node.position.dy + node.size.dy;
 
@@ -979,8 +976,6 @@ abstract class SchemaNode {
         left: -2,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDx = node.position.dx;
             final double startDy = node.position.dy + node.size.dy;
 
@@ -1015,8 +1010,6 @@ abstract class SchemaNode {
         left: 0,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (Offset delta) {
-            SchemaNode node = this;
-
             final double startDy = node.position.dy;
 
             node = SchemaNode.magnetTopResize(
@@ -1035,7 +1028,7 @@ abstract class SchemaNode {
           child: Cursor(
             cursor: CursorEnum.nsResize,
             child: Container(
-              width: this.size.dx,
+              width: node.size.dx,
               height: 10,
               decoration: BoxDecoration(
                 border: Border(
@@ -1051,8 +1044,6 @@ abstract class SchemaNode {
         right: 0,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDx = node.position.dx + node.size.dx;
 
             node = SchemaNode.magnetRightResize(
@@ -1072,7 +1063,7 @@ abstract class SchemaNode {
             cursor: CursorEnum.ewResize,
             child: Container(
               width: 10,
-              height: this.size.dy,
+              height: node.size.dy,
               decoration: BoxDecoration(
                 border: Border(
                   right: BorderSide(width: 1, color: MyColors.mainBlue),
@@ -1087,8 +1078,6 @@ abstract class SchemaNode {
         bottom: 0,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDy = node.position.dy + node.size.dy;
 
             node = SchemaNode.magnetBottomResize(
@@ -1107,7 +1096,7 @@ abstract class SchemaNode {
           child: Cursor(
             cursor: CursorEnum.nsResize,
             child: Container(
-                width: this.size.dx,
+                width: node.size.dx,
                 height: 10,
                 decoration: BoxDecoration(
                     border: Border(
@@ -1121,8 +1110,6 @@ abstract class SchemaNode {
         left: 0,
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final double startDx = node.position.dx;
             node = SchemaNode.magnetLeftResize(
               node: node,
@@ -1141,7 +1128,7 @@ abstract class SchemaNode {
             cursor: CursorEnum.ewResize,
             child: Container(
               width: 10,
-              height: this.size.dy,
+              height: node.size.dy,
               decoration: BoxDecoration(
                 border: Border(
                   left: BorderSide(
@@ -1161,11 +1148,8 @@ abstract class SchemaNode {
       children: [
         DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
-            SchemaNode node = this;
-
             final startDx = node.position.dx;
             final startDy = node.position.dy;
-            print('move');
 
             node = SchemaNode.magnetHorizontalMove(
               node: node,
@@ -1191,9 +1175,9 @@ abstract class SchemaNode {
           child: Cursor(
             cursor: CursorEnum.move,
             child: Container(
-              width: this.size.dx,
-              height: this.size.dy,
-              child: this.toWidget(isPlayMode: isPlayMode),
+              width: node.size.dx,
+              height: node.size.dy,
+              child: node.toWidget(isPlayMode: isPlayMode),
             ),
           ),
         ),

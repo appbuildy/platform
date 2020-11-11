@@ -114,13 +114,15 @@ class _AppPreviewState extends State<AppPreview> {
                       };
 
                       Widget renderWithSelected() => (
-                        node.renderWithSelected(
+                        SchemaNode.renderWithSelected(
                           onPanEnd: onPanEnd,
                           repositionAndResize: userActions.repositionAndResize,
                           currentScreenWorkspaceSize: userActions.screens.currentScreenWorkspaceSize,
-                          guidelinesManager: userActions.screens.current.guidelineManager,
+                          // guidelinesManager: userActions.screens.current.guidelineManager,
                           isPlayMode: widget.isPlayMode,
                           isSelected: selectedNodeId == node.id,
+                          node: node,
+                          toWidgetFunction: node.toWidget,
                         )
                       );
 

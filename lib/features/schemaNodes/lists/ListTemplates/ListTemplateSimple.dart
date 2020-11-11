@@ -11,38 +11,51 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../SchemaNodeList.dart';
+import '../../implementations.dart';
+
 class ListTemplateSimple extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.simple;
 
-  Widget toWidget(
-      {MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties,
-      Map<String, SchemaNodeProperty> actions,
-      UserActions userActions,
-      bool isPlayMode = false}) {
+  Widget toWidget({
+    @required SchemaNodeList schemaNodeList,
+    // MyTheme currentTheme,
+    // Map<String, SchemaNodeProperty> properties,
+    // Map<String, SchemaNodeProperty> actions,
+    // UserActions userActions,
+    bool isPlayMode = false,
+  }) {
     return Column(
-        children: properties['Items']
+        children: schemaNodeList.properties['Items']
             .value
             .values
             .map((item) {
               if (isPlayMode) {
                 return GestureDetector(
                   onTap: () {
-                    (actions['Tap'] as Functionable)
-                        .toFunction(userActions)(item.value);
+                    (schemaNodeList.actions['Tap'] as Functionable)
+                        .toFunction(schemaNodeList.parent.userActions)(item.value);
                   },
                   child: widgetFor(
-                      item: item,
-                      elements: properties['Elements'].value,
-                      currentTheme: currentTheme,
-                      properties: properties),
+                    item: item,
+                    schemaNodeList: schemaNodeList,
+                    isPlayMode: isPlayMode,
+                    //isPlayMode: isPlayMode,
+                    // elements: properties['Elements'].value,
+                    // currentTheme: currentTheme,
+                    // properties: properties,
+                  ),
                 );
               }
               return widgetFor(
-                  item: item,
-                  elements: properties['Elements'].value,
-                  currentTheme: currentTheme,
-                  properties: properties);
+                item: item,
+                schemaNodeList: schemaNodeList,
+                isPlayMode: isPlayMode,
+                //isPlayMode: isPlayMode,
+                // elements: properties['Elements'].value,
+                // currentTheme: currentTheme,
+                // properties: properties,
+              );
             })
             .toList()
             .cast<Widget>());
@@ -68,10 +81,12 @@ class ListTemplateSimple extends ListTemplate {
   }
 
   Widget widgetFor({
-    SchemaListItemsProperty item,
-    ListElements elements,
-    MyTheme currentTheme,
-    Map<String, SchemaNodeProperty> properties
+    @required SchemaListItemsProperty item,
+    @required SchemaNodeList schemaNodeList,
+    @required bool isPlayMode,
+    // ListElements elements,
+    // MyTheme currentTheme,
+    // Map<String, SchemaNodeProperty> properties
   }) {
     return Row(
       children: [
@@ -79,15 +94,15 @@ class ListTemplateSimple extends ListTemplate {
           child: Container(
             decoration: BoxDecoration(
                 color: getThemeColor(
-                  currentTheme,
-                  properties['ItemColor'],
+                  schemaNodeList.parent.userActions.currentTheme,
+                  schemaNodeList.properties['ItemColor'],
                 ),
                 border: Border(
                     bottom: BorderSide(
                         width: 1,
                         color: getThemeColor(
-                          currentTheme,
-                          properties['SeparatorsColor'],
+                          schemaNodeList.parent.userActions.currentTheme,
+                          schemaNodeList.properties['SeparatorsColor'],
                         )))),
             child: Padding(
               padding: const EdgeInsets.only(
@@ -95,7 +110,27 @@ class ListTemplateSimple extends ListTemplate {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ...elements.listElements.map((ListElementNode el) => el.node.toWidget())
+                  ...(schemaNodeList.properties['Elements'].value as ListElements).listElements.map((ListElementNode el) {
+                    Widget renderedWidget;
+
+                    if (el.node is DataContainer && el.columnRelation != null) {
+                      final String data = item.value[el.columnRelation]?.data ?? 'no_data';
+
+                      renderedWidget = el.toWidgetWithReplacedData(
+                        data: data,
+                        schemaNodeList: schemaNodeList,
+                        isPlayMode: isPlayMode,
+                      );
+                    } else {
+                      renderedWidget = el.toWidget(schemaNodeList: schemaNodeList, isPlayMode: isPlayMode);
+                    }
+
+                    return Positioned(
+                      top: el.node.position.dy,
+                      left: el.node.position.dx,
+                      child: renderedWidget,
+                    );
+                  })
                 ],
               ),
             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
@@ -63,6 +64,8 @@ class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTick
 class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
   ListTemplateType listTemplateType;
+
+  ListElementNode selectedListElementNode;
 
   SchemaNodeList({
     @required SchemaNodeSpawner parent,
@@ -135,24 +138,33 @@ class SchemaNodeList extends SchemaNode {
   Widget toWidget({ bool isPlayMode }) {
     if (isPlayMode) {
       return Container(
-          width: this.size.dx,
-          height: this.size.dy,
-          child: SingleChildScrollView(
-            child: this.properties['Template'].value.toWidget(
-                currentTheme: parent.userActions.themeStore.currentTheme,
-                properties: this.properties,
-                actions: this.actions,
-                userActions: parent.userActions,
-                isPlayMode: isPlayMode),
-          ));
+        width: this.size.dx,
+        height: this.size.dy,
+        child: SingleChildScrollView(
+          child: (this.properties['Template'].value as ListTemplate).toWidget(
+            schemaNodeList: this,
+            // currentTheme: parent.userActions.themeStore.currentTheme,
+            // properties: this.properties,
+            // actions: this.actions,
+            // userActions: parent.userActions,
+            isPlayMode: isPlayMode,
+          ),
+        ),
+      );
     }
 
     return Container(
-        width: this.size.dx,
-        height: this.size.dy,
-        child: this.properties['Template'].value.toWidget(
-            currentTheme: parent.userActions.themeStore.currentTheme,
-            properties: this.properties));
+      width: this.size.dx,
+      height: this.size.dy,
+      child: (this.properties['Template'].value as ListTemplate).toWidget(
+        schemaNodeList: this,
+        // currentTheme: parent.userActions.themeStore.currentTheme,
+        // properties: this.properties,
+        // actions: this.actions,
+        // userActions: parent.userActions,
+        isPlayMode: isPlayMode,
+      ),
+    );
   }
 
   Future<void> updateData(String tableName, UserActions userActions) async {
@@ -169,7 +181,7 @@ class SchemaNodeList extends SchemaNode {
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return ListToEditProps(
       schemaNodeList: this,
-      userActions: parent.userActions,
+      //userActions: parent.userActions,
       wrapInRootProps: wrapInRootProps,
       changePropertyTo: changePropertyTo,
     );
@@ -178,13 +190,13 @@ class SchemaNodeList extends SchemaNode {
 
 class ListToEditProps extends StatefulWidget {
   final SchemaNodeList schemaNodeList;
-  final UserActions userActions;
+ // final UserActions userActions;
   final Function wrapInRootProps;
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
 
   ListToEditProps({
     @required this.schemaNodeList,
-    @required this.userActions,
+    //@required this.userActions,
     @required this.wrapInRootProps,
     @required this.changePropertyTo,
   });
@@ -230,6 +242,8 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
   }
 
   Widget _buildRoot() {
+    final UserActions userActions = widget.schemaNodeList.parent.userActions;
+
     return widget.wrapInRootProps(
         Column(children: [
           ColumnDivider(
@@ -249,17 +263,17 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
                     placeholder: 'Select Table',
                     selectedValue: widget.schemaNodeList.properties['Table'].value ?? null,
                     onChange: (screen) async {
-                      await widget.schemaNodeList.updateData(screen.value, widget.userActions);
+                      await widget.schemaNodeList.updateData(screen.value, userActions);
                       widget.changePropertyTo(
                           SchemaStringProperty('Table', screen.value));
 
                       widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
-                          widget.userActions
+                          userActions
                               .columnsFor(screen.value)
                               .map((e) => e.name)
                               .toList());
                     },
-                    options: widget.userActions.tables
+                    options: userActions.tables
                         .map((element) => SelectOption(element, element))
                         .toList()),
               )
@@ -269,7 +283,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
             name: 'Row Elements',
           ),
           (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
-              userActions: widget.userActions,
+              schemaNodeList: widget.schemaNodeList,
               onNodeSettingsClick: (UniqueKey id) {
                 _pageSliderController.to(id);
               },

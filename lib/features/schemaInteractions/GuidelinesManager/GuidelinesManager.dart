@@ -301,6 +301,7 @@ class GuidelinesManager {
     if (foundGuidelines.isNotEmpty) {
       this.foundGuidelines.setVertical(foundGuidelines[0]);
     }
+
     foundGuidelines.forEach((element) => element.guideline.isVisible = true);
   }
 

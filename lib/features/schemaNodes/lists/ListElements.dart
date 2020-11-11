@@ -14,6 +14,7 @@ import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
 import '../SchemaNode.dart';
+import '../SchemaNodeList.dart';
 import '../SchemaNodeProperty.dart';
 
 class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
@@ -82,10 +83,12 @@ class ListElements {
   }
 
   Widget toEditProps({
-    UserActions userActions,
+    SchemaNodeList schemaNodeList,
     Function onNodeSettingsClick,
     Function onListElementsUpdate,
   }) {
+    final UserActions userActions = schemaNodeList.parent.userActions;
+
     return Column(
       children: [
         MyClickSelect(
@@ -99,7 +102,10 @@ class ListElements {
             SelectOption('Image', userActions.schemaNodeSpawner.spawnSchemaNodeImage, _buildOptionPreview('assets/icons/layout/image.svg')),
           ],
           onChange: (SelectOption option) {
-            final SchemaNode node = option.value();
+            final SchemaNode node = option.value(
+              // list padding horizontal - 12. todo: refac
+              size: Offset(schemaNodeList.size.dx - 12 * 2, 30),
+            );
 
             final ListElementNode createdNode = ListElementNode(
               id: node.id,
@@ -131,7 +137,8 @@ class ListElements {
 }
 
 class ListElementNode {
-  final SchemaNode node;
+  SchemaNode node;
+
   final String name;
   final UniqueKey id;
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
@@ -248,5 +255,43 @@ class ListElementNode {
     }
 
     this.changePropertyTo(changedProperty);
+  }
+
+  void repositionAndResize(node, { isAddedToDoneActions }) {
+    this.node = node;
+    this.onColumnRelationChange();
+  }
+
+  Widget toWidget({
+    @required SchemaNodeList schemaNodeList,
+    @required bool isPlayMode,
+  }) {
+      return GestureDetector(
+          onTap: () {
+            schemaNodeList.selectedListElementNode = this;
+            this.onColumnRelationChange();
+          },
+          child: SchemaNode.renderWithSelected(
+            node: this.node,
+            onPanEnd: (_) => {},
+            repositionAndResize: this.repositionAndResize,
+            currentScreenWorkspaceSize: Offset(
+              // list padding horizontal - 12. todo: refac
+              schemaNodeList.size.dx - 12 * 2,
+              schemaNodeList.properties['ListItemHeight'].value,
+            ),
+            isPlayMode: isPlayMode,
+            isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
+            toWidgetFunction: this.node.toWidget,
+          )
+      );
+  }
+
+  Widget toWidgetWithReplacedData({
+    @required String data,
+    @required SchemaNodeList schemaNodeList,
+    @required bool isPlayMode,
+  }) {
+    return (this.node as DataContainer).toWidgetWithReplacedData(data: data);
   }
 }
