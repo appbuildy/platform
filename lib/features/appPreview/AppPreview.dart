@@ -72,7 +72,7 @@ class _AppPreviewState extends State<AppPreview> {
         return Observer(builder: (context) {
           final theme = userActions.currentTheme;
 
-          final selectedNode = userActions.selectedNode();
+          final UniqueKey selectedNodeId = userActions.selectedNode()?.id;
 
           return Transform.scale(
             scale: scale,
@@ -120,7 +120,7 @@ class _AppPreviewState extends State<AppPreview> {
                           currentScreenWorkspaceSize: userActions.screens.currentScreenWorkspaceSize,
                           guidelinesManager: userActions.screens.current.guidelineManager,
                           isPlayMode: widget.isPlayMode,
-                          isSelected: selectedNode?.id == node.id,
+                          isSelected: selectedNodeId == node.id,
                         )
                       );
 
