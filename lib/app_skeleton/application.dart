@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/shared_widgets/widget_decorator.dart';
+import 'package:flutter_app/app_skeleton/screen.dart';
 
 class Application extends StatefulWidget {
-  final List<WidgetDecorator> widgets = [];
+  final List<Screen> screens = [];
 
   @override
   _ApplicationState createState() => _ApplicationState();
