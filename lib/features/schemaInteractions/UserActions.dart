@@ -33,6 +33,7 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart';
 
 import 'ConnectToRemoteAttribute.dart';
+import 'GuidelinesManager/GuidelinesManager.dart';
 import 'GuidelinesManager/PositionAndSize.dart';
 
 class UserActions {
@@ -67,6 +68,8 @@ class UserActions {
 
     schemaNodeSpawner = SchemaNodeSpawner(userActions: this);
   }
+
+  GuidelinesManager guidelineManager = GuidelinesManager();
 
   SchemaStore get currentScreen => _screens.current;
 
@@ -276,9 +279,22 @@ class UserActions {
       ),
     );
 
-    this.screens.current.buildQuickGuides(
-        addedPositionAndSize: screenPaddingPositionAndSize,
-        ignoredNodeId: this.selectedNode().id);
+    // this.screens.current.buildQuickGuides(
+    //     addedPositionAndSize: screenPaddingPositionAndSize,
+    //     ignoredNodeId: this.selectedNode().id);
+    List<PositionAndSize> nodesPositionAndSize = [];
+
+    this.currentScreen.components.forEach((SchemaNode node) {
+      if (this.selectedNode().id != null && node.id == this.selectedNode().id) return;
+
+      nodesPositionAndSize.add(PositionAndSize(id: node.id, position: node.position, size: node.size));
+    });
+
+    if (screenPaddingPositionAndSize != null) {
+      nodesPositionAndSize.add(screenPaddingPositionAndSize);
+    }
+
+    this.guidelineManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
   void selectNodeForEdit(SchemaNode node) {

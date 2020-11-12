@@ -159,14 +159,14 @@ abstract class SchemaNode {
 
   static SchemaNode resizeTop({
     @required SchemaNode node,
-    @required double delta,
-    @required double screenSize,
+    @required double deltaDy,
+    @required double screenSizeDy,
   }) {
     List<double> newPositionAndSize = resizeSideWithAnchorPoint(
       position: node.position.dy,
       size: node.size.dy,
-      delta: delta,
-      axisScreenSize: screenSize,
+      delta: deltaDy,
+      axisScreenSize: screenSizeDy,
     );
 
     final double newPosition = newPositionAndSize[0];
@@ -186,14 +186,14 @@ abstract class SchemaNode {
 
   static SchemaNode resizeRight({
     @required SchemaNode node,
-    @required double delta,
-    @required double screenSize,
+    @required double deltaDx,
+    @required double screenSizeDx,
   }) {
     final newSize = resizeSide(
       position: node.position.dx,
       size: node.size.dx,
-      delta: delta,
-      axisScreenSize: screenSize,
+      delta: deltaDx,
+      axisScreenSize: screenSizeDx,
     );
 
     node.size = Offset(
@@ -206,14 +206,14 @@ abstract class SchemaNode {
 
   static SchemaNode resizeBottom({
     @required SchemaNode node,
-    @required double delta,
-    @required double screenSize,
+    @required double deltaDy,
+    @required double screenSizeDy,
   }) {
     final newSize = resizeSide(
       position: node.position.dy,
       size: node.size.dy,
-      delta: delta,
-      axisScreenSize: screenSize,
+      delta: deltaDy,
+      axisScreenSize: screenSizeDy,
     );
 
     node.size = Offset(
@@ -226,14 +226,14 @@ abstract class SchemaNode {
 
   static SchemaNode resizeLeft({
     @required SchemaNode node,
-    @required double delta,
-    @required double screenSize,
+    @required double deltaDx,
+    @required double screenSizeDx,
   }) {
     List<double> newPositionAndSize = resizeSideWithAnchorPoint(
       position: node.position.dx,
       size: node.size.dx,
-      delta: delta,
-      axisScreenSize: screenSize,
+      delta: deltaDx,
+      axisScreenSize: screenSizeDx,
     );
 
     final double newPosition = newPositionAndSize[0];
@@ -524,7 +524,7 @@ abstract class SchemaNode {
     }
 
     node = SchemaNode.resizeTop(
-        node: node, delta: deltaDy, screenSize: screenSizeDy);
+        node: node, deltaDy: deltaDy, screenSizeDy: screenSizeDy);
 
     if (deltaDy != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
@@ -611,7 +611,7 @@ abstract class SchemaNode {
     }
 
     node = SchemaNode.resizeRight(
-        node: node, delta: deltaDx, screenSize: screenSizeDx);
+        node: node, deltaDx: deltaDx, screenSizeDx: screenSizeDx);
 
     if (deltaDx != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
@@ -689,7 +689,7 @@ abstract class SchemaNode {
     }
 
     node = SchemaNode.resizeBottom(
-        node: node, delta: deltaDy, screenSize: screenSizeDy);
+        node: node, deltaDy: deltaDy, screenSizeDy: screenSizeDy);
 
     if (deltaDy != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
@@ -767,7 +767,7 @@ abstract class SchemaNode {
     }
 
     node = SchemaNode.resizeLeft(
-        node: node, delta: deltaDx, screenSize: screenSizeDx);
+        node: node, deltaDx: deltaDx, screenSizeDx: screenSizeDx);
 
     if (deltaDx != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
@@ -864,8 +864,9 @@ abstract class SchemaNode {
     @required bool isPlayMode,
     @required bool isSelected,
     @required Function toWidgetFunction,
+    @required bool isMagnetInteraction,
   }) {
-    final GuidelinesManager guidelinesManager = node.parent.userActions.currentScreen.guidelineManager;
+    final GuidelinesManager guidelinesManager = node.parent.userActions.guidelineManager;
 
     final Widget circle = Container(
       width: 11,
@@ -885,18 +886,31 @@ abstract class SchemaNode {
             final double startDy = node.position.dy;
             final double startDx = node.position.dx;
 
-            node = SchemaNode.magnetTopResize(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
-            node = SchemaNode.magnetLeftResize(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetTopResize(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+              node = SchemaNode.magnetLeftResize(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeTop(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+              );
+              node = SchemaNode.resizeLeft(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -917,18 +931,31 @@ abstract class SchemaNode {
             final double startDy = node.position.dy;
             final double startDx = node.position.dx + node.size.dx;
 
-            node = SchemaNode.magnetTopResize(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
-            node = SchemaNode.magnetRightResize(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetTopResize(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+              node = SchemaNode.magnetRightResize(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeTop(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+              );
+              node = SchemaNode.resizeRight(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -948,18 +975,31 @@ abstract class SchemaNode {
             final double startDx = node.position.dx + node.size.dx;
             final double startDy = node.position.dy + node.size.dy;
 
-            node = SchemaNode.magnetBottomResize(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
-            node = SchemaNode.magnetRightResize(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetBottomResize(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+              node = SchemaNode.magnetRightResize(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeBottom(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+              );
+              node = SchemaNode.resizeRight(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -979,18 +1019,32 @@ abstract class SchemaNode {
             final double startDx = node.position.dx;
             final double startDy = node.position.dy + node.size.dy;
 
-            node = SchemaNode.magnetBottomResize(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
-            node = SchemaNode.magnetLeftResize(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetBottomResize(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+              node = SchemaNode.magnetLeftResize(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeBottom(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+              );
+              node = SchemaNode.resizeLeft(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+              );
+            }
+
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -1012,12 +1066,20 @@ abstract class SchemaNode {
           onPanUpdate: (Offset delta) {
             final double startDy = node.position.dy;
 
-            node = SchemaNode.magnetTopResize(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetTopResize(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeTop(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -1046,12 +1108,20 @@ abstract class SchemaNode {
           onPanUpdate: (delta) {
             final double startDx = node.position.dx + node.size.dx;
 
-            node = SchemaNode.magnetRightResize(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetRightResize(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeRight(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -1080,12 +1150,20 @@ abstract class SchemaNode {
           onPanUpdate: (delta) {
             final double startDy = node.position.dy + node.size.dy;
 
-            node = SchemaNode.magnetBottomResize(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetBottomResize(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeBottom(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -1111,12 +1189,21 @@ abstract class SchemaNode {
         child: DeltaFromAnchorPointPanDetector(
           onPanUpdate: (delta) {
             final double startDx = node.position.dx;
-            node = SchemaNode.magnetLeftResize(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetLeftResize(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.resizeLeft(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -1151,19 +1238,27 @@ abstract class SchemaNode {
             final startDx = node.position.dx;
             final startDy = node.position.dy;
 
-            node = SchemaNode.magnetHorizontalMove(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: currentScreenWorkspaceSize.dx,
-              guidelinesManager: guidelinesManager,
-            );
+            if (isMagnetInteraction) {
+              node = SchemaNode.magnetHorizontalMove(
+                node: node,
+                deltaDx: delta.dx,
+                screenSizeDx: currentScreenWorkspaceSize.dx,
+                guidelinesManager: guidelinesManager,
+              );
 
-            node = SchemaNode.magnetVerticalMove(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: currentScreenWorkspaceSize.dy,
-              guidelinesManager: guidelinesManager,
-            );
+              node = SchemaNode.magnetVerticalMove(
+                node: node,
+                deltaDy: delta.dy,
+                screenSizeDy: currentScreenWorkspaceSize.dy,
+                guidelinesManager: guidelinesManager,
+              );
+            } else {
+              node = SchemaNode.move(
+                node: node,
+                delta: delta,
+                screenSize: currentScreenWorkspaceSize,
+              );
+            }
 
             repositionAndResize(node, isAddedToDoneActions: false);
 
@@ -1177,7 +1272,7 @@ abstract class SchemaNode {
             child: Container(
               width: node.size.dx,
               height: node.size.dy,
-              child: node.toWidget(isPlayMode: isPlayMode),
+              child: toWidgetFunction(isPlayMode: isPlayMode),
             ),
           ),
         ),

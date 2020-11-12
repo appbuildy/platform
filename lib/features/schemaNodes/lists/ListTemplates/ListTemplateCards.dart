@@ -107,6 +107,8 @@ class ListTemplateCards extends ListTemplate {
     //Map<String, SchemaNodeProperty> properties,
     //bool isPlayMode
   }) {
+    int itemIndex = 1;
+
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(
@@ -146,9 +148,15 @@ class ListTemplateCards extends ListTemplate {
                           data: data,
                           schemaNodeList: schemaNodeList,
                           isPlayMode: isPlayMode,
+                          padding: Offset(12, 0),
                         );
                       } else {
-                        renderedWidget = el.toWidget(schemaNodeList: schemaNodeList, isPlayMode: isPlayMode);
+                        renderedWidget = el.toWidget(
+                          schemaNodeList: schemaNodeList,
+                          isPlayMode: isPlayMode,
+                          // list padding horizontal - 12. todo: refac
+                          padding: Offset(12, 0),
+                        );
                       }
 
                       return Positioned(

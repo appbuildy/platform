@@ -104,12 +104,12 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.currentScreen.guidelineManager.buildAllLines(
+                    ...userActions.guidelineManager.buildAllLines(
                         screenSize: widget.userActions.screens.currentScreenWorkspaceSize
                     ),
                     ...userActions.screens.current.components.map((node) {
                       final Function onPanEnd = (_) {
-                        userActions.currentScreen.guidelineManager.setAllInvisible();
+                        userActions.guidelineManager.setAllInvisible();
                         userActions.rerenderNode();
                       };
 
@@ -118,11 +118,11 @@ class _AppPreviewState extends State<AppPreview> {
                           onPanEnd: onPanEnd,
                           repositionAndResize: userActions.repositionAndResize,
                           currentScreenWorkspaceSize: userActions.screens.currentScreenWorkspaceSize,
-                          // guidelinesManager: userActions.screens.current.guidelineManager,
                           isPlayMode: widget.isPlayMode,
                           isSelected: selectedNodeId == node.id,
                           node: node,
                           toWidgetFunction: node.toWidget,
+                          isMagnetInteraction: true,
                         )
                       );
 

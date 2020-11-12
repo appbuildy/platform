@@ -5,9 +5,11 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -76,7 +78,14 @@ class ListTemplateSimple extends ListTemplate {
         changePropertyTo: changePropertyTo,
         propName: 'SeparatorsColor',
         properties: properties,
-      )
+      ),
+      // todo: style this sh
+      MyTextField(
+        defaultValue: properties['ListItemHeight'].value.toString(),
+        onChanged: (String value) {
+          changePropertyTo(SchemaDoubleProperty('ListItemHeight', double.parse(value)));
+        }
+      ),
     ]);
   }
 
@@ -91,49 +100,61 @@ class ListTemplateSimple extends ListTemplate {
     return Row(
       children: [
         Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-                color: getThemeColor(
-                  schemaNodeList.parent.userActions.currentTheme,
-                  schemaNodeList.properties['ItemColor'],
+          child: Column(
+            children: [
+              Container(
+                height: schemaNodeList.properties['ListItemHeight'].value,
+                decoration: BoxDecoration(
+                  color: getThemeColor(
+                    schemaNodeList.parent.userActions.currentTheme,
+                    schemaNodeList.properties['ItemColor'],
+                  ),
                 ),
-                border: Border(
-                    bottom: BorderSide(
-                        width: 1,
-                        color: getThemeColor(
-                          schemaNodeList.parent.userActions.currentTheme,
-                          schemaNodeList.properties['SeparatorsColor'],
-                        )))),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 12, bottom: 12, left: 24.0, right: 24.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ...(schemaNodeList.properties['Elements'].value as ListElements).listElements.map((ListElementNode el) {
-                    Widget renderedWidget;
+                child: Stack(
+                  children: [
+                    ...(schemaNodeList.properties['Elements'].value as ListElements).listElements.map((ListElementNode el) {
+                      Widget renderedWidget;
 
-                    if (el.node is DataContainer && el.columnRelation != null) {
-                      final String data = item.value[el.columnRelation]?.data ?? 'no_data';
+                      if (el.node is DataContainer && el.columnRelation != null) {
+                        final String data = item.value[el.columnRelation]?.data ?? 'no_data';
 
-                      renderedWidget = el.toWidgetWithReplacedData(
-                        data: data,
-                        schemaNodeList: schemaNodeList,
-                        isPlayMode: isPlayMode,
+                        renderedWidget = el.toWidgetWithReplacedData(
+                          data: data,
+                          schemaNodeList: schemaNodeList,
+                          isPlayMode: isPlayMode,
+                          padding: Offset(0, 0),
+                        );
+                      } else {
+                        renderedWidget = el.toWidget(
+                          schemaNodeList: schemaNodeList,
+                          isPlayMode: isPlayMode,
+                          padding: Offset(0, 0),
+                        );
+                      }
+
+                      return Positioned(
+                        top: el.node.position.dy,
+                        left: el.node.position.dx,
+                        child: renderedWidget,
                       );
-                    } else {
-                      renderedWidget = el.toWidget(schemaNodeList: schemaNodeList, isPlayMode: isPlayMode);
-                    }
-
-                    return Positioned(
-                      top: el.node.position.dy,
-                      left: el.node.position.dx,
-                      child: renderedWidget,
-                    );
-                  })
-                ],
+                    })
+                  ],
+                ),
               ),
-            ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 1,
+                      color: getThemeColor(
+                        schemaNodeList.parent.userActions.currentTheme,
+                        schemaNodeList.properties['SeparatorsColor'],
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ],

@@ -204,7 +204,6 @@ class GuidelinesManager {
     this.foundGuidelines.clearVertical();
     this.allObjectGuides.forEach((element) {
       element.verticalGuides.toRayList().forEach((element) => element.isVisible = false);
-      element.verticalGuides.toRayList().forEach((element) => element.isVisible = false);
     });
   }
 

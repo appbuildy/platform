@@ -145,6 +145,8 @@ class ListElementNode {
   final Widget iconPreview;
   final Function onColumnRelationChange;
 
+  Offset offsetFromRealScreen;
+
   String columnRelation;
 
   ListElementNode({
@@ -265,6 +267,7 @@ class ListElementNode {
   Widget toWidget({
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
+    @required Offset padding,
   }) {
       return GestureDetector(
           onTap: () {
@@ -276,13 +279,13 @@ class ListElementNode {
             onPanEnd: (_) => {},
             repositionAndResize: this.repositionAndResize,
             currentScreenWorkspaceSize: Offset(
-              // list padding horizontal - 12. todo: refac
-              schemaNodeList.size.dx - 12 * 2,
-              schemaNodeList.properties['ListItemHeight'].value,
+              schemaNodeList.size.dx - padding.dx * 2,
+              schemaNodeList.properties['ListItemHeight'].value - padding.dy * 2,
             ),
             isPlayMode: isPlayMode,
             isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
             toWidgetFunction: this.node.toWidget,
+            isMagnetInteraction: false,
           )
       );
   }
@@ -291,7 +294,26 @@ class ListElementNode {
     @required String data,
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
+    @required Offset padding,
   }) {
-    return (this.node as DataContainer).toWidgetWithReplacedData(data: data);
+    return GestureDetector(
+        onTap: () {
+          schemaNodeList.selectedListElementNode = this;
+          this.onColumnRelationChange();
+        },
+        child: SchemaNode.renderWithSelected(
+          node: this.node,
+          onPanEnd: (_) => {},
+          repositionAndResize: this.repositionAndResize,
+          currentScreenWorkspaceSize: Offset(
+            schemaNodeList.size.dx - padding.dx * 2,
+            schemaNodeList.properties['ListItemHeight'].value - padding.dy * 2,
+          ),
+          isPlayMode: isPlayMode,
+          isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
+          toWidgetFunction: ({ bool isPlayMode }) => (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),
+          isMagnetInteraction: false,
+        )
+    );
   }
 }
