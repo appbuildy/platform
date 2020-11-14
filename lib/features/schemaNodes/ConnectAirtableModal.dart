@@ -1,4 +1,6 @@
 // ignore: avoid_web_libraries_in_flutter
+import 'dart:convert';
+import 'dart:io';
 import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
@@ -7,6 +9,8 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyLink.dart';
 import 'package:flutter_app/ui/MyModal.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
+import 'package:flutter_app/utils/ShowToast.dart';
+import 'package:http/http.dart' as http;
 
 class ConnectAirtableModal extends StatefulWidget {
   @override
@@ -56,7 +60,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
     }
   }
 
-  void handleBaseContinue() {
+  void handleBaseContinue() async {
     final value = base.trim();
 
     if (value.length == 0) {
@@ -70,6 +74,31 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           child: renderBase(),
           onClose: () {});
     } else {
+      try {
+        var response = await http.put('/api/project/123',
+            headers: ,
+            body: json.encode({
+              'airtable_credentials': {'api_key': token, 'base': base}
+            }));
+        print('response $response');
+        if (response.statusCode != 200)
+          throw HttpException('${response.statusCode}');
+
+        ShowToast.info('All goodie', context);
+      } catch (e) {
+        ShowToast.error('Error has occured', context);
+      }
+//      http
+//          .put('/api/project/123',
+//              body: json.encode({
+//                'airtable_credentials': {'api_key': token, 'base': base}
+//              }))
+//          .then((value) {
+//        ShowToast.info('All goodie', context);
+//      }).catchError(() {
+//        ShowToast.error('Error has occured', context);
+//        print('there is an errror');
+//      });
       modal.close();
       print('kek lol 4eba $base, $token');
     }
@@ -123,7 +152,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.red)),
+                                      color: MyColors.error)),
                             )
                           : Container(),
                       Expanded(child: Container()),
@@ -230,7 +259,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: Colors.red)),
+                                      color: MyColors.error)),
                             )
                           : Container(),
                       Expanded(child: Container()),

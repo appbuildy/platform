@@ -10,6 +10,7 @@ class MyColors {
   static const Color lightGray = const Color(0xFFE7E8ED);
   static const Color mainBlue = const Color(0xFF239dff);
   static const Color textBlue = const Color(0xFF007aff);
+  static const Color error = const Color(0xFFff3e3e);
 }
 
 class MyGradients {

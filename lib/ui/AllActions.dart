@@ -10,9 +10,9 @@ import 'package:flutter_app/store/userActions/AddScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
+import 'package:flutter_app/utils/ShowToast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:toast/toast.dart';
 
 class AllActions extends StatefulWidget {
   final ObservableList<SchemaStore> screens;
@@ -45,11 +45,7 @@ class _AllActionsState extends State<AllActions> {
       screenId: widget.userActions.currentScreen.id,
     );
 
-    Toast.show("Details page Created", context,
-        backgroundColor: MyColors.mainBlue,
-        textColor: MyColors.white,
-        duration: 2,
-        gravity: Toast.TOP);
+    ShowToast.info("Details page created", context);
 
     final themeStore = widget.userActions.themeStore;
     final listColumns = detailedInfo.tableName != null
