@@ -1,4 +1,5 @@
 import 'package:flutter_app/features/entities/Project.dart';
+import 'package:universal_html/html.dart';
 
 import '../project_parameters_from_browser_query.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,7 @@ class SetupPreview {
   http.Client client;
 
   SetupPreview({settings, client}) {
-    this.settings = settings;
+    this.settings = settings ?? ProjectParametersFromBrowserQuery(window);
     this.client = client ?? http.Client();
   }
 

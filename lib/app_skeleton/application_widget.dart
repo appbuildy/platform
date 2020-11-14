@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_skeleton/application.dart';
 import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
 import 'package:universal_html/html.dart';
 
@@ -33,7 +32,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
         application = applicationLoad;
         isLoading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      throw (e);
+    }
   }
 
   @override

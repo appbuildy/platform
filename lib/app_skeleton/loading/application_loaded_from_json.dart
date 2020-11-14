@@ -13,7 +13,7 @@ class ApplicationLoadedFromJson implements IApplicationLoad {
   }
 
   List<Screen> _loadScreens() {
-    return jsonApp['screens']
+    return jsonApp['canvas']['screens']
         .map((screen) {
           return Screen.fromJson(screen);
         })
