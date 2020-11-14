@@ -76,7 +76,6 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
     } else {
       try {
         var response = await http.put('/api/project/123',
-            headers: ,
             body: json.encode({
               'airtable_credentials': {'api_key': token, 'base': base}
             }));

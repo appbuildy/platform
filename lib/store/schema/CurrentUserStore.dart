@@ -22,9 +22,7 @@ abstract class _CurrentUserStore with Store {
 
   @action
   Future<void> setupProject(dynamic window, RemoteAttributes attrs) async {
-    final settings = ProjectParametersFromBrowserQuery(window);
-    project = await Project.setup(
-        userStore: this, settings: settings, attributes: attrs);
+    project = await Project.setup(userStore: this, attributes: attrs);
   }
 
   @action
