@@ -1,8 +1,7 @@
 import 'dart:html';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-
-import './UiFake.dart' as ui;
 
 class IFrame extends StatefulWidget {
   final String src;
