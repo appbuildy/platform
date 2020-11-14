@@ -1,5 +1,8 @@
+// ignore: avoid_web_libraries_in_flutter
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
@@ -143,35 +146,39 @@ class SchemaNodeList extends SchemaNode {
       ColumnDivider(
         name: 'Data Source',
       ),
-      Row(
-        children: [
-          Text(
-            'Table from',
-            style: MyTextStyle.regularCaption,
-          ),
-          SizedBox(
-            width: 15,
-          ),
-          Expanded(
-            child: MyClickSelect(
-                placeholder: 'Select Table',
-                selectedValue: properties['Table'].value ?? null,
-                onChange: (screen) async {
-                  await updateData(screen.value, userActions);
-                  userActions.changePropertyTo(
-                      SchemaStringProperty('Table', screen.value));
+      (userActions.currentUserStore.project != null &&
+              userActions.currentUserStore.project.slugUrl != null)
+          ? Row(
+              children: [
+                Text(
+                  'Table from',
+                  style: MyTextStyle.regularCaption,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: MyClickSelect(
+                      placeholder: 'Select Table',
+                      selectedValue: properties['Table'].value ?? null,
+                      onChange: (screen) async {
+                        await updateData(screen.value, userActions);
+                        userActions.changePropertyTo(
+                            SchemaStringProperty('Table', screen.value));
 
-                  properties['Elements'].value.updateAllColumns(userActions
-                      .columnsFor(screen.value)
-                      .map((e) => e.name)
-                      .toList());
-                },
-                options: userActions.tables
-                    .map((element) => SelectOption(element, element))
-                    .toList()),
-          )
-        ],
-      ),
+                        properties['Elements'].value.updateAllColumns(
+                            userActions
+                                .columnsFor(screen.value)
+                                .map((e) => e.name)
+                                .toList());
+                      },
+                      options: userActions.tables
+                          .map((element) => SelectOption(element, element))
+                          .toList()),
+                )
+              ],
+            )
+          : ConnectAirtableModal(),
       ColumnDivider(
         name: 'Row Elements',
       ),

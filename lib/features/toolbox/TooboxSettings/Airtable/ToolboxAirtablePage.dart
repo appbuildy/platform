@@ -14,11 +14,11 @@ class BuildToolboxAirtablePage extends StatefulWidget {
     @required this.userActions,
   });
   @override
-  _BuildToolboxAirtablePageState createState() => _BuildToolboxAirtablePageState();
+  _BuildToolboxAirtablePageState createState() =>
+      _BuildToolboxAirtablePageState();
 }
 
 class _BuildToolboxAirtablePageState extends State<BuildToolboxAirtablePage> {
-
   Widget _buildItem({
     String title,
     String subtitle,
@@ -40,16 +40,17 @@ class _BuildToolboxAirtablePageState extends State<BuildToolboxAirtablePage> {
       ],
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ToolboxHeader(
-            leftWidget: IconCircleButton(
-                onTap: widget.goBackToSettings,
-                assetPath: 'assets/icons/meta/btn-back.svg',
-            ),
-            title: 'Airtable',
+          leftWidget: IconCircleButton(
+            onTap: widget.goBackToSettings,
+            assetPath: 'assets/icons/meta/btn-back.svg',
+          ),
+          title: 'Airtable',
         ),
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 20),
@@ -58,15 +59,17 @@ class _BuildToolboxAirtablePageState extends State<BuildToolboxAirtablePage> {
               children: [
                 _buildItem(
                   title: 'API Key',
-                  subtitle: 'Please note that API key is for access to all your tables: it adds automatically to every new project you create',
-                  textFieldDefaultValue: 'Please note that API key is for access to all your tables: it adds automatically to every new project you create',
+                  subtitle:
+                      'Please note that API key is for access to all your tables: it adds automatically to every new project you create',
+                  textFieldDefaultValue: 'Your API Key',
                   onTextFieldChange: () {},
                 ),
                 SizedBox(height: 25.0),
                 _buildItem(
                   title: 'Link to Your Base',
-                  subtitle: 'This link is used only for this project. The base on this link should contain only data you will use in this app',
-                  textFieldDefaultValue: 'kek',
+                  subtitle:
+                      'This link is used only for this project. The base on this link should contain only data you will use in this app',
+                  textFieldDefaultValue: 'Your Base',
                   onTextFieldChange: () {},
                 )
               ],

@@ -10,9 +10,9 @@ import 'package:flutter_app/store/userActions/AddScreen.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
+import 'package:flutter_app/utils/ShowToast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
-import 'package:toast/toast.dart';
 
 class AllActions extends StatefulWidget {
   final ObservableList<SchemaStore> screens;
@@ -45,11 +45,7 @@ class _AllActionsState extends State<AllActions> {
       screenId: widget.userActions.currentScreen.id,
     );
 
-    Toast.show("Details page Created", context,
-        backgroundColor: MyColors.mainBlue,
-        textColor: MyColors.white,
-        duration: 2,
-        gravity: Toast.TOP);
+    ShowToast.info("Details page created", context);
 
     final themeStore = widget.userActions.themeStore;
     final listColumns = detailedInfo.tableName != null
@@ -66,10 +62,10 @@ class _AllActionsState extends State<AllActions> {
     final detailedComponents = [
       SchemaNodeImage(
           position: Offset(0, 0),
-          url: isInRange(0)
-              ? detailedInfo.rowData[listColumns[0]].data
+          url: isInRange(2)
+              ? detailedInfo.rowData[listColumns[2]].data
               : detailedInfo.rowData[listColumns[0]].data,
-          column: isInRange(0) ? listColumns[0] : listColumns[0]),
+          column: isInRange(2) ? listColumns[2] : listColumns[0]),
       SchemaNodeIcon(
           themeStore: themeStore,
           position: Offset(14, 40),
@@ -80,12 +76,12 @@ class _AllActionsState extends State<AllActions> {
           position: Offset(14, 220),
           size: Offset(343, 35),
           themeStore: themeStore,
-          text: isInRange(2)
-              ? detailedInfo.rowData[listColumns[2]].data
+          text: isInRange(0)
+              ? detailedInfo.rowData[listColumns[0]].data
               : detailedInfo.rowData[listColumns[0]].data,
           fontSize: 24,
           fontWeight: FontWeight.w600,
-          column: isInRange(2) ? listColumns[2] : listColumns[0]),
+          column: isInRange(0) ? listColumns[0] : listColumns[0]),
       SchemaNodeText(
           position: Offset(14, 260),
           size: Offset(343, 25),
