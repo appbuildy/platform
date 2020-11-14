@@ -1,8 +1,8 @@
 import 'package:universal_html/html.dart';
 
-class SettingsParser {
+class ProjectParametersFromBrowserQuery {
   Window _window;
-  SettingsParser(this._window);
+  ProjectParametersFromBrowserQuery(this._window);
   static const String mainHost = "https://www.appbuildy.com";
 
   String get jwt =>
