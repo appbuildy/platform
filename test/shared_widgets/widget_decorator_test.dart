@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_app/shared_widgets/button.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -10,5 +11,6 @@ void main() {
 
   test('.fromJson()', () {
     var widget = WidgetDecorator.fromJson(decodedComponent);
+    expect(widget.widget, isA<Button>());
   });
 }
