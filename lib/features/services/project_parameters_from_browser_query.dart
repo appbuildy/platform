@@ -5,6 +5,7 @@ class ProjectParametersFromBrowserQuery {
   ProjectParametersFromBrowserQuery(this._window);
   static const String mainHost = "https://www.appbuildy.com";
 
+  bool isPreviewMode = Uri.base.queryParameters['preview_mode'] == 'enabled';
   String get jwt =>
       _window.localStorage['jwt'] ?? Uri.base.queryParameters['jwt'];
   String get url =>
