@@ -13,6 +13,11 @@ import 'package:flutter_app/utils/ShowToast.dart';
 import 'package:http/http.dart' as http;
 
 class ConnectAirtableModal extends StatefulWidget {
+  final bool isInToolbox;
+
+  const ConnectAirtableModal({Key key, this.isInToolbox = false})
+      : super(key: key);
+
   @override
   _ConnectAirtableModalState createState() => _ConnectAirtableModalState();
 }
@@ -85,7 +90,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
 
         ShowToast.info('All goodie', context);
       } catch (e) {
-        ShowToast.error('Error has occured', context);
+        ShowToast.error('Error has occurred', context);
       }
 //      http
 //          .put('/api/project/123',
@@ -307,10 +312,50 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    print('isBase $isBase');
+  Widget buildInToolbox() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.network(
+          'assets/icons/settings/airtable.svg',
+          fit: BoxFit.contain,
+          width: 62,
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        Text(
+          'Connect Airtable',
+          style: MyTextStyle.mediumTitle,
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Text(
+          'You need to connect your Airtable base to sync the data with your App',
+          textAlign: TextAlign.center,
+          style:
+              TextStyle(color: Color(0xFF777777), fontSize: 14, height: 1.45),
+        ),
+        SizedBox(
+          height: 14,
+        ),
+        MyButton(
+          text: 'Connect',
+          onTap: () {
+            modal.show(
+                context: context,
+                width: 980,
+                height: 425,
+                child: renderToken(),
+                onClose: () {});
+          },
+        ),
+      ],
+    );
+  }
 
+  Widget buildNoToolbox() {
     return Column(
       children: [
         MyButton(
@@ -333,11 +378,17 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           height: 8,
         ),
         Text(
-          'You need to connect your Airtable base to synchronize the data with your App',
+          'You need to connect your Airtable base to sync the data with your App',
+          textAlign: TextAlign.center,
           style:
               TextStyle(color: Color(0xFF777777), fontSize: 14, height: 1.45),
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.isInToolbox ? buildInToolbox() : buildNoToolbox();
   }
 }

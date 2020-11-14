@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/TooboxSettings/ToolboxSettings.dart';
+import 'package:flutter_app/features/toolbox/ToolboxData/ToolboxData.dart';
 import 'package:flutter_app/features/toolbox/ToolboxLayout.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/ToolboxPages.dart';
@@ -34,7 +35,7 @@ class Toolbox extends StatelessWidget {
           userActions: userActions,
         );
       case ToolboxStates.data:
-        return Container();
+        return ToolboxData(userActions: userActions);
     }
 
     return Container();
