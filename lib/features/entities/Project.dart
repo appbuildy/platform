@@ -23,8 +23,7 @@ class Project {
       CurrentUserStore userStore,
       ProjectParametersFromBrowserQuery settings,
       RemoteAttributes attributes}) async {
-    settings ??= ProjectParametersFromBrowserQuery(window);
-    return await SetupProject(userStore, settings, attributes)
+    return await SetupProject(userStore: userStore, attributes: attributes)
         .setup(auth, client);
   }
 
@@ -47,7 +46,6 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
-      print("Data Fetched");
       return data;
     } catch (e) {
       print("Failed to fetch project data from host $url");

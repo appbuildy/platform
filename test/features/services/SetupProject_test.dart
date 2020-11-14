@@ -37,8 +37,10 @@ void main() {
     final attributesMock = MockAttributes();
     when(userMock.currentUser).thenReturn(UserInstanceMock());
 
-    final SetupProject setup =
-        SetupProject(userMock, MockSettings(), attributesMock);
+    final SetupProject setup = SetupProject(
+        userStore: userMock,
+        settings: MockSettings(),
+        attributes: attributesMock);
     var client = MockClient((request) async {
       return Response(responseBody, 200, request: request);
     });
