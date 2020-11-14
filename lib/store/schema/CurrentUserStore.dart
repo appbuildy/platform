@@ -2,8 +2,8 @@ import 'package:flutter_app/features/entities/NotLoggedInUser.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
-import 'package:flutter_app/features/services/SettingsParser.dart';
 import 'package:flutter_app/features/services/SetupProject.dart';
+import 'package:flutter_app/features/services/project_parameters_from_browser_query.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:mobx/mobx.dart';
 
@@ -22,8 +22,9 @@ abstract class _CurrentUserStore with Store {
 
   @action
   Future<void> setupProject(dynamic window, RemoteAttributes attrs) async {
-    final SettingsParser settings = SettingsParser(window);
-    project = await SetupProject(this, settings, attrs).setup();
+    final settings = ProjectParametersFromBrowserQuery(window);
+    project = await Project.setup(
+        userStore: this, settings: settings, attributes: attrs);
   }
 
   @action
