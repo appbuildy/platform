@@ -57,7 +57,7 @@ abstract class SchemaNode {
     return true;
   }
 
-  static double axisMove({
+  double axisMove({
     @required double axisNodePosition,
     @required double axisNodeSize,
     @required double axisDelta,
@@ -74,30 +74,30 @@ abstract class SchemaNode {
     return axisNodePosition + axisDelta;
   }
 
-  static SchemaNode move({
-    @required SchemaNode node,
+  SchemaNode move({
+    //@required SchemaNode node,
     @required Offset delta,
     @required Offset screenSize,
   }) {
-    node.position = Offset(
-      SchemaNode.axisMove(
-        axisNodePosition: node.position.dx,
-        axisNodeSize: node.size.dx,
+    this.position = Offset(
+      this.axisMove(
+        axisNodePosition: this.position.dx,
+        axisNodeSize: this.size.dx,
         axisDelta: delta.dx,
         axisScreenSize: screenSize.dx,
       ),
-      SchemaNode.axisMove(
-        axisNodePosition: node.position.dy,
-        axisNodeSize: node.size.dy,
+      this.axisMove(
+        axisNodePosition: this.position.dy,
+        axisNodeSize: this.size.dy,
         axisDelta: delta.dy,
         axisScreenSize: screenSize.dy,
       ),
     );
 
-    return node;
+    return this;
   }
 
-  static List<double> resizeSideWithAnchorPoint({
+  List<double> _resizeSideWithAnchorPoint({
     @required double position,
     @required double size,
     @required double delta,
@@ -138,7 +138,7 @@ abstract class SchemaNode {
     return [newPosition, newSize];
   }
 
-  static double resizeSide({
+  double _resizeSide({
     @required double position,
     @required double size,
     @required double delta,
@@ -157,101 +157,101 @@ abstract class SchemaNode {
     return newSize;
   }
 
-  static SchemaNode resizeTop({
-    @required SchemaNode node,
+  SchemaNode resizeTop({
+    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
   }) {
-    List<double> newPositionAndSize = resizeSideWithAnchorPoint(
-      position: node.position.dy,
-      size: node.size.dy,
+    List<double> newPositionAndSize = this._resizeSideWithAnchorPoint(
+      position: this.position.dy,
+      size: this.size.dy,
       delta: deltaDy,
       axisScreenSize: screenSizeDy,
     );
 
     final double newPosition = newPositionAndSize[0];
-    node.position = Offset(
-      node.position.dx,
+    this.position = Offset(
+      this.position.dx,
       newPosition,
     );
 
     final double newSize = newPositionAndSize[1];
-    node.size = Offset(
-      node.size.dx,
+    this.size = Offset(
+      this.size.dx,
       newSize,
     );
 
-    return node;
+    return this;
   }
 
-  static SchemaNode resizeRight({
-    @required SchemaNode node,
+  SchemaNode resizeRight({
+    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
   }) {
-    final newSize = resizeSide(
-      position: node.position.dx,
-      size: node.size.dx,
+    final newSize = this._resizeSide(
+      position: this.position.dx,
+      size: this.size.dx,
       delta: deltaDx,
       axisScreenSize: screenSizeDx,
     );
 
-    node.size = Offset(
+    this.size = Offset(
       newSize,
-      node.size.dy,
+      this.size.dy,
     );
 
-    return node;
+    return this;
   }
 
-  static SchemaNode resizeBottom({
-    @required SchemaNode node,
+  SchemaNode resizeBottom({
+    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
   }) {
-    final newSize = resizeSide(
-      position: node.position.dy,
-      size: node.size.dy,
+    final newSize = this._resizeSide(
+      position: this.position.dy,
+      size: this.size.dy,
       delta: deltaDy,
       axisScreenSize: screenSizeDy,
     );
 
-    node.size = Offset(
-      node.size.dx,
+    this.size = Offset(
+      this.size.dx,
       newSize,
     );
 
-    return node;
+    return this;
   }
 
-  static SchemaNode resizeLeft({
-    @required SchemaNode node,
+  SchemaNode resizeLeft({
+    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
   }) {
-    List<double> newPositionAndSize = resizeSideWithAnchorPoint(
-      position: node.position.dx,
-      size: node.size.dx,
+    List<double> newPositionAndSize = this._resizeSideWithAnchorPoint(
+      position: this.position.dx,
+      size: this.size.dx,
       delta: deltaDx,
       axisScreenSize: screenSizeDx,
     );
 
     final double newPosition = newPositionAndSize[0];
-    node.position = Offset(
+    this.position = Offset(
       newPosition,
-      node.position.dy,
+      this.position.dy,
     );
 
     final double newSize = newPositionAndSize[1];
-    node.size = Offset(
+    this.size = Offset(
       newSize,
-      node.size.dy,
+      this.size.dy,
     );
 
-    return node;
+    return this;
   }
 
-  static double magnetAxisAfterMove({
+  double _magnetAxisAfterMove({
     @required double axisDelta,
     @required double axisScreenSize,
     @required List<Ray> nodeAxisRays,
@@ -317,8 +317,8 @@ abstract class SchemaNode {
     return nodeStartPosition;
   }
 
-  static SchemaNode magnetHorizontalMove({
-    @required SchemaNode node,
+  SchemaNode magnetHorizontalMove({
+    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
     @required GuidelinesManager guidelinesManager,
@@ -326,33 +326,33 @@ abstract class SchemaNode {
     final OrientationTypes raysOrientation = OrientationTypes.vertical;
 
     final List<Ray> startRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation);
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: startRays);
 
     if (guidelinesManager.foundGuidelines.vertical != null &&
         deltaDx.abs() < SchemaNode.demagnetizeSideDelta) {
-      return node;
+      return this;
     }
 
-    node.position = Offset(
-      SchemaNode.axisMove(
-          axisNodePosition: node.position.dx,
-          axisNodeSize: node.size.dx,
+    this.position = Offset(
+      this.axisMove(
+          axisNodePosition: this.position.dx,
+          axisNodeSize: this.size.dx,
           axisDelta: deltaDx,
           axisScreenSize: screenSizeDx),
-      node.position.dy,
+      this.position.dy,
     );
 
     final List<Ray> movedRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation);
 
-    node.position = Offset(
-      SchemaNode.magnetAxisAfterMove(
+    this.position = Offset(
+      this._magnetAxisAfterMove(
         axisDelta: deltaDx,
         axisScreenSize: screenSizeDx,
         nodeAxisRays: movedRays,
@@ -363,21 +363,21 @@ abstract class SchemaNode {
         searchGuidelinesUnderRays:
             guidelinesManager.searchGuidelinesUnderVerticalRays,
       ),
-      node.position.dy,
+      this.position.dy,
     );
 
     final List<Ray> endRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation);
 
     guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
-    return node;
+    return this;
   }
 
-  static SchemaNode magnetVerticalMove({
-    @required SchemaNode node,
+  SchemaNode magnetVerticalMove({
+    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
@@ -385,34 +385,34 @@ abstract class SchemaNode {
     final OrientationTypes raysOrientation = OrientationTypes.horizontal;
 
     final List<Ray> startRays = Ray.getOrientedRays(
-        startPosition: node.position.dy,
-        objectSize: node.size.dy,
+        startPosition: this.position.dy,
+        objectSize: this.size.dy,
         raysOrientation: raysOrientation);
 
     guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: startRays);
 
     if (guidelinesManager.foundGuidelines.horizontal != null &&
         deltaDy.abs() < SchemaNode.demagnetizeSideDelta) {
-      return node;
+      return this;
     }
 
-    node.position = Offset(
-      node.position.dx,
-      SchemaNode.axisMove(
-          axisNodePosition: node.position.dy,
-          axisNodeSize: node.size.dy,
+    this.position = Offset(
+      this.position.dx,
+      this.axisMove(
+          axisNodePosition: this.position.dy,
+          axisNodeSize: this.size.dy,
           axisDelta: deltaDy,
           axisScreenSize: screenSizeDy),
     );
 
     final List<Ray> movedRays = Ray.getOrientedRays(
-        startPosition: node.position.dy,
-        objectSize: node.size.dy,
+        startPosition: this.position.dy,
+        objectSize: this.size.dy,
         raysOrientation: raysOrientation);
 
-    node.position = Offset(
-      node.position.dx,
-      SchemaNode.magnetAxisAfterMove(
+    this.position = Offset(
+      this.position.dx,
+      this._magnetAxisAfterMove(
         axisDelta: deltaDy,
         axisScreenSize: screenSizeDy,
         nodeAxisRays: movedRays,
@@ -425,10 +425,10 @@ abstract class SchemaNode {
       ),
     );
 
-    return node;
+    return this;
   }
 
-  static List<double> magnetResizeSizeWithAnchorPoint({
+  List<double> _magnetResizeSizeWithAnchorPoint({
     @required double position,
     @required double size,
     @required FoundGuideline foundGuideline,
@@ -465,7 +465,7 @@ abstract class SchemaNode {
     return [magnetizedNodePosition, magnetizedNodeSize];
   }
 
-  static double magnetResize({
+  double _magnetResize({
     @required double position,
     @required double size,
     @required FoundGuideline foundGuideline,
@@ -498,8 +498,8 @@ abstract class SchemaNode {
     return magnetizedNodeSize;
   }
 
-  static SchemaNode magnetTopResize({
-    @required SchemaNode node,
+  SchemaNode magnetTopResize({
+    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
@@ -507,8 +507,8 @@ abstract class SchemaNode {
     final OrientationTypes raysOrientation = OrientationTypes.horizontal;
 
     final List<Ray> startRays = Ray.getOrientedRays(
-      startPosition: node.position.dy,
-      objectSize: node.size.dy,
+      startPosition: this.position.dy,
+      objectSize: this.size.dy,
       raysOrientation: raysOrientation,
     )
         .where(
@@ -520,16 +520,15 @@ abstract class SchemaNode {
     if (!SchemaNode.canDemagnetize(
         foundGuideline: guidelinesManager.foundGuidelines.horizontal,
         delta: deltaDy)) {
-      return node;
+      return this;
     }
 
-    node = SchemaNode.resizeTop(
-        node: node, deltaDy: deltaDy, screenSizeDy: screenSizeDy);
+    this.resizeTop(deltaDy: deltaDy, screenSizeDy: screenSizeDy);
 
     if (deltaDy != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
-        startPosition: node.position.dy,
-        objectSize: node.size.dy,
+        startPosition: this.position.dy,
+        objectSize: this.size.dy,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -544,12 +543,12 @@ abstract class SchemaNode {
       final FoundGuideline foundGuideline =
           guidelinesManager.foundGuidelines.horizontal;
 
-      if (foundGuideline == null) return node;
+      if (foundGuideline == null) return this;
 
       final List<double> magnetizedNodePositionAndSize =
-          SchemaNode.magnetResizeSizeWithAnchorPoint(
-        position: node.position.dy,
-        size: node.size.dy,
+          this._magnetResizeSizeWithAnchorPoint(
+        position: this.position.dy,
+        size: this.size.dy,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
         clearGuideline: guidelinesManager.clearHorizontal,
@@ -558,19 +557,19 @@ abstract class SchemaNode {
       final double newPositionDy = magnetizedNodePositionAndSize[0];
       final double newSizeDy = magnetizedNodePositionAndSize[1];
 
-      node.position = Offset(
-        node.position.dx,
+      this.position = Offset(
+        this.position.dx,
         newPositionDy,
       );
 
-      node.size = Offset(
-        node.size.dx,
+      this.size = Offset(
+        this.size.dx,
         newSizeDy,
       );
 
       final List<Ray> endRays = Ray.getOrientedRays(
-        startPosition: node.position.dy,
-        objectSize: node.size.dy,
+        startPosition: this.position.dy,
+        objectSize: this.size.dy,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -579,14 +578,14 @@ abstract class SchemaNode {
 
       guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: endRays);
 
-      return node;
+      return this;
     }
 
-    return node;
+    return this;
   }
 
-  static SchemaNode magnetRightResize({
-    @required SchemaNode node,
+  SchemaNode magnetRightResize({
+    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
     @required GuidelinesManager guidelinesManager,
@@ -594,8 +593,8 @@ abstract class SchemaNode {
     final OrientationTypes raysOrientation = OrientationTypes.vertical;
 
     final List<Ray> startRays = Ray.getOrientedRays(
-      startPosition: node.position.dx,
-      objectSize: node.size.dx,
+      startPosition: this.position.dx,
+      objectSize: this.size.dx,
       raysOrientation: raysOrientation,
     )
         .where((Ray ray) =>
@@ -607,16 +606,15 @@ abstract class SchemaNode {
     if (!SchemaNode.canDemagnetize(
         foundGuideline: guidelinesManager.foundGuidelines.vertical,
         delta: deltaDx)) {
-      return node;
+      return this;
     }
 
-    node = SchemaNode.resizeRight(
-        node: node, deltaDx: deltaDx, screenSizeDx: screenSizeDx);
+    this.resizeRight(deltaDx: deltaDx, screenSizeDx: screenSizeDx);
 
     if (deltaDx != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -631,24 +629,24 @@ abstract class SchemaNode {
       final FoundGuideline foundGuideline =
           guidelinesManager.foundGuidelines.vertical;
 
-      if (foundGuideline == null) return node;
+      if (foundGuideline == null) return this;
 
-      final double newSizeDx = SchemaNode.magnetResize(
-        position: node.position.dx,
-        size: node.size.dx,
+      final double newSizeDx = this._magnetResize(
+        position: this.position.dx,
+        size: this.size.dx,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDx,
         clearGuideline: guidelinesManager.clearVertical,
       );
 
-      node.size = Offset(
+      this.size = Offset(
         newSizeDx,
-        node.size.dy,
+        this.size.dy,
       );
 
       final List<Ray> endRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -657,14 +655,14 @@ abstract class SchemaNode {
 
       guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
-      return node;
+      return this;
     }
 
-    return node;
+    return this;
   }
 
-  static SchemaNode magnetBottomResize({
-    @required SchemaNode node,
+  SchemaNode magnetBottomResize({
+    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
@@ -672,8 +670,8 @@ abstract class SchemaNode {
     final OrientationTypes raysOrientation = OrientationTypes.horizontal;
 
     final List<Ray> startRays = Ray.getOrientedRays(
-      startPosition: node.position.dy,
-      objectSize: node.size.dy,
+      startPosition: this.position.dy,
+      objectSize: this.size.dy,
       raysOrientation: raysOrientation,
     )
         .where((Ray ray) =>
@@ -685,16 +683,15 @@ abstract class SchemaNode {
     if (!SchemaNode.canDemagnetize(
         foundGuideline: guidelinesManager.foundGuidelines.horizontal,
         delta: deltaDy)) {
-      return node;
+      return this;
     }
 
-    node = SchemaNode.resizeBottom(
-        node: node, deltaDy: deltaDy, screenSizeDy: screenSizeDy);
+    this.resizeBottom(deltaDy: deltaDy, screenSizeDy: screenSizeDy);
 
     if (deltaDy != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
-        startPosition: node.position.dy,
-        objectSize: node.size.dy,
+        startPosition: this.position.dy,
+        objectSize: this.size.dy,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -709,24 +706,24 @@ abstract class SchemaNode {
       final FoundGuideline foundGuideline =
           guidelinesManager.foundGuidelines.horizontal;
 
-      if (foundGuideline == null) return node;
+      if (foundGuideline == null) return this;
 
-      final double newSizeDy = SchemaNode.magnetResize(
-        position: node.position.dy,
-        size: node.size.dy,
+      final double newSizeDy = this._magnetResize(
+        position: this.position.dy,
+        size: this.size.dy,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
         clearGuideline: guidelinesManager.clearHorizontal,
       );
 
-      node.size = Offset(
-        node.size.dx,
+      this.size = Offset(
+        this.size.dx,
         newSizeDy,
       );
 
       final List<Ray> endRays = Ray.getOrientedRays(
-        startPosition: node.position.dy,
-        objectSize: node.size.dy,
+        startPosition: this.position.dy,
+        objectSize: this.size.dy,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -735,14 +732,14 @@ abstract class SchemaNode {
 
       guidelinesManager.searchGuidelinesUnderHorizontalRays(rays: endRays);
 
-      return node;
+      return this;
     }
 
-    return node;
+    return this;
   }
 
-  static SchemaNode magnetLeftResize({
-    @required SchemaNode node,
+  SchemaNode magnetLeftResize({
+    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
     @required GuidelinesManager guidelinesManager,
@@ -750,8 +747,8 @@ abstract class SchemaNode {
     final OrientationTypes raysOrientation = OrientationTypes.vertical;
 
     final List<Ray> startRays = Ray.getOrientedRays(
-      startPosition: node.position.dx,
-      objectSize: node.size.dx,
+      startPosition: this.position.dx,
+      objectSize: this.size.dx,
       raysOrientation: raysOrientation,
     )
         .where(
@@ -763,16 +760,15 @@ abstract class SchemaNode {
     if (!SchemaNode.canDemagnetize(
         foundGuideline: guidelinesManager.foundGuidelines.vertical,
         delta: deltaDx)) {
-      return node;
+      return this;
     }
 
-    node = SchemaNode.resizeLeft(
-        node: node, deltaDx: deltaDx, screenSizeDx: screenSizeDx);
+    this.resizeLeft(deltaDx: deltaDx, screenSizeDx: screenSizeDx);
 
     if (deltaDx != 0) {
       final List<Ray> movedRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -787,12 +783,11 @@ abstract class SchemaNode {
       final FoundGuideline foundGuideline =
           guidelinesManager.foundGuidelines.vertical;
 
-      if (foundGuideline == null) return node;
+      if (foundGuideline == null) return this;
 
-      final List<double> magnetizedNodePositionAndSize =
-          SchemaNode.magnetResizeSizeWithAnchorPoint(
-        position: node.position.dx,
-        size: node.size.dx,
+      final List<double> magnetizedNodePositionAndSize = this._magnetResizeSizeWithAnchorPoint(
+        position: this.position.dx,
+        size: this.size.dx,
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDx,
         clearGuideline: guidelinesManager.clearHorizontal,
@@ -801,19 +796,19 @@ abstract class SchemaNode {
       final double newPositionDx = magnetizedNodePositionAndSize[0];
       final double newSizeDx = magnetizedNodePositionAndSize[1];
 
-      node.position = Offset(
+      this.position = Offset(
         newPositionDx,
-        node.position.dy,
+        this.position.dy,
       );
 
-      node.size = Offset(
+      this.size = Offset(
         newSizeDx,
-        node.size.dy,
+        this.size.dy,
       );
 
       final List<Ray> endRays = Ray.getOrientedRays(
-        startPosition: node.position.dx,
-        objectSize: node.size.dx,
+        startPosition: this.position.dx,
+        objectSize: this.size.dx,
         raysOrientation: raysOrientation,
       )
           .where((Ray ray) =>
@@ -822,10 +817,10 @@ abstract class SchemaNode {
 
       guidelinesManager.searchGuidelinesUnderVerticalRays(rays: endRays);
 
-      return node;
+      return this;
     }
 
-    return node;
+    return this;
   }
 
   Map<String, dynamic> toJson() => {
@@ -854,431 +849,5 @@ abstract class SchemaNode {
     final Map<String, dynamic> map = {};
     properties.forEach((k, v) => map[k] = v.toJson());
     return map;
-  }
-
-  static Widget renderWithSelected({
-    @required SchemaNode node,
-    @required Function onPanEnd,
-    @required Function repositionAndResize,
-    @required Offset currentScreenWorkspaceSize,
-    @required bool isPlayMode,
-    @required bool isSelected,
-    @required Function toWidgetFunction,
-    @required bool isMagnetInteraction,
-  }) {
-    final GuidelinesManager guidelinesManager = node.parent.userActions.guidelineManager;
-
-    final Widget circle = Container(
-      width: 11,
-      height: 11,
-      decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: MyColors.white,
-          border: Border.all(width: 2, color: MyColors.mainBlue)),
-    );
-
-    final List<Widget> dots = isSelected ? [
-      Positioned(
-        top: -2,
-        left: -2,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDy = node.position.dy;
-            final double startDx = node.position.dx;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetTopResize(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-              node = SchemaNode.magnetLeftResize(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeTop(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-              );
-              node = SchemaNode.resizeLeft(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDy = node.position.dy;
-            final double endDx = node.position.dx;
-
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
-        ),
-      ),
-      Positioned(
-        top: -2,
-        right: -2,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDy = node.position.dy;
-            final double startDx = node.position.dx + node.size.dx;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetTopResize(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-              node = SchemaNode.magnetRightResize(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeTop(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-              );
-              node = SchemaNode.resizeRight(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDy = node.position.dy;
-            final double endDx = node.position.dx + node.size.dx;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(cursor: CursorEnum.neswResize, child: circle),
-        ),
-      ),
-      Positioned(
-        bottom: -2,
-        right: -2,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDx = node.position.dx + node.size.dx;
-            final double startDy = node.position.dy + node.size.dy;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetBottomResize(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-              node = SchemaNode.magnetRightResize(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeBottom(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-              );
-              node = SchemaNode.resizeRight(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDx = node.position.dx + node.size.dx;
-            final double endDy = node.position.dy + node.size.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
-        ),
-      ),
-      Positioned(
-        bottom: -2,
-        left: -2,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDx = node.position.dx;
-            final double startDy = node.position.dy + node.size.dy;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetBottomResize(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-              node = SchemaNode.magnetLeftResize(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeBottom(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-              );
-              node = SchemaNode.resizeLeft(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-              );
-            }
-
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDx = node.position.dx;
-            final double endDy = node.position.dy + node.size.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(cursor: CursorEnum.neswResize, child: circle),
-        ),
-      ),
-    ] : [Container()];
-
-    final lines = isSelected ? [
-      Positioned(
-        top: 0,
-        left: 0,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (Offset delta) {
-            final double startDy = node.position.dy;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetTopResize(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeTop(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDy = node.position.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(
-            cursor: CursorEnum.nsResize,
-            child: Container(
-              width: node.size.dx,
-              height: 10,
-              decoration: BoxDecoration(
-                border: Border(
-                  top: BorderSide(width: 1, color: MyColors.mainBlue),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      Positioned(
-        top: 0,
-        right: 0,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDx = node.position.dx + node.size.dx;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetRightResize(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeRight(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDx = node.position.dx + node.size.dx;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(
-            cursor: CursorEnum.ewResize,
-            child: Container(
-              width: 10,
-              height: node.size.dy,
-              decoration: BoxDecoration(
-                border: Border(
-                  right: BorderSide(width: 1, color: MyColors.mainBlue),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-      Positioned(
-        left: 0,
-        bottom: 0,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDy = node.position.dy + node.size.dy;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetBottomResize(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeBottom(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDy = node.position.dy + node.size.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(
-            cursor: CursorEnum.nsResize,
-            child: Container(
-                width: node.size.dx,
-                height: 10,
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            width: 1, color: MyColors.mainBlue)))),
-          ),
-        ),
-      ),
-      Positioned(
-        top: 0,
-        left: 0,
-        child: DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final double startDx = node.position.dx;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetLeftResize(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.resizeLeft(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final double endDx = node.position.dx;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(
-            cursor: CursorEnum.ewResize,
-            child: Container(
-              width: 10,
-              height: node.size.dy,
-              decoration: BoxDecoration(
-                border: Border(
-                  left: BorderSide(
-                      width: 1, color: MyColors.mainBlue
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    ] : [Container()];
-
-    return Stack(
-      overflow: Overflow.visible,
-      alignment: Alignment.center,
-      children: [
-        DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            final startDx = node.position.dx;
-            final startDy = node.position.dy;
-
-            if (isMagnetInteraction) {
-              node = SchemaNode.magnetHorizontalMove(
-                node: node,
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
-
-              node = SchemaNode.magnetVerticalMove(
-                node: node,
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node = SchemaNode.move(
-                node: node,
-                delta: delta,
-                screenSize: currentScreenWorkspaceSize,
-              );
-            }
-
-            repositionAndResize(node, isAddedToDoneActions: false);
-
-            final endDx = node.position.dx;
-            final endDy = node.position.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(
-            cursor: CursorEnum.move,
-            child: Container(
-              width: node.size.dx,
-              height: node.size.dy,
-              child: toWidgetFunction(isPlayMode: isPlayMode),
-            ),
-          ),
-        ),
-        ...lines,
-        ...dots,
-      ],
-    );
   }
 }

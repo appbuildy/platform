@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/RenderWithSelected.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
@@ -274,8 +275,8 @@ class ListElementNode {
             schemaNodeList.selectedListElementNode = this;
             this.onColumnRelationChange();
           },
-          child: SchemaNode.renderWithSelected(
-            node: this.node,
+          child: renderWithSelected(
+            node: node,
             onPanEnd: (_) => {},
             repositionAndResize: this.repositionAndResize,
             currentScreenWorkspaceSize: Offset(
@@ -301,8 +302,8 @@ class ListElementNode {
           schemaNodeList.selectedListElementNode = this;
           this.onColumnRelationChange();
         },
-        child: SchemaNode.renderWithSelected(
-          node: this.node,
+        child: renderWithSelected(
+          node: node,
           onPanEnd: (_) => {},
           repositionAndResize: this.repositionAndResize,
           currentScreenWorkspaceSize: Offset(

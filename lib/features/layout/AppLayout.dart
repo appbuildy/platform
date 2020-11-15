@@ -81,7 +81,7 @@ class _AppLayoutState extends State<AppLayout> {
 
         selectedNode.position = Offset(
           selectedNode.position.dx,
-          SchemaNode.axisMove(
+          selectedNode.axisMove(
             axisNodePosition: selectedNode.position.dy,
             axisNodeSize: selectedNode.size.dy,
             axisDelta: isUp ? -1 : 1,
@@ -97,7 +97,7 @@ class _AppLayoutState extends State<AppLayout> {
         final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
 
         selectedNode.position = Offset(
-          SchemaNode.axisMove(
+          selectedNode.axisMove(
             axisNodePosition: selectedNode.position.dx,
             axisNodeSize: selectedNode.size.dx,
             axisDelta: isLeft ? -1 : 1,

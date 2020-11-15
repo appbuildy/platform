@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
+import 'package:flutter_app/features/schemaInteractions/RenderWithSelected.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -113,14 +114,14 @@ class _AppPreviewState extends State<AppPreview> {
                         userActions.rerenderNode();
                       };
 
-                      Widget renderWithSelected() => (
-                        SchemaNode.renderWithSelected(
+                      Widget _renderWithSelected() => (
+                        renderWithSelected(
+                          node: node,
                           onPanEnd: onPanEnd,
                           repositionAndResize: userActions.repositionAndResize,
                           currentScreenWorkspaceSize: userActions.screens.currentScreenWorkspaceSize,
                           isPlayMode: widget.isPlayMode,
                           isSelected: selectedNodeId == node.id,
-                          node: node,
                           toWidgetFunction: node.toWidget,
                           isMagnetInteraction: true,
                         )
@@ -144,7 +145,7 @@ class _AppPreviewState extends State<AppPreview> {
                               }
                             },
                             child: !widget.isPlayMode
-                              ? renderWithSelected()
+                              ? _renderWithSelected()
                               : node.toWidget(isPlayMode: widget.isPlayMode),
                           ),
                           top: node.position.dy,
