@@ -9,11 +9,15 @@ class MyModal {
   OverlayEntry _overlayEntry;
   Function onClose;
 
-  bool isCloseActive = true;
-
   void close() {
-    this._overlayEntry.remove();
-    this.onClose();
+    if (this._overlayEntry != null) {
+      this._overlayEntry.remove();
+      this._overlayEntry = null;
+    }
+
+    if (this.onClose != null) {
+      this.onClose();
+    }
   }
 
   Widget _buildCloseButton() {
@@ -103,16 +107,18 @@ class MyModal {
     );
   }
 
-  MyModal.show({
+  void show({
     @required BuildContext context,
     @required Widget child,
     @required Function onClose,
     double width,
     double height,
   }) {
+    if (this._overlayEntry != null) this.close();
+
     this._overlayEntry = OverlayEntry(
-        builder: (BuildContext context) =>
-            this._buildModal(child, width, height));
+      builder: (BuildContext context) => this._buildModal(child, width, height)
+    );
     this.onClose = onClose;
 
     Overlay.of(context).insert(this._overlayEntry);

@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
-import 'package:flutter_app/features/entities/Project.dart';
+
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -28,7 +27,6 @@ class _AppLayoutState extends State<AppLayout> {
   FocusAttachment _focusNodeAttachment;
   bool _focused = false;
   ToolboxStates toolboxState;
-  Project project;
 
   @override
   void initState() {
@@ -89,7 +87,8 @@ class _AppLayoutState extends State<AppLayout> {
           )
         );
 
-        widget.userActions.repositionAndResize(selectedNode, isAddedToDoneActions: false);
+        widget.userActions
+            .repositionAndResize(selectedNode, isAddedToDoneActions: false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft ||
@@ -101,12 +100,14 @@ class _AppLayoutState extends State<AppLayout> {
             axisNodePosition: selectedNode.position.dx,
             axisNodeSize: selectedNode.size.dx,
             axisDelta: isLeft ? -1 : 1,
-            axisScreenSize: widget.userActions.screens.currentScreenWorkspaceSize.dx,
+            axisScreenSize:
+                widget.userActions.screens.currentScreenWorkspaceSize.dx,
           ),
           selectedNode.position.dy,
         );
 
-        widget.userActions.repositionAndResize(selectedNode, isAddedToDoneActions: false);
+        widget.userActions
+            .repositionAndResize(selectedNode, isAddedToDoneActions: false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {

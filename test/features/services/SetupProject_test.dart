@@ -1,7 +1,7 @@
 import 'package:flutter_app/features/entities/CurrentUser.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
-import 'package:flutter_app/features/services/SettingsParser.dart';
 import 'package:flutter_app/features/services/SetupProject.dart';
+import 'package:flutter_app/features/services/project_parameters_from_browser_query.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,7 +13,7 @@ class MockUser extends Mock implements CurrentUserStore {}
 
 class UserInstanceMock extends Mock implements CurrentUser {}
 
-class MockSettings extends Mock implements SettingsParser {
+class MockSettings extends Mock implements ProjectParametersFromBrowserQuery {
   String get jwt => '123';
 
   String get projectUrl => 'https://somewhere.com/projects/1';
@@ -37,8 +37,10 @@ void main() {
     final attributesMock = MockAttributes();
     when(userMock.currentUser).thenReturn(UserInstanceMock());
 
-    final SetupProject setup =
-        SetupProject(userMock, MockSettings(), attributesMock);
+    final SetupProject setup = SetupProject(
+        userStore: userMock,
+        settings: MockSettings(),
+        attributes: attributesMock);
     var client = MockClient((request) async {
       return Response(responseBody, 200, request: request);
     });

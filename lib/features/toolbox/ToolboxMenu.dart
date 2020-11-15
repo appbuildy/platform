@@ -85,7 +85,7 @@ class ToolboxMenu extends StatelessWidget {
         ),
         buildOption(ToolboxStates.pages),
         buildOption(ToolboxStates.layout),
-//        buildOption(ToolboxStates.data),
+        buildOption(ToolboxStates.data),
         buildOption(ToolboxStates.settings),
       ],
     );

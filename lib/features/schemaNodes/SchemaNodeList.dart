@@ -1,10 +1,11 @@
+// ignore: avoid_web_libraries_in_flutter
+
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
-import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
@@ -249,7 +250,9 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
           ColumnDivider(
             name: 'Data Source',
           ),
-          Row(
+          (userActions.currentUserStore.project != null &&
+              userActions.currentUserStore.project.slugUrl != null)
+              ? Row(
             children: [
               Text(
                 'Table from',
@@ -278,7 +281,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
                         .toList()),
               )
             ],
-          ),
+          ) : ConnectAirtableModal(),
           ColumnDivider(
             name: 'Row Elements',
           ),
