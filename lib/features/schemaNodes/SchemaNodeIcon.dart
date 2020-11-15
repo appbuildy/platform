@@ -26,7 +26,7 @@ class SchemaNodeIcon extends SchemaNode {
     Map<String, SchemaNodeProperty> actions,
     int iconSize,
   }) : super() {
-    this.parent = parent;
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.icon;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
@@ -54,7 +54,7 @@ class SchemaNodeIcon extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return parent.spawnSchemaNodeIcon(
+    return parentSpawner.spawnSchemaNodeIcon(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
@@ -74,7 +74,7 @@ class SchemaNodeIcon extends SchemaNode {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Icon(
-        properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
+        properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
   }
 
   @override
@@ -85,7 +85,7 @@ class SchemaNodeIcon extends SchemaNode {
           name: 'Icon Style',
         ),
         EditPropsIconStyle(
-          currentTheme: parent.userActions.themeStore.currentTheme,
+          currentTheme: parentSpawner.userActions.themeStore.currentTheme,
           changePropertyTo: changePropertyTo,
           properties: properties,
         ),

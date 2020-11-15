@@ -30,11 +30,13 @@ abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
-  SchemaNodeSpawner parent;
+  SchemaNodeSpawner parentSpawner;
   Offset size;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> changeableProperties;
   Map<String, SchemaNodeProperty> actions;
+
+  bool get isSelected => parentSpawner.userActions.selectedNode()?.id == this.id;
 
   SchemaNode copy({
     Offset position,
@@ -75,7 +77,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode move({
-    //@required SchemaNode node,
     @required Offset delta,
     @required Offset screenSize,
   }) {
@@ -158,7 +159,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode resizeTop({
-    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
   }) {
@@ -185,7 +185,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode resizeRight({
-    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
   }) {
@@ -205,7 +204,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode resizeBottom({
-    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
   }) {
@@ -225,7 +223,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode resizeLeft({
-    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
   }) {
@@ -318,7 +315,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode magnetHorizontalMove({
-    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
     @required GuidelinesManager guidelinesManager,
@@ -377,7 +373,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode magnetVerticalMove({
-    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
@@ -499,7 +494,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode magnetTopResize({
-    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
@@ -585,7 +579,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode magnetRightResize({
-    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
     @required GuidelinesManager guidelinesManager,
@@ -662,7 +655,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode magnetBottomResize({
-    //@required SchemaNode node,
     @required double deltaDy,
     @required double screenSizeDy,
     @required GuidelinesManager guidelinesManager,
@@ -739,7 +731,6 @@ abstract class SchemaNode {
   }
 
   SchemaNode magnetLeftResize({
-    //@required SchemaNode node,
     @required double deltaDx,
     @required double screenSizeDx,
     @required GuidelinesManager guidelinesManager,

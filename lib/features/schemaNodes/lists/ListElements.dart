@@ -88,7 +88,7 @@ class ListElements {
     Function onNodeSettingsClick,
     Function onListElementsUpdate,
   }) {
-    final UserActions userActions = schemaNodeList.parent.userActions;
+    final UserActions userActions = schemaNodeList.parentSpawner.userActions;
 
     return Column(
       children: [
@@ -114,7 +114,7 @@ class ListElements {
               name: option.name,
               iconPreview: option.leftWidget,
               changePropertyTo: getChangePropertyToFn(node.id, () => onListElementsUpdate()),
-              onColumnRelationChange: onListElementsUpdate,
+              onListElementsUpdate: onListElementsUpdate,
             );
 
             listElements.add(createdNode);
@@ -144,7 +144,7 @@ class ListElementNode {
   final UniqueKey id;
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final Widget iconPreview;
-  final Function onColumnRelationChange;
+  final Function onListElementsUpdate;
 
   Offset offsetFromRealScreen;
 
@@ -157,7 +157,7 @@ class ListElementNode {
     @required this.name,
     @required this.id,
     @required this.changePropertyTo,
-    @required this.onColumnRelationChange,
+    @required this.onListElementsUpdate,
   });
 
   Widget buildSettingsButton(Function onNodeSettingsClick) {
@@ -230,7 +230,7 @@ class ListElementNode {
                     ],
                     onChange: (SelectOption pickedColumn) {
                       this.columnRelation = pickedColumn.value;
-                      this.onColumnRelationChange();
+                      this.onListElementsUpdate();
                     },
                     placeholder: 'Select column',
                     defaultIcon: Container(
@@ -262,7 +262,7 @@ class ListElementNode {
 
   void repositionAndResize(node, { isAddedToDoneActions }) {
     this.node = node;
-    this.onColumnRelationChange();
+    this.onListElementsUpdate();
   }
 
   Widget toWidget({
@@ -270,25 +270,34 @@ class ListElementNode {
     @required bool isPlayMode,
     @required Offset padding,
   }) {
-      return GestureDetector(
-          onTap: () {
+    print(schemaNodeList.isSelected);
+    if (!schemaNodeList.isSelected) {
+      return this.node.toWidget(isPlayMode: isPlayMode);
+    }
+
+    return GestureDetector(
+        onTap: () {
+          schemaNodeList.parentSpawner.userActions.selectNodeForEdit(schemaNodeList);
+          schemaNodeList.selectedListElementNode = this;
+        },
+        child: renderWithSelected(
+          node: node,
+          onPanEnd: (_) => {},
+          repositionAndResize: this.repositionAndResize,
+          currentScreenWorkspaceSize: Offset(
+            schemaNodeList.size.dx - padding.dx * 2,
+            schemaNodeList.properties['ListItemHeight'].value - padding.dy * 2,
+          ),
+          isPlayMode: isPlayMode,
+          isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
+          toWidgetFunction: this.node.toWidget,
+          isMagnetInteraction: false,
+          selectNodeForEdit: (_) {
             schemaNodeList.selectedListElementNode = this;
-            this.onColumnRelationChange();
-          },
-          child: renderWithSelected(
-            node: node,
-            onPanEnd: (_) => {},
-            repositionAndResize: this.repositionAndResize,
-            currentScreenWorkspaceSize: Offset(
-              schemaNodeList.size.dx - padding.dx * 2,
-              schemaNodeList.properties['ListItemHeight'].value - padding.dy * 2,
-            ),
-            isPlayMode: isPlayMode,
-            isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
-            toWidgetFunction: this.node.toWidget,
-            isMagnetInteraction: false,
-          )
-      );
+            schemaNodeList.parentSpawner.userActions.rerenderNode();
+          }
+        )
+    );
   }
 
   Widget toWidgetWithReplacedData({
@@ -297,10 +306,14 @@ class ListElementNode {
     @required bool isPlayMode,
     @required Offset padding,
   }) {
+    if (!schemaNodeList.isSelected) {
+      return (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode);
+    }
+
     return GestureDetector(
         onTap: () {
           schemaNodeList.selectedListElementNode = this;
-          this.onColumnRelationChange();
+          schemaNodeList.parentSpawner.userActions.rerenderNode();
         },
         child: renderWithSelected(
           node: node,
@@ -314,6 +327,10 @@ class ListElementNode {
           isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
           toWidgetFunction: ({ bool isPlayMode }) => (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),
           isMagnetInteraction: false,
+          selectNodeForEdit: (_) {
+            schemaNodeList.selectedListElementNode = this;
+            schemaNodeList.parentSpawner.userActions.rerenderNode();
+          }
         )
     );
   }

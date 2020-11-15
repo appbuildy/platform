@@ -31,7 +31,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
     String url,
     UniqueKey id
   }) : super() {
-    this.parent = parent;
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.image;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 210.0);
@@ -56,7 +56,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return parent.spawnSchemaNodeImage(
+    return parentSpawner.spawnSchemaNodeImage(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
@@ -86,7 +86,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
   }
 
   void updateOnColumnDataChange(String newValue) {
-    parent.userActions.changePropertyTo(SchemaStringProperty("Url", newValue), false);
+    parentSpawner.userActions.changePropertyTo(SchemaStringProperty("Url", newValue), false);
   }
 
   @override

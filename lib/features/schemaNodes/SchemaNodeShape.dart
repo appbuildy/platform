@@ -20,7 +20,7 @@ class SchemaNodeShape extends SchemaNode {
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
   }) : super() {
-    this.parent = parent;
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.shape;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
@@ -40,7 +40,7 @@ class SchemaNodeShape extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return parent.spawnSchemaNodeShape(
+    return parentSpawner.spawnSchemaNodeShape(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
@@ -60,7 +60,7 @@ class SchemaNodeShape extends SchemaNode {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Shape(
-        properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
+        properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
   }
 
   @override
@@ -72,7 +72,7 @@ class SchemaNodeShape extends SchemaNode {
             name: 'Shape Style',
           ),
           EditPropsColor(
-            currentTheme: parent.userActions.themeStore.currentTheme,
+            currentTheme: parentSpawner.userActions.themeStore.currentTheme,
             properties: properties,
             propName: 'Color',
             changePropertyTo: changePropertyTo,

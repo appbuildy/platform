@@ -37,7 +37,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     int fontSize,
     FontWeight fontWeight,
   }) : super() {
-    this.parent = parent;
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.text;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(343.0, 50.0);
@@ -68,7 +68,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return parent.spawnSchemaNodeText(
+    return parentSpawner.spawnSchemaNodeText(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
@@ -89,7 +89,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Text(
       properties: this.properties,
-      theme: this.parent.userActions.themeStore.currentTheme,
+      theme: this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
     );
   }
@@ -100,16 +100,16 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
-    return Shared.Text(properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
+    return Shared.Text(properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
   }
 
   void updateOnColumnDataChange(String newValue) {
-    parent.userActions.changePropertyTo(SchemaStringProperty("Text", newValue));
+    parentSpawner.userActions.changePropertyTo(SchemaStringProperty("Text", newValue));
   }
 
   @override
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
-    log(parent.userActions.remoteAttributeList().toString());
+    log(parentSpawner.userActions.remoteAttributeList().toString());
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(name: 'Edit Data'),
@@ -131,7 +131,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
         name: 'Text Style',
       ),
       EditPropsFontStyle(
-        currentTheme: parent.userActions.themeStore.currentTheme,
+        currentTheme: parentSpawner.userActions.themeStore.currentTheme,
         changePropertyTo: changePropertyTo,
         properties: properties,
       ),

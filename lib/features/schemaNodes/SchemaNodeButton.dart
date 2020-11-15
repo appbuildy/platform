@@ -36,7 +36,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     Map<String, SchemaNodeProperty> actions,
     String text,
   }) : super() {
-    this.parent = parent;
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(343.0, 50.0);
@@ -77,7 +77,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return parent.spawnSchemaNodeButton(
+    return parentSpawner.spawnSchemaNodeButton(
         position: position ?? this.position,
         id: id ?? this.id,
         size: size ?? this.size,
@@ -96,7 +96,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Button(
-        properties: this.properties, theme: this.parent.userActions.themeStore.currentTheme, size: this.size);
+        properties: this.properties, theme: this.parentSpawner.userActions.themeStore.currentTheme, size: this.size);
   }
 
   Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
@@ -104,7 +104,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
     return Shared.Button(
-        properties: properties, theme: parent.userActions.themeStore.currentTheme, size: size);
+        properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
   }
 
   @override
@@ -131,13 +131,13 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
      children: [
        ColumnDivider(name: 'Text Style'),
        EditPropsFontStyle(
-         currentTheme: parent.userActions.currentTheme,
+         currentTheme: parentSpawner.userActions.currentTheme,
          changePropertyTo: changePropertyTo,
          properties: properties,
        ),
        ColumnDivider(name: 'Shape Style'),
        EditPropsColor(
-         currentTheme: parent.userActions.currentTheme,
+         currentTheme: parentSpawner.userActions.currentTheme,
          properties: properties,
          changePropertyTo: changePropertyTo,
          propName: 'BackgroundColor',
@@ -158,7 +158,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
          key: id,
          properties: properties,
          changePropertyTo: changePropertyTo,
-         currentTheme: parent.userActions.currentTheme,
+         currentTheme: parentSpawner.userActions.currentTheme,
        ),
        SizedBox(
          height: 15,
@@ -166,7 +166,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
        EditPropsShadow(
          properties: properties,
          changePropertyTo: changePropertyTo,
-         currentTheme: parent.userActions.currentTheme,
+         currentTheme: parentSpawner.userActions.currentTheme,
        )
      ],
    );

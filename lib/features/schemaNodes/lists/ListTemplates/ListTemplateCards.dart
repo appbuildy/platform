@@ -21,46 +21,40 @@ class ListTemplateCards extends ListTemplate {
 
   Widget toWidget({
     @required SchemaNodeList schemaNodeList,
-    // MyTheme currentTheme,
-    // Map<String, SchemaNodeProperty> properties,
-    // Map<String, SchemaNodeProperty> actions,
-    // UserActions userActions,
     bool isPlayMode = false,
   }) {
-    //return Container();
-    return Column(
-        children: schemaNodeList.properties['Items']
-            .value
-            .values
-            .map((item) {
-              if (isPlayMode) {
-                return GestureDetector(
-                  onTap: () {
-                      (schemaNodeList.actions['Tap'] as Functionable)
-                          .toFunction(schemaNodeList.parent.userActions)(item.value);
-                  },
-                  child: widgetFor(
-                      item: item,
-                      schemaNodeList: schemaNodeList,
-                      isPlayMode: isPlayMode,
-                      // elements: properties['Elements'].value,
-                      // currentTheme: currentTheme,
-                      // properties: properties,
-                  ),
+    return GestureDetector(
+      onTap: () {
+        schemaNodeList.selectedListElementNode = null;
+        schemaNodeList.parentSpawner.userActions.rerenderNode();
+      },
+      child: Column(
+          children: schemaNodeList.properties['Items']
+              .value
+              .values
+              .map((item) {
+                if (isPlayMode) {
+                  return GestureDetector(
+                    onTap: () {
+                        (schemaNodeList.actions['Tap'] as Functionable)
+                            .toFunction(schemaNodeList.parentSpawner.userActions)(item.value);
+                    },
+                    child: widgetFor(
+                        item: item,
+                        schemaNodeList: schemaNodeList,
+                        isPlayMode: isPlayMode,
+                    ),
+                  );
+                }
+                return widgetFor(
+                    item: item,
+                    schemaNodeList: schemaNodeList,
+                    isPlayMode: isPlayMode,
                 );
-              }
-              return widgetFor(
-                  item: item,
-                  schemaNodeList: schemaNodeList,
-                  isPlayMode: isPlayMode,
-                  //isPlayMode: isPlayMode,
-                  // elements: properties['Elements'].value,
-                  // currentTheme: currentTheme,
-                  // properties: properties,
-              );
-            })
-            .toList()
-            .cast<Widget>());
+              })
+              .toList()
+              .cast<Widget>()),
+    );
   }
 
   Widget rowStyle({
@@ -100,15 +94,9 @@ class ListTemplateCards extends ListTemplate {
 
   Widget widgetFor({
     SchemaListItemsProperty item,
-    // ListElements elements,
-    // MyTheme currentTheme,
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
-    //Map<String, SchemaNodeProperty> properties,
-    //bool isPlayMode
   }) {
-    int itemIndex = 1;
-
     return Padding(
       padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
       child: Row(
@@ -119,14 +107,14 @@ class ListTemplateCards extends ListTemplate {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(schemaNodeList.properties['ItemRadiusValue'].value),
                   color: getThemeColor(
-                    schemaNodeList.parent.userActions.currentTheme,
+                    schemaNodeList.parentSpawner.userActions.currentTheme,
                     schemaNodeList.properties['ItemColor'],
                   ),
                   boxShadow: schemaNodeList.properties['BoxShadow'].value
                       ? [
                           BoxShadow(
                             color: getThemeColor(
-                                schemaNodeList.parent.userActions.currentTheme,
+                                schemaNodeList.parentSpawner.userActions.currentTheme,
                               schemaNodeList.properties['BoxShadowColor'],
                             ).withOpacity(schemaNodeList.properties['BoxShadowOpacity'].value),
                             blurRadius: schemaNodeList.properties['BoxShadowBlur'].value,

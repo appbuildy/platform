@@ -15,8 +15,9 @@ Widget renderWithSelected({
   @required bool isSelected,
   @required Function toWidgetFunction,
   @required bool isMagnetInteraction,
+  @required Function selectNodeForEdit,
 }) {
-  final GuidelinesManager guidelinesManager = node.parent.userActions.guidelineManager;
+  final GuidelinesManager guidelinesManager = node.parentSpawner.userActions.guidelineManager;
 
   final Widget circle = Container(
     width: 11,
@@ -361,6 +362,10 @@ Widget renderWithSelected({
     children: [
       DeltaFromAnchorPointPanDetector(
         onPanUpdate: (delta) {
+          if (!isSelected) {
+            selectNodeForEdit(node);
+          }
+
           final startDx = node.position.dx;
           final startDy = node.position.dy;
 

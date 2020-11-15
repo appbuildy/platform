@@ -61,8 +61,11 @@ class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTick
   }
 }
 
+abstract class NodeContainer {
+  ListElementNode selectedListElementNode;
+}
 
-class SchemaNodeList extends SchemaNode {
+class SchemaNodeList extends SchemaNode implements NodeContainer {
   Debouncer<String> textDebouncer;
   ListTemplateType listTemplateType;
 
@@ -77,7 +80,7 @@ class SchemaNodeList extends SchemaNode {
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
   }) : super() {
-    this.parent = parent;
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.list;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
@@ -117,7 +120,7 @@ class SchemaNodeList extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return parent.spawnSchemaNodeList(
+    return parentSpawner.spawnSchemaNodeList(
       position: position ?? this.position,
       id: id ?? this.id,
       size: size ?? this.size,
@@ -144,10 +147,6 @@ class SchemaNodeList extends SchemaNode {
         child: SingleChildScrollView(
           child: (this.properties['Template'].value as ListTemplate).toWidget(
             schemaNodeList: this,
-            // currentTheme: parent.userActions.themeStore.currentTheme,
-            // properties: this.properties,
-            // actions: this.actions,
-            // userActions: parent.userActions,
             isPlayMode: isPlayMode,
           ),
         ),
@@ -159,10 +158,6 @@ class SchemaNodeList extends SchemaNode {
       height: this.size.dy,
       child: (this.properties['Template'].value as ListTemplate).toWidget(
         schemaNodeList: this,
-        // currentTheme: parent.userActions.themeStore.currentTheme,
-        // properties: this.properties,
-        // actions: this.actions,
-        // userActions: parent.userActions,
         isPlayMode: isPlayMode,
       ),
     );
@@ -182,7 +177,6 @@ class SchemaNodeList extends SchemaNode {
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return ListToEditProps(
       schemaNodeList: this,
-      //userActions: parent.userActions,
       wrapInRootProps: wrapInRootProps,
       changePropertyTo: changePropertyTo,
     );
@@ -191,13 +185,11 @@ class SchemaNodeList extends SchemaNode {
 
 class ListToEditProps extends StatefulWidget {
   final SchemaNodeList schemaNodeList;
- // final UserActions userActions;
   final Function wrapInRootProps;
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
 
   ListToEditProps({
     @required this.schemaNodeList,
-    //@required this.userActions,
     @required this.wrapInRootProps,
     @required this.changePropertyTo,
   });
@@ -243,7 +235,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
   }
 
   Widget _buildRoot() {
-    final UserActions userActions = widget.schemaNodeList.parent.userActions;
+    final UserActions userActions = widget.schemaNodeList.parentSpawner.userActions;
 
     return widget.wrapInRootProps(
         Column(children: [
@@ -299,7 +291,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
             name: 'Row Style',
           ),
           EditPropsColor(
-            currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme,
+            currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
             properties: widget.schemaNodeList.properties,
             propName: 'ItemColor',
             changePropertyTo: widget.changePropertyTo,
@@ -307,7 +299,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
           (widget.schemaNodeList.properties['Template'].value as ListTemplate).rowStyle(
             changePropertyTo: widget.changePropertyTo,
             properties: widget.schemaNodeList.properties,
-            currentTheme: widget.schemaNodeList.parent.userActions.themeStore.currentTheme,
+            currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
           ),
           SizedBox(
             height: 10,

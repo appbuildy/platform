@@ -36,7 +36,7 @@ class ListTemplateSimple extends ListTemplate {
                 return GestureDetector(
                   onTap: () {
                     (schemaNodeList.actions['Tap'] as Functionable)
-                        .toFunction(schemaNodeList.parent.userActions)(item.value);
+                        .toFunction(schemaNodeList.parentSpawner.userActions)(item.value);
                   },
                   child: widgetFor(
                     item: item,
@@ -106,7 +106,7 @@ class ListTemplateSimple extends ListTemplate {
                 height: schemaNodeList.properties['ListItemHeight'].value,
                 decoration: BoxDecoration(
                   color: getThemeColor(
-                    schemaNodeList.parent.userActions.currentTheme,
+                    schemaNodeList.parentSpawner.userActions.currentTheme,
                     schemaNodeList.properties['ItemColor'],
                   ),
                 ),
@@ -147,7 +147,7 @@ class ListTemplateSimple extends ListTemplate {
                     bottom: BorderSide(
                       width: 1,
                       color: getThemeColor(
-                        schemaNodeList.parent.userActions.currentTheme,
+                        schemaNodeList.parentSpawner.userActions.currentTheme,
                         schemaNodeList.properties['SeparatorsColor'],
                       ),
                     ),
