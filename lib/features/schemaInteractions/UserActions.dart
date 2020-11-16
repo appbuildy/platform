@@ -176,9 +176,12 @@ class UserActions {
   }
 
   void rerenderNode() {
-    currentScreen.update(selectedNode());
-    if (debouncer != null) {
-      debouncer.stopTimer();
+    final SchemaNode selected = selectedNode();
+    if (selected != null) {
+      currentScreen.update(selectedNode());
+      if (debouncer != null) {
+        debouncer.stopTimer();
+      }
     }
   }
 

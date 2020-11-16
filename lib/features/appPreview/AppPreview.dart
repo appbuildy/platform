@@ -84,7 +84,7 @@ class _AppPreviewState extends State<AppPreview> {
               onTap: () {
                 if (selectedNode != null) {
                   if (selectedNode.type == SchemaNodeType.list) {
-                    (selectedNode as NodeContainer).selectedListElementNode = null;
+                    (selectedNode as SchemaNodeList).unselectListElementNode();
                   }
 
                   userActions.selectNodeForEdit(null);
@@ -154,6 +154,11 @@ class _AppPreviewState extends State<AppPreview> {
                                       .toFunction(userActions)();
                                 } else {
                                   userActions.selectNodeForEdit(node);
+
+                                  if (node.type == SchemaNodeType.list) {
+                                    (node as SchemaNodeList).unselectListElementNode();
+                                  }
+
                                   widget.selectStateToLayout(); // select menu layout
                                 }
                               },

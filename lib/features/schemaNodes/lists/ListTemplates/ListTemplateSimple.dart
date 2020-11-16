@@ -21,46 +21,39 @@ class ListTemplateSimple extends ListTemplate {
 
   Widget toWidget({
     @required SchemaNodeList schemaNodeList,
-    // MyTheme currentTheme,
-    // Map<String, SchemaNodeProperty> properties,
-    // Map<String, SchemaNodeProperty> actions,
-    // UserActions userActions,
     bool isPlayMode = false,
   }) {
-    return Column(
-        children: schemaNodeList.properties['Items']
-            .value
-            .values
-            .map((item) {
-              if (isPlayMode) {
-                return GestureDetector(
-                  onTap: () {
-                    (schemaNodeList.actions['Tap'] as Functionable)
-                        .toFunction(schemaNodeList.parentSpawner.userActions)(item.value);
-                  },
-                  child: widgetFor(
-                    item: item,
-                    schemaNodeList: schemaNodeList,
-                    isPlayMode: isPlayMode,
-                    //isPlayMode: isPlayMode,
-                    // elements: properties['Elements'].value,
-                    // currentTheme: currentTheme,
-                    // properties: properties,
-                  ),
+    return GestureDetector(
+      onTap: () {
+        schemaNodeList.unselectListElementNode();
+      },
+      child: Column(
+          children: schemaNodeList.properties['Items']
+              .value
+              .values
+              .map((item) {
+                if (isPlayMode) {
+                  return GestureDetector(
+                    onTap: () {
+                      (schemaNodeList.actions['Tap'] as Functionable)
+                          .toFunction(schemaNodeList.parentSpawner.userActions)(item.value);
+                    },
+                    child: widgetFor(
+                      item: item,
+                      schemaNodeList: schemaNodeList,
+                      isPlayMode: isPlayMode,
+                    ),
+                  );
+                }
+                return widgetFor(
+                  item: item,
+                  schemaNodeList: schemaNodeList,
+                  isPlayMode: isPlayMode,
                 );
-              }
-              return widgetFor(
-                item: item,
-                schemaNodeList: schemaNodeList,
-                isPlayMode: isPlayMode,
-                //isPlayMode: isPlayMode,
-                // elements: properties['Elements'].value,
-                // currentTheme: currentTheme,
-                // properties: properties,
-              );
-            })
-            .toList()
-            .cast<Widget>());
+              })
+              .toList()
+              .cast<Widget>()),
+    );
   }
 
   Widget rowStyle({
@@ -93,9 +86,6 @@ class ListTemplateSimple extends ListTemplate {
     @required SchemaListItemsProperty item,
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
-    // ListElements elements,
-    // MyTheme currentTheme,
-    // Map<String, SchemaNodeProperty> properties
   }) {
     return Row(
       children: [

@@ -36,8 +36,6 @@ abstract class SchemaNode {
   Map<String, SchemaNodeProperty> changeableProperties;
   Map<String, SchemaNodeProperty> actions;
 
-  bool get isSelected => parentSpawner.userActions.selectedNode()?.id == this.id;
-
   SchemaNode copy({
     Offset position,
     Offset size,

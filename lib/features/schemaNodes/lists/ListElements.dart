@@ -118,8 +118,11 @@ class ListElements {
             );
 
             listElements.add(createdNode);
+
             onListElementsUpdate();
-            onNodeSettingsClick(createdNode.id);
+
+            // todo: refac. Без асинхронности не закрывается MyClickSelect;
+            Future.delayed(Duration(milliseconds: 0), () => onNodeSettingsClick(createdNode));
           },
           defaultPreview: MyButtonUI(
             text: 'Add Element',
@@ -145,8 +148,6 @@ class ListElementNode {
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final Widget iconPreview;
   final Function onListElementsUpdate;
-
-  Offset offsetFromRealScreen;
 
   String columnRelation;
 
@@ -177,7 +178,7 @@ class ListElementNode {
       cursor: CursorEnum.pointer,
       child: GestureDetector(
         onTap: () {
-          onNodeSettingsClick(this.id);
+          onNodeSettingsClick(this);
         },
         child: HoverDecoration(
           defaultDecoration: defaultDecoration,
@@ -270,15 +271,13 @@ class ListElementNode {
     @required bool isPlayMode,
     @required Offset padding,
   }) {
-    print(schemaNodeList.isSelected);
     if (!schemaNodeList.isSelected) {
       return this.node.toWidget(isPlayMode: isPlayMode);
     }
 
     return GestureDetector(
         onTap: () {
-          schemaNodeList.parentSpawner.userActions.selectNodeForEdit(schemaNodeList);
-          schemaNodeList.selectedListElementNode = this;
+          schemaNodeList.selectListElementNode(this);
         },
         child: renderWithSelected(
           node: node,
@@ -293,8 +292,7 @@ class ListElementNode {
           toWidgetFunction: this.node.toWidget,
           isMagnetInteraction: false,
           selectNodeForEdit: (_) {
-            schemaNodeList.selectedListElementNode = this;
-            schemaNodeList.parentSpawner.userActions.rerenderNode();
+            schemaNodeList.selectListElementNode(this);
           }
         )
     );
@@ -312,8 +310,7 @@ class ListElementNode {
 
     return GestureDetector(
         onTap: () {
-          schemaNodeList.selectedListElementNode = this;
-          schemaNodeList.parentSpawner.userActions.rerenderNode();
+          schemaNodeList.selectListElementNode(this);
         },
         child: renderWithSelected(
           node: node,
@@ -328,8 +325,7 @@ class ListElementNode {
           toWidgetFunction: ({ bool isPlayMode }) => (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),
           isMagnetInteraction: false,
           selectNodeForEdit: (_) {
-            schemaNodeList.selectedListElementNode = this;
-            schemaNodeList.parentSpawner.userActions.rerenderNode();
+            schemaNodeList.selectListElementNode(this);
           }
         )
     );

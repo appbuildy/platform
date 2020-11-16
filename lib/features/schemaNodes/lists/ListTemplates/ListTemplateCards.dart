@@ -25,8 +25,7 @@ class ListTemplateCards extends ListTemplate {
   }) {
     return GestureDetector(
       onTap: () {
-        schemaNodeList.selectedListElementNode = null;
-        schemaNodeList.parentSpawner.userActions.rerenderNode();
+        schemaNodeList.unselectListElementNode();
       },
       child: Column(
           children: schemaNodeList.properties['Items']

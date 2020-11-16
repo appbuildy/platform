@@ -113,6 +113,32 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
   }
+// todo: refac.
+  bool get isSelected => this.id == parentSpawner.userActions.selectedNode()?.id;
+
+  void unselectListElementNode() {
+    selectedListElementNode = null;
+
+    if (this.pageSliderController != null) {
+      pageSliderController.toRoot();
+    }
+
+    if (this.isSelected) {
+      parentSpawner.userActions.rerenderNode();
+    } else {
+      parentSpawner.userActions.selectNodeForEdit(this);
+    }
+  }
+
+  void selectListElementNode(ListElementNode listElementNode) {
+    this.selectedListElementNode = listElementNode;
+
+    if (this.pageSliderController != null) {
+      pageSliderController.to(listElementNode.id);
+    }
+
+    this.parentSpawner.userActions.rerenderNode();
+  }
 
   @override
   SchemaNode copy(
@@ -173,6 +199,8 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
     userActions.changePropertyTo(newProp);
   }
 
+  PageSliderController pageSliderController;
+
   @override
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return ListToEditProps(
@@ -209,6 +237,9 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
       buildRoot: this._buildRoot,
       buildPages: this.getPageSliderPages(),
     );
+
+    // todo: refac?
+    widget.schemaNodeList.pageSliderController = this._pageSliderController;
   }
 
   Map<UniqueKey, BuildWidgetFunction> getPageSliderPages() => (widget.schemaNodeList.properties['Elements'].value as ListElements)
@@ -222,7 +253,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
         children: [
           ToolboxHeader(
               leftWidget: IconCircleButton(
-                  onTap: _pageSliderController.toRoot,
+                  onTap: widget.schemaNodeList.unselectListElementNode,
                   assetPath: 'assets/icons/meta/btn-back.svg'),
               title: nodeName),
           Padding(
@@ -279,8 +310,8 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
           ),
           (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
               schemaNodeList: widget.schemaNodeList,
-              onNodeSettingsClick: (UniqueKey id) {
-                _pageSliderController.to(id);
+              onNodeSettingsClick: (ListElementNode listElementNode) {
+                widget.schemaNodeList.selectListElementNode(listElementNode);
               },
               onListElementsUpdate: () {
                 widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
