@@ -51,10 +51,10 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
 
   @override
   void initState() {
-    super.initState();
     this.startLoadingAnimation(onStart: this.initPreview);
     preview ??= widget.preview;
-    initPreview();
+    application = Container();
+    super.initState();
   }
 
   Future<void> initPreview() async {

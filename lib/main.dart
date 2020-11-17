@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (ProjectParametersFromBrowserQuery(window).isPreviewMode) {
-      return ApplicationWidget();
+      return MaterialApp(home: Scaffold(body: ApplicationWidget()));
     } else {
       return MaterialApp(
         title: 'AppBuildy — create your apps',
