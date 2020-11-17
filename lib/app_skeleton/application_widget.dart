@@ -24,11 +24,16 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
     this._overlayEntry = this._renderLoadingOverlay();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Overlay.of(context).insert(this._overlayEntry);
+      try {
+        Overlay.of(context).insert(this._overlayEntry);
 
-      animationStopwatch = Stopwatch()..start();
+        animationStopwatch = Stopwatch()..start();
 
-      onStart();
+        onStart();
+      } catch (e) {
+        preview = widget.preview;
+        onStart();
+      }
     });
   }
 
@@ -38,21 +43,23 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
   }
 
   void endLoadingAnimation() async {
-    int elapsedTime = animationStopwatch.elapsedMilliseconds;
+    try {
+      int elapsedTime = animationStopwatch.elapsedMilliseconds;
 
-    if (elapsedTime < minLoadingAnimationDurationTime) {
-      await Future.delayed(Duration(
-          milliseconds: minLoadingAnimationDurationTime - elapsedTime));
-    }
+      if (elapsedTime < minLoadingAnimationDurationTime) {
+        await Future.delayed(Duration(
+            milliseconds: minLoadingAnimationDurationTime - elapsedTime));
+      }
 
-    _overlayEntry.remove();
-    animationStopwatch.stop();
+      _overlayEntry.remove();
+      animationStopwatch.stop();
+    } catch (e) {}
   }
 
   @override
   void initState() {
-    this.startLoadingAnimation(onStart: this.initPreview);
     preview ??= widget.preview;
+    this.startLoadingAnimation(onStart: this.initPreview);
     application = Container();
     super.initState();
   }
@@ -62,11 +69,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
       Widget applicationLoad = await preview.load();
       setState(() {
         application = applicationLoad;
-        endLoadingAnimation();
       });
-    } catch (e) {
-      //throw (e);
-    }
+      endLoadingAnimation();
+    } catch (e) {}
   }
 
   @override
