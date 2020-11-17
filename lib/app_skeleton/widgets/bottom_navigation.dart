@@ -39,13 +39,7 @@ class BottomNavigation extends StatelessWidget {
               child: Container(
                 child: AppTabs(
                   selectedScreenId: null,
-                  tabs: [
-                    TabNavigation(
-                        target: RandomKey(),
-                        icon: FontAwesomeIcons.chevronRight,
-                        label: 'Home',
-                        id: RandomKey())
-                  ],
+                  tabs: tabs,
                   theme: theme,
                   onTap: (tab) {},
                 ),
