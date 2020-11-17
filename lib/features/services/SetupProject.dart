@@ -1,5 +1,3 @@
-import 'package:flutter_app/features/airtable/Client.dart';
-import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/services/project_parameters_from_browser_query.dart';
@@ -8,7 +6,6 @@ import 'package:flutter_app/features/services/project_setup/setup_preview.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:http/http.dart' as http;
-import 'package:universal_html/html.dart';
 
 class SetupProject {
   CurrentUserStore userStore;
