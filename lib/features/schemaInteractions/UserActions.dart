@@ -145,6 +145,9 @@ class UserActions {
         .currentUserStore
         .project
         .setAirtableCredentials(apiKey: apiKey, base: base);
+
+    _currentUserStore.project.save(converter, client: http.Client());
+    loadProject();
   }
 
   void startAutoSave() {
