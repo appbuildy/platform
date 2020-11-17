@@ -42,7 +42,7 @@ void main() {
   testWidgets('it renders app isLoading', (WidgetTester tester) async {
     var appWidget = ApplicationWidget(preview: BrowserRenderMockError());
     await tester.pumpWidget(appWidget);
-    final textFinder = find.text('App is Loading');
+    final textFinder = find.text('Making it shine');
 
     expect(textFinder, findsOneWidget);
   });
