@@ -60,7 +60,10 @@ class SchemaNodeShape extends SchemaNode {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Shape(
-        properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
+      properties: properties,
+      theme: parentSpawner.userActions.themeStore.currentTheme,
+      size: size,
+    );
   }
 
   @override

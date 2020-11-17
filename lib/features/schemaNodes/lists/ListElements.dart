@@ -2,10 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/RenderWithSelected.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyButton.dart';
@@ -279,7 +277,7 @@ class ListElementNode {
         onTap: () {
           schemaNodeList.selectListElementNode(this);
         },
-        child: renderWithSelected(
+        child: SchemaNode.renderWithSelected(
           node: node,
           onPanEnd: (_) => {},
           repositionAndResize: this.repositionAndResize,
@@ -312,7 +310,7 @@ class ListElementNode {
         onTap: () {
           schemaNodeList.selectListElementNode(this);
         },
-        child: renderWithSelected(
+        child: SchemaNode.renderWithSelected(
           node: node,
           onPanEnd: (_) => {},
           repositionAndResize: this.repositionAndResize,

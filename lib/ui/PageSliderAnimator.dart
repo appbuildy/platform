@@ -39,6 +39,8 @@ class PageSliderController<T> {
   Widget getSelectedPage() => _selectedPage();
 
   void _replacePage(T) {
+    if (_selectedPage == pages[T]) return;
+
     controller.forward().then((value) {
       _selectedPage = null;
 

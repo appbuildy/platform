@@ -96,7 +96,10 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
   @override
   Widget toWidget({ bool isPlayMode }) {
     return Shared.Button(
-        properties: this.properties, theme: this.parentSpawner.userActions.themeStore.currentTheme, size: this.size);
+      properties: this.properties,
+      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      size: this.size,
+    );
   }
 
   Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
@@ -104,7 +107,10 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
     return Shared.Button(
-        properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
+      properties: properties,
+      theme: parentSpawner.userActions.themeStore.currentTheme,
+      size: size,
+    );
   }
 
   @override

@@ -34,7 +34,7 @@ class Cursor extends MouseRegion {
               appContainer.style.cursor = CursorMap[cursor];
             },
             onExit: (PointerExitEvent evt) {
-              appContainer.style.cursor = 'default';
+              appContainer.style.cursor = CursorMap[CursorEnum.defaultCursor];
             },
             child: child);
 }

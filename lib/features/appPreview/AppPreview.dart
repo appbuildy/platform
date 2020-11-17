@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
-import 'package:flutter_app/features/schemaInteractions/RenderWithSelected.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
-import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/DeltaPanDetector.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -127,7 +124,7 @@ class _AppPreviewState extends State<AppPreview> {
                         };
 
                         Widget _renderWithSelected() => (
-                          renderWithSelected(
+                          SchemaNode.renderWithSelected(
                             node: node,
                             onPanEnd: onPanEnd,
                             repositionAndResize: userActions.repositionAndResize,

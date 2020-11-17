@@ -94,8 +94,6 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     );
   }
 
-
-
   Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
