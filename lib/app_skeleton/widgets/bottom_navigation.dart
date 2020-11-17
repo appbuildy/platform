@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
 import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/utils/RandomKey.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomNavigation extends StatelessWidget {
   final List<TabNavigation> tabs;
