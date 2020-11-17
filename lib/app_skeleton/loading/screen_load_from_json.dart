@@ -1,5 +1,6 @@
 import 'package:flutter_app/app_skeleton/screen.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 
 import 'i_screen_load.dart';
 
@@ -9,7 +10,11 @@ class ScreenLoadFromJson implements IScreenLoad {
 
   @override
   Screen load() {
-    return Screen(widgets: _loadWidgets());
+    return Screen(id: _id(), widgets: _loadWidgets());
+  }
+
+  RandomKey _id() {
+    return RandomKey.fromJson(jsonScreen['id']);
   }
 
   List<WidgetDecorator> _loadWidgets() {
