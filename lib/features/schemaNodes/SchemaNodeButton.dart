@@ -37,7 +37,7 @@ class SchemaNodeButton extends SchemaNode {
   }) : super() {
     this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(343.0, 50.0);
+    this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
     this.themeStore = themeStore ?? AppThemeStore();
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
