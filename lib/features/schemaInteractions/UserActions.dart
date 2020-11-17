@@ -140,14 +140,14 @@ class UserActions {
     }
   }
 
-  void setAirtableCredentials(String apiKey, String base) {
+  Future<void> setAirtableCredentials(String apiKey, String base) async {
     this
         .currentUserStore
         .project
         .setAirtableCredentials(apiKey: apiKey, base: base);
 
-    _currentUserStore.project.save(converter, client: http.Client());
-    loadProject();
+    await _currentUserStore.project.save(converter, client: http.Client());
+    await loadProject();
   }
 
   void startAutoSave() {
