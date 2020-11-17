@@ -33,7 +33,7 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
         isLoading = false;
       });
     } catch (e) {
-      throw (e);
+      //throw (e);
     }
   }
 
