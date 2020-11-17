@@ -9,8 +9,9 @@ class ScreenLoadFromJson implements IScreenLoad {
   ScreenLoadFromJson(this.jsonScreen);
 
   @override
-  Screen load() {
-    return Screen(id: _id(), widgets: _loadWidgets());
+  Screen load([bottomNavigation]) {
+    return Screen(
+        bottomNavigation: bottomNavigation, id: _id(), widgets: _loadWidgets());
   }
 
   RandomKey _id() {
