@@ -140,6 +140,13 @@ class UserActions {
     }
   }
 
+  void setAirtableCredentials(String apiKey, String base) {
+    this
+        .currentUserStore
+        .project
+        .setAirtableCredentials(apiKey: apiKey, base: base);
+  }
+
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
       final converter = SchemaConverter(
