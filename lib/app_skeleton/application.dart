@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app/app_skeleton/screen.dart';
+import 'package:flutter_app/app_skeleton/store/screen_store.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
+import 'package:provider/provider.dart';
 
 class Application extends StatefulWidget {
   final Map<RandomKey, Screen> screens;
@@ -14,6 +16,9 @@ class Application extends StatefulWidget {
 class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: widget.screens.values.first));
+    return MultiProvider(providers: [
+      Provider<ScreenStore>(
+          create: (_) => ScreenStore(widget.screens.values.first))
+    ], child: MaterialApp(home: Scaffold(body: widget.screens.values.first)));
   }
 }
