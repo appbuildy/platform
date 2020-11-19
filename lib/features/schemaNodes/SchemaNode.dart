@@ -9,6 +9,8 @@ import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/DeltaPanDetector.dart';
 
+import 'SchemaNodeList.dart';
+
 export 'SchemaNodeButton.dart';
 export 'SchemaNodeImage.dart';
 export 'SchemaNodeProperty.dart';
@@ -19,11 +21,13 @@ class WithHover extends StatefulWidget {
   final Widget children;
   final Offset size;
   final bool canDisplayHover;
+  final bool displayAlways;
 
   WithHover({
     @required this.children,
     @required this.size,
     @required this.canDisplayHover,
+    @required this.displayAlways,
   });
 
   @override
@@ -97,7 +101,7 @@ class _WithHoverState extends State<WithHover> {
       child: Stack(
         children: [
           widget.children,
-          if (this.isHover && widget.canDisplayHover)
+          if (widget.displayAlways || this.isHover && widget.canDisplayHover)
             ...lines,
         ],
       ),
@@ -964,7 +968,11 @@ abstract class SchemaNode {
           border: Border.all(width: 2, color: MyColors.mainBlue)),
     );
 
-    final List<Widget> dots = isSelected ? [
+    final bool isItemSelectedInList = node.type == SchemaNodeType.list && (node as SchemaNodeList).selectedListElementNode != null;
+
+    bool displayDotsAndLines = isSelected && !isItemSelectedInList;
+
+    final List<Widget> dots = displayDotsAndLines ? [
       Positioned(
         top: -2,
         left: -2,
@@ -1129,7 +1137,7 @@ abstract class SchemaNode {
       ),
     ] : [Container()];
 
-    final lines = isSelected ? [
+    final lines = displayDotsAndLines ? [
       Positioned(
         top: 0,
         left: 0,
@@ -1292,58 +1300,63 @@ abstract class SchemaNode {
       ),
     ] : [Container()];
 
+    final Widget nodeWithHover = Cursor(
+        cursor: CursorEnum.move,
+        child: Container(
+            width: node.size.dx,
+            height: node.size.dy,
+            child: WithHover(
+              children: toWidgetFunction(isPlayMode: isPlayMode),
+              canDisplayHover: !isPlayMode && !isSelected,
+              displayAlways: isSelected && isItemSelectedInList,
+              size: node.size,
+            ),
+        ),
+    );
+
     return Stack(
       overflow: Overflow.visible,
       alignment: Alignment.center,
       children: [
-        DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            if (!isSelected) {
-              selectNodeForEdit(node);
-            }
+        //if (!isItemSelectedInList)
+          DeltaFromAnchorPointPanDetector(
+            canMove: !isItemSelectedInList,
+            onPanUpdate: (delta) {
+              if (!isSelected) {
+                selectNodeForEdit(node);
+              }
 
-            final startDx = node.position.dx;
-            final startDy = node.position.dy;
+              final startDx = node.position.dx;
+              final startDy = node.position.dy;
 
-            if (isMagnetInteraction) {
-              node.magnetHorizontalMove(
-                deltaDx: delta.dx,
-                screenSizeDx: currentScreenWorkspaceSize.dx,
-                guidelinesManager: guidelinesManager,
-              );
+              if (isMagnetInteraction) {
+                node.magnetHorizontalMove(
+                  deltaDx: delta.dx,
+                  screenSizeDx: currentScreenWorkspaceSize.dx,
+                  guidelinesManager: guidelinesManager,
+                );
 
-              node.magnetVerticalMove(
-                deltaDy: delta.dy,
-                screenSizeDy: currentScreenWorkspaceSize.dy,
-                guidelinesManager: guidelinesManager,
-              );
-            } else {
-              node.move(
-                delta: delta,
-                screenSize: currentScreenWorkspaceSize,
-              );
-            }
+                node.magnetVerticalMove(
+                  deltaDy: delta.dy,
+                  screenSizeDy: currentScreenWorkspaceSize.dy,
+                  guidelinesManager: guidelinesManager,
+                );
+              } else {
+                node.move(
+                  delta: delta,
+                  screenSize: currentScreenWorkspaceSize,
+                );
+              }
 
-            repositionAndResize(node, isAddedToDoneActions: false);
+              repositionAndResize(node, isAddedToDoneActions: false);
 
-            final endDx = node.position.dx;
-            final endDy = node.position.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: onPanEnd,
-          child: Cursor(
-            cursor: CursorEnum.move,
-            child: Container(
-              width: node.size.dx,
-              height: node.size.dy,
-              child: WithHover(
-                children: toWidgetFunction(isPlayMode: isPlayMode),
-                canDisplayHover: !isPlayMode && !isSelected,
-                size: node.size,
-              ),
-            ),
+              final endDx = node.position.dx;
+              final endDy = node.position.dy;
+              return DeltaFromAnchorPointPanDetector.positionChanged(dx: startDx - endDx, dy: startDy - endDy);
+            },
+            onPanEnd: onPanEnd,
+            child: nodeWithHover,
           ),
-        ),
         ...lines,
         ...dots,
       ],

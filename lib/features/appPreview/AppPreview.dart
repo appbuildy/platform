@@ -140,7 +140,7 @@ class _AppPreviewState extends State<AppPreview> {
                         return
                           Positioned(
                             child: GestureDetector(
-                              onTapDown: (details) {
+                              onTap: () {
                                 widget.focusNode.requestFocus();
                                 if (widget.isPlayMode) {
                                   if (node.type == SchemaNodeType.list) {
@@ -201,19 +201,20 @@ class _AppPreviewState extends State<AppPreview> {
                             : Container(),
                       ),
                       widget.isPreview
-                          ? Container()
-                          : Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Padding(
-                                padding: const EdgeInsets.only(bottom: 7.0),
-                                child: Container(
-                                  width: 134,
-                                  height: 5,
-                                  decoration: BoxDecoration(
-                                      color: Color(0xFF000000),
-                                      borderRadius: BorderRadius.circular(100)),
-                                ),
-                              )),
+                        ? Container()
+                        : Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 7.0),
+                            child: Container(
+                              width: 134,
+                              height: 5,
+                              decoration: BoxDecoration(
+                                  color: Color(0xFF000000),
+                                  borderRadius: BorderRadius.circular(100)),
+                            ),
+                          ),
+                      ),
                     ],
                   ),
                 ),

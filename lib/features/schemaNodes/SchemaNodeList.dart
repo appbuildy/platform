@@ -22,6 +22,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
+import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
@@ -247,7 +248,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
       getPageWrapFunction: getPageWrap,
     );
 
-  WrapFunction getPageWrap(String nodeName) {
+  WrapFunction getPageWrap(ListElementNode listElementNode) {
     return (Widget child) {
       return Column(
         children: [
@@ -255,7 +256,47 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
               leftWidget: IconCircleButton(
                   onTap: widget.schemaNodeList.unselectListElementNode,
                   assetPath: 'assets/icons/meta/btn-back.svg'),
-              title: nodeName),
+              title: listElementNode.name,
+
+            rightWidget: WithInfo(
+                isShowAlways: true,
+                isOnLeft: true,
+                defaultDecoration: BoxDecoration(
+                    gradient: MyGradients.plainWhite,
+                    shape: BoxShape.circle),
+                hoverDecoration: BoxDecoration(
+                    gradient: MyGradients.lightBlue,
+                    shape: BoxShape.circle),
+                position: Offset(0, 2),
+                onBringFront: () {
+                  (widget.schemaNodeList.properties['Elements'].value as ListElements).bringToFrontListElementNode(
+                    listElementNode: listElementNode,
+                  );
+                },
+                onSendBack: () {
+                  (widget.schemaNodeList.properties['Elements'].value as ListElements).sendToBackListElementNode(
+                    listElementNode: listElementNode,
+                  );
+                },
+                onDuplicate: () {
+                  (widget.schemaNodeList.properties['Elements'].value as ListElements).copyListElementNode(
+                    listElementNode: listElementNode,
+                    selectListElementNode: widget.schemaNodeList.selectListElementNode,
+                  );
+                },
+                onDelete: () {
+                  (widget.schemaNodeList.properties['Elements'].value as ListElements).deleteListElementNode(
+                    listElementNode: listElementNode,
+                    unselectListElementNode: widget.schemaNodeList.unselectListElementNode,
+                  );
+                },
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  color: Colors.transparent,
+                ),
+            ),
+          ),
           Padding(
             padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
             child: child,

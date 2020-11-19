@@ -45,7 +45,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
 
 typedef WrapFunction = Widget Function(Widget);
 
-typedef GetPageWrapFunction = WrapFunction Function(String);
+typedef GetPageWrapFunction = WrapFunction Function(ListElementNode);
 
 class ListElements {
   List<ListElementNode> listElements = [];
@@ -66,19 +66,49 @@ class ListElements {
 
     this.listElements.forEach(
       (ListElementNode elementNode) {
-        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(getPageWrapFunction(elementNode.name), allColumns);
+        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(getPageWrapFunction(elementNode), allColumns);
       },
     );
 
     return pages;
   }
 
-  Function(SchemaNodeProperty, [bool, dynamic]) getChangePropertyToFn(UniqueKey listElementNodeId, Function onListElementsUpdate) {
-    return (SchemaNodeProperty changedProperty, [bool, dynamic]) {
-      listElements.firstWhere((ListElementNode listElementNode) => listElementNode.id == listElementNodeId)
-          .node.properties[changedProperty.name] = changedProperty;
-      onListElementsUpdate();
-    };
+  void changePropertyTo(SchemaNodeProperty changedProperty, UniqueKey listElementNodeId, Function onListElementsUpdate) {
+    listElements.firstWhere((ListElementNode listElementNode) => listElementNode.id == listElementNodeId)
+        .node.properties[changedProperty.name] = changedProperty;
+    onListElementsUpdate();
+  }
+
+  void copyListElementNode({ListElementNode listElementNode, Function selectListElementNode}) {
+    final ListElementNode copy = listElementNode.copy();
+
+    this.listElements.add(copy);
+
+    copy.onListElementsUpdate();
+
+    selectListElementNode(copy);
+  }
+
+  void bringToFrontListElementNode({ListElementNode listElementNode}) {
+    this.listElements.removeWhere((element) => element.id == listElementNode.id);
+
+    this.listElements.add(listElementNode);
+
+    listElementNode.onListElementsUpdate();
+  }
+
+  void sendToBackListElementNode({ListElementNode listElementNode}) {
+    this.listElements.removeWhere((element) => element.id == listElementNode.id);
+
+    this.listElements.insert(0, listElementNode);
+
+    listElementNode.onListElementsUpdate();
+  }
+
+  void deleteListElementNode({ ListElementNode listElementNode, Function unselectListElementNode }) {
+    this.listElements.remove(listElementNode);
+
+    unselectListElementNode();
   }
 
   Widget toEditProps({
@@ -111,7 +141,7 @@ class ListElements {
               node: node,
               name: option.name,
               iconPreview: option.leftWidget,
-              changePropertyTo: getChangePropertyToFn(node.id, () => onListElementsUpdate()),
+              changePropertyTo: this.changePropertyTo,
               onListElementsUpdate: onListElementsUpdate,
             );
 
@@ -143,7 +173,7 @@ class ListElementNode {
 
   final String name;
   final UniqueKey id;
-  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
+  final Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
   final Widget iconPreview;
   final Function onListElementsUpdate;
 
@@ -157,7 +187,22 @@ class ListElementNode {
     @required this.id,
     @required this.changePropertyTo,
     @required this.onListElementsUpdate,
+    this.columnRelation = null,
   });
+
+  ListElementNode copy() {
+    final SchemaNode nodeCopy = this.node.copy(id: UniqueKey(), saveProperties: true);
+
+    return ListElementNode(
+      node: nodeCopy,
+      iconPreview: this.iconPreview,
+      name: this.name,
+      id: nodeCopy.id,
+      changePropertyTo: this.changePropertyTo,
+      onListElementsUpdate: this.onListElementsUpdate,
+      columnRelation: this.columnRelation,
+    );
+  }
 
   Widget buildSettingsButton(Function onNodeSettingsClick) {
     BoxDecoration defaultDecoration = BoxDecoration(
@@ -242,13 +287,13 @@ class ListElementNode {
                 ),
               ],
             ),
-            node.toEditProps((e) => e, onPropertyChanged),
+            node.toEditProps((e) => e, this.onPropertyChanged),
           ],
         )
       );
     }
 
-    return node.toEditProps(wrapInRoot, this.changePropertyTo);
+    return node.toEditProps(wrapInRoot, this.onPropertyChanged);
   }
 
   void onPropertyChanged(SchemaNodeProperty changedProperty, [bool, dynamic]) {
@@ -256,7 +301,7 @@ class ListElementNode {
       this.columnRelation = null;
     }
 
-    this.changePropertyTo(changedProperty);
+    this.changePropertyTo(changedProperty, this.id, this.onListElementsUpdate);
   }
 
   void repositionAndResize(node, { isAddedToDoneActions }) {
