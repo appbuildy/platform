@@ -20,6 +20,7 @@ class Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var nav = bottomNavigation ?? Container();
-    return Stack(children: [...widgets, nav]);
+
+    return Scaffold(body: Stack(children: [...widgets, nav]));
   }
 }

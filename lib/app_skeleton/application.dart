@@ -19,6 +19,6 @@ class _ApplicationState extends State<Application> {
     return MultiProvider(providers: [
       Provider<ScreenStore>(
           create: (_) => ScreenStore(widget.screens.values.first))
-    ], child: MaterialApp(home: Scaffold(body: widget.screens.values.first)));
+    ], child: MaterialApp(home: widget.screens.values.first));
   }
 }
