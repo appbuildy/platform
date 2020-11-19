@@ -150,12 +150,12 @@ class UserActions {
     await loadProject();
   }
 
+  SchemaConverter get converter => SchemaConverter(
+      bottomNavigationStore: _bottomNavigation,
+      screens: screens.all,
+      theme: _theme.currentTheme);
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      final converter = SchemaConverter(
-          bottomNavigationStore: _bottomNavigation,
-          screens: screens.all,
-          theme: _theme.currentTheme);
       _currentUserStore.project.save(converter, client: http.Client());
     });
   }
