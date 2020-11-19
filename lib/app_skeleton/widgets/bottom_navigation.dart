@@ -4,6 +4,7 @@ import 'package:flutter_app/app_skeleton/store/screen_store.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
 import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
@@ -38,11 +39,15 @@ class BottomNavigation extends StatelessWidget {
                       top:
                           BorderSide(width: 1, color: theme.separators.color))),
               child: Container(
-                child: AppTabs(
-                  selectedScreenId: store.currentScreen.id,
-                  tabs: tabs,
-                  theme: theme,
-                  onTap: (tab) {},
+                child: Observer(
+                  builder: (_) => AppTabs(
+                    selectedScreenId: store.selectedScreenId,
+                    tabs: tabs,
+                    theme: theme,
+                    onTap: (tab) {
+                      store.setCurrentScreen(store.screens[tab.target]);
+                    },
+                  ),
                 ),
                 width: 375,
                 height: 82,

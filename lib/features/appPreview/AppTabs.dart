@@ -22,33 +22,29 @@ class AppTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Observer(
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: tabs
-                .map((tab) => Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          onTap(tab);
-                        },
-                        child: Cursor(
-                          cursor: CursorEnum.pointer,
-                          child: AppTabItem(
-                            tab: tab,
-                            activeColor: theme.primary.color,
-                            disabledColor: theme.generalSecondary.color,
-                            isActive: tab.target == selectedScreenId,
-                          ),
-                        ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: tabs
+            .map((tab) => Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      onTap(tab);
+                    },
+                    child: Cursor(
+                      cursor: CursorEnum.pointer,
+                      child: AppTabItem(
+                        tab: tab,
+                        activeColor: theme.primary.color,
+                        disabledColor: theme.generalSecondary.color,
+                        isActive: tab.target == selectedScreenId,
                       ),
-                    ))
-                .toList(),
-          ),
-        );
-      },
+                    ),
+                  ),
+                ))
+            .toList(),
+      ),
     );
   }
 }
