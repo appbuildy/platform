@@ -27,6 +27,8 @@ abstract class ListTemplate {
     MyTheme currentTheme,
   });
 
+  Offset padding = Offset(0, 0);
+
   Widget widgetFor({
     @required SchemaListItemsProperty item,
     @required SchemaNodeList schemaNodeList,

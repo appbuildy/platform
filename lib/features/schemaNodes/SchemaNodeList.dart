@@ -141,6 +141,65 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
     this.parentSpawner.userActions.rerenderNode();
   }
 
+  Offset get listElementNodeWorkspaceSize => Offset(
+    this.size.dx - (this.properties['Template'].value as ListTemplate).padding.dx * 2,
+    this.properties['ListItemHeight'].value - (this.properties['Template'].value as ListTemplate).padding.dy * 2,
+  );
+
+  @override
+  void onDeletePressed({ Function onDelete }) {
+    if (this.selectedListElementNode != null) {
+      (this.properties['Elements'].value as ListElements).deleteListElementNode(
+        listElementNode: selectedListElementNode,
+      );
+
+      unselectListElementNode();
+
+      return;
+    }
+
+    super.onDeletePressed(onDelete: onDelete);
+  }
+
+  @override
+  void onCopyPressed({onCopy}) {
+    if (this.selectedListElementNode != null) {
+      final ListElementNode copy =  (this.properties['Elements'].value as ListElements).copyListElementNode(
+        listElementNode: selectedListElementNode,
+      );
+
+      copy.onListElementsUpdate();
+
+      selectListElementNode(copy);
+
+      return;
+    }
+
+    super.onCopyPressed(onCopy: onCopy);
+  }
+
+  @override
+  void onUpOrDownPressed({bool isUp, Offset currentScreenWorkspaceSize, Function repositionAndResize}) {
+    if (this.selectedListElementNode != null) {
+      this.selectedListElementNode.onUpOrDownPressed(isUp: isUp, currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
+
+      return;
+    }
+
+    super.onUpOrDownPressed(isUp: isUp, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: repositionAndResize);
+  }
+
+  @override
+  void onLeftOrRightPressed({bool isLeft, Offset currentScreenWorkspaceSize, Function repositionAndResize}) {
+    if (this.selectedListElementNode != null) {
+      this.selectedListElementNode.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
+
+      return;
+    }
+
+    super.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: repositionAndResize);
+  }
+
   @override
   SchemaNode copy(
       {Offset position,
@@ -279,16 +338,20 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
                   );
                 },
                 onDuplicate: () {
-                  (widget.schemaNodeList.properties['Elements'].value as ListElements).copyListElementNode(
+                  final ListElementNode copy =  (widget.schemaNodeList.properties['Elements'].value as ListElements).copyListElementNode(
                     listElementNode: listElementNode,
-                    selectListElementNode: widget.schemaNodeList.selectListElementNode,
                   );
+
+                  copy.onListElementsUpdate();
+
+                  widget.schemaNodeList.selectListElementNode(copy);
                 },
                 onDelete: () {
                   (widget.schemaNodeList.properties['Elements'].value as ListElements).deleteListElementNode(
                     listElementNode: listElementNode,
-                    unselectListElementNode: widget.schemaNodeList.unselectListElementNode,
                   );
+
+                  widget.schemaNodeList.unselectListElementNode();
                 },
                 child: Container(
                   width: 38,
@@ -356,6 +419,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
               },
               onListElementsUpdate: () {
                 widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
+                print('check');
                 _pageSliderController.pages = getPageSliderPages();
               }
           ),

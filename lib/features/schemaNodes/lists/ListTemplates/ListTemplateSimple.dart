@@ -112,13 +112,11 @@ class ListTemplateSimple extends ListTemplate {
                           data: data,
                           schemaNodeList: schemaNodeList,
                           isPlayMode: isPlayMode,
-                          padding: Offset(0, 0),
                         );
                       } else {
                         renderedWidget = el.toWidget(
                           schemaNodeList: schemaNodeList,
                           isPlayMode: isPlayMode,
-                          padding: Offset(0, 0),
                         );
                       }
 

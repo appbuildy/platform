@@ -79,14 +79,12 @@ class ListElements {
     onListElementsUpdate();
   }
 
-  void copyListElementNode({ListElementNode listElementNode, Function selectListElementNode}) {
+  ListElementNode copyListElementNode({ListElementNode listElementNode, Function selectListElementNode}) {
     final ListElementNode copy = listElementNode.copy();
 
     this.listElements.add(copy);
 
-    copy.onListElementsUpdate();
-
-    selectListElementNode(copy);
+    return copy;
   }
 
   void bringToFrontListElementNode({ListElementNode listElementNode}) {
@@ -105,10 +103,8 @@ class ListElements {
     listElementNode.onListElementsUpdate();
   }
 
-  void deleteListElementNode({ ListElementNode listElementNode, Function unselectListElementNode }) {
+  void deleteListElementNode({ ListElementNode listElementNode }) {
     this.listElements.remove(listElementNode);
-
-    unselectListElementNode();
   }
 
   Widget toEditProps({
@@ -132,8 +128,7 @@ class ListElements {
           ],
           onChange: (SelectOption option) {
             final SchemaNode node = option.value(
-              // list padding horizontal - 12. todo: refac
-              size: Offset(schemaNodeList.size.dx - 12 * 2, 30),
+              size: Offset(schemaNodeList.listElementNodeWorkspaceSize.dx, 30),
             );
 
             final ListElementNode createdNode = ListElementNode(
@@ -309,10 +304,17 @@ class ListElementNode {
     this.onListElementsUpdate();
   }
 
+  void onUpOrDownPressed({bool isUp, Offset currentScreenWorkspaceSize}) {
+    this.node.onUpOrDownPressed(isUp: isUp, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: this.repositionAndResize);
+  }
+
+  void onLeftOrRightPressed({bool isLeft, Offset currentScreenWorkspaceSize}) {
+    this.node.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: this.repositionAndResize);
+  }
+
   Widget toWidget({
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
-    @required Offset padding,
   }) {
     if (!schemaNodeList.isSelected) {
       return this.node.toWidget(isPlayMode: isPlayMode);
@@ -326,10 +328,7 @@ class ListElementNode {
           node: node,
           onPanEnd: (_) => {},
           repositionAndResize: this.repositionAndResize,
-          currentScreenWorkspaceSize: Offset(
-            schemaNodeList.size.dx - padding.dx * 2,
-            schemaNodeList.properties['ListItemHeight'].value - padding.dy * 2,
-          ),
+          currentScreenWorkspaceSize: schemaNodeList.listElementNodeWorkspaceSize,
           isPlayMode: isPlayMode,
           isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
           toWidgetFunction: this.node.toWidget,
@@ -345,7 +344,6 @@ class ListElementNode {
     @required String data,
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
-    @required Offset padding,
   }) {
     if (!schemaNodeList.isSelected) {
       return (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode);
@@ -359,10 +357,7 @@ class ListElementNode {
           node: node,
           onPanEnd: (_) => {},
           repositionAndResize: this.repositionAndResize,
-          currentScreenWorkspaceSize: Offset(
-            schemaNodeList.size.dx - padding.dx * 2,
-            schemaNodeList.properties['ListItemHeight'].value - padding.dy * 2,
-          ),
+          currentScreenWorkspaceSize: schemaNodeList.listElementNodeWorkspaceSize,
           isPlayMode: isPlayMode,
           isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
           toWidgetFunction: ({ bool isPlayMode }) => (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),

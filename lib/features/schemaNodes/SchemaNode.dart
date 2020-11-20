@@ -147,8 +147,48 @@ abstract class SchemaNode {
     bool saveProperties,
   });
 
-  void onDeleteButtonPressed() {
+  void onDeletePressed({ Function onDelete }) {
+    onDelete(this);
+  }
 
+  void onCopyPressed({ onCopy }) {
+    onCopy(this);
+  }
+
+  void onUpOrDownPressed({
+    @required bool isUp,
+    @required Offset currentScreenWorkspaceSize,
+    @required Function repositionAndResize,
+  }) {
+    this.position = Offset(
+        this.position.dx,
+        this.axisMove(
+        axisNodePosition: this.position.dy,
+        axisNodeSize: this.size.dy,
+        axisDelta: isUp ? -1 : 1,
+        axisScreenSize: currentScreenWorkspaceSize.dy,
+      )
+    );
+
+    repositionAndResize(this, isAddedToDoneActions: false);
+  }
+
+  void onLeftOrRightPressed({
+    @required bool isLeft,
+    @required Offset currentScreenWorkspaceSize,
+    @required Function repositionAndResize,
+  }) {
+    this.position = Offset(
+      this.axisMove(
+        axisNodePosition: this.position.dx,
+        axisNodeSize: this.size.dx,
+        axisDelta: isLeft ? -1 : 1,
+        axisScreenSize: currentScreenWorkspaceSize.dx,
+      ),
+      this.position.dy,
+    );
+
+    repositionAndResize(this, isAddedToDoneActions: false);
   }
 
   static double minimalSize = 30.0;

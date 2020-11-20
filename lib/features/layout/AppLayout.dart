@@ -75,45 +75,29 @@ class _AppLayoutState extends State<AppLayout> {
 
       if (e.logicalKey == LogicalKeyboardKey.arrowUp ||
           e.logicalKey == LogicalKeyboardKey.arrowDown) {
-        final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
-
-        selectedNode.position = Offset(
-          selectedNode.position.dx,
-          selectedNode.axisMove(
-            axisNodePosition: selectedNode.position.dy,
-            axisNodeSize: selectedNode.size.dy,
-            axisDelta: isUp ? -1 : 1,
-            axisScreenSize: widget.userActions.screens.currentScreenWorkspaceSize.dy,
-          )
+        selectedNode.onUpOrDownPressed(
+          isUp: e.logicalKey == LogicalKeyboardKey.arrowUp,
+          currentScreenWorkspaceSize: widget.userActions.screens.currentScreenWorkspaceSize,
+          repositionAndResize: widget.userActions.repositionAndResize
         );
-
-        widget.userActions
-            .repositionAndResize(selectedNode, isAddedToDoneActions: false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft ||
           e.logicalKey == LogicalKeyboardKey.arrowRight) {
-        final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
-
-        selectedNode.position = Offset(
-          selectedNode.axisMove(
-            axisNodePosition: selectedNode.position.dx,
-            axisNodeSize: selectedNode.size.dx,
-            axisDelta: isLeft ? -1 : 1,
-            axisScreenSize:
-                widget.userActions.screens.currentScreenWorkspaceSize.dx,
-          ),
-          selectedNode.position.dy,
+        selectedNode.onLeftOrRightPressed(
+            isLeft: e.logicalKey == LogicalKeyboardKey.arrowLeft,
+            currentScreenWorkspaceSize: widget.userActions.screens.currentScreenWorkspaceSize,
+            repositionAndResize: widget.userActions.repositionAndResize
         );
-
-        widget.userActions
-            .repositionAndResize(selectedNode, isAddedToDoneActions: false);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
-        widget.userActions.deleteNode(selectedNode);
-      } else if (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) {
-        widget.userActions.copyNode(selectedNode);
+        selectedNode.onDeletePressed(onDelete: widget.userActions.deleteNode);
+      } else if (
+      (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed)
+      || (e.logicalKey == LogicalKeyboardKey.keyC && e.isControlPressed)
+      ) {
+        selectedNode.onCopyPressed(onCopy: widget.userActions.copyNode);
       }
 
       return true;

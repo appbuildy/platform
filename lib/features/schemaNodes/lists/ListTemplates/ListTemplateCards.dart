@@ -91,6 +91,9 @@ class ListTemplateCards extends ListTemplate {
     );
   }
 
+  @override
+  Offset padding = Offset(12, 0);
+
   Widget widgetFor({
     SchemaListItemsProperty item,
     @required SchemaNodeList schemaNodeList,
@@ -135,14 +138,11 @@ class ListTemplateCards extends ListTemplate {
                           data: data,
                           schemaNodeList: schemaNodeList,
                           isPlayMode: isPlayMode,
-                          padding: Offset(12, 0),
                         );
                       } else {
                         renderedWidget = el.toWidget(
                           schemaNodeList: schemaNodeList,
                           isPlayMode: isPlayMode,
-                          // list padding horizontal - 12. todo: refac
-                          padding: Offset(12, 0),
                         );
                       }
 
