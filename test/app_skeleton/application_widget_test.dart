@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_skeleton/application.dart';
 import 'package:flutter_app/app_skeleton/application_widget.dart';
 import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +22,21 @@ class ApplicationMock extends StatelessWidget {
       ),
       home: Scaffold(body: Text('App is Rendered')),
     );
+    ;
+  }
+}
+
+class ApplicationLoadMock extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Fallback App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Scaffold(body: Text('Making it shine')),
+    );
   }
 }
 
@@ -32,17 +46,18 @@ class BrowserRenderMock extends Mock implements BrowserPreview {
   }
 }
 
-class BrowserRenderMockError extends Mock implements BrowserPreview {
-  Future<Application> load() async {
-    throw Exception();
+class BrowserRenderMockLoad extends Mock implements BrowserPreview {
+  Future<ApplicationLoadMock> load() async {
+    return ApplicationLoadMock();
   }
 }
 
 void main() {
   testWidgets('it renders app isLoading', (WidgetTester tester) async {
-    var appWidget = ApplicationWidget(preview: BrowserRenderMockError());
+    var appWidget = ApplicationWidget(preview: BrowserRenderMockLoad());
     await tester.pumpWidget(appWidget);
-    final textFinder = find.text('App is Loading');
+    await tester.pumpAndSettle(Duration(seconds: 5));
+    final textFinder = find.text('Making it shine');
 
     expect(textFinder, findsOneWidget);
   });

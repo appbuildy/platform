@@ -26,7 +26,7 @@ class AppPreview extends StatefulWidget {
     this.isPreview = false,
     this.selectStateToLayout,
     this.focusNode,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   _AppPreviewState createState() => _AppPreviewState();
@@ -46,7 +46,10 @@ class _AppPreviewState extends State<AppPreview> {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
         final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(userActions.screens.currentScreenWorkspaceSize.dx, widget.userActions.screens.currentScreenWorkspaceSize.dy, details.data.size);
+            .calculate(
+                userActions.screens.currentScreenWorkspaceSize.dx,
+                widget.userActions.screens.currentScreenWorkspaceSize.dy,
+                details.data.size);
         userActions.placeWidget(details.data, newPosition);
         widget.selectPlayModeToFalse();
 
@@ -179,25 +182,35 @@ class _AppPreviewState extends State<AppPreview> {
                         left: 0,
                         child: userActions.screens.current.bottomTabsVisible
                             ? Container(
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        top: BorderSide(
-                                            width: 1,
-                                            color: theme.separators.color))),
-                                child: Container(
-                                  child: AppTabs(userActions: userActions),
-                                  width: userActions.screens.currentScreenWorkspaceSize.dx,
-                                  height: userActions.screens.screenTabsHeight,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: widget.isPreview
-                                        ? BorderRadius.zero
-                                        : BorderRadius.only(
-                                            bottomLeft: Radius.circular(37.0),
-                                            bottomRight: Radius.circular(37.0)),
-                                  ),
-                                ),
-                              )
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  top: BorderSide(
+                                      width: 1,
+                                      color: theme.separators.color))),
+                          child: Container(
+                            child: AppTabs(
+                              selectedScreenId:
+                              userActions.currentScreen.id,
+                              tabs: userActions.bottomNavigation.tabs,
+                              theme: userActions.currentTheme,
+                              onTap: (tab) {
+                                userActions.screens.selectById(tab.target);
+                                userActions.selectNodeForEdit(null);
+                              },
+                            ),
+                            width: userActions
+                                .screens.currentScreenWorkspaceSize.dx,
+                            height: userActions.screens.screenTabsHeight,
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: widget.isPreview
+                                  ? BorderRadius.zero
+                                  : BorderRadius.only(
+                                  bottomLeft: Radius.circular(37.0),
+                                  bottomRight: Radius.circular(37.0)),
+                            ),
+                          ),
+                        )
                             : Container(),
                       ),
                       widget.isPreview

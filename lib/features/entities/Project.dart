@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 class Project {
   User user;
   String url;
+  String apiKey;
+  String base;
 
   Project(this.url, [this.user]);
 
@@ -24,6 +26,11 @@ class Project {
       RemoteAttributes attributes}) async {
     return await SetupProject(userStore: userStore, attributes: attributes)
         .setup(auth, client);
+  }
+
+  void setAirtableCredentials({String apiKey, String base}) {
+    this.apiKey = apiKey;
+    this.base = base;
   }
 
   Map<String, dynamic> _fetchedData;
@@ -55,7 +62,16 @@ class Project {
   Future<bool> save(SchemaConverter converter, {http.Client client}) async {
     if (_projectDataNotSet) return false;
 
-    final body = json.encode({'project': converter.toJson()});
+    final serialiedProject = converter.toJson();
+    if (this.apiKey != null && this.base != null) {
+      serialiedProject['airtable_credentials'] = {
+        'api_key': apiKey,
+        'base': base
+      };
+    }
+
+    final body = json.encode({'project': serialiedProject});
+
     final headers = user.authHeaders();
     headers['Content-type'] = 'application/json';
 

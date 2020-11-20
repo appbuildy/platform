@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
-import 'package:universal_html/html.dart';
+import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
 class ApplicationWidget extends StatefulWidget {
   BrowserPreview preview;
@@ -13,16 +13,55 @@ class ApplicationWidget extends StatefulWidget {
 }
 
 class _ApplicationWidgetState extends State<ApplicationWidget> {
+  final int minLoadingAnimationDurationTime = 1000;
+
   BrowserPreview preview;
   Widget application;
-  bool isLoading;
+  OverlayEntry _overlayEntry;
+  Stopwatch animationStopwatch;
+
+  void startLoadingAnimation({@required Function onStart}) {
+    this._overlayEntry = this._renderLoadingOverlay();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      try {
+        Overlay.of(context).insert(this._overlayEntry);
+
+        animationStopwatch = Stopwatch()..start();
+
+        onStart();
+      } catch (e) {
+        preview = widget.preview;
+        onStart();
+      }
+    });
+  }
+
+  OverlayEntry _renderLoadingOverlay() {
+    return OverlayEntry(
+        builder: (BuildContext context) => ProjectLoadingAnimation());
+  }
+
+  void endLoadingAnimation() async {
+    try {
+      int elapsedTime = animationStopwatch.elapsedMilliseconds;
+
+      if (elapsedTime < minLoadingAnimationDurationTime) {
+        await Future.delayed(Duration(
+            milliseconds: minLoadingAnimationDurationTime - elapsedTime));
+      }
+
+      _overlayEntry.remove();
+      animationStopwatch.stop();
+    } catch (e) {}
+  }
 
   @override
   void initState() {
-    super.initState();
-    isLoading = true;
     preview ??= widget.preview;
-    initPreview();
+    this.startLoadingAnimation(onStart: this.initPreview);
+    application = Container();
+    super.initState();
   }
 
   Future<void> initPreview() async {
@@ -30,30 +69,13 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
       Widget applicationLoad = await preview.load();
       setState(() {
         application = applicationLoad;
-        isLoading = false;
       });
-    } catch (e) {
-      throw (e);
-    }
+      endLoadingAnimation();
+    } catch (e) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return _fallbackApp();
-    } else {
-      return application;
-    }
-  }
-
-  Widget _fallbackApp() {
-    return MaterialApp(
-      title: 'Fallback App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Scaffold(body: Text('App is Loading')),
-    );
+    return application;
   }
 }

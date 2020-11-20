@@ -149,12 +149,22 @@ class UserActions {
     }
   }
 
+  Future<void> setAirtableCredentials(String apiKey, String base) async {
+    this
+        .currentUserStore
+        .project
+        .setAirtableCredentials(apiKey: apiKey, base: base);
+
+    await _currentUserStore.project.save(converter, client: http.Client());
+    await loadProject();
+  }
+
+  SchemaConverter get converter => SchemaConverter(
+      bottomNavigationStore: _bottomNavigation,
+      screens: screens.all,
+      theme: _theme.currentTheme);
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      final converter = SchemaConverter(
-          bottomNavigationStore: _bottomNavigation,
-          screens: screens.all,
-          theme: _theme.currentTheme);
       _currentUserStore.project.save(converter, client: http.Client());
     });
   }

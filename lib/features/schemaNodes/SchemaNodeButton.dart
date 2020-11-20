@@ -39,7 +39,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     this.parentSpawner = parent;
     this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(343.0, 50.0);
+    this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
