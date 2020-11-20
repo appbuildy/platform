@@ -147,6 +147,10 @@ abstract class SchemaNode {
     bool saveProperties,
   });
 
+  void onDeleteButtonPressed() {
+
+  }
+
   static double minimalSize = 30.0;
 
   static double demagnetizeSideDelta = 8;
@@ -1318,7 +1322,6 @@ abstract class SchemaNode {
       overflow: Overflow.visible,
       alignment: Alignment.center,
       children: [
-        //if (!isItemSelectedInList)
           DeltaFromAnchorPointPanDetector(
             canMove: !isItemSelectedInList,
             onPanUpdate: (delta) {

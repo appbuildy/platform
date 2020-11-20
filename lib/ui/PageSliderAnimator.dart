@@ -36,7 +36,7 @@ class PageSliderController<T> {
     this.pages = buildPages;
   }
 
-  Widget getSelectedPage() => _selectedPage();
+  Widget getSelectedPage() => _selectedPage != null ? _selectedPage() : Container();
 
   void _replacePage(T) {
     if (_selectedPage == pages[T]) return;
