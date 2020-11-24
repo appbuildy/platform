@@ -100,7 +100,7 @@ class ListTemplateCards extends ListTemplate {
     @required bool isPlayMode,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
+      padding: EdgeInsets.only(top: 11, left: this.padding.dx.toDouble(), right: this.padding.dx.toDouble()),
       child: Row(
         children: [
           Expanded(

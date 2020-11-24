@@ -45,7 +45,7 @@ class _WithHoverState extends State<WithHover> {
         left: 0,
         child: Container(
           width: widget.size.dx,
-          height: 10,
+          height: 1,
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(width: 1, color: MyColors.error),
@@ -57,7 +57,7 @@ class _WithHoverState extends State<WithHover> {
         top: 0,
         right: 0,
         child: Container(
-          width: 10,
+          width: 1,
           height: widget.size.dy,
           decoration: BoxDecoration(
             border: Border(
@@ -71,7 +71,7 @@ class _WithHoverState extends State<WithHover> {
         bottom: 0,
         child: Container(
           width: widget.size.dx,
-          height: 10,
+          height: 1,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -84,7 +84,7 @@ class _WithHoverState extends State<WithHover> {
         top: 0,
         left: 0,
         child: Container(
-          width: 10,
+          width: 1,
           height: widget.size.dy,
           decoration: BoxDecoration(
             border: Border(
@@ -1345,7 +1345,7 @@ abstract class SchemaNode {
     ] : [Container()];
 
     final Widget nodeWithHover = Cursor(
-        cursor: CursorEnum.move,
+        cursor: !isItemSelectedInList ? CursorEnum.move : CursorEnum.defaultCursor,
         child: Container(
             width: node.size.dx,
             height: node.size.dy,
