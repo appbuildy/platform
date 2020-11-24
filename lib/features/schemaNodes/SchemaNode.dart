@@ -191,7 +191,12 @@ abstract class SchemaNode {
     repositionAndResize(this, isAddedToDoneActions: false);
   }
 
-  static double minimalSize = 30.0;
+  //double minimalSize = 30.0;
+
+  double get onTopResizeMinimalSize => 30.0;
+  double get onRightResizeMinimalSize => 30.0;
+  double get onBottomResizeMinimalSize => 30.0;
+  double get onLeftResizeMinimalSize => 30.0;
 
   static double demagnetizeSideDelta = 8;
 
@@ -249,6 +254,7 @@ abstract class SchemaNode {
     @required double size,
     @required double delta,
     @required double axisScreenSize,
+    @required double minimalSize,
   }) {
     final double previousPosition = position;
 
@@ -258,16 +264,16 @@ abstract class SchemaNode {
 
     double newSize = size + movedDelta;
 
-    if (newSize < SchemaNode.minimalSize) {
-      final double addedSize = SchemaNode.minimalSize - newSize;
+    if (newSize < minimalSize) {
+      final double addedSize = minimalSize - newSize;
 
       newSize += addedSize;
 
       newPosition -= addedSize;
     }
 
-    if (newSize < SchemaNode.minimalSize) {
-      final double addedSize = SchemaNode.minimalSize - newSize;
+    if (newSize < minimalSize) {
+      final double addedSize = minimalSize - newSize;
 
       newSize += addedSize;
 
@@ -290,11 +296,12 @@ abstract class SchemaNode {
     @required double size,
     @required double delta,
     @required double axisScreenSize,
+    @required double minimalSize,
   }) {
     double newSize = size + delta;
 
-    if (newSize < SchemaNode.minimalSize) {
-      newSize = SchemaNode.minimalSize;
+    if (newSize < minimalSize) {
+      newSize = minimalSize;
     }
 
     if (position + newSize > axisScreenSize) {
@@ -313,6 +320,7 @@ abstract class SchemaNode {
       size: this.size.dy,
       delta: deltaDy,
       axisScreenSize: screenSizeDy,
+      minimalSize: this.onTopResizeMinimalSize,
     );
 
     final double newPosition = newPositionAndSize[0];
@@ -339,6 +347,7 @@ abstract class SchemaNode {
       size: this.size.dx,
       delta: deltaDx,
       axisScreenSize: screenSizeDx,
+      minimalSize: this.onRightResizeMinimalSize,
     );
 
     this.size = Offset(
@@ -358,6 +367,7 @@ abstract class SchemaNode {
       size: this.size.dy,
       delta: deltaDy,
       axisScreenSize: screenSizeDy,
+      minimalSize: this.onBottomResizeMinimalSize,
     );
 
     this.size = Offset(
@@ -377,6 +387,7 @@ abstract class SchemaNode {
       size: this.size.dx,
       delta: deltaDx,
       axisScreenSize: screenSizeDx,
+      minimalSize: this.onLeftResizeMinimalSize,
     );
 
     final double newPosition = newPositionAndSize[0];
@@ -575,6 +586,7 @@ abstract class SchemaNode {
     @required FoundGuideline foundGuideline,
     @required double axisScreenSize,
     @required Function clearGuideline,
+    @required double minimalSize,
   }) {
     double magnetizedNodePosition = position;
     double magnetizedNodeSize = size;
@@ -598,7 +610,7 @@ abstract class SchemaNode {
     final isOverflowed = magnetizedNodePosition < 0 ||
         magnetizedNodePosition + magnetizedNodeSize > axisScreenSize;
 
-    if (magnetizedNodeSize < SchemaNode.minimalSize || isOverflowed) {
+    if (magnetizedNodeSize < minimalSize || isOverflowed) {
       clearGuideline();
       return [position, size];
     }
@@ -612,6 +624,7 @@ abstract class SchemaNode {
     @required FoundGuideline foundGuideline,
     @required double axisScreenSize,
     @required Function clearGuideline,
+    @required double minimalSize,
   }) {
     double magnetizedNodeSize = size;
 
@@ -631,7 +644,7 @@ abstract class SchemaNode {
 
     final isOverflowed = position + magnetizedNodeSize > axisScreenSize;
 
-    if (magnetizedNodeSize < SchemaNode.minimalSize || isOverflowed) {
+    if (magnetizedNodeSize < minimalSize || isOverflowed) {
       clearGuideline();
       return size;
     }
@@ -692,6 +705,7 @@ abstract class SchemaNode {
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
         clearGuideline: guidelinesManager.clearHorizontal,
+            minimalSize: this.onTopResizeMinimalSize,
       );
 
       final double newPositionDy = magnetizedNodePositionAndSize[0];
@@ -776,6 +790,7 @@ abstract class SchemaNode {
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDx,
         clearGuideline: guidelinesManager.clearVertical,
+        minimalSize: this.onRightResizeMinimalSize,
       );
 
       this.size = Offset(
@@ -852,6 +867,7 @@ abstract class SchemaNode {
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDy,
         clearGuideline: guidelinesManager.clearHorizontal,
+        minimalSize: this.onBottomResizeMinimalSize,
       );
 
       this.size = Offset(
@@ -928,6 +944,7 @@ abstract class SchemaNode {
         foundGuideline: foundGuideline,
         axisScreenSize: screenSizeDx,
         clearGuideline: guidelinesManager.clearHorizontal,
+        minimalSize: this.onLeftResizeMinimalSize,
       );
 
       final double newPositionDx = magnetizedNodePositionAndSize[0];
@@ -1345,7 +1362,7 @@ abstract class SchemaNode {
     ] : [Container()];
 
     final Widget nodeWithHover = Cursor(
-        cursor: !isItemSelectedInList ? CursorEnum.move : CursorEnum.defaultCursor,
+        cursor: CursorEnum.move,
         child: Container(
             width: node.size.dx,
             height: node.size.dy,

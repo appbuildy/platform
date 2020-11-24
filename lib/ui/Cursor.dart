@@ -54,12 +54,12 @@ class Cursor extends StatelessWidget {
           else {
             Cursor.constraintsOfObjectWhatShowingCursor = context.size;
           }
+
           appContainer.style.cursor = CursorMap[cursor];
         },
         onExit: (PointerExitEvent evt) {
           appContainer.style.cursor = CursorMap[CursorEnum.defaultCursor];
           Cursor.constraintsOfObjectWhatShowingCursor = null;
-
         },
         child: child,
     );

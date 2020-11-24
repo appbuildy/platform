@@ -1,6 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -198,6 +199,51 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
     }
 
     super.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: repositionAndResize);
+  }
+
+  @override
+  double get onLeftResizeMinimalSize {
+    double minimalSize = super.onLeftResizeMinimalSize;
+
+    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
+      double currentNodeMinimalSize = this.size.dx - listElementNode.node.position.dx;
+      if (currentNodeMinimalSize > minimalSize) minimalSize = currentNodeMinimalSize;
+    });
+
+    return minimalSize;
+  }
+
+  @override
+  double get onRightResizeMinimalSize {
+    double minimalSize = super.onRightResizeMinimalSize;
+
+    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
+      double currentNodeMinimalSize = listElementNode.node.size.dx + listElementNode.node.position.dx;
+      if (currentNodeMinimalSize > minimalSize) minimalSize = currentNodeMinimalSize;
+    });
+
+    double paddingToListItem = (this.properties['Template'].value as ListTemplate).padding.dx * 2;
+
+    return minimalSize + paddingToListItem;
+  }
+
+  @override
+  SchemaNode magnetLeftResize({
+    @required double deltaDx,
+    @required double screenSizeDx,
+    @required GuidelinesManager guidelinesManager,
+  }) {
+    final double currentSize = this.size.dx;
+
+    final SchemaNode editedNode = super.magnetLeftResize(deltaDx: deltaDx, screenSizeDx: screenSizeDx, guidelinesManager: guidelinesManager);
+
+    final resizeDelta = editedNode.size.dx - currentSize;
+
+    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
+      listElementNode.onListLeftResize(deltaDx: resizeDelta, currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
+    });
+
+    return editedNode;
   }
 
   @override

@@ -312,6 +312,12 @@ class ListElementNode {
     this.node.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: this.repositionAndResize);
   }
 
+  void onListLeftResize({double deltaDx, Offset currentScreenWorkspaceSize}) {
+    this.node.move(delta: Offset(deltaDx, 0), screenSize: currentScreenWorkspaceSize);
+    //todo: optimization this.onListElementUpdate();
+    this.onListElementsUpdate();
+  }
+
   Widget toWidget({
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
