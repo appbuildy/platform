@@ -22,19 +22,46 @@ const CursorMap = {
   CursorEnum.ewResize: 'ew-resize',
 };
 
-class Cursor extends MouseRegion {
+class Cursor extends StatelessWidget {
   static final appContainer =
       html.window.document.querySelectorAll('flt-glass-pane')[0];
+
+  final CursorEnum cursor;
+  final Widget child;
+
+  static Size constraintsOfObjectWhatShowingCursor;
+
   Cursor({
-    @required CursorEnum cursor,
-    @required Widget child,
-  })
-      : super(
-            onHover: (PointerHoverEvent evt) {
-              appContainer.style.cursor = CursorMap[cursor];
-            },
-            onExit: (PointerExitEvent evt) {
-              appContainer.style.cursor = CursorMap[CursorEnum.defaultCursor];
-            },
-            child: child);
+    @required this.cursor,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // todo: refac if possible.
+    return MouseRegion(
+        onHover: (PointerHoverEvent evt) {
+          if (Cursor.constraintsOfObjectWhatShowingCursor != null) {
+
+            if (
+            Cursor.constraintsOfObjectWhatShowingCursor.width <= context.size.width
+            && Cursor.constraintsOfObjectWhatShowingCursor.height <= context.size.height
+            ) {
+              return;
+            }
+
+          }
+          else {
+            Cursor.constraintsOfObjectWhatShowingCursor = context.size;
+          }
+          appContainer.style.cursor = CursorMap[cursor];
+        },
+        onExit: (PointerExitEvent evt) {
+          appContainer.style.cursor = CursorMap[CursorEnum.defaultCursor];
+          Cursor.constraintsOfObjectWhatShowingCursor = null;
+
+        },
+        child: child,
+    );
+  }
 }

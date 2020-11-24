@@ -419,7 +419,6 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
               },
               onListElementsUpdate: () {
                 widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
-                print('check');
                 _pageSliderController.pages = getPageSliderPages();
               }
           ),
