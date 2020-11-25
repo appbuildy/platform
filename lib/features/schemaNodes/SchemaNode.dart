@@ -985,8 +985,6 @@ abstract class SchemaNode {
         'type': this.type.toString()
       };
 
-
-
   Widget toWidget({bool isPlayMode});
 
   Widget toEditProps(

@@ -1,9 +1,11 @@
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyButton.dart';
@@ -19,10 +21,28 @@ import '../SchemaNodeProperty.dart';
 class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty(String name, ListElements value) : super(name, value);
 
-  SchemaListElementsProperty.fromJson(Map<String, dynamic> jsonVal)
+  SchemaListElementsProperty.fromJson(
+      Map<String, dynamic> jsonVal,
+      SchemaNodeSpawner schemaNodeSpawner,
+    )
       : super('Elements', null) {
     this.name = jsonVal['name'];
-    this.value = ListElements(List<String>.from(jsonVal['value']['allColumns']),
+
+    //print(jsonDecode(jsonVal['value']['listElements']));
+    //print(jsonVal['value']['listElements'].runtimeType);
+    //print(jsonVal['value']['listElements']);
+
+    print('eboi');
+    List<dynamic>.from(jsonVal['value']['listElements']).map((e) {
+      print('eboi');
+      print(e);
+      return this.value.fromJsonListElementNode(e, schemaNodeSpawner);
+    });
+    print('eboi');
+
+    this.value = ListElements(
+      allColumns: List<String>.from(jsonDecode(jsonVal['value']['allColumns'])),
+      //listElements: ,
     );
   }
 
@@ -32,7 +52,11 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
       'name': name,
       'propertyClass': 'ListElementsProperty',
       'value': {
-        'allColumns': '',//value?.allColumns
+        'allColumns': jsonEncode(this.value.allColumns),
+        'listElements': this.value.listElements
+          .map((ListElementNode listElementNode) => this.value.toJsonListElementNode(listElementNode))
+          .toList()
+          .cast<Map<String, dynamic>>(),
       }
     };
   }
@@ -47,17 +71,51 @@ typedef WrapFunction = Widget Function(Widget);
 
 typedef GetPageWrapFunction = WrapFunction Function(ListElementNode);
 
+String getNodeIconPath(String nodeType) {
+  switch (nodeType) {
+    case 'SchemaNodeType.icon':
+      return 'assets/icons/layout/icon.svg';
+    case 'SchemaNodeType.button':
+      return 'assets/icons/layout/button.svg';
+    case 'SchemaNodeType.text':
+      return 'assets/icons/layout/text.svg';
+    case 'SchemaNodeType.shape':
+      return 'assets/icons/layout/shape.svg';
+    case 'SchemaNodeType.image':
+      return 'assets/icons/layout/image.svg';
+    default:
+      return 'assets/icons/layout/button.svg';
+  }
+}
+
+Function getSpawnFunction({ SchemaNodeSpawner schemaNodeSpawner, nodeType }) {
+  switch (nodeType) {
+    case 'SchemaNodeType.icon':
+      return schemaNodeSpawner.spawnSchemaNodeIcon;
+    case 'SchemaNodeType.button':
+      return schemaNodeSpawner.spawnSchemaNodeButton;
+    case 'SchemaNodeType.text':
+      return schemaNodeSpawner.spawnSchemaNodeText;
+    case 'SchemaNodeType.shape':
+      return schemaNodeSpawner.spawnSchemaNodeShape;
+    case 'SchemaNodeType.image':
+      return schemaNodeSpawner.spawnSchemaNodeImage;
+    default:
+      return schemaNodeSpawner.spawnSchemaNodeButton;
+  }
+}
+
 class ListElements {
   List<ListElementNode> listElements = [];
-  List<String> allColumns;
+  List<String> allColumns = [];
 
-  ListElements(List<String> allColumns) : this.allColumns = allColumns ?? [];
+  ListElements({allColumns, listElements}) : this.allColumns = allColumns ?? [], this.listElements = listElements ?? [];
 
-  _buildOptionPreview(String iconPath) {
+  _buildOptionPreview(String nodeType) {
     return Container(
       width: 18,
       height: 18,
-      child: Image.network(iconPath),
+      child: Image.network(getNodeIconPath(nodeType)),
     );
   }
 
@@ -107,6 +165,30 @@ class ListElements {
     this.listElements.remove(listElementNode);
   }
 
+  Map<String, dynamic> toJsonListElementNode(ListElementNode listElementNode) {
+    final Map<String, dynamic> jsonSchemaNode = listElementNode.node.toJson();
+
+    return {
+      'name': listElementNode.name,
+      'columnRelation': listElementNode.columnRelation,
+      'type': jsonSchemaNode['type'],
+      'node': jsonSchemaNode,
+    };
+  }
+
+  ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement, SchemaNodeSpawner schemaNodeSpawner) {
+    final SchemaNode deserializedNode = ComponentLoadedFromJson(jsonComponent: jsonListElement['node'] , schemaNodeSpawner: schemaNodeSpawner).load();
+
+    return ListElementNode(
+        node: deserializedNode,
+        iconPreview: _buildOptionPreview(jsonListElement['type']),
+        name: jsonListElement['name'],
+        id: deserializedNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+    );
+  }
+
   Widget toEditProps({
     SchemaNodeList schemaNodeList,
     Function onNodeSettingsClick,
@@ -114,17 +196,19 @@ class ListElements {
   }) {
     final UserActions userActions = schemaNodeList.parentSpawner.userActions;
 
+    this.listElements.forEach((element) { element.onListElementsUpdate = onListElementsUpdate; });
+
     return Column(
       children: [
         MyClickSelect(
           selectedValue: null,
           dropDownOnLeftSide: true,
           options: [
-            SelectOption('Button', userActions.schemaNodeSpawner.spawnSchemaNodeButton, _buildOptionPreview('assets/icons/layout/button.svg')),
-            SelectOption('Text', userActions.schemaNodeSpawner.spawnSchemaNodeText, _buildOptionPreview('assets/icons/layout/text.svg')),
-            SelectOption('Shape', userActions.schemaNodeSpawner.spawnSchemaNodeShape, _buildOptionPreview('assets/icons/layout/shape.svg')),
-            SelectOption('Icon', userActions.schemaNodeSpawner.spawnSchemaNodeIcon, _buildOptionPreview('assets/icons/layout/icon.svg')),
-            SelectOption('Image', userActions.schemaNodeSpawner.spawnSchemaNodeImage, _buildOptionPreview('assets/icons/layout/image.svg')),
+            SelectOption('Button', userActions.schemaNodeSpawner.spawnSchemaNodeButton, _buildOptionPreview('SchemaNodeType.button')),
+            SelectOption('Text', userActions.schemaNodeSpawner.spawnSchemaNodeText, _buildOptionPreview('SchemaNodeType.text')),
+            SelectOption('Shape', userActions.schemaNodeSpawner.spawnSchemaNodeShape, _buildOptionPreview('SchemaNodeType.shape')),
+            SelectOption('Icon', userActions.schemaNodeSpawner.spawnSchemaNodeIcon, _buildOptionPreview('SchemaNodeType.icon')),
+            SelectOption('Image', userActions.schemaNodeSpawner.spawnSchemaNodeImage, _buildOptionPreview('SchemaNodeType.image')),
           ],
           onChange: (SelectOption option) {
             final SchemaNode node = option.value(
@@ -170,8 +254,8 @@ class ListElementNode {
   final UniqueKey id;
   final Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
   final Widget iconPreview;
-  final Function onListElementsUpdate;
 
+  Function onListElementsUpdate;
   String columnRelation;
 
   ListElementNode({

@@ -17,6 +17,7 @@ class WidgetDecorator extends StatelessWidget {
 
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent) {
     var theme = MyThemes.allThemes['blue'];
+    //todo: add schemaNodeSpawner to args
     var componentProperties = ComponentProperties(jsonComponent);
 
     switch (jsonComponent['type']) {

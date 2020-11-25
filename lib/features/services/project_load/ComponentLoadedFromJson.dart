@@ -16,7 +16,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
 
   @override
   SchemaNode load() {
-    final componentProperties = ComponentProperties(jsonComponent);
+    final componentProperties = ComponentProperties(jsonComponent, schemaNodeSpawner: schemaNodeSpawner);
 
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':

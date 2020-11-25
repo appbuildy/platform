@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/project_load/properties_loader.dart';
 
 class ComponentProperties {
@@ -9,12 +10,12 @@ class ComponentProperties {
   Map<String, SchemaNodeProperty> actions;
   Map<String, dynamic> jsonComponent;
 
-  ComponentProperties(jsonComponent) {
+  ComponentProperties(jsonComponent, { SchemaNodeSpawner schemaNodeSpawner}) {
     this.jsonComponent = jsonComponent;
 
     _loadPosition();
     _loadSize();
-    _loadProperies();
+    _loadProperies(schemaNodeSpawner);
     _loadActions();
   }
 
@@ -30,8 +31,8 @@ class ComponentProperties {
     size = Offset(x.toDouble(), y.toDouble());
   }
 
-  void _loadProperies() {
-    properties = PropertiesLoader(jsonComponent).load();
+  void _loadProperies(SchemaNodeSpawner schemaNodeSpawner) {
+    properties = PropertiesLoader(jsonComponent).load(schemaNodeSpawner);
   }
 
   void _loadActions() {

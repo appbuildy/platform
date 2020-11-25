@@ -96,7 +96,7 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
           'Elements': SchemaListElementsProperty(
-              'Elements', ListElements(listColumnsSample),
+              'Elements', ListElements(allColumns: listColumnsSample),
           ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),

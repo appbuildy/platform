@@ -51,11 +51,12 @@ class UserActions {
   SchemaNodeSpawner schemaNodeSpawner;
   Debouncer<SchemaNode> debouncer;
 
-  UserActions(
-      {Screens screens,
-      CurrentUserStore currentUserStore,
-      BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+  UserActions({
+    Screens screens,
+    CurrentUserStore currentUserStore,
+    BottomNavigationStore bottomNavigationStore,
+    AppThemeStore themeStore
+  }) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -108,6 +109,7 @@ class UserActions {
         themeStore: this.themeStore,
         schemaNodeSpawner: this.schemaNodeSpawner,
       );
+
       final Screens screens = loadedProject.load();
       _bottomNavigation = loadedProject.bottomNav;
       print(_bottomNavigation.toJson());
@@ -162,7 +164,9 @@ class UserActions {
   SchemaConverter get converter => SchemaConverter(
       bottomNavigationStore: _bottomNavigation,
       screens: screens.all,
-      theme: _theme.currentTheme);
+      theme: _theme.currentTheme,
+  );
+
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
       _currentUserStore.project.save(converter, client: http.Client());
