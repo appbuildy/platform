@@ -143,7 +143,8 @@ class _AppPreviewState extends State<AppPreview> {
                         return
                           Positioned(
                             child: GestureDetector(
-                              onTap: () {
+                              // todo: refac. too much 'onTap'
+                              onTapDown: (_) {
                                 print('tap');
                                 widget.focusNode.requestFocus();
                                 if (widget.isPlayMode) {
@@ -225,7 +226,8 @@ class _AppPreviewState extends State<AppPreview> {
                               height: 5,
                               decoration: BoxDecoration(
                                   color: Color(0xFF000000),
-                                  borderRadius: BorderRadius.circular(100)),
+                                  borderRadius: BorderRadius.circular(100),
+                              ),
                             ),
                           ),
                       ),

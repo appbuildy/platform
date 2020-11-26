@@ -28,22 +28,17 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
       : super('Elements', null) {
     this.name = jsonVal['name'];
 
-    //print(jsonDecode(jsonVal['value']['listElements']));
-    //print(jsonVal['value']['listElements'].runtimeType);
-    //print(jsonVal['value']['listElements']);
-
-    print('eboi');
-    List<dynamic>.from(jsonVal['value']['listElements']).map((e) {
-      print('eboi');
-      print(e);
-      return this.value.fromJsonListElementNode(e, schemaNodeSpawner);
-    });
-    print('eboi');
-
     this.value = ListElements(
       allColumns: List<String>.from(jsonDecode(jsonVal['value']['allColumns'])),
-      //listElements: ,
     );
+
+    print('Start');
+
+    List<ListElementNode> listElementNodes = [];
+
+    jsonVal['value']['listElements'].forEach((e) {
+      this.value.listElements.add(this.value.fromJsonListElementNode(e, schemaNodeSpawner));
+    });
   }
 
   @override
@@ -177,12 +172,15 @@ class ListElements {
   }
 
   ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement, SchemaNodeSpawner schemaNodeSpawner) {
+    print(jsonListElement ?? 'KEK');
+    print('-----------------------------------------------');
     final SchemaNode deserializedNode = ComponentLoadedFromJson(jsonComponent: jsonListElement['node'] , schemaNodeSpawner: schemaNodeSpawner).load();
 
     return ListElementNode(
         node: deserializedNode,
         iconPreview: _buildOptionPreview(jsonListElement['type']),
         name: jsonListElement['name'],
+        columnRelation: jsonListElement['columnRelation'],
         id: deserializedNode.id,
         changePropertyTo: this.changePropertyTo,
         onListElementsUpdate: () {},
