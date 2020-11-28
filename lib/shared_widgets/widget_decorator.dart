@@ -98,11 +98,15 @@ class WidgetDecorator extends StatelessWidget {
             theme: theme));
   }
 
+  _onTap(context) {
+    onTap ?? (context) => () => {};
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
         left: position.dx,
         top: position.dy,
-        child: GestureDetector(onTap: onTap(context), child: this.widget));
+        child: GestureDetector(onTap: _onTap(context), child: this.widget));
   }
 }
