@@ -17,11 +17,16 @@ class Application extends StatefulWidget {
 class _ApplicationState extends State<Application> {
   @override
   Widget build(BuildContext context) {
+    var routes = widget.screens.map((key, screen) {
+      return MapEntry(key.toString(), (context) => screen);
+    });
     final screenStore =
         ScreenStore(widget.screens.values.first, widget.screens);
     return MultiProvider(
         providers: [Provider<ScreenStore>(create: (_) => screenStore)],
         child: MaterialApp(
+            initialRoute: '/',
+            routes: routes,
             home: Observer(builder: (_) => screenStore.currentScreen)));
   }
 }

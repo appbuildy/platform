@@ -18,12 +18,13 @@ class WidgetDecorator extends StatelessWidget {
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent) {
     var theme = MyThemes.allThemes['blue'];
     var componentProperties = ComponentProperties(jsonComponent);
+    var previewActions = componentProperties.previewActions;
 
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: Button(
                   properties: componentProperties.properties,
@@ -102,6 +103,6 @@ class WidgetDecorator extends StatelessWidget {
     return Positioned(
         left: position.dx,
         top: position.dy,
-        child: GestureDetector(onTap: onTap, child: this.widget));
+        child: GestureDetector(onTap: onTap(context), child: this.widget));
   }
 }

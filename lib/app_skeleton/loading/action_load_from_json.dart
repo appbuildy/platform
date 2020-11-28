@@ -14,7 +14,7 @@ class ActionLoadFromJson implements IActionLoad {
 
   Function _loadFunction() {
     var actionValue = jsonAction.values.first;
-    if (actionValue['value'] == null) _emptyFunction();
+    if (actionValue['value'] == null) return _emptyFunction();
     switch (actionValue['type']) {
       case 'SchemaActionType.goToScreen':
         {
@@ -30,6 +30,6 @@ class ActionLoadFromJson implements IActionLoad {
   }
 
   _emptyFunction() {
-    return () => () => {};
+    return (BuildContext context) => () => {};
   }
 }
