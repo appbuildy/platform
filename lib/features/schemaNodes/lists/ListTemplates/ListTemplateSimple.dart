@@ -8,13 +8,11 @@ import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplat
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../SchemaNodeList.dart';
-import '../../implementations.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 
 class ListTemplateSimple extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.simple;

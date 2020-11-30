@@ -14,7 +14,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
-import '../../SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 
 class ListTemplateCards extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.cards;

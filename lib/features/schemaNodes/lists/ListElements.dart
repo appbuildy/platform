@@ -14,9 +14,9 @@ import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
-import '../SchemaNode.dart';
-import '../SchemaNodeList.dart';
-import '../SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty(String name, ListElements value) : super(name, value);

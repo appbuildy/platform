@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 
-import '../ToolboxUI.dart';
+import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 
 class ToolboxData extends StatefulWidget {
   final UserActions userActions;

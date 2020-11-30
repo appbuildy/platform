@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateSimple.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
-import '../../SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 
 enum ListTemplateType { simple, cards }
 
