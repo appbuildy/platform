@@ -19,12 +19,13 @@ class WidgetDecorator extends StatelessWidget {
     var theme = MyThemes.allThemes['blue'];
     //todo: add schemaNodeSpawner to args
     var componentProperties = ComponentProperties(jsonComponent);
+    var previewActions = componentProperties.previewActions;
 
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: Button(
                   properties: componentProperties.properties,
@@ -98,11 +99,15 @@ class WidgetDecorator extends StatelessWidget {
             theme: theme));
   }
 
+  _onTap(context) {
+    onTap ?? (context) => () => {};
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
         left: position.dx,
         top: position.dy,
-        child: GestureDetector(onTap: onTap, child: this.widget));
+        child: GestureDetector(onTap: _onTap(context), child: this.widget));
   }
 }
