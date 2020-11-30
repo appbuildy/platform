@@ -54,6 +54,7 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
+
       return data;
     } catch (e) {
       print("Failed to fetch project data from host $url");

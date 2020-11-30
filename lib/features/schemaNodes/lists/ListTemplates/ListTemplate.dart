@@ -7,6 +7,8 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 
+import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
+
 enum ListTemplateType { simple, cards }
 
 abstract class ListTemplate {
@@ -14,8 +16,6 @@ abstract class ListTemplate {
 
   Widget toWidget({
     @required SchemaNodeList schemaNodeList,
-    // MyTheme currentTheme,
-    // Map<String, SchemaNodeProperty> properties,
     @required bool isPlayMode,
   });
 
@@ -31,8 +31,6 @@ abstract class ListTemplate {
     @required SchemaListItemsProperty item,
     @required SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
-    // ListElements elements,
-    // MyTheme currentTheme,
   });
 }
 
@@ -54,4 +52,14 @@ double getListHeightByType(ListTemplateType type) {
   } else {
     return 195.0;
   }
+}
+
+ListElements getListElementsByType(ListTemplateType type) {
+  if (type == ListTemplateType.simple) {
+    return ListElements(
+
+    );
+  }
+
+  return ListElements();
 }

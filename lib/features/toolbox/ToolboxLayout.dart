@@ -81,7 +81,7 @@ class ToolboxLayout extends StatelessWidget {
                           ToolboxComponent(
                             defaultTitle: 'List',
                             defaultType: SchemaNodeType.listDefault,
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeList(
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeListWithTemplate(
                               listTemplateType: ListTemplateType.simple,
                             ),
                           ),
@@ -89,9 +89,9 @@ class ToolboxLayout extends StatelessWidget {
                             width: 10,
                           ),
                           ToolboxComponent(
-                              defaultTitle: 'Cards',
-                              defaultType: SchemaNodeType.listCards,
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeList(
+                            defaultTitle: 'Cards',
+                            defaultType: SchemaNodeType.listCards,
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeListWithTemplate(
                               listTemplateType: ListTemplateType.cards,
                             ),
                           )

@@ -9,6 +9,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
@@ -92,11 +93,11 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
-          'Items': SchemaStringListProperty.sample(),
+          'Items': SchemaStringListProperty('Items', {}), //.sample()
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
           'Elements': SchemaListElementsProperty(
-              'Elements', ListElements(allColumns: listColumnsSample),
+              'Elements', getListElementsByType(listTemplateType),//ListElements(allColumns: listColumnsSample),
           ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),
@@ -115,6 +116,71 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
   }
+
+  SchemaNodeList.withTemplate({
+    @required SchemaNodeSpawner parent,
+    @required ListTemplateType listTemplateType,
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+  }) : super() {
+    final items = SchemaStringListProperty.sample();
+
+    this.parentSpawner = parent;
+    this.type = SchemaNodeType.list;
+    this.position = position ?? Offset(0, 0);
+    this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
+    this.id = id ?? UniqueKey();
+    this.listTemplateType = listTemplateType;
+    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.properties = properties ??
+        {
+          'Table': SchemaStringProperty('Table', null),
+          'Items': items, //.sample()
+          'Template': SchemaListTemplateProperty(
+              'Template', getListTemplateByType(listTemplateType)),
+          'TextColor': SchemaMyThemePropProperty(
+              'TextColor', parent.userActions.themeStore.currentTheme.general),
+          'ItemColor': SchemaMyThemePropProperty(
+              'ItemColor', parent.userActions.themeStore.currentTheme.background),
+          'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
+          'SeparatorsColor': SchemaMyThemePropProperty(
+              'SeparatorsColor', parent.userActions.themeStore.currentTheme.separators),
+          'BoxShadow': SchemaBoolProperty('BoxShadow', true),
+          'BoxShadowColor': SchemaMyThemePropProperty(
+              'BoxShadowColor', parent.userActions.themeStore.currentTheme.general),
+          'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
+          'ListItemHeight': SchemaDoubleProperty('ListItemHeight', 150),
+        };
+
+    final double listItemWidth = this.size.dx - (this.properties['Template'].value as ListTemplate).padding.dx * 2;
+    final double listItemHeight = this.properties['ListItemHeight'].value - (this.properties['Template'].value as ListTemplate).padding.dy * 2;
+    final Offset listItemSize = Offset(listItemWidth, listItemHeight);
+
+    ListElements listElements;
+
+    if (listTemplateType == ListTemplateType.simple) {
+      listElements = ListElements.withCardListTemplate(
+          allColumns: listColumnsSample,
+          schemaNodeSpawner: parent,
+          listItemSize: listItemSize
+      );
+    } else if (listTemplateType == ListTemplateType.cards) {
+      listElements = ListElements.withCardListTemplate(
+        allColumns: listColumnsSample,
+        schemaNodeSpawner: parent,
+          listItemSize: listItemSize
+      );
+    }
+
+    this.properties['Elements'] = SchemaListElementsProperty('Elements', listElements);
+
+    textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
+  }
+
 // todo: refac.
   bool get isSelected => this.id == parentSpawner.userActions.selectedNode()?.id;
 
@@ -416,6 +482,11 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
   }
 
   Widget _buildRoot() {
+    bool isItemsNotEmpty = (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values.isNotEmpty;
+    print( (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values);
+    print(widget.schemaNodeList.properties['Items'].value);
+    print(isItemsNotEmpty);
+
     final UserActions userActions = widget.schemaNodeList.parentSpawner.userActions;
     return widget.wrapInRootProps(
         Column(children: [
@@ -454,36 +525,43 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
               )
             ],
           ) : ConnectAirtableModal(),
-          ColumnDivider(
-            name: 'Row Elements',
-          ),
-          (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
-              schemaNodeList: widget.schemaNodeList,
-              onNodeSettingsClick: (ListElementNode listElementNode) {
-                widget.schemaNodeList.selectListElementNode(listElementNode);
-              },
-              onListElementsUpdate: () {
-                widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
-                _pageSliderController.pages = getPageSliderPages();
-              }
-          ),
-          ColumnDivider(
-            name: 'Row Style',
-          ),
-          EditPropsColor(
-            currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
-            properties: widget.schemaNodeList.properties,
-            propName: 'ItemColor',
-            changePropertyTo: widget.changePropertyTo,
-          ),
-          (widget.schemaNodeList.properties['Template'].value as ListTemplate).rowStyle(
-            changePropertyTo: widget.changePropertyTo,
-            properties: widget.schemaNodeList.properties,
-            currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
-          ),
-          SizedBox(
-            height: 10,
-          ),
+
+          if (isItemsNotEmpty)
+            ColumnDivider(
+              name: 'Row Elements',
+            ),
+          if (isItemsNotEmpty)
+            (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
+                schemaNodeList: widget.schemaNodeList,
+                onNodeSettingsClick: (ListElementNode listElementNode) {
+                  widget.schemaNodeList.selectListElementNode(listElementNode);
+                },
+                onListElementsUpdate: () {
+                  widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
+                  _pageSliderController.pages = getPageSliderPages();
+                }
+            ),
+          if (isItemsNotEmpty)
+            ColumnDivider(
+              name: 'Row Style',
+            ),
+          if (isItemsNotEmpty)
+            EditPropsColor(
+              currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
+              properties: widget.schemaNodeList.properties,
+              propName: 'ItemColor',
+              changePropertyTo: widget.changePropertyTo,
+            ),
+          if (isItemsNotEmpty)
+            (widget.schemaNodeList.properties['Template'].value as ListTemplate).rowStyle(
+              changePropertyTo: widget.changePropertyTo,
+              properties: widget.schemaNodeList.properties,
+              currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
+            ),
+          if (isItemsNotEmpty)
+            SizedBox(
+              height: 10,
+            ),
         ])
     );
   }

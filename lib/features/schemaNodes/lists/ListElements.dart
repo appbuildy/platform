@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
@@ -101,6 +103,63 @@ class ListElements {
   List<String> allColumns = [];
 
   ListElements({allColumns, listElements}) : this.allColumns = allColumns ?? [], this.listElements = listElements ?? [];
+
+  // ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement, SchemaNodeSpawner schemaNodeSpawner) {
+  //   final SchemaNode deserializedNode = ComponentLoadedFromJson(jsonComponent: jsonListElement['node'] , schemaNodeSpawner: schemaNodeSpawner).load();
+  //
+  //   return ListElementNode(
+  //     node: deserializedNode,
+  //     iconPreview: _buildOptionPreview(jsonListElement['type']),
+  //     name: jsonListElement['name'],
+  //     columnRelation: jsonListElement['columnRelation'],
+  //     id: deserializedNode.id,
+  //     changePropertyTo: this.changePropertyTo,
+  //     onListElementsUpdate: () {},
+  //   );
+  // }
+
+  ListElements.withSimpleListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+    this.allColumns = allColumns ?? [];
+
+    final SchemaNode imageNode = schemaNodeSpawner.spawnSchemaNodeImage(
+      id: UniqueKey(),
+      size: Offset(20, 20),
+      position: Offset(0, 0),
+    );
+
+    final ListElementNode imageListElement = ListElementNode(
+        node: imageNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.image'),
+        name: 'Image',
+        id: imageNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+    );
+
+    this.listElements.add(imageListElement);
+  }
+
+  ListElements.withCardListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+    this.allColumns = allColumns ?? [];
+
+    final SchemaNode imageNode = schemaNodeSpawner.spawnSchemaNodeImage(
+      id: UniqueKey(),
+      size: Offset(listItemSize.dx, 80),
+      position: Offset(0, 0),
+    );
+
+    final ListElementNode imageListElement = ListElementNode(
+      node: imageNode,
+      iconPreview: _buildOptionPreview('SchemaNodeType.image'),
+      name: 'Image',
+      id: imageNode.id,
+      changePropertyTo: this.changePropertyTo,
+      onListElementsUpdate: () {},
+      columnRelation: 'house_image'
+    );
+
+    this.listElements.add(imageListElement);
+  }
 
   _buildOptionPreview(String nodeType) {
     return Container(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
@@ -72,12 +72,28 @@ class ListTemplateCards extends ListTemplate {
             changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
           },
         ),
-        // todo: style this sh
-        MyTextField(
-          defaultValue: properties['ListItemHeight'].value.toString(),
-          onChanged: (String value) {
-            changePropertyTo(SchemaDoubleProperty('ListItemHeight', double.parse(value)));
-          }
+        SizedBox(
+          height: 15,
+        ),
+        // todo: подумать как сделать лучше изменение высота listItem'a
+        Row(
+          children: [
+            Text(
+              'Высота',
+              style: MyTextStyle.regularCaption,
+            ),
+            SizedBox(
+              width: 13,
+            ),
+            Expanded(
+              child: MyTextField(
+                defaultValue: properties['ListItemHeight'].value.toString(),
+                onChanged: (String value) {
+                  changePropertyTo(SchemaDoubleProperty('ListItemHeight', double.parse(value)));
+                }
+              ),
+            )
+          ]
         ),
         SizedBox(
           height: 15,

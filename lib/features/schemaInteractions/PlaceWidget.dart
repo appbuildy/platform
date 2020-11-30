@@ -24,10 +24,12 @@ class PlaceWidget extends BaseAction {
   @override
   void execute() {
     executed = true;
+    //newNode = _node;
     newNode = _node.copy(
       position: _position,
       id: UniqueKey(),
-      saveProperties: false,
+      // was false before SchemaNodeList update (by adiscord)
+      saveProperties: true,
     );
     _schemaStore.add(newNode);
     _selectNodeForEdit(newNode);

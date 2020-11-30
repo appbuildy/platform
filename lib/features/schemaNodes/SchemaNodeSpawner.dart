@@ -76,6 +76,25 @@ class SchemaNodeSpawner {
     );
   }
 
+  SchemaNodeList spawnSchemaNodeListWithTemplate({
+    @required ListTemplateType listTemplateType,
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+  }) {
+    return SchemaNodeList.withTemplate(
+      parent: this,
+      listTemplateType: listTemplateType,
+      id: id,
+      position: position,
+      size: size,
+      properties: properties,
+      actions: actions,
+    );
+  }
+
   SchemaNodeShape spawnSchemaNodeShape({
     UniqueKey id,
     Offset position,
