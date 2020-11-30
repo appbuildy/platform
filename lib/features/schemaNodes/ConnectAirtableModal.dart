@@ -80,7 +80,10 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           onClose: () {});
     } else {
       try {
-        var response = await http.put('/api/project/123',
+        print(token);
+        print(base);
+
+        var response = await http.put('https://build.appbuildy.com/api/project/63',
             body: json.encode({
               'airtable_credentials': {'api_key': token, 'base': base}
             }));

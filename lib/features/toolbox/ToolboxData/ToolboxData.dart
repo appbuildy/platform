@@ -43,7 +43,7 @@ class _ToolboxDataState extends State<ToolboxData> {
         width: toolboxWidth,
         height: MediaQuery.of(context).size.height,
         child: (widget.userActions.currentUserStore.project != null &&
-                widget.userActions.currentUserStore.project.slugUrl != null)
+                widget.userActions.currentUserStore.project.base != null)
             ? Container()
             : buildConnectAirtable());
   }

@@ -18,17 +18,19 @@ class Project {
 
   Project(this.url, [this.user]);
 
-  static Future<Project> setup(
-      {AuthenticationService auth,
-      http.Client client,
-      CurrentUserStore userStore,
-      ProjectParametersFromBrowserQuery settings,
-      RemoteAttributes attributes}) async {
+  static Future<Project> setup({
+    AuthenticationService auth,
+    http.Client client,
+    CurrentUserStore userStore,
+    ProjectParametersFromBrowserQuery settings,
+    RemoteAttributes attributes
+  }) async {
     return await SetupProject(userStore: userStore, attributes: attributes)
         .setup(auth, client);
   }
 
   void setAirtableCredentials({String apiKey, String base}) {
+    print('setAirtableCredentials() called');
     this.apiKey = apiKey;
     this.base = base;
   }

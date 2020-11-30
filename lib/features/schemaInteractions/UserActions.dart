@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
@@ -101,6 +102,7 @@ class UserActions {
   }
 
   Future<void> loadProject() async {
+    print(_remoteAttributes);
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
       var loadedProject = LoadedProject(
@@ -314,11 +316,15 @@ class UserActions {
     this.guidelineManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
-  void selectNodeForEdit(SchemaNode node) {
+  void selectNodeForEdit(SchemaNode node, [reselectForUpdateToolbox = false]) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
 
+
     if (node != null) {
-      this.buildQuickGuides();
+      if (!reselectForUpdateToolbox) {
+        this.buildQuickGuides();
+      }
+
       debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
     }
   }

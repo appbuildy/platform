@@ -11,9 +11,10 @@ part 'RemoteAttributes.g.dart';
 class RemoteAttributes = _RemoteAttributes with _$RemoteAttributes;
 
 abstract class _RemoteAttributes with Store {
-  _RemoteAttributes(
-      {List<IRemoteAttribute> attributes = const [],
-      ObservableMap<String, Map<String, RemoteList>> tables}) {
+  _RemoteAttributes({
+    List<IRemoteAttribute> attributes = const [],
+    ObservableMap<String, Map<String, RemoteList>> tables,
+  }) {
     this.attributes.addAll(attributes);
     this.tables = tables ?? ObservableMap<String, Map<String, RemoteList>>();
   }

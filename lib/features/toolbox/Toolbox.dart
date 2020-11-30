@@ -16,7 +16,6 @@ class Toolbox extends StatelessWidget {
 
   const Toolbox(
       {Key key,
-      // this.currentUserStore,
       this.userActions,
       this.toolboxState,
       this.selectState})
@@ -28,7 +27,6 @@ class Toolbox extends StatelessWidget {
         return ToolboxSettings(userActions: userActions);
       case ToolboxStates.layout:
         return ToolboxLayout(
-            // currentUserStore: currentUserStore,
             userActions: userActions);
       case ToolboxStates.pages:
         return ToolboxPages(

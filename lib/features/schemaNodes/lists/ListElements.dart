@@ -32,10 +32,6 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
       allColumns: List<String>.from(jsonDecode(jsonVal['value']['allColumns'])),
     );
 
-    print('Start');
-
-    List<ListElementNode> listElementNodes = [];
-
     jsonVal['value']['listElements'].forEach((e) {
       this.value.listElements.add(this.value.fromJsonListElementNode(e, schemaNodeSpawner));
     });
@@ -172,8 +168,6 @@ class ListElements {
   }
 
   ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement, SchemaNodeSpawner schemaNodeSpawner) {
-    print(jsonListElement ?? 'KEK');
-    print('-----------------------------------------------');
     final SchemaNode deserializedNode = ComponentLoadedFromJson(jsonComponent: jsonListElement['node'] , schemaNodeSpawner: schemaNodeSpawner).load();
 
     return ListElementNode(

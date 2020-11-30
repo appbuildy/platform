@@ -417,14 +417,13 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
 
   Widget _buildRoot() {
     final UserActions userActions = widget.schemaNodeList.parentSpawner.userActions;
-
     return widget.wrapInRootProps(
         Column(children: [
           ColumnDivider(
             name: 'Data Source',
           ),
           (userActions.currentUserStore.project != null &&
-              userActions.currentUserStore.project.slugUrl != null)
+              userActions.currentUserStore.project.base != null)
               ? Row(
             children: [
               Text(
