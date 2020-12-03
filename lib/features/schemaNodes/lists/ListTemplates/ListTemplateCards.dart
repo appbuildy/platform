@@ -25,7 +25,8 @@ class ListTemplateCards extends ListTemplate {
   }) {
     return GestureDetector(
       onTap: () {
-        schemaNodeList.unselectListElementNode();
+        print('ListTemplateCards 28');
+        schemaNodeList.onListClick();
       },
       child: Column(
           children: schemaNodeList.properties['Items']
@@ -142,6 +143,7 @@ class ListTemplateCards extends ListTemplate {
                         ]
                       : []
               ),
+              clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
                   ...(schemaNodeList.properties['Elements'].value as ListElements).listElements.map((ListElementNode el) {

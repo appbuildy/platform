@@ -147,6 +147,8 @@ abstract class SchemaNode {
     bool saveProperties,
   });
 
+  void onUnSelect() {}
+
   void setProperty(String propertyName, SchemaNodeProperty value) {
     if (propertyName == null || value == null || this.properties == null) return;
 

@@ -17,6 +17,7 @@ import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.d
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/projects/LoadedProject.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
@@ -322,16 +323,25 @@ class UserActions {
   }
 
   void selectNodeForEdit(SchemaNode node, [reselectForUpdateToolbox = false]) {
-    SelectNodeForPropsEdit(node, _currentNode).execute();
-
-
-    if (node != null) {
-      if (!reselectForUpdateToolbox) {
-        this.buildQuickGuides();
-      }
-
-      debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
+    if (selectedNode()?.id != node?.id) {
+      _currentNode.select(null);
     }
+    Future.delayed(Duration(milliseconds: 0), () {
+      SelectNodeForPropsEdit(node, _currentNode).execute();
+
+
+      if (node != null) {
+        if (!reselectForUpdateToolbox) {
+          this.buildQuickGuides();
+        }
+
+        debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
+      }
+    });
+    // if (node?.type == SchemaNodeType.list) {
+    //   (node as SchemaNodeList).unselectListElementNode();
+    // }
+
   }
 
   void bindAttribute(

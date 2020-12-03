@@ -41,6 +41,9 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
+
+
+    _focusNode.requestFocus();
   }
 
   void _handleFocusChange() {

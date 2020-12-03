@@ -24,7 +24,8 @@ class ListTemplateSimple extends ListTemplate {
   }) {
     return GestureDetector(
       onTap: () {
-        schemaNodeList.unselectListElementNode();
+        print('ListTemplateSimple');
+        schemaNodeList.onListClick();
       },
       child: Column(
           children: schemaNodeList.properties['Items']

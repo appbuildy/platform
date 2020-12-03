@@ -191,6 +191,16 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
       pageSliderController.toRoot();
     }
 
+    // if (this.isSelected) {
+    //   parentSpawner.userActions.rerenderNode();
+    // } else {
+    //   parentSpawner.userActions.selectNodeForEdit(this);
+    // }
+  }
+
+  void onListClick() {
+    this.unselectListElementNode();
+
     if (this.isSelected) {
       parentSpawner.userActions.rerenderNode();
     } else {
@@ -221,6 +231,8 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
       );
 
       unselectListElementNode();
+
+      parentSpawner.userActions.rerenderNode();
 
       return;
     }

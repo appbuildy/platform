@@ -96,20 +96,21 @@ class _AppPreviewState extends State<AppPreview> {
                 height: userActions.screens.currentScreenWorkspaceSize.dy + userActions.screens.screenTabsHeight + 4,
                 // 4px is for border (2 px on both sides)
                 decoration: BoxDecoration(
-                    color: userActions.screens.current.backgroundColor.color,
-                    borderRadius: widget.isPreview
-                        ? BorderRadius.zero
-                        : BorderRadius.circular(40.0),
-                    boxShadow: [
-                      BoxShadow(
-                          spreadRadius: 0,
-                          blurRadius: 20,
-                          offset: Offset(0, 2),
-                          color: MyColors.black.withOpacity(0.15))
-                    ],
-                    border: widget.isPreview
-                        ? Border()
-                        : Border.all(width: 2, color: MyColors.black)),
+                  color: userActions.screens.current.backgroundColor.color,
+                  borderRadius: widget.isPreview
+                      ? BorderRadius.zero
+                      : BorderRadius.circular(40.0),
+                  boxShadow: [
+                    BoxShadow(
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: Offset(0, 2),
+                      color: MyColors.black.withOpacity(0.15),
+                    )
+                  ],
+                  border: widget.isPreview
+                      ? Border()
+                      : Border.all(width: 2, color: MyColors.black)),
                 child: ClipRRect(
                   borderRadius: widget.isPreview
                       ? BorderRadius.zero
@@ -145,7 +146,6 @@ class _AppPreviewState extends State<AppPreview> {
                             child: GestureDetector(
                               // todo: refac. too much 'onTap'
                               onTapDown: (_) {
-                                print('tap');
                                 widget.focusNode.requestFocus();
                                 if (widget.isPlayMode) {
                                   if (node.type == SchemaNodeType.list) {
@@ -155,11 +155,11 @@ class _AppPreviewState extends State<AppPreview> {
                                   (node.actions['Tap'] as Functionable)
                                       .toFunction(userActions)();
                                 } else {
-                                  userActions.selectNodeForEdit(node);
-
                                   if (node.type == SchemaNodeType.list) {
                                     (node as SchemaNodeList).unselectListElementNode();
                                   }
+
+                                  userActions.selectNodeForEdit(node);
 
                                   widget.selectStateToLayout(); // select menu layout
                                 }
@@ -204,7 +204,7 @@ class _AppPreviewState extends State<AppPreview> {
                                 .screens.currentScreenWorkspaceSize.dx,
                             height: userActions.screens.screenTabsHeight,
                             decoration: BoxDecoration(
-                              color: Colors.transparent,
+                              color: userActions.screens.current.backgroundColor.color,
                               borderRadius: widget.isPreview
                                   ? BorderRadius.zero
                                   : BorderRadius.only(

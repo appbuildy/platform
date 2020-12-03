@@ -6,6 +6,8 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/ui/Cursor.dart';
@@ -104,20 +106,6 @@ class ListElements {
 
   ListElements({allColumns, listElements}) : this.allColumns = allColumns ?? [], this.listElements = listElements ?? [];
 
-  // ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement, SchemaNodeSpawner schemaNodeSpawner) {
-  //   final SchemaNode deserializedNode = ComponentLoadedFromJson(jsonComponent: jsonListElement['node'] , schemaNodeSpawner: schemaNodeSpawner).load();
-  //
-  //   return ListElementNode(
-  //     node: deserializedNode,
-  //     iconPreview: _buildOptionPreview(jsonListElement['type']),
-  //     name: jsonListElement['name'],
-  //     columnRelation: jsonListElement['columnRelation'],
-  //     id: deserializedNode.id,
-  //     changePropertyTo: this.changePropertyTo,
-  //     onListElementsUpdate: () {},
-  //   );
-  // }
-
   ListElements.withSimpleListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
     this.allColumns = allColumns ?? [];
 
@@ -130,6 +118,8 @@ class ListElements {
       size: Offset(imageNodeWidthHeight, imageNodeWidthHeight),
       position: Offset(imageNodeXYOffset, imageNodeXYOffset),
     );
+
+    imageNode.setProperty('BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
 
     final ListElementNode imageListElement = ListElementNode(
         node: imageNode,
@@ -163,6 +153,11 @@ class ListElements {
       position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset + textNodeHeight),
     );
 
+    descriptionNode.setProperty('FontColor', SchemaMyThemePropProperty(
+        'FontColor', schemaNodeSpawner.userActions.themeStore.currentTheme.generalSecondary));
+
+    descriptionNode.setProperty('FontSize', SchemaIntProperty('FontSize', 14));
+    
     final ListElementNode descriptionListElement = ListElementNode(
         node: descriptionNode,
         iconPreview: _buildOptionPreview('SchemaNodeType.text'),
@@ -218,6 +213,12 @@ class ListElements {
       size: Offset(listItemSize.dx, 28),
       position: Offset(0, 120),
     );
+
+
+    descriptionNode.setProperty('FontColor', SchemaMyThemePropProperty(
+        'FontColor', schemaNodeSpawner.userActions.themeStore.currentTheme.generalSecondary));
+
+    descriptionNode.setProperty('FontSize', SchemaIntProperty('FontSize', 14));
 
     final ListElementNode descriptionListElement = ListElementNode(
         node: descriptionNode,
