@@ -90,8 +90,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
         print(base);
 
         final project = widget.userActions.currentUserStore.project;
-        project.apiKey = token;
-        project.base = base;
+        project.setAirtableCredentials(apiKey: token, base: base);
 
         widget.userActions.saveProject();
 
