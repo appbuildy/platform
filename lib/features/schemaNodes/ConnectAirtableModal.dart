@@ -89,10 +89,12 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
         print(token);
         print(base);
 
-        final project = widget.userActions.currentUserStore.project;
-        project.setAirtableCredentials(apiKey: token, base: base);
+        widget.userActions.setAirtableCredentials(token, base);
 
-        widget.userActions.saveProject();
+        // final project = widget.userActions.currentUserStore.project;
+        // project.setAirtableCredentials(apiKey: token, base: base);
+        //
+        // widget.userActions.saveProject();
 
         // var response = await http.patch('https://www.appbuildy.com/api/projects/${widget.project.id}',
         //     body: json.encode({

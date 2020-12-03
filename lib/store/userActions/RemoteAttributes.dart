@@ -46,9 +46,6 @@ abstract class _RemoteAttributes with Store {
     tables[client.table] = columns;
 
     final records = await client.records();
-    // print('--------------------------');
-    // print(jsonEncode(records));
-    // print('--------------------------');
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {
         _addColumnUniq(columns, key);

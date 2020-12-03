@@ -61,7 +61,6 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
-      print(_fetchedData);
 //      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
 //print(this.base);
       return data;
