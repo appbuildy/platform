@@ -153,7 +153,7 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
               'BoxShadowColor', parent.userActions.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
-          'ListItemHeight': SchemaDoubleProperty('ListItemHeight', 150),
+          'ListItemHeight': SchemaDoubleProperty('ListItemHeight', listTemplateType == ListTemplateType.simple ? 100 : 150),
         };
 
     final double listItemWidth = this.size.dx - (this.properties['Template'].value as ListTemplate).padding.dx * 2;
@@ -163,7 +163,7 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
     ListElements listElements;
 
     if (listTemplateType == ListTemplateType.simple) {
-      listElements = ListElements.withCardListTemplate(
+      listElements = ListElements.withSimpleListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
           listItemSize: listItemSize
@@ -483,9 +483,9 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
 
   Widget _buildRoot() {
     bool isItemsNotEmpty = (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values.isNotEmpty;
-    print( (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values);
-    print(widget.schemaNodeList.properties['Items'].value);
-    print(isItemsNotEmpty);
+    //print( (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values);
+    //print(widget.schemaNodeList.properties['Items'].value);
+    //print(isItemsNotEmpty);
 
     final UserActions userActions = widget.schemaNodeList.parentSpawner.userActions;
     return widget.wrapInRootProps(

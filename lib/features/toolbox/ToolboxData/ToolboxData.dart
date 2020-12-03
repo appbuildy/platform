@@ -25,7 +25,7 @@ class _ToolboxDataState extends State<ToolboxData> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 20, right: 10),
-          child: ConnectAirtableModal(isInToolbox: true),
+          child: ConnectAirtableModal(isInToolbox: true, userActions: widget.userActions),
         ),
         SizedBox(
           height: 150,

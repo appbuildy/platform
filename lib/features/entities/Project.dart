@@ -35,14 +35,21 @@ class Project {
     this.base = base;
   }
 
+  String get name => _fetchedData['name'] ?? null;
+  int get id => _fetchedData['id'] ?? null;
+
   Map<String, dynamic> _fetchedData;
+
   Map<String, dynamic> get data => _fetchedData ?? {};
+
   Map<String, dynamic> get airtableCredentials =>
       _fetchedData['airtable_credentials'] ?? {};
+
   List<AirtableTable> get airtableTables => _fetchedData['tables']
       .map((r) => AirtableTable(r['name'].toString(), r['base']))
       .toList()
       .cast<AirtableTable>();
+
   String get slugUrl => _fetchedData['public_url'] ?? null;
 
   bool get _projectDataNotSet => (url.toString().contains('null'));
@@ -54,7 +61,9 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
-
+      print(_fetchedData);
+//      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
+//print(this.base);
       return data;
     } catch (e) {
       print("Failed to fetch project data from host $url");

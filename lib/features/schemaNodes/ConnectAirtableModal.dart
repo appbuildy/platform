@@ -4,6 +4,8 @@ import 'dart:io';
 import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/entities/Project.dart';
+import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyLink.dart';
@@ -14,9 +16,13 @@ import 'package:http/http.dart' as http;
 
 class ConnectAirtableModal extends StatefulWidget {
   final bool isInToolbox;
+  final UserActions userActions;
 
-  const ConnectAirtableModal({Key key, this.isInToolbox = false})
-      : super(key: key);
+  const ConnectAirtableModal({
+    Key key,
+    this.isInToolbox = false,
+    this.userActions,
+  }) : super(key: key);
 
   @override
   _ConnectAirtableModalState createState() => _ConnectAirtableModalState();
@@ -83,13 +89,21 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
         print(token);
         print(base);
 
-        var response = await http.put('https://build.appbuildy.com/api/project/63',
-            body: json.encode({
-              'airtable_credentials': {'api_key': token, 'base': base}
-            }));
-        print('response $response');
-        if (response.statusCode != 200)
-          throw HttpException('${response.statusCode}');
+        final project = widget.userActions.currentUserStore.project;
+        project.apiKey = token;
+        project.base = base;
+
+        widget.userActions.saveProject();
+
+        // var response = await http.patch('https://www.appbuildy.com/api/projects/${widget.project.id}',
+        //     body: json.encode({
+        //       'name': widget.project.name,
+        //       'airtable_credentials': {'api_key': token, 'base': base},
+        //     }),
+        // );
+        // print('response $response');
+        // if (response.statusCode != 200)
+        //   throw HttpException('${response.statusCode}');
 
         ShowToast.info('All goodie', context);
       } catch (e) {

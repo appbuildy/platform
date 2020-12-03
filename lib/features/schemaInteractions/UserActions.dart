@@ -102,7 +102,6 @@ class UserActions {
   }
 
   Future<void> loadProject() async {
-    print(_remoteAttributes);
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
       var loadedProject = LoadedProject(
@@ -120,6 +119,7 @@ class UserActions {
         _screens.all.createScreen(screen);
         _screens.selectByName(screen.name);
       });
+      print(currentUserStore.project.airtableTables);
     } catch (e) {
       print('loadProject() error $e');
       print('canvas error ${_currentUserStore.project.data['canvas']}');
@@ -169,9 +169,13 @@ class UserActions {
       theme: _theme.currentTheme,
   );
 
+  void saveProject() {
+    _currentUserStore.project.save(converter, client: http.Client());
+  }
+
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      _currentUserStore.project.save(converter, client: http.Client());
+      this.saveProject();
     });
   }
 
@@ -234,10 +238,11 @@ class UserActions {
 
   SchemaNode placeWidget(SchemaNode node, Offset position) {
     final action = new PlaceWidget(
-        node: node,
-        schemaStore: currentScreen,
-        position: position,
-        selectNodeForEdit: selectNodeForEdit);
+      node: node,
+      schemaStore: currentScreen,
+      position: position,
+      selectNodeForEdit: selectNodeForEdit,
+    );
 
     action.execute();
     _actionsDone.add(action);

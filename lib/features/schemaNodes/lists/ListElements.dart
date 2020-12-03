@@ -121,10 +121,14 @@ class ListElements {
   ListElements.withSimpleListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
     this.allColumns = allColumns ?? [];
 
+    final double imageNodeXYOffset = 22;
+    final double imageNodeWidthHeight = 56;
+    final double textNodeHeight = 28;
+
     final SchemaNode imageNode = schemaNodeSpawner.spawnSchemaNodeImage(
       id: UniqueKey(),
-      size: Offset(20, 20),
-      position: Offset(0, 0),
+      size: Offset(imageNodeWidthHeight, imageNodeWidthHeight),
+      position: Offset(imageNodeXYOffset, imageNodeXYOffset),
     );
 
     final ListElementNode imageListElement = ListElementNode(
@@ -134,9 +138,44 @@ class ListElements {
         id: imageNode.id,
         changePropertyTo: this.changePropertyTo,
         onListElementsUpdate: () {},
+        columnRelation: 'house_image'
+    );
+
+    final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
+      id: UniqueKey(),
+      size: Offset(listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2, textNodeHeight),
+      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset),
+    );
+
+    final ListElementNode titleListElement = ListElementNode(
+        node: titleNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+        name: 'Text',
+        id: titleNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_price'
+    );
+
+    final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
+      id: UniqueKey(),
+      size: Offset(listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2, textNodeHeight),
+      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset + textNodeHeight),
+    );
+
+    final ListElementNode descriptionListElement = ListElementNode(
+        node: descriptionNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+        name: 'Text',
+        id: descriptionNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_address'
     );
 
     this.listElements.add(imageListElement);
+    this.listElements.add(titleListElement);
+    this.listElements.add(descriptionListElement);
   }
 
   ListElements.withCardListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
@@ -158,7 +197,41 @@ class ListElements {
       columnRelation: 'house_image'
     );
 
+    final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
+      id: UniqueKey(),
+      size: Offset(listItemSize.dx, 28),
+      position: Offset(0, 90),
+    );
+
+    final ListElementNode titleListElement = ListElementNode(
+      node: titleNode,
+      iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+      name: 'Text',
+      id: titleNode.id,
+      changePropertyTo: this.changePropertyTo,
+      onListElementsUpdate: () {},
+      columnRelation: 'house_price'
+    );
+
+    final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
+      id: UniqueKey(),
+      size: Offset(listItemSize.dx, 28),
+      position: Offset(0, 120),
+    );
+
+    final ListElementNode descriptionListElement = ListElementNode(
+        node: descriptionNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+        name: 'Text',
+        id: descriptionNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_address'
+    );
+
     this.listElements.add(imageListElement);
+    this.listElements.add(titleListElement);
+    this.listElements.add(descriptionListElement);
   }
 
   _buildOptionPreview(String nodeType) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/AirtableColumn.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
@@ -44,7 +46,9 @@ abstract class _RemoteAttributes with Store {
     tables[client.table] = columns;
 
     final records = await client.records();
-    print(records);
+    // print('--------------------------');
+    // print(jsonEncode(records));
+    // print('--------------------------');
     records['records'].forEach((record) {
       record['fields'].forEach((key, val) {
         _addColumnUniq(columns, key);

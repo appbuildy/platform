@@ -147,6 +147,12 @@ abstract class SchemaNode {
     bool saveProperties,
   });
 
+  void setProperty(String propertyName, SchemaNodeProperty value) {
+    if (propertyName == null || value == null || this.properties == null) return;
+
+    this.properties[propertyName] = value;
+  }
+
   void onDeletePressed({ Function onDelete }) {
     onDelete(this);
   }
