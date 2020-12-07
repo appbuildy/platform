@@ -144,8 +144,7 @@ class _AppPreviewState extends State<AppPreview> {
                         return
                           Positioned(
                             child: GestureDetector(
-                              // todo: refac. too much 'onTap'
-                              onTapDown: (_) {
+                              onTap: () {
                                 widget.focusNode.requestFocus();
                                 if (widget.isPlayMode) {
                                   if (node.type == SchemaNodeType.list) {

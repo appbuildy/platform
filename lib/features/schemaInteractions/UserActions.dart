@@ -323,25 +323,22 @@ class UserActions {
   }
 
   void selectNodeForEdit(SchemaNode node, [reselectForUpdateToolbox = false]) {
-    if (selectedNode()?.id != node?.id) {
-      _currentNode.select(null);
-    }
-    Future.delayed(Duration(milliseconds: 0), () {
-      SelectNodeForPropsEdit(node, _currentNode).execute();
+    SelectNodeForPropsEdit(node, _currentNode).execute();
 
 
-      if (node != null) {
-        if (!reselectForUpdateToolbox) {
-          this.buildQuickGuides();
-        }
-
-        debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
-      }
-    });
-    // if (node?.type == SchemaNodeType.list) {
-    //   (node as SchemaNodeList).unselectListElementNode();
+    // if (selectedNode() != null && selectedNode() is SchemaNodeList) {
+    //   print((selectedNode() as SchemaNodeList).listTemplateType);
+    //   print((selectedNode() as SchemaNodeList).selectedListElementNode);
     // }
 
+
+    if (node != null) {
+      if (!reselectForUpdateToolbox) {
+        this.buildQuickGuides();
+      }
+
+      debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
+    }
   }
 
   void bindAttribute(

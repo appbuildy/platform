@@ -64,11 +64,7 @@ class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTick
   }
 }
 
-abstract class NodeContainer {
-  ListElementNode selectedListElementNode;
-}
-
-class SchemaNodeList extends SchemaNode implements NodeContainer {
+class SchemaNodeList extends SchemaNode {
   Debouncer<String> textDebouncer;
   ListTemplateType listTemplateType;
 
@@ -385,9 +381,14 @@ class SchemaNodeList extends SchemaNode implements NodeContainer {
 
   PageSliderController pageSliderController;
 
+  UniqueKey editPropsKey;
+
   @override
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+    if (editPropsKey == null) editPropsKey = UniqueKey();
+
     return ListToEditProps(
+      key: editPropsKey,
       schemaNodeList: this,
       wrapInRootProps: wrapInRootProps,
       changePropertyTo: changePropertyTo,
@@ -401,10 +402,12 @@ class ListToEditProps extends StatefulWidget {
   final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
 
   ListToEditProps({
+    Key key,
     @required this.schemaNodeList,
     @required this.wrapInRootProps,
     @required this.changePropertyTo,
-  });
+  }) : super(key: key);
+
   @override
   _ListToEditPropsState createState() => _ListToEditPropsState();
 }
@@ -415,6 +418,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
   @override
   void initState() {
     super.initState();
+    print('init__________________________');
 
     this._pageSliderController = PageSliderController(
       vsync: this,
