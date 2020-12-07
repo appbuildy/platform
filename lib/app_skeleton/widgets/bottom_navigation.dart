@@ -13,12 +13,11 @@ class BottomNavigation extends StatelessWidget {
   const BottomNavigation(this.tabs);
 
   factory BottomNavigation.fromJson(Map<String, dynamic> jsonNav) {
-    var tabs = jsonNav['tabs']
-        .map((tab) {
-          return TabNavigation.fromJson(tab);
-        })
-        .toList()
-        .cast<TabNavigation>();
+    final tabs = jsonNav['tabs']
+        .map<TabNavigation>(
+          (dynamic tab) => TabNavigation.fromJson(tab),
+        )
+        .toList();
 
     return BottomNavigation(tabs);
   }
@@ -33,12 +32,21 @@ class BottomNavigation extends StatelessWidget {
       bottom: 0,
       left: 0,
       child: isVisible
-          ? Container(
+          ? DecoratedBox(
               decoration: BoxDecoration(
-                  border: Border(
-                      top:
-                          BorderSide(width: 1, color: theme.separators.color))),
+                border: Border(
+                    top: BorderSide(
+                  width: 1,
+                  color: theme.separators.color,
+                )),
+              ),
               child: Container(
+                width: 375,
+                height: 82,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.zero,
+                ),
                 child: Observer(
                   builder: (_) => AppTabs(
                     selectedScreenId: store.selectedScreenId,
@@ -49,10 +57,6 @@ class BottomNavigation extends StatelessWidget {
                     },
                   ),
                 ),
-                width: 375,
-                height: 82,
-                decoration: BoxDecoration(
-                    color: Colors.transparent, borderRadius: BorderRadius.zero),
               ),
             )
           : Container(),

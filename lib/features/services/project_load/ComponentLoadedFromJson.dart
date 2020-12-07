@@ -84,6 +84,7 @@ class ComponentLoadedFromJson implements IComponentLoader {
         }
         break;
     }
+    // ???
     return SchemaNodeButton(
         position: componentProperties.position,
         size: componentProperties.size,

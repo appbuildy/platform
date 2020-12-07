@@ -21,6 +21,13 @@ class Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     var nav = bottomNavigation ?? Container();
 
-    return Scaffold(body: Stack(children: [...widgets, nav]));
+    return Scaffold(
+        body: Stack(
+      children: [
+        ...widgets,
+        // if (bottomNavigation != null) bottomNavigation,
+        nav,
+      ],
+    ));
   }
 }

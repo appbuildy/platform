@@ -8,11 +8,11 @@ import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:http/http.dart' as http;
 
 class SetupProject {
-  CurrentUserStore userStore;
-  ProjectParametersFromBrowserQuery settings;
-  RemoteAttributes attributes;
+  final CurrentUserStore userStore;
+  final ProjectParametersFromBrowserQuery settings;
+  final RemoteAttributes attributes;
 
-  SetupProject({this.userStore, this.settings, this.attributes});
+  const SetupProject({this.userStore, this.settings, this.attributes});
 
   Future<Project> setup([auth, client]) async {
     return await setupAuthorized(auth, client);

@@ -3,10 +3,12 @@ import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
 import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
 class ApplicationWidget extends StatefulWidget {
-  BrowserPreview preview;
-  ApplicationWidget({Key key, BrowserPreview preview}) : super(key: key) {
-    this.preview = preview ?? BrowserPreview();
-  }
+  final BrowserPreview preview;
+  ApplicationWidget({
+    Key key,
+    BrowserPreview preview = const BrowserPreview(),
+  })  : this.preview = preview ?? BrowserPreview(),
+        super(key: key);
 
   @override
   _ApplicationWidgetState createState() => _ApplicationWidgetState();
@@ -39,7 +41,8 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
 
   OverlayEntry _renderLoadingOverlay() {
     return OverlayEntry(
-        builder: (BuildContext context) => ProjectLoadingAnimation());
+      builder: (BuildContext context) => ProjectLoadingAnimation(),
+    );
   }
 
   void endLoadingAnimation() async {
@@ -47,8 +50,11 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
       int elapsedTime = animationStopwatch.elapsedMilliseconds;
 
       if (elapsedTime < minLoadingAnimationDurationTime) {
-        await Future.delayed(Duration(
-            milliseconds: minLoadingAnimationDurationTime - elapsedTime));
+        await Future.delayed(
+          Duration(
+            milliseconds: minLoadingAnimationDurationTime - elapsedTime,
+          ),
+        );
       }
 
       _overlayEntry.remove();
@@ -58,24 +64,33 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
 
   @override
   void initState() {
+    super.initState();
     preview ??= widget.preview;
     this.startLoadingAnimation(onStart: this.initPreview);
     application = Container();
-    super.initState();
   }
 
   Future<void> initPreview() async {
-    try {
-      Widget applicationLoad = await preview.load();
-      setState(() {
-        application = applicationLoad;
-      });
-      endLoadingAnimation();
-    } catch (e) {}
+    // try {
+    // Widget applicationLoad = await preview.load();
+    // setState(() {
+    //   application = applicationLoad;
+    // });
+    endLoadingAnimation();
+    // } catch (e) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    return application;
+    // return application;
+    return FutureBuilder<Widget>(
+      future: preview.load(),
+      builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done)
+          return snapshot.data;
+        // return Container(child: ProjectLoadingAnimation());
+        return Container();
+      },
+    );
   }
 }

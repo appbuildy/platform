@@ -50,9 +50,10 @@ class _AppPreviewState extends State<AppPreview> {
       width: 11,
       height: 11,
       decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: MyColors.white,
-          border: Border.all(width: 2, color: MyColors.mainBlue)),
+        shape: BoxShape.circle,
+        color: MyColors.white,
+        border: Border.all(width: 2, color: MyColors.mainBlue),
+      ),
     );
 
     final List<Widget> dots = isSelected
@@ -388,7 +389,7 @@ class _AppPreviewState extends State<AppPreview> {
         : [Container()];
 
     return Stack(
-      overflow: Overflow.visible,
+      clipBehavior: Clip.none,
       alignment: Alignment.center,
       children: [
         DeltaFromAnchorPointPanDetector(

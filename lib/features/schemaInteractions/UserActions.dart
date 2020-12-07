@@ -48,11 +48,12 @@ class UserActions {
 
   Debouncer<SchemaNode> debouncer;
 
-  UserActions(
-      {Screens screens,
-      CurrentUserStore currentUserStore,
-      BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+  UserActions({
+    Screens screens,
+    CurrentUserStore currentUserStore,
+    BottomNavigationStore bottomNavigationStore,
+    AppThemeStore themeStore,
+  }) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -156,17 +157,21 @@ class UserActions {
       theme: _theme.currentTheme);
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      _currentUserStore.project.save(converter, client: http.Client());
+      _currentUserStore.project?.save(converter, client: http.Client());
     });
   }
 
-  void changePropertyTo(ChangeableProperty prop,
-      [bool isAddedToDoneActions = true, prevValue]) {
+  void changePropertyTo(
+    ChangeableProperty prop, [
+    bool isAddedToDoneActions = true,
+    prevValue,
+  ]) {
     final action = ChangeNodeProperty(
-        selectNodeForEdit: selectNodeForEdit,
-        schemaStore: currentScreen,
-        node: selectedNode(),
-        newProp: prop);
+      selectNodeForEdit: selectNodeForEdit,
+      schemaStore: currentScreen,
+      node: selectedNode(),
+      newProp: prop,
+    );
 
     action.execute(prevValue);
     if (isAddedToDoneActions) {
@@ -176,9 +181,7 @@ class UserActions {
 
   void rerenderNode() {
     currentScreen.update(selectedNode());
-    if (debouncer != null) {
-      debouncer.stopTimer();
-    }
+    debouncer?.stopTimer();
   }
 
   void copyNode(
@@ -196,10 +199,11 @@ class UserActions {
   void deleteNode(
     SchemaNode node,
   ) {
-    final action = new DeleteNode(
-        node: node,
-        schemaStore: currentScreen,
-        selectNodeForEdit: selectNodeForEdit);
+    final action = DeleteNode(
+      node: node,
+      schemaStore: currentScreen,
+      selectNodeForEdit: selectNodeForEdit,
+    );
 
     action.execute();
     _actionsDone.add(action);

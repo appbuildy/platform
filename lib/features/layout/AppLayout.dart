@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
-import 'package:flutter_app/features/entities/Project.dart';
-
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
@@ -178,7 +177,7 @@ class _AppLayoutState extends State<AppLayout> {
                         child: Container(
                           color: MyColors.lightGray,
                           child: Stack(
-                            overflow: Overflow.visible,
+                            clipBehavior: Clip.none,
                             children: [
                               Align(
                                 alignment: Alignment.center,
