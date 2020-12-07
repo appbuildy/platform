@@ -30,7 +30,7 @@ class Project {
   }
 
   void setAirtableCredentials({String apiKey, String base}) {
-    print('setAirtableCredentials() called');
+    print('setAirtableCredentials() called. apiKey: $apiKey, base: $base');
     this.apiKey = apiKey;
     this.base = base;
   }
@@ -61,7 +61,7 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
-//      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
+      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
 //print(this.base);
       return data;
     } catch (e) {

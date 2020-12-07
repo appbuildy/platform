@@ -418,7 +418,6 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
   @override
   void initState() {
     super.initState();
-    print('init__________________________');
 
     this._pageSliderController = PageSliderController(
       vsync: this,
@@ -499,9 +498,6 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
 
   Widget _buildRoot() {
     bool isItemsNotEmpty = (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values.isNotEmpty;
-    //print( (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values);
-    //print(widget.schemaNodeList.properties['Items'].value);
-    //print(isItemsNotEmpty);
 
     final UserActions userActions = widget.schemaNodeList.parentSpawner.userActions;
     return widget.wrapInRootProps(
@@ -528,6 +524,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
                       await widget.schemaNodeList.updateData(screen.value, userActions);
                       widget.changePropertyTo(
                           SchemaStringProperty('Table', screen.value));
+                      print(screen);
 
                       widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
                           userActions

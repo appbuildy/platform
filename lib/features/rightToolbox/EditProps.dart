@@ -149,7 +149,7 @@ class EditProps extends StatelessWidget {
             ),
           ]);
         }
-print('toEditProps');
+
         return selectedNode.toEditProps(
           wrapInRootEditProps,
           userActions.changePropertyTo,
