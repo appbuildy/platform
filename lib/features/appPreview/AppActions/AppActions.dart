@@ -15,6 +15,7 @@ import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+/// panel above the preview with undo/redo actions, page selector, share button
 class AppActions extends StatelessWidget {
   final UserActions userActions;
 
@@ -118,9 +119,10 @@ class AppActions extends StatelessWidget {
                         Text(
                           'Scan QR code from your phone to open the app',
                           style: TextStyle(
-                              color: MyColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600),
+                            color: MyColors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ],
                     ),
