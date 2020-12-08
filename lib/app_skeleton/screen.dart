@@ -6,9 +6,10 @@ import 'package:flutter_app/shared_widgets/widget_decorator.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
 class Screen extends StatelessWidget {
-  final List<WidgetDecorator> widgets;
   final RandomKey id;
   final BottomNavigation bottomNavigation;
+  final List<WidgetDecorator> widgets;
+
   Screen({Key key, this.widgets, this.id, this.bottomNavigation})
       : super(key: key);
 

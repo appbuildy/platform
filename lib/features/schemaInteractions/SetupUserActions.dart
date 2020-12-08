@@ -10,7 +10,7 @@ import 'package:flutter_app/features/layout/MAIN_UNIQUE_KEY.dart';
 
 import 'Screens.dart';
 
-UserActions setupUserActions() {
+UserAction setupUserActions() {
   final SchemaStore schemaStore =
       SchemaStore(name: 'Home', components: [], id: MAIN_UNIQUE_KEY);
 
@@ -25,7 +25,7 @@ UserActions setupUserActions() {
 
   final CurrentUserStore currentUserStore = CurrentUserStore();
 
-  final userActions = UserActions(
+  final userActions = UserAction(
       currentUserStore: currentUserStore,
       screens: screens,
       bottomNavigationStore: bottomNavigationStore,

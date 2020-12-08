@@ -12,7 +12,7 @@ class ProjectSetupMiddleware extends StatefulWidget {
 class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
   final int minLoadingAnimationDurationTime = 1000;
 
-  UserActions userActions;
+  UserAction userActions;
   OverlayEntry _overlayEntry;
   Stopwatch animationStopwatch;
 
@@ -38,7 +38,8 @@ class _ProjectSetupMiddlewareState extends State<ProjectSetupMiddleware> {
 
   OverlayEntry _renderLoadingOverlay() {
     return OverlayEntry(
-        builder: (BuildContext context) => ProjectLoadingAnimation());
+      builder: (BuildContext context) => ProjectLoadingAnimation(),
+    );
   }
 
   void setupProject() async {

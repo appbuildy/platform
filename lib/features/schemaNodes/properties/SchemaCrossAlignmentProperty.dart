@@ -4,7 +4,10 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 class SchemaCrossAlignmentProperty
     extends SchemaNodeProperty<CrossAxisAlignment> {
   SchemaCrossAlignmentProperty(String name, CrossAxisAlignment value)
-      : super(name, value);
+      : super(
+          name: name,
+          value: value,
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -15,15 +18,11 @@ class SchemaCrossAlignmentProperty
   }
 
   SchemaCrossAlignmentProperty.fromJson(Map<String, dynamic> jsonTarget)
-      : super('CrossAlign', null) {
-    this.name = jsonTarget['name'];
-
-    final int crossAlignItemIndex = int.parse(jsonTarget['value'].toString());
-    final CrossAxisAlignment crossAlignItem = CrossAxisAlignment.values
-        .firstWhere((alignItem) => alignItem.index == crossAlignItemIndex);
-
-    this.value = crossAlignItem;
-  }
+      : super(
+          name: jsonTarget['name'] ?? 'CrossAlign',
+          value: CrossAxisAlignment
+              .values[int.tryParse(jsonTarget['value']?.toString() ?? '') ?? 0],
+        );
 
   @override
   SchemaCrossAlignmentProperty copy() {

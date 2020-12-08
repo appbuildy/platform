@@ -12,7 +12,7 @@ import 'package:flutter_app/ui/MySwitch.dart';
 
 class EditPropsShadow extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
-  final UserActions userActions;
+  final UserAction userActions;
   final MyTheme currentTheme;
 
   const EditPropsShadow(

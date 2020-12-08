@@ -1,7 +1,13 @@
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaBoolProperty extends SchemaNodeProperty<bool> {
-  SchemaBoolProperty(String name, bool value) : super(name, value);
+  SchemaBoolProperty(
+    String name,
+    bool value,
+  ) : super(
+          name: name,
+          value: value,
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -12,10 +18,10 @@ class SchemaBoolProperty extends SchemaNodeProperty<bool> {
   }
 
   SchemaBoolProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('Bool', null) {
-    this.name = targetJson['name'];
-    this.value = targetJson['value'];
-  }
+      : super(
+          name: targetJson['name'] ?? 'Bool',
+          value: targetJson['value'],
+        );
 
   @override
   SchemaBoolProperty copy() {

@@ -15,7 +15,7 @@ import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class ToolboxLayout extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   // final CurrentUserStore currentUserStore;
 
@@ -28,7 +28,10 @@ class ToolboxLayout extends StatelessWidget {
   Widget buildTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, bottom: 11.0),
-      child: Text(title, style: MyTextStyle.regularTitle),
+      child: Text(
+        title,
+        style: MyTextStyle.regularTitle,
+      ),
     );
   }
 
@@ -63,45 +66,52 @@ class ToolboxLayout extends StatelessWidget {
                                 SchemaNodeButton(themeStore: themeStore),
                           ),
                           ToolboxComponent(
-                              schemaNode:
-                                  SchemaNodeText(themeStore: themeStore)),
+                            schemaNode: SchemaNodeText(themeStore: themeStore),
+                          ),
                           ToolboxComponent(
-                              schemaNode:
-                                  SchemaNodeIcon(themeStore: themeStore)),
+                            schemaNode: SchemaNodeIcon(themeStore: themeStore),
+                          ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ToolboxComponent(schemaNode: SchemaNodeImage()),
+                          ToolboxComponent(
+                            schemaNode: SchemaNodeImage(),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
-                              schemaNode:
-                                  SchemaNodeShape(themeStore: themeStore)),
+                            schemaNode: SchemaNodeShape(
+                              themeStore: themeStore,
+                            ),
+                          ),
                         ],
                       ),
                       ToolBoxCaption('Listing'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           ToolboxComponent(
-                              defaultTitle: 'List',
-                              defaultType: SchemaNodeType.listDefault,
-                              schemaNode: SchemaNodeList(
-                                themeStore: themeStore,
-                                listTemplateType: ListTemplateType.simple,
-                              )),
+                            defaultTitle: 'List',
+                            defaultType: SchemaNodeType.listDefault,
+                            schemaNode: SchemaNodeList(
+                              themeStore: themeStore,
+                              listTemplateType: ListTemplateType.simple,
+                            ),
+                          ),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
-                              defaultTitle: 'Cards',
-                              defaultType: SchemaNodeType.listCards,
-                              schemaNode: SchemaNodeList(
-                                  themeStore: themeStore,
-                                  listTemplateType: ListTemplateType.cards))
+                            defaultTitle: 'Cards',
+                            defaultType: SchemaNodeType.listCards,
+                            schemaNode: SchemaNodeList(
+                              themeStore: themeStore,
+                              listTemplateType: ListTemplateType.cards,
+                            ),
+                          )
                         ],
                       ),
                     ],
@@ -156,25 +166,24 @@ class ToolboxLayout extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   modal.show(
-                                    context: context,
-                                    child: Container(
-                                        height: MediaQuery.of(context)
-                                            .size
-                                            .height,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 20,
-                                            right: 0,
-                                          ),
-                                          child: IFrame(
-                                            src:
-                                                'https://www.appbuildy.com/upvoty',
-                                          ),
-                                        )),
-                                    onClose: () {
-                                      print('kekmek');
-                                    }
-                                  );
+                                      context: context,
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 20,
+                                              right: 0,
+                                            ),
+                                            child: IFrame(
+                                              src:
+                                                  'https://www.appbuildy.com/upvoty',
+                                            ),
+                                          )),
+                                      onClose: () {
+                                        print('kekmek');
+                                      });
                                 },
                                 child: HoverOpacity(
                                   child: Container(

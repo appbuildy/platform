@@ -8,7 +8,7 @@ import 'package:flutter_app/features/toolbox/ToolboxPages/ToolboxPages.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class Toolbox extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
   final ToolboxStates toolboxState;
 
   // final CurrentUserStore currentUserStore;

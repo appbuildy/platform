@@ -7,7 +7,7 @@ import 'package:flutter_app/ui/ToolboxHeader.dart';
 
 class BuildToolboxAirtablePage extends StatefulWidget {
   final Function goBackToSettings;
-  final UserActions userActions;
+  final UserAction userActions;
 
   BuildToolboxAirtablePage({
     @required this.goBackToSettings,

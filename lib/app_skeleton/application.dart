@@ -21,6 +21,8 @@ class _ApplicationState extends State<Application> {
         widget.screens.map<String, WidgetBuilder>(
       (key, screen) => MapEntry(key.toString(), (context) => screen),
     );
+    // could change to onGenerateRoute where just extract from map
+    // instead of rebuilding tree
 
     final screenStore = ScreenStore(
       widget.screens.values.first,

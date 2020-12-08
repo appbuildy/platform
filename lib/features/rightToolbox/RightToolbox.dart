@@ -6,7 +6,7 @@ import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class RightToolbox extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
   final ToolboxStates toolboxState;
   final Function(ToolboxStates) selectState;
 

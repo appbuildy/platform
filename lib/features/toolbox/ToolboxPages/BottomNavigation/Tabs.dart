@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Tabs extends StatelessWidget {
   final Function selectTab;
-  final UserActions userActions;
+  final UserAction userActions;
 
   const Tabs({Key key, @required this.userActions, this.selectTab})
       : super(key: key);
@@ -41,7 +41,7 @@ class Tabs extends StatelessWidget {
 class TabItem extends StatelessWidget {
   final TabNavigation tab;
   final Function selectTab;
-  final UserActions userActions;
+  final UserAction userActions;
 
   const TabItem({Key key, this.tab, this.userActions, this.selectTab})
       : super(key: key);

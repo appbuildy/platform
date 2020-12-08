@@ -13,7 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class TabSelected extends StatelessWidget {
   final TabNavigation tab;
   final Function rerender;
-  final UserActions userActions;
+  final UserAction userActions;
 
   const TabSelected({Key key, this.tab, this.userActions, this.rerender})
       : super(key: key);

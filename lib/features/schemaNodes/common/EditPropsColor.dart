@@ -8,7 +8,7 @@ import 'package:flutter_app/ui/MySelects/MyColorSelect.dart';
 
 class EditPropsColor extends StatelessWidget {
   final MyTheme currentTheme;
-  final UserActions userActions;
+  final UserAction userActions;
   final String propName;
   final Map<String, SchemaNodeProperty> properties;
   final String title;

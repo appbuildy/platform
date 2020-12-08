@@ -5,7 +5,7 @@ import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 import '../ToolboxUI.dart';
 
 class ToolboxData extends StatefulWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const ToolboxData({Key key, @required this.userActions}) : super(key: key);
 

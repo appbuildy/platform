@@ -13,7 +13,7 @@ import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
 class AppLayout extends StatefulWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   AppLayout({@required this.userActions});
 

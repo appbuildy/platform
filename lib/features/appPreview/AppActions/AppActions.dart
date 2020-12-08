@@ -17,7 +17,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 /// panel above the preview with undo/redo actions, page selector, share button
 class AppActions extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const AppActions({Key key, this.userActions}) : super(key: key);
 

@@ -14,7 +14,7 @@ import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class EditProps extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const EditProps({
     Key key,

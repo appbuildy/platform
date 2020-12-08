@@ -86,8 +86,9 @@ class SchemaStringListProperty
   }
 
   SchemaStringListProperty(
-      String name, Map<String, SchemaListItemsProperty> value)
-      : super(name, value);
+    String name,
+    Map<String, SchemaListItemsProperty> value,
+  ) : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> outValue = {};
@@ -104,9 +105,7 @@ class SchemaStringListProperty
   }
 
   SchemaStringListProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('String List Property', null) {
-    this.name = targetJson['name'];
-
+      : super(name: targetJson['name'] ?? 'String List Property', value: null) {
     Map<String, SchemaListItemsProperty> innerValue = {};
 
     targetJson['value'].forEach((key, schemaListItemsTargetJson) {

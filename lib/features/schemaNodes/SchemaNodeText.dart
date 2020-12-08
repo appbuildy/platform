@@ -21,6 +21,7 @@ import 'package:flutter_app/utils/Debouncer.dart';
 import 'common/EditPropsText.dart';
 
 class SchemaNodeText extends SchemaNode {
+  final SchemaNodeType type = SchemaNodeType.text;
   Debouncer<String> textDebouncer;
 
   SchemaNodeText(
@@ -36,7 +37,6 @@ class SchemaNodeText extends SchemaNode {
       FontWeight fontWeight,
       UniqueKey id})
       : super() {
-    this.type = SchemaNodeType.text;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
@@ -86,12 +86,12 @@ class SchemaNodeText extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({bool isPlayMode, UserAction userActions}) {
     return Shared.Text(
         properties: properties, theme: themeStore.currentTheme, size: size);
   }
 
-  void updateOnColumnDataChange(UserActions userActions, String newValue) {
+  void updateOnColumnDataChange(UserAction userActions, String newValue) {
     userActions.changePropertyTo(SchemaStringProperty("Text", newValue), false);
   }
 
@@ -103,11 +103,12 @@ class SchemaNodeText extends SchemaNode {
         name: 'Text Style',
       ),
       EditPropsText(
-          id: id,
-          properties: properties,
-          propName: 'Text',
-          userActions: userActions,
-          textDebouncer: textDebouncer),
+        id: id,
+        properties: properties,
+        propName: 'Text',
+        userActions: userActions,
+        textDebouncer: textDebouncer,
+      ),
       SizedBox(
         height: 10,
       ),

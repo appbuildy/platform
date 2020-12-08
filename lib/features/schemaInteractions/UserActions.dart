@@ -34,7 +34,7 @@ import 'package:universal_html/html.dart';
 import 'ConnectToRemoteAttribute.dart';
 import 'GuidelinesManager/PositionAndSize.dart';
 
-class UserActions {
+class UserAction {
   ActionsDone _actionsDone;
   ActionsUndone _actionsUndone;
   CurrentEditingNode _currentNode;
@@ -48,7 +48,7 @@ class UserActions {
 
   Debouncer<SchemaNode> debouncer;
 
-  UserActions({
+  UserAction({
     Screens screens,
     CurrentUserStore currentUserStore,
     BottomNavigationStore bottomNavigationStore,

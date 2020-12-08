@@ -11,7 +11,7 @@ import 'ToolboxThemeItemSettings/ToolboxThemeItemColorSelect.dart';
 
 class BuildToolboxThemePage extends StatefulWidget {
   final goBackToSettings;
-  final UserActions userActions;
+  final UserAction userActions;
 
   BuildToolboxThemePage({
     @required this.goBackToSettings,
@@ -24,7 +24,6 @@ class BuildToolboxThemePage extends StatefulWidget {
 
 class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
     with SingleTickerProviderStateMixin {
-
   PageSliderController pageSliderController;
 
   @override
@@ -38,9 +37,9 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
     });
 
     pageSliderController = PageSliderController<String>(
-        vsync: this,
-        rootPage: _buildMain(),
-        pagesMap: sliderAnimationPages,
+      vsync: this,
+      rootPage: _buildMain(),
+      pagesMap: sliderAnimationPages,
     );
   }
 
@@ -81,7 +80,8 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
             newColor;
         widget.userActions.setTheme(widget.userActions.currentTheme);
         setState(() {
-          pageSliderController.updatePage(themeKey, _buildThemeItemSettings(themeKey));
+          pageSliderController.updatePage(
+              themeKey, _buildThemeItemSettings(themeKey));
         });
       };
     }
@@ -122,7 +122,7 @@ class _BuildToolboxThemePageState extends State<BuildToolboxThemePage>
 }
 
 class ToolboxThemeItems extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
   final Function onThemeSettingsTap;
 
   const ToolboxThemeItems({

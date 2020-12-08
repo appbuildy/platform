@@ -8,7 +8,7 @@ class EditPropsList extends StatelessWidget {
   final UniqueKey id;
   final Map<String, SchemaNodeProperty> properties;
   final String propName;
-  final UserActions userActions;
+  final UserAction userActions;
   final Debouncer textDebouncer;
 
   const EditPropsList(

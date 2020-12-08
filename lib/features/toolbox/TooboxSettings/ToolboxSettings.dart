@@ -12,7 +12,7 @@ import 'package:flutter_app/ui/PageSliderAnimator.dart';
 enum SettingsEnum { information, theme, airtable, terms }
 
 class ToolboxSettings extends StatefulWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const ToolboxSettings({Key key, this.userActions}) : super(key: key);
 
@@ -29,9 +29,12 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
     super.initState();
 
     Map<SettingsEnum, Widget> sliderAnimationPages = {
-      SettingsEnum.information: BuildToolboxInformationPage(goBackToSettings: goBack, userActions: widget.userActions),
-      SettingsEnum.theme: BuildToolboxThemePage(goBackToSettings: goBack, userActions: widget.userActions),
-      SettingsEnum.airtable: BuildToolboxAirtablePage(goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.information: BuildToolboxInformationPage(
+          goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.theme: BuildToolboxThemePage(
+          goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.airtable: BuildToolboxAirtablePage(
+          goBackToSettings: goBack, userActions: widget.userActions),
     };
 
     pageSliderController = PageSliderController<SettingsEnum>(
@@ -144,36 +147,35 @@ class BuildThemeToolboxItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.network(
-                iconPath,
-                width: 38,
-                height: 38,
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: MyTextStyle.regularTitle,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    subtitle,
-                    style: MyTextStyle.regularCaption,
-                  ),
-                ],
-              )
-            ]
-          ),
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.network(
+                  iconPath,
+                  width: 38,
+                  height: 38,
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: MyTextStyle.regularTitle,
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      subtitle,
+                      style: MyTextStyle.regularCaption,
+                    ),
+                  ],
+                )
+              ]),
         ),
       ),
     );

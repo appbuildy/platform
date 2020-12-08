@@ -12,7 +12,7 @@ import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ToolboxPages extends StatefulWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const ToolboxPages({Key key, this.userActions}) : super(key: key);
 

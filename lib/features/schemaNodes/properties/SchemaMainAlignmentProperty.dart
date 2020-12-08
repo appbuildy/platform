@@ -4,7 +4,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 class SchemaMainAlignmentProperty
     extends SchemaNodeProperty<MainAxisAlignment> {
   SchemaMainAlignmentProperty(String name, MainAxisAlignment value)
-      : super(name, value);
+      : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     return {
@@ -15,12 +15,12 @@ class SchemaMainAlignmentProperty
   }
 
   SchemaMainAlignmentProperty.fromJson(Map<String, dynamic> jsonTarget)
-      : super('MainAlign', null) {
-    this.name = jsonTarget['name'];
-
+      : super(name: jsonTarget['name'] ?? 'MainAlign', value: null) {
     final int mainAlignItemIndex = int.parse(jsonTarget['value'].toString());
-    final MainAxisAlignment mainAlignItem = MainAxisAlignment.values
-        .firstWhere((alignItem) => alignItem.index == mainAlignItemIndex);
+    final MainAxisAlignment mainAlignItem =
+        MainAxisAlignment.values.length > mainAlignItemIndex
+            ? MainAxisAlignment.values[mainAlignItemIndex]
+            : null;
 
     this.value = mainAlignItem;
   }

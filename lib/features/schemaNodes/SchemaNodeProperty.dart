@@ -21,13 +21,18 @@ import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'my_do_nothing_action.dart';
 import 'properties/SchemaStringProperty.dart';
 
+/// schema node property superclass
 class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
   String name;
   T _value;
   IRemoteAttribute remoteAttr;
   SchemaNodeProperty properties;
 
-  SchemaNodeProperty(String name, value, [IRemoteAttribute remoteAttribute]) {
+  SchemaNodeProperty({
+    @required String name,
+    @required T value,
+    IRemoteAttribute remoteAttribute,
+  }) {
     this.name = name;
     this._value = value;
     this.remoteAttr = remoteAttribute;
@@ -50,14 +55,14 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
   }
 
   static SchemaNodeProperty deserializeActionFromJson(
-      Map<String, dynamic> targetJson) {
+    Map<String, dynamic> targetJson,
+  ) {
     try {
       switch (targetJson['propertyClass']) {
         case 'GoToScreenAction':
           {
             return GoToScreenAction.fromJson(targetJson);
           }
-          break;
         default:
           {
             print('Failed to deserialize action: no deserializer');
@@ -71,93 +76,44 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
   }
 
   static SchemaNodeProperty deserializeFromJson(
-      Map<String, dynamic> targetJson) {
+    Map<String, dynamic> targetJson,
+  ) {
     try {
       switch (targetJson['propertyClass']) {
         case 'SchemaFontWeightProperty':
-          {
-            return SchemaFontWeightProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaFontWeightProperty.fromJson(targetJson);
         case 'SchemaDoubleProperty':
-          {
-            return SchemaDoubleProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaDoubleProperty.fromJson(targetJson);
         case 'SchemaIntProperty':
-          {
-            return SchemaIntProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaIntProperty.fromJson(targetJson);
         case 'SchemaBoolProperty':
-          {
-            return SchemaBoolProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaBoolProperty.fromJson(targetJson);
         case 'SchemaColorProperty':
-          {
-            return SchemaColorProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaColorProperty.fromJson(targetJson);
         case 'SchemaMyThemePropProperty':
-          {
-            return SchemaMyThemePropProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaMyThemePropProperty.fromJson(targetJson);
         case 'SchemaIconProperty':
-          {
-            return SchemaIconProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaIconProperty.fromJson(targetJson);
         case 'SchemaCrossAlignmentProperty':
-          {
-            return SchemaCrossAlignmentProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaCrossAlignmentProperty.fromJson(targetJson);
         case 'SchemaMainAlignmentProperty':
-          {
-            return SchemaMainAlignmentProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaMainAlignmentProperty.fromJson(targetJson);
         case 'SchemaStringProperty':
-          {
-            return SchemaStringProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaStringProperty.fromJson(targetJson);
         case 'SchemaListTemplateProperty':
-          {
-            return SchemaListTemplateProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaListTemplateProperty.fromJson(targetJson);
         case 'SchemaListItemsProperty':
-          {
-            return SchemaListItemsProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaListItemsProperty.fromJson(targetJson);
         case 'SchemaTextAlignProperty':
-          {
-            return SchemaTextAlignProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaTextAlignProperty.fromJson(targetJson);
         case 'SchemaStringListProperty':
-          {
-            return SchemaStringListProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaStringListProperty.fromJson(targetJson);
         case 'ListElementsProperty':
-          {
-            return ListElementsProperty.fromJson(targetJson);
-          }
-          break;
+          return ListElementsProperty.fromJson(targetJson);
         case 'SchemaListTemplateProperty':
-          {
-            return SchemaListTemplateProperty.fromJson(targetJson);
-          }
-          break;
+          return SchemaListTemplateProperty.fromJson(targetJson);
         default:
-          {
-            print("No .fromJson for $targetJson");
-          }
+          print("No .fromJson for $targetJson");
       }
     } catch (e) {
       print("Failed to deserialize $targetJson");
@@ -170,11 +126,13 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
     this.name = 'name';
   }
 
-  StatefulWidget input(Function onChange) {
+  StatefulWidget input(ValueSetter<String> onChanged) {
     return TextField(
-      onChanged: onChange,
-      decoration:
-          InputDecoration(border: InputBorder.none, hintText: this.name),
+      onChanged: onChanged,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        // hintText: this.name,
+      ),
     );
   }
 }

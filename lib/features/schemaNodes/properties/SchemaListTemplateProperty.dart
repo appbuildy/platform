@@ -3,7 +3,7 @@ import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplat
 
 class SchemaListTemplateProperty extends SchemaNodeProperty<ListTemplate> {
   SchemaListTemplateProperty(String name, ListTemplate value)
-      : super(name, value);
+      : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     return {
@@ -14,12 +14,13 @@ class SchemaListTemplateProperty extends SchemaNodeProperty<ListTemplate> {
   }
 
   SchemaListTemplateProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('List template', null) {
-    this.name = targetJson['name'];
-
+      : super(
+          name: targetJson['name'] ?? 'List template',
+          value: null,
+        ) {
     int index = int.parse(targetJson['value'].toString());
-    ListTemplateType type =
-        ListTemplateType.values.firstWhere((type) => type.index == index);
+    ListTemplateType type = ListTemplateType.values
+        .firstWhere((type) => type.index == index, orElse: null);
 
     this.value = getListTemplateByType(type);
   }

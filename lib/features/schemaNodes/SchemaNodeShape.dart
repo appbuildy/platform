@@ -57,7 +57,7 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({bool isPlayMode, UserAction userActions}) {
     return Shared.Shape(
         properties: properties, theme: themeStore.currentTheme, size: size);
   }

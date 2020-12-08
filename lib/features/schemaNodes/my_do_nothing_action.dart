@@ -4,9 +4,12 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'Functionable.dart';
 
 class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
-  MyDoNothingAction() : super('', 'myDoNothingAction') {
-    this.type = SchemaActionType.doNothing;
-  }
+  MyDoNothingAction()
+      : type = SchemaActionType.doNothing,
+        super(
+          name: '',
+          value: 'myDoNothingAction',
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -17,7 +20,7 @@ class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
     };
   }
 
-  Function toFunction(UserActions userActions) {
+  Function toFunction(UserAction userActions) {
     return () {};
   }
 

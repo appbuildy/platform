@@ -6,7 +6,7 @@ import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Pages extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const Pages({Key key, @required this.userActions}) : super(key: key);
 

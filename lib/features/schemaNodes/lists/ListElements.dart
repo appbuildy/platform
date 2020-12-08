@@ -8,19 +8,21 @@ import 'package:flutter_app/ui/MySwitch.dart';
 import '../SchemaNodeProperty.dart';
 
 class ListElementsProperty extends SchemaNodeProperty<ListElements> {
-  ListElementsProperty(String name, ListElements value) : super(name, value);
+  ListElementsProperty(String name, ListElements value)
+      : super(name: name, value: value);
 
   ListElementsProperty.fromJson(Map<String, dynamic> jsonVal)
-      : super('Elements', null) {
-    this.name = jsonVal['name'];
-    this.value = ListElements(
-        allColumns: List<String>.from(jsonVal['value']['allColumns']),
-        subtitle: ListElement.fromJson(jsonVal['value']['subtitle']),
-        image: ListElement.fromJson(jsonVal['value']['image']),
-        navigationIcon:
-            ListElement.fromJson(jsonVal['value']['navigationIcon']),
-        title: ListElement.fromJson(jsonVal['value']['title']));
-  }
+      : super(
+          name: jsonVal['name'] ?? 'Elements',
+          // TODO create listElements deserializer
+          value: ListElements(
+              allColumns: List<String>.from(jsonVal['value']['allColumns']),
+              subtitle: ListElement.fromJson(jsonVal['value']['subtitle']),
+              image: ListElement.fromJson(jsonVal['value']['image']),
+              navigationIcon:
+                  ListElement.fromJson(jsonVal['value']['navigationIcon']),
+              title: ListElement.fromJson(jsonVal['value']['title'])),
+        );
 
   @override
   Map<String, dynamic> toJson() {
@@ -59,7 +61,7 @@ class ListElements {
         allColumns.length >= 3 ? newAllColumns[2] : newAllColumns[0];
   }
 
-  Widget toEditProps(UserActions userActions) {
+  Widget toEditProps(UserAction userActions) {
     return Column(
       children: [
         ListElementWidget(
@@ -103,7 +105,7 @@ class ListElementWidget extends StatefulWidget {
   final ListElementType type;
   final String name;
   final ListElements parent;
-  final UserActions userActions;
+  final UserAction userActions;
 
   const ListElementWidget(
       {Key key,

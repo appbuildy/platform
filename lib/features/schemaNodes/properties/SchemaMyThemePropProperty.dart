@@ -5,7 +5,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
   SchemaMyThemePropProperty(String name, MyThemeProp value)
-      : super(name, value);
+      : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     return {
@@ -14,19 +14,18 @@ class SchemaMyThemePropProperty extends SchemaNodeProperty<MyThemeProp> {
       'value': {
         'name': this.value.name,
         'color': this.value.color.value,
-      }
+      },
     };
   }
 
   SchemaMyThemePropProperty.fromJson(Map<String, dynamic> jsonTarget)
-      : super('my theme prop', null) {
-    this.name = jsonTarget['name'];
-
-    this.value = MyThemeProp(
-      name: jsonTarget['value']['name'],
-      color: Color(int.parse(jsonTarget['value']['color'].toString())),
-    );
-  }
+      : super(
+          name: jsonTarget['name'] ?? 'my theme prop',
+          value: MyThemeProp(
+            name: jsonTarget['value']['name'],
+            color: Color(int.parse(jsonTarget['value']['color'].toString())),
+          ),
+        );
 
   @override
   SchemaMyThemePropProperty copy() {

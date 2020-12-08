@@ -12,7 +12,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
 
 class AppPreview extends StatefulWidget {
-  final UserActions userActions;
+  final UserAction userActions;
   final bool isPlayMode;
   final bool isPreview;
   final Function selectPlayModeToFalse;
@@ -34,7 +34,7 @@ class AppPreview extends StatefulWidget {
 }
 
 class _AppPreviewState extends State<AppPreview> {
-  UserActions userActions;
+  UserAction userActions;
 
   @override
   void initState() {

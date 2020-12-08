@@ -3,7 +3,10 @@ import 'dart:ui';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaColorProperty extends SchemaNodeProperty<Color> {
-  SchemaColorProperty(String name, Color value) : super(name, value);
+  SchemaColorProperty(
+    String name,
+    Color value,
+  ) : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     return {
@@ -14,10 +17,10 @@ class SchemaColorProperty extends SchemaNodeProperty<Color> {
   }
 
   SchemaColorProperty.fromJson(Map<String, dynamic> jsonTarget)
-      : super('Color', null) {
-    this.name = jsonTarget['name'];
-    this.value = Color(int.parse(jsonTarget['value']));
-  }
+      : super(
+          name: jsonTarget['name'] ?? 'Color',
+          value: Color(int.parse(jsonTarget['value'])),
+        );
 
   @override
   SchemaColorProperty copy() {

@@ -107,7 +107,7 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({bool isPlayMode, UserAction userActions}) {
     if (isPlayMode) {
       return Container(
           width: this.size.dx,
@@ -130,7 +130,7 @@ class SchemaNodeList extends SchemaNode {
             properties: this.properties));
   }
 
-  Future<void> updateData(String tableName, UserActions userActions) async {
+  Future<void> updateData(String tableName, UserAction userActions) async {
     print('updateData');
     final client = userActions.currentUserStore.project.airtableTables
         .firstWhere((element) => element.table == tableName);
@@ -141,7 +141,7 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(UserActions userActions) {
+  Widget toEditProps(UserAction userActions) {
     return Column(children: [
       ColumnDivider(
         name: 'Data Source',

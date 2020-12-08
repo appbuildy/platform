@@ -1,7 +1,8 @@
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaStringProperty extends SchemaNodeProperty<String> {
-  SchemaStringProperty(String name, String value) : super(name, value);
+  SchemaStringProperty(String name, String value)
+      : super(name: name, value: value);
 
   @override
   SchemaStringProperty copy() {
@@ -17,8 +18,5 @@ class SchemaStringProperty extends SchemaNodeProperty<String> {
   }
 
   SchemaStringProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('name', null) {
-    this.name = targetJson['name'];
-    this.value = targetJson['value'];
-  }
+      : super(name: targetJson['name'] ?? 'name', value: targetJson['value']);
 }

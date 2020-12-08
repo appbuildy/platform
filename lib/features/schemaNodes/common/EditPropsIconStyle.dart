@@ -9,7 +9,7 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 
 class EditPropsIconStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
-  final UserActions userActions;
+  final UserAction userActions;
   final MyTheme currentTheme;
 
   const EditPropsIconStyle(

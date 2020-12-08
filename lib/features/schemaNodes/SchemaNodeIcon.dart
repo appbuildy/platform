@@ -75,7 +75,7 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({bool isPlayMode, UserAction userActions}) {
     return Shared.Icon(
         properties: properties, theme: themeStore.currentTheme, size: size);
   }

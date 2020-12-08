@@ -19,7 +19,7 @@ class ListTemplateCards extends ListTemplate {
       {MyTheme currentTheme,
       Map<String, SchemaNodeProperty> properties,
       Map<String, SchemaNodeProperty> actions,
-      UserActions userActions,
+      UserAction userActions,
       bool isPlayMode = false}) {
     return Column(
         children: properties['Items']
@@ -29,8 +29,8 @@ class ListTemplateCards extends ListTemplate {
               if (isPlayMode) {
                 return GestureDetector(
                   onTap: () {
-                      (actions['Tap'] as Functionable)
-                          .toFunction(userActions)(item.value);
+                    (actions['Tap'] as Functionable)
+                        .toFunction(userActions)(item.value);
                   },
                   child: widgetFor(
                       item: item,
@@ -51,7 +51,7 @@ class ListTemplateCards extends ListTemplate {
 
   Widget rowStyle({
     Map<String, SchemaNodeProperty> properties,
-    UserActions userActions,
+    UserAction userActions,
     MyTheme currentTheme,
   }) {
     return Column(

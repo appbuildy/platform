@@ -24,6 +24,9 @@ import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
 class SchemaNodeButton extends SchemaNode {
+  @override
+  final type = SchemaNodeType.button;
+
   Debouncer<String> textDebouncer;
 
   SchemaNodeButton({
@@ -35,7 +38,6 @@ class SchemaNodeButton extends SchemaNode {
     String text,
     UniqueKey id,
   }) : super() {
-    this.type = SchemaNodeType.button;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
@@ -94,7 +96,7 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({bool isPlayMode, UserAction userActions}) {
     return Shared.Button(
         properties: properties, theme: themeStore.currentTheme, size: size);
   }

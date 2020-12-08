@@ -5,6 +5,6 @@ enum SchemaActionType { doNothing, goToScreen }
 abstract class Functionable {
   SchemaActionType type;
   Function toFunction(
-    UserActions userActions,
+    UserAction userActions,
   );
 }

@@ -4,7 +4,7 @@ import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
 class SchemaListItemsProperty
     extends SchemaNodeProperty<Map<String, ListItem>> {
   SchemaListItemsProperty(String name, Map<String, ListItem> value)
-      : super(name, value);
+      : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> outValue = {};
@@ -21,9 +21,7 @@ class SchemaListItemsProperty
   }
 
   SchemaListItemsProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('List Item Property', null) {
-    this.name = targetJson['name'];
-
+      : super(name: targetJson['name'] ?? 'List Item Property', value: null) {
     Map<String, ListItem> innerValue = {};
 
     targetJson['value'].forEach((key, listItemTargetJson) {

@@ -3,7 +3,11 @@ import 'dart:ui';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaFontWeightProperty extends SchemaNodeProperty<FontWeight> {
-  SchemaFontWeightProperty(String name, FontWeight value) : super(name, value);
+  SchemaFontWeightProperty(String name, FontWeight value)
+      : super(
+          name: name,
+          value: value,
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -14,11 +18,11 @@ class SchemaFontWeightProperty extends SchemaNodeProperty<FontWeight> {
   }
 
   SchemaFontWeightProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('FontWeight', null) {
-    this.name = targetJson['name'];
+      : super(name: targetJson['name'] ?? 'FontWeight', value: null) {
     final fontIndex = int.parse(targetJson['value'].toString());
-    final deserializedFont =
-        FontWeight.values.firstWhere((font) => font.index == fontIndex);
+    final deserializedFont = fontIndex < FontWeight.values.length
+        ? FontWeight.values[fontIndex]
+        : null;
     this.value = deserializedFont;
   }
 

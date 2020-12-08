@@ -2,7 +2,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 
 class ChangeListItems {
-  UserActions _userActions;
+  UserAction _userActions;
   ChangeListItems(this._userActions);
 
   void change(

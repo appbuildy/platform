@@ -68,11 +68,11 @@ class SchemaNodeImage extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({bool isPlayMode, UserAction userActions}) {
     return Shared.Image(properties: properties, size: size);
   }
 
-  void updateOnColumnDataChange(UserActions userActions, String newValue) {
+  void updateOnColumnDataChange(UserAction userActions, String newValue) {
     userActions.changePropertyTo(SchemaStringProperty("Url", newValue), false);
   }
 

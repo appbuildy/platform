@@ -18,7 +18,7 @@ class ListTemplateSimple extends ListTemplate {
       {MyTheme currentTheme,
       Map<String, SchemaNodeProperty> properties,
       Map<String, SchemaNodeProperty> actions,
-      UserActions userActions,
+      UserAction userActions,
       bool isPlayMode = false}) {
     return Column(
         children: properties['Items']
@@ -50,7 +50,7 @@ class ListTemplateSimple extends ListTemplate {
 
   Widget rowStyle(
       {Map<String, SchemaNodeProperty> properties,
-      UserActions userActions,
+      UserAction userActions,
       MyTheme currentTheme}) {
     return Column(children: [
       SizedBox(

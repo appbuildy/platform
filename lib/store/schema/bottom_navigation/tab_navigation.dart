@@ -2,29 +2,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/utils/FontAwesomeIconsExtension.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
+/// navigation tab data
 class TabNavigation {
+  RandomKey id;
   String label;
   IconData icon;
   RandomKey target;
-  RandomKey id;
 
-  TabNavigation({this.target, this.label, this.icon, this.id}) {
-    this.id = id ?? RandomKey();
-  }
+  TabNavigation({
+    RandomKey id,
+    this.label,
+    this.icon,
+    this.target,
+  }) : this.id = id ?? RandomKey();
 
-  TabNavigation.fromJson(Map<String, dynamic> jsonVal) {
-    this.label = jsonVal['label'];
-    this.target = RandomKey.fromJson(jsonVal['target']);
-    this.id = RandomKey.fromJson(jsonVal['id']);
-    this.icon = JsonSerializationIconData.fromJson(jsonVal['icon']);
+  factory TabNavigation.fromJson(Map<String, dynamic> jsonVal) {
+    return TabNavigation(
+      id: RandomKey.fromJson(jsonVal['id']),
+      label: jsonVal['label'],
+      target: RandomKey.fromJson(jsonVal['target']),
+      icon: JsonSerializationIconData.fromJson(jsonVal['icon']),
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'label': label,
-      'target': target.toJson(),
       'id': id.toJson(),
-      'icon': icon.toJson()
+      'label': label,
+      'icon': icon.toJson(),
+      'target': target.toJson(),
     };
   }
 }

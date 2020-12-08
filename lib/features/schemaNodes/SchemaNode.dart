@@ -13,6 +13,7 @@ export 'SchemaNodeProperty.dart';
 export 'SchemaNodeShape.dart';
 export 'SchemaNodeText.dart';
 
+/// interface block type
 enum SchemaNodeType {
   button,
   text,
@@ -24,25 +25,25 @@ enum SchemaNodeType {
   listCards
 }
 
+// interface block interface class
 abstract class SchemaNode {
   UniqueKey id;
   SchemaNodeType type;
   Offset position;
-  AppThemeStore themeStore;
   Offset size;
+  AppThemeStore themeStore;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> changeableProperties;
   Map<String, SchemaNodeProperty> actions;
 
   SchemaNode copy({
+    UniqueKey id,
     Offset position,
     Offset size,
-    UniqueKey id,
     bool saveProperties,
   });
 
   static double minimalSize = 30.0;
-
   static double demagnetizeSideDelta = 8;
 
   static bool canDemagnetize({FoundGuideline foundGuideline, double delta}) {
@@ -833,9 +834,9 @@ abstract class SchemaNode {
         'actions': _jsonActions(),
         'type': this.type.toString()
       };
-  Widget toWidget({bool isPlayMode, UserActions userActions});
+  Widget toWidget({bool isPlayMode, UserAction userActions});
   Widget toEditProps(
-    UserActions userActions,
+    UserAction userActions,
   );
 
   Map<String, dynamic> _jsonActions() {

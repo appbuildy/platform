@@ -25,7 +25,7 @@ void main() {
     final action = MockAction('val1');
 
     final userActions =
-        UserActions(screens: Screens(screens, CurrentScreen(schemaStore)));
+        UserAction(screens: Screens(screens, CurrentScreen(schemaStore)));
     final allActions =
         AllActions(userActions: userActions, screens: screens.screens);
 

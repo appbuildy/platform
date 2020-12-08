@@ -12,38 +12,41 @@ enum ListTemplateType { simple, cards }
 abstract class ListTemplate {
   ListTemplateType getType();
 
-  Widget toWidget(
-      {MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties,
-      bool isPlayMode});
+  Widget toWidget({
+    MyTheme currentTheme,
+    Map<String, SchemaNodeProperty> properties,
+    bool isPlayMode,
+  });
 
-  Widget rowStyle(
-      {Map<String, SchemaNodeProperty> properties,
-      UserActions userActions,
-      MyTheme currentTheme});
+  Widget rowStyle({
+    Map<String, SchemaNodeProperty> properties,
+    UserAction userActions,
+    MyTheme currentTheme,
+  });
 
-  Widget widgetFor(
-      {SchemaListItemsProperty item,
-      ListElements elements,
-      MyTheme currentTheme});
+  Widget widgetFor({
+    SchemaListItemsProperty item,
+    ListElements elements,
+    MyTheme currentTheme,
+  });
 }
 
 ListTemplate getListTemplateByType(ListTemplateType type) {
-  if (type == ListTemplateType.simple) {
-    return ListTemplateSimple();
-  } else if (type == ListTemplateType.cards) {
-    return ListTemplateCards();
-  } else {
-    return ListTemplateSimple();
+  switch (type) {
+    case ListTemplateType.cards:
+      return ListTemplateCards();
+    case ListTemplateType.simple:
+    default:
+      return ListTemplateSimple();
   }
 }
 
 double getListHeightByType(ListTemplateType type) {
-  if (type == ListTemplateType.simple) {
-    return 195.0;
-  } else if (type == ListTemplateType.cards) {
-    return 480.0;
-  } else {
-    return 195.0;
+  switch (type) {
+    case ListTemplateType.cards:
+      return 480.0;
+    case ListTemplateType.simple:
+    default:
+      return 195.0;
   }
 }

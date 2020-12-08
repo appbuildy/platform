@@ -12,7 +12,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'EditPageBackgroundColor.dart';
 
 class EditPage extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const EditPage({Key key, this.userActions}) : super(key: key);
 

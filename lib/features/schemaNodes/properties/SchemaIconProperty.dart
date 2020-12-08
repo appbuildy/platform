@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaIconProperty extends SchemaNodeProperty<IconData> {
-  SchemaIconProperty(String name, IconData value) : super(name, value);
+  SchemaIconProperty(String name, IconData value)
+      : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     return {
@@ -18,9 +19,7 @@ class SchemaIconProperty extends SchemaNodeProperty<IconData> {
   }
 
   SchemaIconProperty.fromJson(Map<String, dynamic> jsonTarget)
-      : super('Icon', null) {
-    this.name = jsonTarget['name'];
-
+      : super(name: jsonTarget['name'] ?? 'Icon', value: null) {
     final jsonValue = jsonTarget['value'];
     final int iconDataCodePoint = int.parse(jsonValue['codePoint'].toString());
     final String iconDataFontFamily = jsonValue['fontFamily'];

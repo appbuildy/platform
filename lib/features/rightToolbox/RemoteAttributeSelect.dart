@@ -5,7 +5,7 @@ import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 
 class RemoteAttributesSelect extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
   final SchemaNodeProperty property;
   const RemoteAttributesSelect({Key key, this.userActions, this.property})
       : super(key: key);

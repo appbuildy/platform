@@ -1,7 +1,7 @@
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaIntProperty extends SchemaNodeProperty<int> {
-  SchemaIntProperty(String name, int value) : super(name, value);
+  SchemaIntProperty(String name, int value) : super(name: name, value: value);
 
   Map<String, dynamic> toJson() {
     return {
@@ -12,10 +12,10 @@ class SchemaIntProperty extends SchemaNodeProperty<int> {
   }
 
   SchemaIntProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('Int', null) {
-    this.name = targetJson['name'];
-    this.value = int.parse(targetJson['value'].toString());
-  }
+      : super(
+          name: targetJson['name'] ?? 'Int',
+          value: int.tryParse(targetJson['value'].toString() ?? ''),
+        );
 
   @override
   SchemaIntProperty copy() {

@@ -1,7 +1,11 @@
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 class SchemaDoubleProperty extends SchemaNodeProperty<double> {
-  SchemaDoubleProperty(String name, double value) : super(name, value);
+  SchemaDoubleProperty(String name, double value)
+      : super(
+          name: name,
+          value: value,
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -12,10 +16,10 @@ class SchemaDoubleProperty extends SchemaNodeProperty<double> {
   }
 
   SchemaDoubleProperty.fromJson(Map<String, dynamic> targetJson)
-      : super('Double', null) {
-    this.name = targetJson['name'];
-    this.value = double.parse(targetJson['value'].toString());
-  }
+      : super(
+          name: targetJson['name'] ?? 'Double',
+          value: double.tryParse(targetJson['value']?.toString() ?? ''),
+        );
 
   @override
   SchemaDoubleProperty copy() {

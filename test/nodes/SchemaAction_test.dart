@@ -17,7 +17,7 @@ void main() {
       Screens screens = Screens(
           ScreensStore(screens: [screen1, screen2]), CurrentScreen(screen1));
 
-      final actions = UserActions(screens: screens);
+      final actions = UserAction(screens: screens);
       final Functionable chgScren = GoToScreenAction('Tap', screen2.id);
 
       final changeScreenFn = chgScren.toFunction(actions);

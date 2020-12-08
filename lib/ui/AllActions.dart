@@ -16,7 +16,7 @@ import 'package:mobx/mobx.dart';
 
 class AllActions extends StatefulWidget {
   final ObservableList<SchemaStore> screens;
-  final UserActions userActions;
+  final UserAction userActions;
 
   const AllActions(
       {Key key, @required this.userActions, @required this.screens})

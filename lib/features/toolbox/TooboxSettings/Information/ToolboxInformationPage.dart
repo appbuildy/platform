@@ -6,17 +6,19 @@ import 'package:flutter_app/ui/ToolboxHeader.dart';
 
 class BuildToolboxInformationPage extends StatefulWidget {
   final Function goBackToSettings;
-  final UserActions userActions;
+  final UserAction userActions;
 
   BuildToolboxInformationPage({
     @required this.goBackToSettings,
     @required this.userActions,
   });
   @override
-  _BuildToolboxInformationPageState createState() => _BuildToolboxInformationPageState();
+  _BuildToolboxInformationPageState createState() =>
+      _BuildToolboxInformationPageState();
 }
 
-class _BuildToolboxInformationPageState extends State<BuildToolboxInformationPage> {
+class _BuildToolboxInformationPageState
+    extends State<BuildToolboxInformationPage> {
   Widget _buildTextField({
     String title,
     String textFieldDefaultValue,
@@ -108,11 +110,12 @@ class _BuildToolboxInformationPageState extends State<BuildToolboxInformationPag
             child: Column(
               children: [
                 _buildTextField(
-                  title: 'App Name',
-                  onTextFieldChange: () {},
-                  textFieldDefaultValue: widget.userActions.currentUserStore.project?.data['name'] ?? '',
-                  textFieldPlaceholder: 'Untitled'
-                ),
+                    title: 'App Name',
+                    onTextFieldChange: () {},
+                    textFieldDefaultValue: widget.userActions.currentUserStore
+                            .project?.data['name'] ??
+                        '',
+                    textFieldPlaceholder: 'Untitled'),
                 SizedBox(height: 17.0),
                 _buildTextField(
                   title: 'Description',

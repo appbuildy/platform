@@ -12,7 +12,7 @@ class EditPropsText extends StatelessWidget {
   final String propName;
   final String title;
   final String placeholder;
-  final UserActions userActions;
+  final UserAction userActions;
   final Debouncer textDebouncer;
 
   const EditPropsText(

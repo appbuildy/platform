@@ -7,7 +7,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class UndoRedo extends StatelessWidget {
-  final UserActions userActions;
+  final UserAction userActions;
 
   const UndoRedo({Key key, this.userActions}) : super(key: key);
 
