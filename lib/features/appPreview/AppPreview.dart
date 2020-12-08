@@ -46,16 +46,6 @@ class _AppPreviewState extends State<AppPreview> {
     final isSelected = userActions.selectedNode() != null &&
         userActions.selectedNode().id == node.id;
 
-    final Widget circle = Container(
-      width: 11,
-      height: 11,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: MyColors.white,
-        border: Border.all(width: 2, color: MyColors.mainBlue),
-      ),
-    );
-
     final List<Widget> dots = isSelected
         ? [
             Positioned(
@@ -96,7 +86,9 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
-                child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
+                child: Cursor(
+                    cursor: CursorEnum.nwseResize,
+                    child: const SelectionDotWidget()),
               ),
             ),
             Positioned(
@@ -136,7 +128,9 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
-                child: Cursor(cursor: CursorEnum.neswResize, child: circle),
+                child: Cursor(
+                    cursor: CursorEnum.neswResize,
+                    child: const SelectionDotWidget()),
               ),
             ),
             Positioned(
@@ -176,7 +170,10 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
-                child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
+                child: Cursor(
+                  cursor: CursorEnum.nwseResize,
+                  child: const SelectionDotWidget(),
+                ),
               ),
             ),
             Positioned(
@@ -216,7 +213,10 @@ class _AppPreviewState extends State<AppPreview> {
                   userActions.currentScreen.guidelineManager.setAllInvisible();
                   userActions.rerenderNode();
                 },
-                child: Cursor(cursor: CursorEnum.neswResize, child: circle),
+                child: Cursor(
+                  cursor: CursorEnum.neswResize,
+                  child: const SelectionDotWidget(),
+                ),
               ),
             ),
           ]
@@ -601,6 +601,30 @@ class _AppPreviewState extends State<AppPreview> {
           );
         });
       },
+    );
+  }
+}
+
+const double _kDotSize = 11;
+
+class SelectionDotWidget extends StatelessWidget {
+  const SelectionDotWidget({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white,
+        border: Border.all(
+          width: 2,
+          color: MyColors.mainBlue,
+        ),
+      ),
+      child: SizedBox(
+        height: _kDotSize,
+        width: _kDotSize,
+      ),
     );
   }
 }
