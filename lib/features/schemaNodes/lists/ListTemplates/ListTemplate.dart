@@ -53,13 +53,3 @@ double getListHeightByType(ListTemplateType type) {
     return 195.0;
   }
 }
-
-ListElements getListElementsByType(ListTemplateType type) {
-  if (type == ListTemplateType.simple) {
-    return ListElements(
-
-    );
-  }
-
-  return ListElements();
-}

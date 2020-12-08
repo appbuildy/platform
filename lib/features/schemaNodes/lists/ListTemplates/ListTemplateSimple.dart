@@ -79,11 +79,11 @@ class ListTemplateSimple extends ListTemplate {
       Row(
           children: [
             Text(
-              'Высота',
+              'Height',
               style: MyTextStyle.regularCaption,
             ),
             SizedBox(
-              width: 13,
+              width: 15,
             ),
             Expanded(
               child: MyTextField(

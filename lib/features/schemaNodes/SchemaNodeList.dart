@@ -1,5 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
@@ -93,7 +95,7 @@ class SchemaNodeList extends SchemaNode {
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
           'Elements': SchemaListElementsProperty(
-              'Elements', getListElementsByType(listTemplateType),//ListElements(allColumns: listColumnsSample),
+              'Elements', ListElements(),//ListElements(allColumns: listColumnsSample),
           ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),
@@ -374,9 +376,14 @@ class SchemaNodeList extends SchemaNode {
     final client = userActions.currentUserStore.project.airtableTables
         .firstWhere((element) => element.table == tableName);
     print("Client: $client");
-
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
+    (this.properties['Elements'].value as ListElements).allColumns = newProp.value[newProp.value.keys.first].value.keys.toList();
+    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
+      listElementNode.columnRelation = null;
+    });
+
     userActions.changePropertyTo(newProp);
+    userActions.changePropertyTo(SchemaStringProperty('Table', tableName));
   }
 
   PageSliderController pageSliderController;
@@ -440,7 +447,7 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
         children: [
           ToolboxHeader(
               leftWidget: IconCircleButton(
-                  onTap: widget.schemaNodeList.unselectListElementNode,
+                  onTap: widget.schemaNodeList.onListClick,
                   assetPath: 'assets/icons/meta/btn-back.svg'),
               title: listElementNode.name,
 
@@ -522,15 +529,15 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
                     selectedValue: widget.schemaNodeList.properties['Table'].value ?? null,
                     onChange: (screen) async {
                       await widget.schemaNodeList.updateData(screen.value, userActions);
-                      widget.changePropertyTo(
-                          SchemaStringProperty('Table', screen.value));
-                      print(screen);
-
-                      widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
-                          userActions
-                              .columnsFor(screen.value)
-                              .map((e) => e.name)
-                              .toList());
+                      // widget.changePropertyTo(
+                      //     SchemaStringProperty('Table', screen.value));
+                      // print('____________________________________________');
+                      //
+                      // widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
+                      //     userActions
+                      //         .columnsFor(screen.value)
+                      //         .map((e) => e.name)
+                      //         .toList());
                     },
                     options: userActions.tables
                         .map((element) => SelectOption(element, element))
