@@ -28,38 +28,45 @@ class BottomNavigation extends StatelessWidget {
     var isVisible = true;
     final store = Provider.of<ScreenStore>(context);
 
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      child: isVisible
-          ? DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(
-                  width: 1,
-                  color: theme.separators.color,
-                )),
-              ),
-              child: Container(
-                width: 375,
-                height: 82,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.zero,
-                ),
-                child: Observer(
-                  builder: (_) => AppTabs(
-                    selectedScreenId: store.selectedScreenId,
-                    tabs: tabs,
-                    theme: theme,
-                    onTap: (tab) {
-                      store.setCurrentScreen(store.screens[tab.target]);
-                    },
+    return isVisible
+        ? Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: AspectRatio(
+                aspectRatio: 375 / 82,
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: SizedBox(
+                    width: 375,
+                    height: 82,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        // borderRadius: BorderRadius.zero,
+                        border: Border(
+                            top: BorderSide(
+                          width: 1,
+                          color: theme.separators.color,
+                        )),
+                      ),
+                      child: Observer(
+                        builder: (_) => AppTabs(
+                          selectedScreenId: store.selectedScreenId,
+                          tabs: tabs,
+                          theme: theme,
+                          onTap: (TabNavigation tab) {
+                            store.setCurrentScreen(store.screens[tab.target]);
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            )
-          : Container(),
-    );
+            ))
+        : SizedBox.shrink();
   }
 }
