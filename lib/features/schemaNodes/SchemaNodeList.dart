@@ -5,7 +5,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
+import 'package:flutter_app/features/schemaNodes/airtable_modal_stub.dart'
+    if (dart.library.js) 'ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
@@ -34,19 +35,21 @@ class EditPropsAnimation extends StatefulWidget {
   final BuildWidgetFunction rootPage;
   final Map<UniqueKey, BuildWidgetFunction> pages;
 
-  EditPropsAnimation({ this.rootPage, this.pages });
+  EditPropsAnimation({this.rootPage, this.pages});
 
   @override
   _EditPropsAnimationState createState() => _EditPropsAnimationState();
 }
 
-class _EditPropsAnimationState extends State<EditPropsAnimation> with SingleTickerProviderStateMixin {
+class _EditPropsAnimationState extends State<EditPropsAnimation>
+    with SingleTickerProviderStateMixin {
   PageSliderController _pageSliderController;
 
   @override
   void initState() {
     super.initState();
-    this._pageSliderController = PageSliderController(vsync: this, buildRoot: widget.rootPage, buildPages: widget.pages);
+    this._pageSliderController = PageSliderController(
+        vsync: this, buildRoot: widget.rootPage, buildPages: widget.pages);
   }
 
   @override
@@ -95,18 +98,19 @@ class SchemaNodeList extends SchemaNode {
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
           'Elements': SchemaListElementsProperty(
-              'Elements', ListElements(),//ListElements(allColumns: listColumnsSample),
+            'Elements',
+            ListElements(), //ListElements(allColumns: listColumnsSample),
           ),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),
-          'ItemColor': SchemaMyThemePropProperty(
-              'ItemColor', parent.userActions.themeStore.currentTheme.background),
+          'ItemColor': SchemaMyThemePropProperty('ItemColor',
+              parent.userActions.themeStore.currentTheme.background),
           'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
-          'SeparatorsColor': SchemaMyThemePropProperty(
-              'SeparatorsColor', parent.userActions.themeStore.currentTheme.separators),
+          'SeparatorsColor': SchemaMyThemePropProperty('SeparatorsColor',
+              parent.userActions.themeStore.currentTheme.separators),
           'BoxShadow': SchemaBoolProperty('BoxShadow', true),
-          'BoxShadowColor': SchemaMyThemePropProperty(
-              'BoxShadowColor', parent.userActions.themeStore.currentTheme.general),
+          'BoxShadowColor': SchemaMyThemePropProperty('BoxShadowColor',
+              parent.userActions.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
           'ListItemHeight': SchemaDoubleProperty('ListItemHeight', 100),
@@ -141,21 +145,24 @@ class SchemaNodeList extends SchemaNode {
               'Template', getListTemplateByType(listTemplateType)),
           'TextColor': SchemaMyThemePropProperty(
               'TextColor', parent.userActions.themeStore.currentTheme.general),
-          'ItemColor': SchemaMyThemePropProperty(
-              'ItemColor', parent.userActions.themeStore.currentTheme.background),
+          'ItemColor': SchemaMyThemePropProperty('ItemColor',
+              parent.userActions.themeStore.currentTheme.background),
           'ItemRadiusValue': SchemaIntProperty('ItemRadiusValue', 8),
-          'SeparatorsColor': SchemaMyThemePropProperty(
-              'SeparatorsColor', parent.userActions.themeStore.currentTheme.separators),
+          'SeparatorsColor': SchemaMyThemePropProperty('SeparatorsColor',
+              parent.userActions.themeStore.currentTheme.separators),
           'BoxShadow': SchemaBoolProperty('BoxShadow', true),
-          'BoxShadowColor': SchemaMyThemePropProperty(
-              'BoxShadowColor', parent.userActions.themeStore.currentTheme.general),
+          'BoxShadowColor': SchemaMyThemePropProperty('BoxShadowColor',
+              parent.userActions.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
-          'ListItemHeight': SchemaDoubleProperty('ListItemHeight', listTemplateType == ListTemplateType.simple ? 100 : 150),
+          'ListItemHeight': SchemaDoubleProperty('ListItemHeight',
+              listTemplateType == ListTemplateType.simple ? 100 : 150),
         };
 
-    final double listItemWidth = this.size.dx - (this.properties['Template'].value as ListTemplate).padding.dx * 2;
-    final double listItemHeight = this.properties['ListItemHeight'].value - (this.properties['Template'].value as ListTemplate).padding.dy * 2;
+    final double listItemWidth = this.size.dx -
+        (this.properties['Template'].value as ListTemplate).padding.dx * 2;
+    final double listItemHeight = this.properties['ListItemHeight'].value -
+        (this.properties['Template'].value as ListTemplate).padding.dy * 2;
     final Offset listItemSize = Offset(listItemWidth, listItemHeight);
 
     ListElements listElements;
@@ -164,23 +171,23 @@ class SchemaNodeList extends SchemaNode {
       listElements = ListElements.withSimpleListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
-          listItemSize: listItemSize
-      );
+          listItemSize: listItemSize);
     } else if (listTemplateType == ListTemplateType.cards) {
       listElements = ListElements.withCardListTemplate(
-        allColumns: listColumnsSample,
-        schemaNodeSpawner: parent,
-          listItemSize: listItemSize
-      );
+          allColumns: listColumnsSample,
+          schemaNodeSpawner: parent,
+          listItemSize: listItemSize);
     }
 
-    this.properties['Elements'] = SchemaListElementsProperty('Elements', listElements);
+    this.properties['Elements'] =
+        SchemaListElementsProperty('Elements', listElements);
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
   }
 
 // todo: refac.
-  bool get isSelected => this.id == parentSpawner.userActions.selectedNode()?.id;
+  bool get isSelected =>
+      this.id == parentSpawner.userActions.selectedNode()?.id;
 
   void unselectListElementNode() {
     selectedListElementNode = null;
@@ -217,12 +224,14 @@ class SchemaNodeList extends SchemaNode {
   }
 
   Offset get listElementNodeWorkspaceSize => Offset(
-    this.size.dx - (this.properties['Template'].value as ListTemplate).padding.dx * 2,
-    this.properties['ListItemHeight'].value - (this.properties['Template'].value as ListTemplate).padding.dy * 2,
-  );
+        this.size.dx -
+            (this.properties['Template'].value as ListTemplate).padding.dx * 2,
+        this.properties['ListItemHeight'].value -
+            (this.properties['Template'].value as ListTemplate).padding.dy * 2,
+      );
 
   @override
-  void onDeletePressed({ Function onDelete }) {
+  void onDeletePressed({Function onDelete}) {
     if (this.selectedListElementNode != null) {
       (this.properties['Elements'].value as ListElements).deleteListElementNode(
         listElementNode: selectedListElementNode,
@@ -241,7 +250,9 @@ class SchemaNodeList extends SchemaNode {
   @override
   void onCopyPressed({onCopy}) {
     if (this.selectedListElementNode != null) {
-      final ListElementNode copy =  (this.properties['Elements'].value as ListElements).copyListElementNode(
+      final ListElementNode copy =
+          (this.properties['Elements'].value as ListElements)
+              .copyListElementNode(
         listElementNode: selectedListElementNode,
       );
 
@@ -256,34 +267,54 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  void onUpOrDownPressed({bool isUp, Offset currentScreenWorkspaceSize, Function repositionAndResize}) {
+  void onUpOrDownPressed(
+      {bool isUp,
+      Offset currentScreenWorkspaceSize,
+      Function repositionAndResize}) {
     if (this.selectedListElementNode != null) {
-      this.selectedListElementNode.onUpOrDownPressed(isUp: isUp, currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
+      this.selectedListElementNode.onUpOrDownPressed(
+          isUp: isUp,
+          currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
 
       return;
     }
 
-    super.onUpOrDownPressed(isUp: isUp, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: repositionAndResize);
+    super.onUpOrDownPressed(
+        isUp: isUp,
+        currentScreenWorkspaceSize: currentScreenWorkspaceSize,
+        repositionAndResize: repositionAndResize);
   }
 
   @override
-  void onLeftOrRightPressed({bool isLeft, Offset currentScreenWorkspaceSize, Function repositionAndResize}) {
+  void onLeftOrRightPressed(
+      {bool isLeft,
+      Offset currentScreenWorkspaceSize,
+      Function repositionAndResize}) {
     if (this.selectedListElementNode != null) {
-      this.selectedListElementNode.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
+      this.selectedListElementNode.onLeftOrRightPressed(
+          isLeft: isLeft,
+          currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
 
       return;
     }
 
-    super.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: repositionAndResize);
+    super.onLeftOrRightPressed(
+        isLeft: isLeft,
+        currentScreenWorkspaceSize: currentScreenWorkspaceSize,
+        repositionAndResize: repositionAndResize);
   }
 
   @override
   double get onLeftResizeMinimalSize {
     double minimalSize = super.onLeftResizeMinimalSize;
 
-    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
-      double currentNodeMinimalSize = this.size.dx - listElementNode.node.position.dx;
-      if (currentNodeMinimalSize > minimalSize) minimalSize = currentNodeMinimalSize;
+    (this.properties['Elements'].value as ListElements)
+        .listElements
+        .forEach((ListElementNode listElementNode) {
+      double currentNodeMinimalSize =
+          this.size.dx - listElementNode.node.position.dx;
+      if (currentNodeMinimalSize > minimalSize)
+        minimalSize = currentNodeMinimalSize;
     });
 
     return minimalSize;
@@ -293,12 +324,17 @@ class SchemaNodeList extends SchemaNode {
   double get onRightResizeMinimalSize {
     double minimalSize = super.onRightResizeMinimalSize;
 
-    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
-      double currentNodeMinimalSize = listElementNode.node.size.dx + listElementNode.node.position.dx;
-      if (currentNodeMinimalSize > minimalSize) minimalSize = currentNodeMinimalSize;
+    (this.properties['Elements'].value as ListElements)
+        .listElements
+        .forEach((ListElementNode listElementNode) {
+      double currentNodeMinimalSize =
+          listElementNode.node.size.dx + listElementNode.node.position.dx;
+      if (currentNodeMinimalSize > minimalSize)
+        minimalSize = currentNodeMinimalSize;
     });
 
-    double paddingToListItem = (this.properties['Template'].value as ListTemplate).padding.dx * 2;
+    double paddingToListItem =
+        (this.properties['Template'].value as ListTemplate).padding.dx * 2;
 
     return minimalSize + paddingToListItem;
   }
@@ -311,12 +347,19 @@ class SchemaNodeList extends SchemaNode {
   }) {
     final double currentSize = this.size.dx;
 
-    final SchemaNode editedNode = super.magnetLeftResize(deltaDx: deltaDx, screenSizeDx: screenSizeDx, guidelinesManager: guidelinesManager);
+    final SchemaNode editedNode = super.magnetLeftResize(
+        deltaDx: deltaDx,
+        screenSizeDx: screenSizeDx,
+        guidelinesManager: guidelinesManager);
 
     final resizeDelta = editedNode.size.dx - currentSize;
 
-    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
-      listElementNode.onListLeftResize(deltaDx: resizeDelta, currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
+    (this.properties['Elements'].value as ListElements)
+        .listElements
+        .forEach((ListElementNode listElementNode) {
+      listElementNode.onListLeftResize(
+          deltaDx: resizeDelta,
+          currentScreenWorkspaceSize: this.listElementNodeWorkspaceSize);
     });
 
     return editedNode;
@@ -347,7 +390,7 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget({ bool isPlayMode }) {
+  Widget toWidget({bool isPlayMode}) {
     if (isPlayMode) {
       return Container(
         width: this.size.dx,
@@ -377,8 +420,11 @@ class SchemaNodeList extends SchemaNode {
         .firstWhere((element) => element.table == tableName);
     print("Client: $client");
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
-    (this.properties['Elements'].value as ListElements).allColumns = newProp.value[newProp.value.keys.first].value.keys.toList();
-    (this.properties['Elements'].value as ListElements).listElements.forEach((ListElementNode listElementNode) {
+    (this.properties['Elements'].value as ListElements).allColumns =
+        newProp.value[newProp.value.keys.first].value.keys.toList();
+    (this.properties['Elements'].value as ListElements)
+        .listElements
+        .forEach((ListElementNode listElementNode) {
       listElementNode.columnRelation = null;
     });
 
@@ -391,7 +437,8 @@ class SchemaNodeList extends SchemaNode {
   UniqueKey editPropsKey;
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  Widget toEditProps(wrapInRootProps,
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     if (editPropsKey == null) editPropsKey = UniqueKey();
 
     return ListToEditProps(
@@ -419,7 +466,8 @@ class ListToEditProps extends StatefulWidget {
   _ListToEditPropsState createState() => _ListToEditPropsState();
 }
 
-class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProviderStateMixin {
+class _ListToEditPropsState extends State<ListToEditProps>
+    with SingleTickerProviderStateMixin {
   PageSliderController _pageSliderController;
 
   @override
@@ -436,62 +484,68 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
     widget.schemaNodeList.pageSliderController = this._pageSliderController;
   }
 
-  Map<UniqueKey, BuildWidgetFunction> getPageSliderPages() => (widget.schemaNodeList.properties['Elements'].value as ListElements)
-    .getSettingsPagesBuildFunctions(
-      getPageWrapFunction: getPageWrap,
-    );
+  Map<UniqueKey, BuildWidgetFunction> getPageSliderPages() =>
+      (widget.schemaNodeList.properties['Elements'].value as ListElements)
+          .getSettingsPagesBuildFunctions(
+        getPageWrapFunction: getPageWrap,
+      );
 
   WrapFunction getPageWrap(ListElementNode listElementNode) {
     return (Widget child) {
       return Column(
         children: [
           ToolboxHeader(
-              leftWidget: IconCircleButton(
-                  onTap: widget.schemaNodeList.onListClick,
-                  assetPath: 'assets/icons/meta/btn-back.svg'),
-              title: listElementNode.name,
-
+            leftWidget: IconCircleButton(
+                onTap: widget.schemaNodeList.onListClick,
+                assetPath: 'assets/icons/meta/btn-back.svg'),
+            title: listElementNode.name,
             rightWidget: WithInfo(
-                isShowAlways: true,
-                isOnLeft: true,
-                defaultDecoration: BoxDecoration(
-                    gradient: MyGradients.plainWhite,
-                    shape: BoxShape.circle),
-                hoverDecoration: BoxDecoration(
-                    gradient: MyGradients.lightBlue,
-                    shape: BoxShape.circle),
-                position: Offset(0, 2),
-                onBringFront: () {
-                  (widget.schemaNodeList.properties['Elements'].value as ListElements).bringToFrontListElementNode(
-                    listElementNode: listElementNode,
-                  );
-                },
-                onSendBack: () {
-                  (widget.schemaNodeList.properties['Elements'].value as ListElements).sendToBackListElementNode(
-                    listElementNode: listElementNode,
-                  );
-                },
-                onDuplicate: () {
-                  final ListElementNode copy =  (widget.schemaNodeList.properties['Elements'].value as ListElements).copyListElementNode(
-                    listElementNode: listElementNode,
-                  );
+              isShowAlways: true,
+              isOnLeft: true,
+              defaultDecoration: BoxDecoration(
+                  gradient: MyGradients.plainWhite, shape: BoxShape.circle),
+              hoverDecoration: BoxDecoration(
+                  gradient: MyGradients.lightBlue, shape: BoxShape.circle),
+              position: Offset(0, 2),
+              onBringFront: () {
+                (widget.schemaNodeList.properties['Elements'].value
+                        as ListElements)
+                    .bringToFrontListElementNode(
+                  listElementNode: listElementNode,
+                );
+              },
+              onSendBack: () {
+                (widget.schemaNodeList.properties['Elements'].value
+                        as ListElements)
+                    .sendToBackListElementNode(
+                  listElementNode: listElementNode,
+                );
+              },
+              onDuplicate: () {
+                final ListElementNode copy = (widget.schemaNodeList
+                        .properties['Elements'].value as ListElements)
+                    .copyListElementNode(
+                  listElementNode: listElementNode,
+                );
 
-                  copy.onListElementsUpdate();
+                copy.onListElementsUpdate();
 
-                  widget.schemaNodeList.selectListElementNode(copy);
-                },
-                onDelete: () {
-                  (widget.schemaNodeList.properties['Elements'].value as ListElements).deleteListElementNode(
-                    listElementNode: listElementNode,
-                  );
+                widget.schemaNodeList.selectListElementNode(copy);
+              },
+              onDelete: () {
+                (widget.schemaNodeList.properties['Elements'].value
+                        as ListElements)
+                    .deleteListElementNode(
+                  listElementNode: listElementNode,
+                );
 
-                  widget.schemaNodeList.unselectListElementNode();
-                },
-                child: Container(
-                  width: 38,
-                  height: 38,
-                  color: Colors.transparent,
-                ),
+                widget.schemaNodeList.unselectListElementNode();
+              },
+              child: Container(
+                width: 38,
+                height: 38,
+                color: Colors.transparent,
+              ),
             ),
           ),
           Padding(
@@ -504,86 +558,96 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
   }
 
   Widget _buildRoot() {
-    bool isItemsNotEmpty = (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty).value.values.isNotEmpty;
+    bool isItemsNotEmpty =
+        (widget.schemaNodeList.properties['Items'] as SchemaStringListProperty)
+            .value
+            .values
+            .isNotEmpty;
 
-    final UserActions userActions = widget.schemaNodeList.parentSpawner.userActions;
-    return widget.wrapInRootProps(
-        Column(children: [
-          ColumnDivider(
-            name: 'Data Source',
-          ),
-          (userActions.currentUserStore.project != null &&
+    final UserActions userActions =
+        widget.schemaNodeList.parentSpawner.userActions;
+    return widget.wrapInRootProps(Column(children: [
+      ColumnDivider(
+        name: 'Data Source',
+      ),
+      (userActions.currentUserStore.project != null &&
               userActions.currentUserStore.project.base != null)
-              ? Row(
-            children: [
-              Text(
-                'Table from',
-                style: MyTextStyle.regularCaption,
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: MyClickSelect(
-                    placeholder: 'Select Table',
-                    selectedValue: widget.schemaNodeList.properties['Table'].value ?? null,
-                    onChange: (screen) async {
-                      await widget.schemaNodeList.updateData(screen.value, userActions);
-                      // widget.changePropertyTo(
-                      //     SchemaStringProperty('Table', screen.value));
-                      // print('____________________________________________');
-                      //
-                      // widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
-                      //     userActions
-                      //         .columnsFor(screen.value)
-                      //         .map((e) => e.name)
-                      //         .toList());
-                    },
-                    options: userActions.tables
-                        .map((element) => SelectOption(element, element))
-                        .toList()),
-              )
-            ],
-          ) : ConnectAirtableModal(),
-
-          if (isItemsNotEmpty)
-            ColumnDivider(
-              name: 'Row Elements',
-            ),
-          if (isItemsNotEmpty)
-            (widget.schemaNodeList.properties['Elements'].value as ListElements).toEditProps(
+          ? Row(
+              children: [
+                Text(
+                  'Table from',
+                  style: MyTextStyle.regularCaption,
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: MyClickSelect(
+                      placeholder: 'Select Table',
+                      selectedValue:
+                          widget.schemaNodeList.properties['Table'].value ??
+                              null,
+                      onChange: (screen) async {
+                        await widget.schemaNodeList
+                            .updateData(screen.value, userActions);
+                        // widget.changePropertyTo(
+                        //     SchemaStringProperty('Table', screen.value));
+                        // print('____________________________________________');
+                        //
+                        // widget.schemaNodeList.properties['Elements'].value.updateAllColumns(
+                        //     userActions
+                        //         .columnsFor(screen.value)
+                        //         .map((e) => e.name)
+                        //         .toList());
+                      },
+                      options: userActions.tables
+                          .map((element) => SelectOption(element, element))
+                          .toList()),
+                )
+              ],
+            )
+          : ConnectAirtableModal(),
+      if (isItemsNotEmpty)
+        ColumnDivider(
+          name: 'Row Elements',
+        ),
+      if (isItemsNotEmpty)
+        (widget.schemaNodeList.properties['Elements'].value as ListElements)
+            .toEditProps(
                 schemaNodeList: widget.schemaNodeList,
                 onNodeSettingsClick: (ListElementNode listElementNode) {
                   widget.schemaNodeList.selectListElementNode(listElementNode);
                 },
                 onListElementsUpdate: () {
-                  widget.changePropertyTo(SchemaListElementsProperty('Elements', widget.schemaNodeList.properties['Elements'].value));
+                  widget.changePropertyTo(SchemaListElementsProperty('Elements',
+                      widget.schemaNodeList.properties['Elements'].value));
                   _pageSliderController.pages = getPageSliderPages();
-                }
-            ),
-          if (isItemsNotEmpty)
-            ColumnDivider(
-              name: 'Row Style',
-            ),
-          if (isItemsNotEmpty)
-            EditPropsColor(
-              currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
-              properties: widget.schemaNodeList.properties,
-              propName: 'ItemColor',
-              changePropertyTo: widget.changePropertyTo,
-            ),
-          if (isItemsNotEmpty)
-            (widget.schemaNodeList.properties['Template'].value as ListTemplate).rowStyle(
-              changePropertyTo: widget.changePropertyTo,
-              properties: widget.schemaNodeList.properties,
-              currentTheme: widget.schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
-            ),
-          if (isItemsNotEmpty)
-            SizedBox(
-              height: 10,
-            ),
-        ])
-    );
+                }),
+      if (isItemsNotEmpty)
+        ColumnDivider(
+          name: 'Row Style',
+        ),
+      if (isItemsNotEmpty)
+        EditPropsColor(
+          currentTheme: widget
+              .schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
+          properties: widget.schemaNodeList.properties,
+          propName: 'ItemColor',
+          changePropertyTo: widget.changePropertyTo,
+        ),
+      if (isItemsNotEmpty)
+        (widget.schemaNodeList.properties['Template'].value as ListTemplate)
+            .rowStyle(
+          changePropertyTo: widget.changePropertyTo,
+          properties: widget.schemaNodeList.properties,
+          currentTheme: widget
+              .schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
+        ),
+      if (isItemsNotEmpty)
+        SizedBox(
+          height: 10,
+        ),
+    ]));
   }
 
   @override
@@ -595,4 +659,3 @@ class _ListToEditPropsState extends State<ListToEditProps> with SingleTickerProv
     );
   }
 }
-
