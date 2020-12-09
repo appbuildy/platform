@@ -1,5 +1,6 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
+import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
@@ -42,7 +43,9 @@ void main() {
         'value': 'Random'
       };
 
-      final element = SchemaNodeProperty.deserializeFromJson(targetJson);
+      final userActions = setupUserActions();
+
+      final element = SchemaNodeProperty.deserializeFromJson(targetJson, userActions.schemaNodeSpawner);
       expect(element, isA<SchemaStringProperty>());
     });
   });

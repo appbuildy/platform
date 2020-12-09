@@ -9,7 +9,6 @@ import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
 import 'package:http/http.dart' as http;
-import 'package:universal_html/html.dart';
 
 class Project {
   User user;
@@ -19,29 +18,38 @@ class Project {
 
   Project(this.url, [this.user]);
 
-  static Future<Project> setup(
-      {AuthenticationService auth,
-      http.Client client,
-      CurrentUserStore userStore,
-      ProjectParametersFromBrowserQuery settings,
-      RemoteAttributes attributes}) async {
+  static Future<Project> setup({
+    AuthenticationService auth,
+    http.Client client,
+    CurrentUserStore userStore,
+    ProjectParametersFromBrowserQuery settings,
+    RemoteAttributes attributes
+  }) async {
     return await SetupProject(userStore: userStore, attributes: attributes)
         .setup(auth, client);
   }
 
   void setAirtableCredentials({String apiKey, String base}) {
+    print('setAirtableCredentials() called. apiKey: $apiKey, base: $base');
     this.apiKey = apiKey;
     this.base = base;
   }
 
+  String get name => _fetchedData['name'] ?? null;
+  int get id => _fetchedData['id'] ?? null;
+
   Map<String, dynamic> _fetchedData;
+
   Map<String, dynamic> get data => _fetchedData ?? {};
+
   Map<String, dynamic> get airtableCredentials =>
       _fetchedData['airtable_credentials'] ?? {};
+
   List<AirtableTable> get airtableTables => _fetchedData['tables']
       .map((r) => AirtableTable(r['name'].toString(), r['base']))
       .toList()
       .cast<AirtableTable>();
+
   String get slugUrl => _fetchedData['public_url'] ?? null;
 
   bool get _projectDataNotSet => (url.toString().contains('null'));
@@ -53,6 +61,8 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
+      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
+//print(this.base);
       return data;
     } catch (e) {
       print("Failed to fetch project data from host $url");

@@ -2,8 +2,6 @@ import 'package:flutter_app/features/entities/NotLoggedInUser.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
-import 'package:flutter_app/features/services/SetupProject.dart';
-import 'package:flutter_app/features/services/project_parameters_from_browser_query.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:mobx/mobx.dart';
 

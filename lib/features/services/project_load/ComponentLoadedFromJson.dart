@@ -1,94 +1,94 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/services/project_load/IComponentLoader.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class ComponentLoadedFromJson implements IComponentLoader {
   Map<String, dynamic> jsonComponent;
+  SchemaNodeSpawner schemaNodeSpawner;
 
-  ComponentLoadedFromJson(this.jsonComponent);
+  ComponentLoadedFromJson({
+    @required this.jsonComponent,
+    @required this.schemaNodeSpawner,
+  });
 
   @override
   SchemaNode load() {
-    final themeStore = AppThemeStore();
-    final componentProperties = ComponentProperties(jsonComponent);
-    themeStore
-        .setTheme(MyThemes.allThemes['blue']); //TODO: Загружать тему нормально
+    final componentProperties = ComponentProperties(jsonComponent, schemaNodeSpawner: schemaNodeSpawner);
 
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':
         {
-          return SchemaNodeButton(
+          return schemaNodeSpawner.spawnSchemaNodeButton(
               position: componentProperties.position,
               size: componentProperties.size,
               properties: componentProperties.properties,
               actions: componentProperties.actions,
-              themeStore: themeStore);
+          );
         }
 
       case 'SchemaNodeType.text':
         {
-          return SchemaNodeText(
+          return schemaNodeSpawner.spawnSchemaNodeText(
               position: componentProperties.position,
               size: componentProperties.size,
               properties: componentProperties.properties,
               actions: componentProperties.actions,
-              themeStore: themeStore);
+          );
         }
         break;
 
       case 'SchemaNodeType.shape':
         {
-          return SchemaNodeShape(
+          return schemaNodeSpawner.spawnSchemaNodeShape(
               position: componentProperties.position,
               size: componentProperties.size,
               properties: componentProperties.properties,
               actions: componentProperties.actions,
-              themeStore: themeStore);
+          );
         }
         break;
 
       case 'SchemaNodeType.icon':
         {
-          return SchemaNodeIcon(
+          return schemaNodeSpawner.spawnSchemaNodeIcon(
               position: componentProperties.position,
               size: componentProperties.size,
               properties: componentProperties.properties,
               actions: componentProperties.actions,
-              themeStore: themeStore);
+          );
         }
         break;
 
       case 'SchemaNodeType.list':
         {
-          return SchemaNodeList(
+          return schemaNodeSpawner.spawnSchemaNodeList(
               listTemplateType: ListTemplateType.cards,
               position: componentProperties.position,
               size: componentProperties.size,
               properties: componentProperties.properties,
               actions: componentProperties.actions,
-              themeStore: themeStore);
+          );
         }
         break;
       case 'SchemaNodeType.image':
         {
-          return SchemaNodeImage(
+          return schemaNodeSpawner.spawnSchemaNodeImage(
               position: componentProperties.position,
               size: componentProperties.size,
               properties: componentProperties.properties,
-              actions: componentProperties.actions);
+              actions: componentProperties.actions,
+          );
         }
         break;
     }
-    return SchemaNodeButton(
+    return schemaNodeSpawner.spawnSchemaNodeButton(
         position: componentProperties.position,
         size: componentProperties.size,
         properties: componentProperties.properties,
         actions: componentProperties.actions,
-        themeStore: themeStore);
+    );
   }
 }

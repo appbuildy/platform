@@ -2,21 +2,23 @@ import 'package:flutter/material.dart';
 
 import 'MyColors.dart';
 
+typedef BuildWidgetFunction = Widget Function();
+
 class PageSliderController<T> {
   Animation animation;
   AnimationController controller;
 
-  Widget rootPage;
-  Map<T, Widget> pagesMap;
+  BuildWidgetFunction buildRootPage;
+  Map<T, BuildWidgetFunction> pages;
   TickerProvider vsync;
 
   bool _isPageSelected = false;
-  Widget _selectedPage;
+  BuildWidgetFunction _selectedPage;
 
   PageSliderController({
     @required vsync,
-    @required rootPage,
-    @required pagesMap,
+    @required BuildWidgetFunction buildRoot,
+    @required Map<T, BuildWidgetFunction> buildPages,
   }) {
     this.controller = AnimationController(
         value: 1,
@@ -30,14 +32,26 @@ class PageSliderController<T> {
       reverseCurve: Curves.easeInOutQuad,
     );
 
-    this.rootPage = rootPage;
-    this.pagesMap = pagesMap;
+    this.buildRootPage = buildRoot;
+    this.pages = buildPages;
   }
 
-  Widget getSelectedPage() => _selectedPage;
+  Widget getSelectedPage() => _selectedPage != null ? _selectedPage() : Container();
+
+  void _replacePage(T) {
+    if (_selectedPage == pages[T]) return;
+
+    controller.forward().then((value) {
+      _selectedPage = null;
+
+      this.to(T);
+    });
+  }
 
   void to(T) {
-    _selectedPage = pagesMap[T];
+    if (_selectedPage != null) return this._replacePage(T);
+
+    _selectedPage = pages[T];
     _isPageSelected = true;
 
     controller.reverse();
@@ -53,11 +67,6 @@ class PageSliderController<T> {
         _selectedPage = null;
       }
     });
-  }
-
-  void updatePage(T, Widget updatedWidget) {
-    pagesMap[T] = updatedWidget;
-    _selectedPage = pagesMap[T];
   }
 }
 
@@ -84,7 +93,7 @@ class PageSliderAnimator extends StatelessWidget {
                   : Container(
                       color: MyColors.white,
                       width: slidesWidth,
-                      child: pageSliderController.rootPage,
+                      child: pageSliderController.buildRootPage(),
                   ),
           ),
         ),

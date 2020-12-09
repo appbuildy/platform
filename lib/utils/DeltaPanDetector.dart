@@ -16,6 +16,7 @@ class DeltaFromAnchorPointPanDetector extends StatefulWidget {
   final PositionChangedCallback onPanUpdate;
   final Function onPanEnd;
   final Widget child;
+  final bool canMove;
 
   static positionChanged({dx = 0, dy = 0}) => PositionChanged(dx: dx, dy: dy);
 
@@ -23,6 +24,7 @@ class DeltaFromAnchorPointPanDetector extends StatefulWidget {
     @required this.onPanUpdate,
     @required this.child,
     @required this.onPanEnd,
+    this.canMove = true,
   });
 
   @override
@@ -43,17 +45,19 @@ class _DeltaFromAnchorPointPanDetectorState extends State<DeltaFromAnchorPointPa
   void clearDeltaDy() => _deltaDy = 0;
 
   void onPanUpdate(details) {
-    this.addDeltaDx(details.delta.dx);
-    this.addDeltaDy(details.delta.dy);
+    if (widget.canMove) {
+      this.addDeltaDx(details.delta.dx);
+      this.addDeltaDy(details.delta.dy);
 
-    PositionChanged positionChanged = widget.onPanUpdate(Offset(this._deltaDx, this._deltaDy));
+      PositionChanged positionChanged = widget.onPanUpdate(Offset(this._deltaDx, this._deltaDy));
 
-    if (positionChanged.dx != 0) {
-      positionChanged.dx == _deltaDx ? this.clearDeltaDx() : this.correctDeltaDx(positionChanged.dx);
-    }
+      if (positionChanged.dx != 0) {
+        positionChanged.dx == _deltaDx ? this.clearDeltaDx() : this.correctDeltaDx(positionChanged.dx);
+      }
 
-    if (positionChanged.dy != 0) {
-      positionChanged.dy == _deltaDy ? this.clearDeltaDy() : this.correctDeltaDy(positionChanged.dy);
+      if (positionChanged.dy != 0) {
+        positionChanged.dy == _deltaDy ? this.clearDeltaDy() : this.correctDeltaDy(positionChanged.dy);
+      }
     }
   }
 

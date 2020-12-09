@@ -15,6 +15,9 @@ class MyClickSelect extends StatefulWidget {
   final bool disabled;
   final Widget defaultIcon;
 
+  final bool dropDownOnLeftSide;
+  final Widget defaultPreview;
+
   const MyClickSelect({
     Key key,
     @required this.selectedValue,
@@ -23,6 +26,8 @@ class MyClickSelect extends StatefulWidget {
     this.placeholder,
     this.disabled = false,
     this.defaultIcon,
+    this.defaultPreview,
+    this.dropDownOnLeftSide = false,
   }) : super(key: key);
 
   @override
@@ -186,16 +191,17 @@ class _MyClickSelectState extends State<MyClickSelect> {
 
     final windowSize = MediaQuery.of(context).size;
 
-    double yPosition;
-    final calculatedHeight =
-        ((size.height - 2) * widget.options.length) + size.height;
+    final calculatedHeight = ((size.height - 2) * widget.options.length) + size.height;
     final calculatedSum = calculatedHeight + offset.dy;
 
+    double yPosition = offset.dy;
+    double xPosition = offset.dx;
     if (calculatedSum >= windowSize.height) {
-      yPosition =
-          offset.dy + ((size.height - 2) * widget.options.length * -1) - 6;
+      yPosition += ((size.height - 2) * widget.options.length * -1) - 6;
+    } else if (widget.dropDownOnLeftSide) {
+      xPosition -= size.width + 5;
     } else {
-      yPosition = offset.dy + size.height + 5;
+      yPosition += size.height + 5;
     }
 
     return OverlayEntry(
@@ -203,7 +209,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
               overflow: Overflow.visible,
               children: [
                 Positioned(
-                    child: GestureDetector(
+                  child: GestureDetector(
                   onTap: () {
                     this._overlayEntry.remove();
                     setState(() {
@@ -215,7 +221,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
                   ),
                 )),
                 Positioned(
-                  left: offset.dx,
+                  left: xPosition,
                   top: yPosition,
                   width: size.width,
                   child: Material(
@@ -276,7 +282,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
               isOverlayOpen = true;
             });
           },
-          child: buildSelectPreview()),
+          child: widget.defaultPreview != null ? widget.defaultPreview : buildSelectPreview()),
     );
   }
 }

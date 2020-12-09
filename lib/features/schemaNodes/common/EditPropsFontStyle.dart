@@ -13,13 +13,14 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 
 class EditPropsFontStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
-  final UserActions userActions;
+  //final UserActions userActions;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final MyTheme currentTheme;
 
   const EditPropsFontStyle(
       {Key key,
       @required this.properties,
-      @required this.userActions,
+      @required this.changePropertyTo,
       @required this.currentTheme})
       : super(key: key);
 
@@ -31,7 +32,7 @@ class EditPropsFontStyle extends StatelessWidget {
         EditPropsColor(
           currentTheme: currentTheme,
           properties: properties,
-          userActions: userActions,
+          changePropertyTo: changePropertyTo,
           propName: 'FontColor',
         ),
         SizedBox(
@@ -64,7 +65,7 @@ class EditPropsFontStyle extends StatelessWidget {
                   SelectOption('96', 96),
                 ],
                 onChange: (SelectOption option) {
-                  userActions.changePropertyTo(
+                  changePropertyTo(
                       SchemaIntProperty('FontSize', option.value));
                 }),
           )
@@ -94,7 +95,7 @@ class EditPropsFontStyle extends StatelessWidget {
                     SelectOption('Black', FontWeight.w900),
                   ],
                   onChange: (SelectOption option) {
-                    userActions.changePropertyTo(
+                    changePropertyTo(
                         SchemaFontWeightProperty('FontWeight', option.value));
                   }),
             )
@@ -120,7 +121,7 @@ class EditPropsFontStyle extends StatelessWidget {
                   children: [
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
+                        changePropertyTo(
                             SchemaCrossAlignmentProperty(
                                 'CrossAlignment', CrossAxisAlignment.start));
                       },
@@ -133,7 +134,7 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
+                        changePropertyTo(
                             SchemaCrossAlignmentProperty(
                                 'CrossAlignment', CrossAxisAlignment.center));
                       },
@@ -146,7 +147,7 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
+                        changePropertyTo(
                             SchemaCrossAlignmentProperty(
                                 'CrossAlignment', CrossAxisAlignment.end));
                       },
@@ -160,7 +161,7 @@ class EditPropsFontStyle extends StatelessWidget {
                   children: [
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
+                        changePropertyTo(
                             SchemaMainAlignmentProperty(
                                 'MainAlignment', MainAxisAlignment.start));
                       },
@@ -173,7 +174,7 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
+                        changePropertyTo(
                             SchemaMainAlignmentProperty(
                                 'MainAlignment', MainAxisAlignment.center));
                       },
@@ -186,7 +187,7 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
+                        changePropertyTo(
                             SchemaMainAlignmentProperty(
                                 'MainAlignment', MainAxisAlignment.end));
                       },

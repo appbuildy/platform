@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
+import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/schema/ScreensStore.dart';
 import 'package:flutter_app/store/userActions/CurrentScreen.dart';
@@ -29,7 +31,9 @@ void main() {
     final allActions =
         AllActions(userActions: userActions, screens: screens.screens);
 
-    final SchemaNodeButton btn = SchemaNodeButton(
+    SchemaNodeSpawner nodeSpawner = SchemaNodeSpawner(userActions: setupUserActions());
+
+    final SchemaNodeButton btn = nodeSpawner.spawnSchemaNodeButton(
         actions: {'Tap': action},
         position: Offset(2222, 2),
         size: Offset(22, 33));

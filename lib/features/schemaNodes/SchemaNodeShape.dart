@@ -7,28 +7,29 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
-import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
+
+import 'SchemaNodeSpawner.dart';
 
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
+    @required SchemaNodeSpawner parent,
+    UniqueKey id,
     Offset position,
     Offset size,
-    @required AppThemeStore themeStore,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
-    UniqueKey id,
   }) : super() {
+    this.parentSpawner = parent;
     this.type = SchemaNodeType.shape;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
-    this.themeStore = themeStore;
     this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(
-              'Color', this.themeStore.currentTheme.primary),
+              'Color', parent.userActions.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
         };
   }
@@ -39,12 +40,12 @@ class SchemaNodeShape extends SchemaNode {
       Offset size,
       UniqueKey id,
       bool saveProperties = true}) {
-    return SchemaNodeShape(
-        position: position ?? this.position,
-        id: id ?? this.id,
-        size: size ?? this.size,
-        properties: saveProperties ? this._copyProperties() : null,
-        themeStore: this.themeStore);
+    return parentSpawner.spawnSchemaNodeShape(
+      position: position ?? this.position,
+      id: id ?? this.id,
+      size: size ?? this.size,
+      properties: saveProperties ? this._copyProperties() : null,
+    );
   }
 
   Map<String, SchemaNodeProperty> _copyProperties() {
@@ -57,35 +58,40 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode, UserActions userActions}) {
+  Widget toWidget({ bool isPlayMode }) {
     return Shared.Shape(
-        properties: properties, theme: themeStore.currentTheme, size: size);
+      properties: properties,
+      theme: parentSpawner.userActions.themeStore.currentTheme,
+      size: size,
+    );
   }
 
   @override
-  Widget toEditProps(userActions) {
-    return Column(
-      children: [
-        ColumnDivider(
-          name: 'Shape Style',
-        ),
-        EditPropsColor(
-          currentTheme: themeStore.currentTheme,
-          properties: properties,
-          propName: 'Color',
-          userActions: userActions,
-        ),
-        SizedBox(
-          height: 12,
-        ),
-        EditPropsCorners(
-          value: properties['BorderRadiusValue'].value,
-          onChanged: (int value) {
-            userActions.changePropertyTo(
-                SchemaIntProperty('BorderRadiusValue', value));
-          },
-        )
-      ],
+  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+    return wrapInRootProps(
+      Column(
+        children: [
+          ColumnDivider(
+            name: 'Shape Style',
+          ),
+          EditPropsColor(
+            currentTheme: parentSpawner.userActions.themeStore.currentTheme,
+            properties: properties,
+            propName: 'Color',
+            changePropertyTo: changePropertyTo,
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          EditPropsCorners(
+            value: properties['BorderRadiusValue'].value,
+            onChanged: (int value) {
+              changePropertyTo(
+                  SchemaIntProperty('BorderRadiusValue', value));
+            },
+          )
+        ],
+      )
     );
   }
 }

@@ -42,8 +42,7 @@ class ChangeNodeProperty extends BaseAction {
 //    if (oldValue == null) return;
     executed = true;
     propsOrActions[property.name].value = property.value;
-    selectNodeForEdit(
-        node); // reselect node to updates be applied on the right bar
+    selectNodeForEdit(node, true); // reselect node to updates be applied on the right bar
     schemaStore.update(node);
   }
 

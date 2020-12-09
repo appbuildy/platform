@@ -8,16 +8,18 @@ import 'package:flutter_app/ui/MySelects/MyColorSelect.dart';
 
 class EditPropsColor extends StatelessWidget {
   final MyTheme currentTheme;
-  final UserActions userActions;
+  //final UserActions userActions;
   final String propName;
   final Map<String, SchemaNodeProperty> properties;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final String title;
 
   const EditPropsColor({
     Key key,
     @required this.currentTheme,
     this.title,
-    @required this.userActions,
+    //@required this.userActions,
+    @required this.changePropertyTo,
     @required this.propName,
     @required this.properties,
   }) : super(key: key);
@@ -38,7 +40,7 @@ class EditPropsColor extends StatelessWidget {
             currentTheme: currentTheme,
             selectedValue: properties[propName].value,
             onChange: (option) {
-              userActions.changePropertyTo(
+              changePropertyTo(
                   SchemaMyThemePropProperty(propName, option.value));
             },
           ),

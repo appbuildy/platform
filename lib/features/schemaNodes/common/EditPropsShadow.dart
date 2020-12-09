@@ -12,13 +12,14 @@ import 'package:flutter_app/ui/MySwitch.dart';
 
 class EditPropsShadow extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
-  final UserActions userActions;
+  //final UserActions userActions;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final MyTheme currentTheme;
 
   const EditPropsShadow(
       {Key key,
       @required this.properties,
-      @required this.userActions,
+      @required this.changePropertyTo,
       @required this.currentTheme})
       : super(key: key);
 
@@ -32,7 +33,7 @@ class EditPropsShadow extends StatelessWidget {
         ),
         EditPropsColor(
             currentTheme: currentTheme,
-            userActions: userActions,
+            changePropertyTo: changePropertyTo,
             propName: 'BoxShadowColor',
             properties: properties),
         SizedBox(
@@ -50,7 +51,7 @@ class EditPropsShadow extends StatelessWidget {
               child: MySlider(
                 max: 1,
                 onChanged: (value) {
-                  userActions.changePropertyTo(SchemaDoubleProperty(
+                  changePropertyTo(SchemaDoubleProperty(
                       'BoxShadowOpacity', num.parse(value.toStringAsFixed(2))));
                 },
                 value: properties['BoxShadowOpacity'].value,
@@ -82,7 +83,7 @@ class EditPropsShadow extends StatelessWidget {
               child: MySlider(
                 max: 0.5,
                 onChanged: (value) {
-                  userActions.changePropertyTo(SchemaIntProperty(
+                  changePropertyTo(SchemaIntProperty(
                       'BoxShadowBlur', (value * 100).toInt()));
                 },
                 value: properties['BoxShadowBlur'].value / 100,
@@ -112,7 +113,7 @@ class EditPropsShadow extends StatelessWidget {
             MySwitch(
               value: properties['BoxShadow'].value,
               onTap: () {
-                userActions.changePropertyTo(SchemaBoolProperty(
+                changePropertyTo(SchemaBoolProperty(
                     'BoxShadow', !properties['BoxShadow'].value));
               },
             ),

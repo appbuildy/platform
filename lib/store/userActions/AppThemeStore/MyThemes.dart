@@ -59,7 +59,7 @@ class MyTheme {
         'primary': primary,
         'secondary': secondary,
         'general': general,
-        'general_secondary': general,
+        'general_secondary': generalSecondary,
         'general_inverted': generalInverted,
         'separators': separators,
         'background': background
@@ -71,7 +71,7 @@ class MyTheme {
       'primary': primary.toJson(),
       'secondary': secondary.toJson(),
       'general': general.toJson(),
-      'general_secondary': general.toJson(),
+      'general_secondary': generalSecondary.toJson(),
       'general_inverted': generalInverted.toJson(),
       'separators': separators.toJson(),
       'background': background.toJson()

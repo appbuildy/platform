@@ -3,6 +3,7 @@ import 'package:flutter_app/app_skeleton/loading/action_load_from_json.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/app_skeleton/entities/action.dart'
     as skeleton_action;
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/project_load/properties_loader.dart';
 
 class ComponentProperties {
@@ -13,12 +14,12 @@ class ComponentProperties {
   Map<String, skeleton_action.Action> previewActions;
   Map<String, dynamic> jsonComponent;
 
-  ComponentProperties(jsonComponent) {
+  ComponentProperties(jsonComponent, { SchemaNodeSpawner schemaNodeSpawner}) {
     this.jsonComponent = jsonComponent;
 
     _loadPosition();
     _loadSize();
-    _loadProperies();
+    _loadProperies(schemaNodeSpawner);
     _loadActions();
     _loadPreviewActions();
   }
@@ -35,8 +36,8 @@ class ComponentProperties {
     size = Offset(x.toDouble(), y.toDouble());
   }
 
-  void _loadProperies() {
-    properties = PropertiesLoader(jsonComponent).load();
+  void _loadProperies(SchemaNodeSpawner schemaNodeSpawner) {
+    properties = PropertiesLoader(jsonComponent).load(schemaNodeSpawner);
   }
 
   void _loadPreviewActions() {
