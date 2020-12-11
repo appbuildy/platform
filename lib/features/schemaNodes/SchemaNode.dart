@@ -127,7 +127,8 @@ enum SchemaNodeType {
   icon,
   list,
   listDefault,
-  listCards
+  listCards,
+  map,
 }
 
 abstract class SchemaNode {

@@ -4,5 +4,5 @@ import 'SchemaNodeProperty.dart';
 abstract class DataContainer {
   Widget toWidgetWithReplacedData({ bool isPlayMode, String data });
 
-  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo);
+  //Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo);
 }

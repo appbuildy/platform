@@ -118,21 +118,28 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
           changePropertyTo: changePropertyTo,
           textDebouncer: textDebouncer,
         ),
-        this.toEditOnlyStyle(changePropertyTo),
+        ColumnDivider(
+          name: 'Text Style',
+        ),
+        EditPropsFontStyle(
+          currentTheme: parentSpawner.userActions.themeStore.currentTheme,
+          changePropertyTo: changePropertyTo,
+          properties: properties,
+        ),
       ])
     );
   }
 
-  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
-    return Column(children: [
-      ColumnDivider(
-        name: 'Text Style',
-      ),
-      EditPropsFontStyle(
-        currentTheme: parentSpawner.userActions.themeStore.currentTheme,
-        changePropertyTo: changePropertyTo,
-        properties: properties,
-      ),
-    ]);
-  }
+  // Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  //   return Column(children: [
+  //     ColumnDivider(
+  //       name: 'Text Style',
+  //     ),
+  //     EditPropsFontStyle(
+  //       currentTheme: parentSpawner.userActions.themeStore.currentTheme,
+  //       changePropertyTo: changePropertyTo,
+  //       properties: properties,
+  //     ),
+  //   ]);
+  // }
 }

@@ -126,55 +126,93 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
               changePropertyTo: changePropertyTo,
               textDebouncer: textDebouncer,
             ),
-            this.toEditOnlyStyle(changePropertyTo),
+            ColumnDivider(name: 'Text Style'),
+            EditPropsFontStyle(
+              currentTheme: parentSpawner.userActions.currentTheme,
+              changePropertyTo: changePropertyTo,
+              properties: properties,
+            ),
+            ColumnDivider(name: 'Shape Style'),
+            EditPropsColor(
+              currentTheme: parentSpawner.userActions.currentTheme,
+              properties: properties,
+              changePropertyTo: changePropertyTo,
+              propName: 'BackgroundColor',
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            EditPropsCorners(
+              value: properties['BorderRadiusValue'].value,
+              onChanged: (int value) {
+                changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+              },
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            EditPropsBorder(
+              key: id,
+              properties: properties,
+              changePropertyTo: changePropertyTo,
+              currentTheme: parentSpawner.userActions.currentTheme,
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            EditPropsShadow(
+              properties: properties,
+              changePropertyTo: changePropertyTo,
+              currentTheme: parentSpawner.userActions.currentTheme,
+            ),
           ],
         )
     );
   }
-
-  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
-   return Column(
-     children: [
-       ColumnDivider(name: 'Text Style'),
-       EditPropsFontStyle(
-         currentTheme: parentSpawner.userActions.currentTheme,
-         changePropertyTo: changePropertyTo,
-         properties: properties,
-       ),
-       ColumnDivider(name: 'Shape Style'),
-       EditPropsColor(
-         currentTheme: parentSpawner.userActions.currentTheme,
-         properties: properties,
-         changePropertyTo: changePropertyTo,
-         propName: 'BackgroundColor',
-       ),
-       SizedBox(
-         height: 12,
-       ),
-       EditPropsCorners(
-         value: properties['BorderRadiusValue'].value,
-         onChanged: (int value) {
-           changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
-         },
-       ),
-       SizedBox(
-         height: 20,
-       ),
-       EditPropsBorder(
-         key: id,
-         properties: properties,
-         changePropertyTo: changePropertyTo,
-         currentTheme: parentSpawner.userActions.currentTheme,
-       ),
-       SizedBox(
-         height: 15,
-       ),
-       EditPropsShadow(
-         properties: properties,
-         changePropertyTo: changePropertyTo,
-         currentTheme: parentSpawner.userActions.currentTheme,
-       )
-     ],
-   );
-  }
+  //
+  // Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  //  return Column(
+  //    children: [
+  //      ColumnDivider(name: 'Text Style'),
+  //      EditPropsFontStyle(
+  //        currentTheme: parentSpawner.userActions.currentTheme,
+  //        changePropertyTo: changePropertyTo,
+  //        properties: properties,
+  //      ),
+  //      ColumnDivider(name: 'Shape Style'),
+  //      EditPropsColor(
+  //        currentTheme: parentSpawner.userActions.currentTheme,
+  //        properties: properties,
+  //        changePropertyTo: changePropertyTo,
+  //        propName: 'BackgroundColor',
+  //      ),
+  //      SizedBox(
+  //        height: 12,
+  //      ),
+  //      EditPropsCorners(
+  //        value: properties['BorderRadiusValue'].value,
+  //        onChanged: (int value) {
+  //          changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+  //        },
+  //      ),
+  //      SizedBox(
+  //        height: 20,
+  //      ),
+  //      EditPropsBorder(
+  //        key: id,
+  //        properties: properties,
+  //        changePropertyTo: changePropertyTo,
+  //        currentTheme: parentSpawner.userActions.currentTheme,
+  //      ),
+  //      SizedBox(
+  //        height: 15,
+  //      ),
+  //      EditPropsShadow(
+  //        properties: properties,
+  //        changePropertyTo: changePropertyTo,
+  //        currentTheme: parentSpawner.userActions.currentTheme,
+  //      )
+  //    ],
+  //  );
+  // }
 }

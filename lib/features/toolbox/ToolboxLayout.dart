@@ -63,15 +63,15 @@ class ToolboxLayout extends StatelessWidget {
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ToolboxComponent(schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeImage()),
-                          SizedBox(
-                            width: 10,
-                          ),
                           ToolboxComponent(
                             schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeShape(),
                           ),
+                          ToolboxComponent(
+                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeMap(),
+                          )
                         ],
                       ),
                       ToolBoxCaption('Listing'),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeMap.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
@@ -14,6 +15,25 @@ class SchemaNodeSpawner {
   SchemaNodeSpawner({
     @required this.userActions,
   });
+
+  SchemaNodeMap spawnSchemaNodeMap({
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    GoToScreenAction tapAction,
+    Map<String, SchemaNodeProperty> actions,
+  }) {
+    return SchemaNodeMap(
+      parent: this,
+      id: id,
+      position: position,
+      size: size,
+      properties: properties,
+      tapAction: tapAction,
+      actions: actions,
+    );
+  }
 
   SchemaNodeButton spawnSchemaNodeButton({
     UniqueKey id,

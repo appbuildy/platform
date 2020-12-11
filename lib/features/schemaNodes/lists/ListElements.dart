@@ -78,6 +78,8 @@ String getNodeIconPath(String nodeType) {
       return 'assets/icons/layout/shape.svg';
     case 'SchemaNodeType.image':
       return 'assets/icons/layout/image.svg';
+  case 'SchemaNodeType.map':
+    return 'assets/icons/layout/map.svg';
     default:
       return 'assets/icons/layout/button.svg';
   }
@@ -95,6 +97,8 @@ Function getSpawnFunction({ SchemaNodeSpawner schemaNodeSpawner, nodeType }) {
       return schemaNodeSpawner.spawnSchemaNodeShape;
     case 'SchemaNodeType.image':
       return schemaNodeSpawner.spawnSchemaNodeImage;
+    case 'SchemaNodeType.map':
+      return schemaNodeSpawner.spawnSchemaNodeMap;
     default:
       return schemaNodeSpawner.spawnSchemaNodeButton;
   }
@@ -330,6 +334,7 @@ class ListElements {
           dropDownOnLeftSide: true,
           options: [
             SelectOption('Button', userActions.schemaNodeSpawner.spawnSchemaNodeButton, _buildOptionPreview('SchemaNodeType.button')),
+            SelectOption('Map', userActions.schemaNodeSpawner.spawnSchemaNodeMap, _buildOptionPreview('SchemaNodeType.map')),
             SelectOption('Text', userActions.schemaNodeSpawner.spawnSchemaNodeText, _buildOptionPreview('SchemaNodeType.text')),
             SelectOption('Shape', userActions.schemaNodeSpawner.spawnSchemaNodeShape, _buildOptionPreview('SchemaNodeType.shape')),
             SelectOption('Icon', userActions.schemaNodeSpawner.spawnSchemaNodeIcon, _buildOptionPreview('SchemaNodeType.icon')),

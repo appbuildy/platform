@@ -102,52 +102,90 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
           changePropertyTo: changePropertyTo,
           textDebouncer: textDebouncer,
         ),
-        this.toEditOnlyStyle(changePropertyTo),
+        ColumnDivider(
+          name: 'Image Style',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 59,
+              child: Text(
+                'Resize',
+                style: MyTextStyle.regularCaption,
+              ),
+            ),
+            Expanded(
+              child: MyClickSelect(
+                options: [
+                  SelectOption('Fill', 'Fill'),
+                  SelectOption('Cover', 'Cover'),
+                  SelectOption('Contain', 'Contain'),
+                  SelectOption('None', 'None')
+                ],
+                selectedValue: properties['Fit'].value,
+                onChange: (SelectOption option) {
+                  changePropertyTo(
+                      SchemaStringProperty('Fit', option.value));
+                },
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        EditPropsCorners(
+          value: properties['BorderRadiusValue'].value,
+          onChanged: (int value) {
+            changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+          },
+        ),
       ])
     );
   }
 
-  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
-    return Column(children: [
-      ColumnDivider(
-        name: 'Image Style',
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-            width: 59,
-            child: Text(
-              'Resize',
-              style: MyTextStyle.regularCaption,
-            ),
-          ),
-          Expanded(
-            child: MyClickSelect(
-              options: [
-                SelectOption('Fill', 'Fill'),
-                SelectOption('Cover', 'Cover'),
-                SelectOption('Contain', 'Contain'),
-                SelectOption('None', 'None')
-              ],
-              selectedValue: properties['Fit'].value,
-              onChange: (SelectOption option) {
-                changePropertyTo(
-                    SchemaStringProperty('Fit', option.value));
-              },
-            ),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 12,
-      ),
-      EditPropsCorners(
-        value: properties['BorderRadiusValue'].value,
-        onChanged: (int value) {
-          changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
-        },
-      ),
-    ]);
-  }
+  // Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  //   return Column(children: [
+  //     ColumnDivider(
+  //       name: 'Image Style',
+  //     ),
+  //     Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //       children: [
+  //         SizedBox(
+  //           width: 59,
+  //           child: Text(
+  //             'Resize',
+  //             style: MyTextStyle.regularCaption,
+  //           ),
+  //         ),
+  //         Expanded(
+  //           child: MyClickSelect(
+  //             options: [
+  //               SelectOption('Fill', 'Fill'),
+  //               SelectOption('Cover', 'Cover'),
+  //               SelectOption('Contain', 'Contain'),
+  //               SelectOption('None', 'None')
+  //             ],
+  //             selectedValue: properties['Fit'].value,
+  //             onChange: (SelectOption option) {
+  //               changePropertyTo(
+  //                   SchemaStringProperty('Fit', option.value));
+  //             },
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //     SizedBox(
+  //       height: 12,
+  //     ),
+  //     EditPropsCorners(
+  //       value: properties['BorderRadiusValue'].value,
+  //       onChanged: (int value) {
+  //         changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+  //       },
+  //     ),
+  //   ]);
+  // }
 }
