@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
@@ -18,18 +19,14 @@ import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-
 class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
-  SchemaListElementsProperty(String name, ListElements value) : super(name, value);
+  SchemaListElementsProperty(String name, ListElements value)
+      : super(name, value);
 
   SchemaListElementsProperty.fromJson(
-      Map<String, dynamic> jsonVal,
-      SchemaNodeSpawner schemaNodeSpawner,
-    )
-      : super('Elements', null) {
+    Map<String, dynamic> jsonVal,
+    SchemaNodeSpawner schemaNodeSpawner,
+  ) : super('Elements', null) {
     this.name = jsonVal['name'];
 
     this.value = ListElements(
@@ -37,7 +34,10 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
     );
 
     jsonVal['value']['listElements'].forEach((e) {
-      this.value.listElements.add(this.value.fromJsonListElementNode(e, schemaNodeSpawner));
+      this
+          .value
+          .listElements
+          .add(this.value.fromJsonListElementNode(e, schemaNodeSpawner));
     });
   }
 
@@ -48,10 +48,13 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
       'propertyClass': 'ListElementsProperty',
       'value': {
         'allColumns': jsonEncode(this.value.allColumns),
-        'listElements': this.value.listElements
-          .map((ListElementNode listElementNode) => this.value.toJsonListElementNode(listElementNode))
-          .toList()
-          .cast<Map<String, dynamic>>(),
+        'listElements': this
+            .value
+            .listElements
+            .map((ListElementNode listElementNode) =>
+                this.value.toJsonListElementNode(listElementNode))
+            .toList()
+            .cast<Map<String, dynamic>>(),
       }
     };
   }
@@ -83,7 +86,7 @@ String getNodeIconPath(String nodeType) {
   }
 }
 
-Function getSpawnFunction({ SchemaNodeSpawner schemaNodeSpawner, nodeType }) {
+Function getSpawnFunction({SchemaNodeSpawner schemaNodeSpawner, nodeType}) {
   switch (nodeType) {
     case 'SchemaNodeType.icon':
       return schemaNodeSpawner.spawnSchemaNodeIcon;
@@ -104,9 +107,12 @@ class ListElements {
   List<ListElementNode> listElements = [];
   List<String> allColumns = [];
 
-  ListElements({allColumns, listElements}) : this.allColumns = allColumns ?? [], this.listElements = listElements ?? [];
+  ListElements({allColumns, listElements})
+      : this.allColumns = allColumns ?? [],
+        this.listElements = listElements ?? [];
 
-  ListElements.withSimpleListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+  ListElements.withSimpleListTemplate(
+      {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
     this.allColumns = allColumns ?? [];
 
     final double imageNodeXYOffset = 22;
@@ -119,7 +125,8 @@ class ListElements {
       position: Offset(imageNodeXYOffset, imageNodeXYOffset),
     );
 
-    imageNode.setProperty('BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
+    imageNode.setProperty(
+        'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
 
     final ListElementNode imageListElement = ListElementNode(
         node: imageNode,
@@ -128,13 +135,15 @@ class ListElements {
         id: imageNode.id,
         changePropertyTo: this.changePropertyTo,
         onListElementsUpdate: () {},
-        columnRelation: 'house_image'
-    );
+        columnRelation: 'house_image');
 
     final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2, textNodeHeight),
-      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset),
+      size: Offset(
+          listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
+          textNodeHeight),
+      position: Offset(
+          imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset),
     );
 
     final ListElementNode titleListElement = ListElementNode(
@@ -144,20 +153,26 @@ class ListElements {
         id: titleNode.id,
         changePropertyTo: this.changePropertyTo,
         onListElementsUpdate: () {},
-        columnRelation: 'house_price'
-    );
+        columnRelation: 'house_price');
 
     final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2, textNodeHeight),
-      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset + textNodeHeight),
+      size: Offset(
+          listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
+          textNodeHeight),
+      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2,
+          imageNodeXYOffset + textNodeHeight),
     );
 
-    descriptionNode.setProperty('FontColor', SchemaMyThemePropProperty(
-        'FontColor', schemaNodeSpawner.userActions.themeStore.currentTheme.generalSecondary));
+    descriptionNode.setProperty(
+        'FontColor',
+        SchemaMyThemePropProperty(
+            'FontColor',
+            schemaNodeSpawner
+                .userActions.themeStore.currentTheme.generalSecondary));
 
     descriptionNode.setProperty('FontSize', SchemaIntProperty('FontSize', 14));
-    
+
     final ListElementNode descriptionListElement = ListElementNode(
         node: descriptionNode,
         iconPreview: _buildOptionPreview('SchemaNodeType.text'),
@@ -165,15 +180,15 @@ class ListElements {
         id: descriptionNode.id,
         changePropertyTo: this.changePropertyTo,
         onListElementsUpdate: () {},
-        columnRelation: 'house_address'
-    );
+        columnRelation: 'house_address');
 
     this.listElements.add(imageListElement);
     this.listElements.add(titleListElement);
     this.listElements.add(descriptionListElement);
   }
 
-  ListElements.withCardListTemplate({allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+  ListElements.withCardListTemplate(
+      {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
     this.allColumns = allColumns ?? [];
 
     final SchemaNode imageNode = schemaNodeSpawner.spawnSchemaNodeImage(
@@ -183,14 +198,13 @@ class ListElements {
     );
 
     final ListElementNode imageListElement = ListElementNode(
-      node: imageNode,
-      iconPreview: _buildOptionPreview('SchemaNodeType.image'),
-      name: 'Image',
-      id: imageNode.id,
-      changePropertyTo: this.changePropertyTo,
-      onListElementsUpdate: () {},
-      columnRelation: 'house_image'
-    );
+        node: imageNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.image'),
+        name: 'Image',
+        id: imageNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_image');
 
     final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
@@ -199,14 +213,13 @@ class ListElements {
     );
 
     final ListElementNode titleListElement = ListElementNode(
-      node: titleNode,
-      iconPreview: _buildOptionPreview('SchemaNodeType.text'),
-      name: 'Text',
-      id: titleNode.id,
-      changePropertyTo: this.changePropertyTo,
-      onListElementsUpdate: () {},
-      columnRelation: 'house_price'
-    );
+        node: titleNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+        name: 'Text',
+        id: titleNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_price');
 
     final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
@@ -214,9 +227,12 @@ class ListElements {
       position: Offset(0, 120),
     );
 
-
-    descriptionNode.setProperty('FontColor', SchemaMyThemePropProperty(
-        'FontColor', schemaNodeSpawner.userActions.themeStore.currentTheme.generalSecondary));
+    descriptionNode.setProperty(
+        'FontColor',
+        SchemaMyThemePropProperty(
+            'FontColor',
+            schemaNodeSpawner
+                .userActions.themeStore.currentTheme.generalSecondary));
 
     descriptionNode.setProperty('FontSize', SchemaIntProperty('FontSize', 14));
 
@@ -227,8 +243,7 @@ class ListElements {
         id: descriptionNode.id,
         changePropertyTo: this.changePropertyTo,
         onListElementsUpdate: () {},
-        columnRelation: 'house_address'
-    );
+        columnRelation: 'house_address');
 
     this.listElements.add(imageListElement);
     this.listElements.add(titleListElement);
@@ -243,25 +258,32 @@ class ListElements {
     );
   }
 
-  Map<UniqueKey, BuildWidgetFunction> getSettingsPagesBuildFunctions({GetPageWrapFunction getPageWrapFunction}) {
+  Map<UniqueKey, BuildWidgetFunction> getSettingsPagesBuildFunctions(
+      {GetPageWrapFunction getPageWrapFunction}) {
     Map<UniqueKey, BuildWidgetFunction> pages = {};
 
     this.listElements.forEach(
       (ListElementNode elementNode) {
-        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(getPageWrapFunction(elementNode), allColumns);
+        pages[elementNode.id] = () => elementNode.buildWidgetToEditProps(
+            getPageWrapFunction(elementNode), allColumns);
       },
     );
 
     return pages;
   }
 
-  void changePropertyTo(SchemaNodeProperty changedProperty, UniqueKey listElementNodeId, Function onListElementsUpdate) {
-    listElements.firstWhere((ListElementNode listElementNode) => listElementNode.id == listElementNodeId)
-        .node.properties[changedProperty.name] = changedProperty;
+  void changePropertyTo(SchemaNodeProperty changedProperty,
+      UniqueKey listElementNodeId, Function onListElementsUpdate) {
+    listElements
+        .firstWhere((ListElementNode listElementNode) =>
+            listElementNode.id == listElementNodeId)
+        .node
+        .properties[changedProperty.name] = changedProperty;
     onListElementsUpdate();
   }
 
-  ListElementNode copyListElementNode({ListElementNode listElementNode, Function selectListElementNode}) {
+  ListElementNode copyListElementNode(
+      {ListElementNode listElementNode, Function selectListElementNode}) {
     final ListElementNode copy = listElementNode.copy();
 
     this.listElements.add(copy);
@@ -270,7 +292,9 @@ class ListElements {
   }
 
   void bringToFrontListElementNode({ListElementNode listElementNode}) {
-    this.listElements.removeWhere((element) => element.id == listElementNode.id);
+    this
+        .listElements
+        .removeWhere((element) => element.id == listElementNode.id);
 
     this.listElements.add(listElementNode);
 
@@ -278,14 +302,16 @@ class ListElements {
   }
 
   void sendToBackListElementNode({ListElementNode listElementNode}) {
-    this.listElements.removeWhere((element) => element.id == listElementNode.id);
+    this
+        .listElements
+        .removeWhere((element) => element.id == listElementNode.id);
 
     this.listElements.insert(0, listElementNode);
 
     listElementNode.onListElementsUpdate();
   }
 
-  void deleteListElementNode({ ListElementNode listElementNode }) {
+  void deleteListElementNode({ListElementNode listElementNode}) {
     this.listElements.remove(listElementNode);
   }
 
@@ -300,17 +326,21 @@ class ListElements {
     };
   }
 
-  ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement, SchemaNodeSpawner schemaNodeSpawner) {
-    final SchemaNode deserializedNode = ComponentLoadedFromJson(jsonComponent: jsonListElement['node'] , schemaNodeSpawner: schemaNodeSpawner).load();
+  ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement,
+      SchemaNodeSpawner schemaNodeSpawner) {
+    final SchemaNode deserializedNode = ComponentLoadedFromJson(
+            jsonComponent: jsonListElement['node'],
+            schemaNodeSpawner: schemaNodeSpawner)
+        .load();
 
     return ListElementNode(
-        node: deserializedNode,
-        iconPreview: _buildOptionPreview(jsonListElement['type']),
-        name: jsonListElement['name'],
-        columnRelation: jsonListElement['columnRelation'],
-        id: deserializedNode.id,
-        changePropertyTo: this.changePropertyTo,
-        onListElementsUpdate: () {},
+      node: deserializedNode,
+      iconPreview: _buildOptionPreview(jsonListElement['type']),
+      name: jsonListElement['name'],
+      columnRelation: jsonListElement['columnRelation'],
+      id: deserializedNode.id,
+      changePropertyTo: this.changePropertyTo,
+      onListElementsUpdate: () {},
     );
   }
 
@@ -321,7 +351,9 @@ class ListElements {
   }) {
     final UserActions userActions = schemaNodeList.parentSpawner.userActions;
 
-    this.listElements.forEach((element) { element.onListElementsUpdate = onListElementsUpdate; });
+    this.listElements.forEach((element) {
+      element.onListElementsUpdate = onListElementsUpdate;
+    });
 
     return Column(
       children: [
@@ -329,11 +361,26 @@ class ListElements {
           selectedValue: null,
           dropDownOnLeftSide: true,
           options: [
-            SelectOption('Button', userActions.schemaNodeSpawner.spawnSchemaNodeButton, _buildOptionPreview('SchemaNodeType.button')),
-            SelectOption('Text', userActions.schemaNodeSpawner.spawnSchemaNodeText, _buildOptionPreview('SchemaNodeType.text')),
-            SelectOption('Shape', userActions.schemaNodeSpawner.spawnSchemaNodeShape, _buildOptionPreview('SchemaNodeType.shape')),
-            SelectOption('Icon', userActions.schemaNodeSpawner.spawnSchemaNodeIcon, _buildOptionPreview('SchemaNodeType.icon')),
-            SelectOption('Image', userActions.schemaNodeSpawner.spawnSchemaNodeImage, _buildOptionPreview('SchemaNodeType.image')),
+            SelectOption(
+                'Button',
+                userActions.schemaNodeSpawner.spawnSchemaNodeButton,
+                _buildOptionPreview('SchemaNodeType.button')),
+            SelectOption(
+                'Text',
+                userActions.schemaNodeSpawner.spawnSchemaNodeText,
+                _buildOptionPreview('SchemaNodeType.text')),
+            SelectOption(
+                'Shape',
+                userActions.schemaNodeSpawner.spawnSchemaNodeShape,
+                _buildOptionPreview('SchemaNodeType.shape')),
+            SelectOption(
+                'Icon',
+                userActions.schemaNodeSpawner.spawnSchemaNodeIcon,
+                _buildOptionPreview('SchemaNodeType.icon')),
+            SelectOption(
+                'Image',
+                userActions.schemaNodeSpawner.spawnSchemaNodeImage,
+                _buildOptionPreview('SchemaNodeType.image')),
           ],
           onChange: (SelectOption option) {
             final SchemaNode node = option.value(
@@ -354,7 +401,8 @@ class ListElements {
             onListElementsUpdate();
 
             // todo: refac. Без асинхронности не закрывается MyClickSelect;
-            Future.delayed(Duration(milliseconds: 0), () => onNodeSettingsClick(createdNode));
+            Future.delayed(Duration(milliseconds: 0),
+                () => onNodeSettingsClick(createdNode));
           },
           defaultPreview: MyButtonUI(
             text: 'Add Element',
@@ -362,11 +410,11 @@ class ListElements {
           ),
         ),
         ...listElements.map((ListElementNode element) => Column(
-          children: [
-            SizedBox(height: 8),
-            element.buildSettingsButton(onNodeSettingsClick),
-          ],
-        )),
+              children: [
+                SizedBox(height: 8),
+                element.buildSettingsButton(onNodeSettingsClick),
+              ],
+            )),
       ],
     );
   }
@@ -395,7 +443,8 @@ class ListElementNode {
   });
 
   ListElementNode copy() {
-    final SchemaNode nodeCopy = this.node.copy(id: UniqueKey(), saveProperties: true);
+    final SchemaNode nodeCopy =
+        this.node.copy(id: UniqueKey(), saveProperties: true);
 
     return ListElementNode(
       node: nodeCopy,
@@ -457,44 +506,44 @@ class ListElementNode {
 
   Widget buildWidgetToEditProps(Function wrapInRoot, List<String> allColumns) {
     if (node is DataContainer) {
-      return wrapInRoot(
-        Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 58,
-                  child: Text(
-                    'Data',
-                    style: MyTextStyle.regularCaption,
-                  ),
+      return wrapInRoot(Column(
+        children: [
+          Row(
+            children: [
+              SizedBox(
+                width: 58,
+                child: Text(
+                  'Data',
+                  style: MyTextStyle.regularCaption,
                 ),
-                Expanded(
-                  child: MyClickSelect(
-                    selectedValue: this.columnRelation,
-                    options: [
-                      SelectOption('Select option', null),
-                      ...allColumns.map((String column) => SelectOption(column, column)).toList(),
-                    ],
-                    onChange: (SelectOption pickedColumn) {
-                      this.columnRelation = pickedColumn.value;
-                      this.onListElementsUpdate();
-                    },
-                    placeholder: 'Select column',
-                    defaultIcon: Container(
-                      child: Image.network(
-                        'assets/icons/meta/btn-detailed-info-big.svg',
-                        fit: BoxFit.contain,
-                      ),
+              ),
+              Expanded(
+                child: MyClickSelect(
+                  selectedValue: this.columnRelation,
+                  options: [
+                    SelectOption('Select option', null),
+                    ...allColumns
+                        .map((String column) => SelectOption(column, column))
+                        .toList(),
+                  ],
+                  onChange: (SelectOption pickedColumn) {
+                    this.columnRelation = pickedColumn.value;
+                    this.onListElementsUpdate();
+                  },
+                  placeholder: 'Select column',
+                  defaultIcon: Container(
+                    child: Image.network(
+                      'assets/icons/meta/btn-detailed-info-big.svg',
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
-              ],
-            ),
-            node.toEditProps((e) => e, this.onPropertyChanged),
-          ],
-        )
-      );
+              ),
+            ],
+          ),
+          node.toEditProps((e) => e, this.onPropertyChanged),
+        ],
+      ));
     }
 
     return node.toEditProps(wrapInRoot, this.onPropertyChanged);
@@ -508,30 +557,38 @@ class ListElementNode {
     this.changePropertyTo(changedProperty, this.id, this.onListElementsUpdate);
   }
 
-  void repositionAndResize(node, { isAddedToDoneActions }) {
+  void repositionAndResize(node, {isAddedToDoneActions}) {
     this.node = node;
     this.onListElementsUpdate();
   }
 
   void onUpOrDownPressed({bool isUp, Offset currentScreenWorkspaceSize}) {
-    this.node.onUpOrDownPressed(isUp: isUp, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: this.repositionAndResize);
+    this.node.onUpOrDownPressed(
+        isUp: isUp,
+        currentScreenWorkspaceSize: currentScreenWorkspaceSize,
+        repositionAndResize: this.repositionAndResize);
   }
 
   void onLeftOrRightPressed({bool isLeft, Offset currentScreenWorkspaceSize}) {
-    this.node.onLeftOrRightPressed(isLeft: isLeft, currentScreenWorkspaceSize: currentScreenWorkspaceSize, repositionAndResize: this.repositionAndResize);
+    this.node.onLeftOrRightPressed(
+        isLeft: isLeft,
+        currentScreenWorkspaceSize: currentScreenWorkspaceSize,
+        repositionAndResize: this.repositionAndResize);
   }
 
   void onListLeftResize({double deltaDx, Offset currentScreenWorkspaceSize}) {
-    this.node.move(delta: Offset(deltaDx, 0), screenSize: currentScreenWorkspaceSize);
+    this.node.move(
+        delta: Offset(deltaDx, 0), screenSize: currentScreenWorkspaceSize);
     //todo: optimization this.onListElementUpdate();
     this.onListElementsUpdate();
   }
 
   Widget toWidget({
-    @required SchemaNodeList schemaNodeList,
+    SchemaNodeList schemaNodeList,
+    bool isSelected = false,
     @required bool isPlayMode,
   }) {
-    if (!schemaNodeList.isSelected) {
+    if (!isSelected) {
       return this.node.toWidget(isPlayMode: isPlayMode);
     }
 
@@ -540,28 +597,29 @@ class ListElementNode {
           schemaNodeList.selectListElementNode(this);
         },
         child: SchemaNode.renderWithSelected(
-          node: node,
-          onPanEnd: (_) => {},
-          repositionAndResize: this.repositionAndResize,
-          currentScreenWorkspaceSize: schemaNodeList.listElementNodeWorkspaceSize,
-          isPlayMode: isPlayMode,
-          isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
-          toWidgetFunction: this.node.toWidget,
-          isMagnetInteraction: false,
-          selectNodeForEdit: (_) {
-            schemaNodeList.selectListElementNode(this);
-          }
-        )
-    );
+            node: node,
+            onPanEnd: (_) => {},
+            repositionAndResize: this.repositionAndResize,
+            currentScreenWorkspaceSize:
+                schemaNodeList.listElementNodeWorkspaceSize,
+            isPlayMode: isPlayMode,
+            isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
+            toWidgetFunction: this.node.toWidget,
+            isMagnetInteraction: false,
+            selectNodeForEdit: (_) {
+              schemaNodeList.selectListElementNode(this);
+            }));
   }
 
   Widget toWidgetWithReplacedData({
     @required String data,
-    @required SchemaNodeList schemaNodeList,
+    bool isSelected = false,
+    SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   }) {
-    if (!schemaNodeList.isSelected) {
-      return (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode);
+    if (!isSelected) {
+      return (this.node as DataContainer)
+          .toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode);
     }
 
     return GestureDetector(
@@ -569,18 +627,19 @@ class ListElementNode {
           schemaNodeList.selectListElementNode(this);
         },
         child: SchemaNode.renderWithSelected(
-          node: node,
-          onPanEnd: (_) => {},
-          repositionAndResize: this.repositionAndResize,
-          currentScreenWorkspaceSize: schemaNodeList.listElementNodeWorkspaceSize,
-          isPlayMode: isPlayMode,
-          isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
-          toWidgetFunction: ({ bool isPlayMode }) => (this.node as DataContainer).toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),
-          isMagnetInteraction: false,
-          selectNodeForEdit: (_) {
-            schemaNodeList.selectListElementNode(this);
-          }
-        )
-    );
+            node: node,
+            onPanEnd: (_) => {},
+            repositionAndResize: this.repositionAndResize,
+            currentScreenWorkspaceSize:
+                schemaNodeList.listElementNodeWorkspaceSize,
+            isPlayMode: isPlayMode,
+            isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
+            toWidgetFunction: ({bool isPlayMode}) => (this.node
+                    as DataContainer)
+                .toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),
+            isMagnetInteraction: false,
+            selectNodeForEdit: (_) {
+              schemaNodeList.selectListElementNode(this);
+            }));
   }
 }

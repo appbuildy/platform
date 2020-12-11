@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
@@ -12,14 +13,15 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
-import 'package:flutter_app/features/schemaNodes/implementations.dart';
-
 class ListTemplateSimple extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.simple;
 
   Widget toWidget({
-    @required SchemaNodeList schemaNodeList,
+    @required Function onListClick, // should mock it in skeleton
+    @required MyTheme theme,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
     return GestureDetector(
@@ -28,19 +30,21 @@ class ListTemplateSimple extends ListTemplate {
         schemaNodeList.onListClick();
       },
       child: Column(
-          children: schemaNodeList.properties['Items']
-              .value
-              .values
+          children: schemaNodeList.properties['Items'].value.values
               .map((item) {
                 if (isPlayMode) {
                   return GestureDetector(
                     onTap: () {
                       (schemaNodeList.actions['Tap'] as Functionable)
-                          .toFunction(schemaNodeList.parentSpawner.userActions)(item.value);
+                          .toFunction(schemaNodeList
+                              .parentSpawner.userActions)(item.value);
                     },
                     child: widgetFor(
                       item: item,
                       schemaNodeList: schemaNodeList,
+                      theme: theme,
+                      properties: properties,
+                      isSelected: isSelected,
                       isPlayMode: isPlayMode,
                     ),
                   );
@@ -48,6 +52,9 @@ class ListTemplateSimple extends ListTemplate {
                 return widgetFor(
                   item: item,
                   schemaNodeList: schemaNodeList,
+                  theme: theme,
+                  properties: properties,
+                  isSelected: isSelected,
                   isPlayMode: isPlayMode,
                 );
               })
@@ -76,31 +83,32 @@ class ListTemplateSimple extends ListTemplate {
         height: 15,
       ),
       // todo: подумать как сделать лучше изменение высота listItem'a
-      Row(
-          children: [
-            Text(
-              'Height',
-              style: MyTextStyle.regularCaption,
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Expanded(
-              child: MyTextField(
-                  defaultValue: properties['ListItemHeight'].value.toString(),
-                  onChanged: (String value) {
-                    changePropertyTo(SchemaDoubleProperty('ListItemHeight', double.parse(value)));
-                  }
-              ),
-            )
-          ]
-      ),
+      Row(children: [
+        Text(
+          'Height',
+          style: MyTextStyle.regularCaption,
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        Expanded(
+          child: MyTextField(
+              defaultValue: properties['ListItemHeight'].value.toString(),
+              onChanged: (String value) {
+                changePropertyTo(SchemaDoubleProperty(
+                    'ListItemHeight', double.parse(value)));
+              }),
+        )
+      ]),
     ]);
   }
 
   Widget widgetFor({
-    @required SchemaListItemsProperty item,
-    @required SchemaNodeList schemaNodeList,
+    SchemaListItemsProperty item,
+    @required MyTheme theme,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   }) {
     return Row(
@@ -109,29 +117,35 @@ class ListTemplateSimple extends ListTemplate {
           child: Column(
             children: [
               Container(
-                height: schemaNodeList.properties['ListItemHeight'].value,
+                height: properties['ListItemHeight'].value,
                 decoration: BoxDecoration(
                   color: getThemeColor(
-                    schemaNodeList.parentSpawner.userActions.currentTheme,
-                    schemaNodeList.properties['ItemColor'],
+                    theme,
+                    properties['ItemColor'],
                   ),
                 ),
                 child: Stack(
                   children: [
-                    ...(schemaNodeList.properties['Elements'].value as ListElements).listElements.map((ListElementNode el) {
+                    ...(properties['Elements'].value as ListElements)
+                        .listElements
+                        .map((ListElementNode el) {
                       Widget renderedWidget;
 
-                      if (el.node is DataContainer && el.columnRelation != null) {
-                        final String data = item.value[el.columnRelation]?.data ?? 'no_data';
+                      if (el.node is DataContainer &&
+                          el.columnRelation != null) {
+                        final String data =
+                            item.value[el.columnRelation]?.data ?? 'no_data';
 
                         renderedWidget = el.toWidgetWithReplacedData(
                           data: data,
                           schemaNodeList: schemaNodeList,
+                          isSelected: isSelected,
                           isPlayMode: isPlayMode,
                         );
                       } else {
                         renderedWidget = el.toWidget(
                           schemaNodeList: schemaNodeList,
+                          isSelected: isSelected,
                           isPlayMode: isPlayMode,
                         );
                       }
@@ -151,8 +165,8 @@ class ListTemplateSimple extends ListTemplate {
                     bottom: BorderSide(
                       width: 1,
                       color: getThemeColor(
-                        schemaNodeList.parentSpawner.userActions.currentTheme,
-                        schemaNodeList.properties['SeparatorsColor'],
+                        theme,
+                        properties['SeparatorsColor'],
                       ),
                     ),
                   ),

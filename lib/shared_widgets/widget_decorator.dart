@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
 import 'package:flutter_app/shared_widgets/button.dart';
-import 'package:flutter_app/shared_widgets/shape.dart';
-import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/icon.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/image.dart' as shared_widgets;
+import 'package:flutter_app/shared_widgets/list.dart' as shared_widgets;
+import 'package:flutter_app/shared_widgets/shape.dart';
+import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class WidgetDecorator extends StatelessWidget {
@@ -74,8 +75,9 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: () => {},
               position: componentProperties.position,
-              widget: Button(
+              widget: shared_widgets.List(
                   properties: componentProperties.properties,
+                  isBuild: true,
                   size: componentProperties.size,
                   theme: theme));
         }

@@ -1,18 +1,15 @@
 // ignore: avoid_web_libraries_in_flutter
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/airtable_modal_stub.dart'
-    if (dart.library.js) 'ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
+import 'package:flutter_app/features/schemaNodes/airtable_modal_stub.dart'
+    if (dart.library.js) 'ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
-import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
@@ -21,15 +18,16 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
+import 'package:flutter_app/shared_widgets/list.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/PageSliderAnimator.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
-import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
 class EditPropsAnimation extends StatefulWidget {
   final BuildWidgetFunction rootPage;
@@ -391,26 +389,14 @@ class SchemaNodeList extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode}) {
-    if (isPlayMode) {
-      return Container(
-        width: this.size.dx,
-        height: this.size.dy,
-        child: SingleChildScrollView(
-          child: (this.properties['Template'].value as ListTemplate).toWidget(
-            schemaNodeList: this,
-            isPlayMode: isPlayMode,
-          ),
-        ),
-      );
-    }
-
-    return Container(
-      width: this.size.dx,
-      height: this.size.dy,
-      child: (this.properties['Template'].value as ListTemplate).toWidget(
-        schemaNodeList: this,
-        isPlayMode: isPlayMode,
-      ),
+    return Shared.List(
+      size: this.size,
+      schemaNodeList: this,
+      onListClick: this.onListClick,
+      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      properties: this.properties,
+      isSelected: this.isSelected,
+      isPlayMode: isPlayMode,
     );
   }
 
