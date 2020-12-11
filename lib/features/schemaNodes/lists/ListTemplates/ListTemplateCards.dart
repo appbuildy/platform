@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
@@ -14,42 +14,52 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
+import '../../Functionable.dart';
 
 class ListTemplateCards extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.cards;
 
   Widget toWidget({
-    @required SchemaNodeList schemaNodeList,
+    @required Function onListClick, // should mock it in skeleton
+    @required MyTheme theme,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
     return GestureDetector(
       onTap: () {
-        print('ListTemplateCards 28');
-        schemaNodeList.onListClick();
+        onListClick();
       },
       child: Column(
-          children: schemaNodeList.properties['Items']
+          children: properties['Items']
               .value
               .values
               .map((item) {
                 if (isPlayMode) {
                   return GestureDetector(
                     onTap: () {
-                        (schemaNodeList.actions['Tap'] as Functionable)
-                            .toFunction(schemaNodeList.parentSpawner.userActions)(item.value);
+                      (schemaNodeList.actions['Tap'] as Functionable)
+                          .toFunction(schemaNodeList
+                              .parentSpawner.userActions)(item.value);
                     },
                     child: widgetFor(
-                        item: item,
-                        schemaNodeList: schemaNodeList,
-                        isPlayMode: isPlayMode,
+                      item: item,
+                      schemaNodeList: schemaNodeList,
+                      theme: theme,
+                      properties: properties,
+                      isSelected: isSelected,
+                      isPlayMode: isPlayMode,
                     ),
                   );
                 }
                 return widgetFor(
-                    item: item,
-                    schemaNodeList: schemaNodeList,
-                    isPlayMode: isPlayMode,
+                  item: item,
+                  schemaNodeList: schemaNodeList,
+                  theme: theme,
+                  properties: properties,
+                  isSelected: isSelected,
+                  isPlayMode: isPlayMode,
                 );
               })
               .toList()
@@ -77,25 +87,23 @@ class ListTemplateCards extends ListTemplate {
           height: 15,
         ),
         // todo: подумать как сделать лучше изменение высота listItem'a
-        Row(
-          children: [
-            Text(
-              'Height',
-              style: MyTextStyle.regularCaption,
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Expanded(
-              child: MyTextField(
+        Row(children: [
+          Text(
+            'Height',
+            style: MyTextStyle.regularCaption,
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: MyTextField(
                 defaultValue: properties['ListItemHeight'].value.toString(),
                 onChanged: (String value) {
-                  changePropertyTo(SchemaDoubleProperty('ListItemHeight', double.parse(value)));
-                }
-              ),
-            )
-          ]
-        ),
+                  changePropertyTo(SchemaDoubleProperty(
+                      'ListItemHeight', double.parse(value)));
+                }),
+          )
+        ]),
         SizedBox(
           height: 15,
         ),
@@ -113,63 +121,74 @@ class ListTemplateCards extends ListTemplate {
 
   Widget widgetFor({
     SchemaListItemsProperty item,
-    @required SchemaNodeList schemaNodeList,
+    @required MyTheme theme,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   }) {
     return Padding(
-      padding: EdgeInsets.only(top: 11, left: this.padding.dx.toDouble(), right: this.padding.dx.toDouble()),
+      padding: EdgeInsets.only(
+          top: 11,
+          left: this.padding.dx.toDouble(),
+          right: this.padding.dx.toDouble()),
       child: Row(
         children: [
           Expanded(
             child: Container(
-              height: schemaNodeList.properties['ListItemHeight'].value,
+              height: properties['ListItemHeight'].value,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(schemaNodeList.properties['ItemRadiusValue'].value),
+                  borderRadius: BorderRadius.circular(
+                      properties['ItemRadiusValue'].value),
                   color: getThemeColor(
-                    schemaNodeList.parentSpawner.userActions.currentTheme,
-                    schemaNodeList.properties['ItemColor'],
+                    theme,
+                    properties['ItemColor'],
                   ),
-                  boxShadow: schemaNodeList.properties['BoxShadow'].value
+                  boxShadow: properties['BoxShadow'].value
                       ? [
                           BoxShadow(
                             color: getThemeColor(
-                                schemaNodeList.parentSpawner.userActions.currentTheme,
-                              schemaNodeList.properties['BoxShadowColor'],
-                            ).withOpacity(schemaNodeList.properties['BoxShadowOpacity'].value),
-                            blurRadius: schemaNodeList.properties['BoxShadowBlur'].value,
+                              theme,
+                              properties['BoxShadowColor'],
+                            ).withOpacity(properties['BoxShadowOpacity'].value),
+                            blurRadius: properties['BoxShadowBlur'].value,
                             offset: Offset(0.0, 2.0),
                             spreadRadius: 0,
                           )
                         ]
-                      : []
-              ),
+                      : []),
               clipBehavior: Clip.hardEdge,
               child: Stack(
                 children: [
-                  ...(schemaNodeList.properties['Elements'].value as ListElements).listElements.map((ListElementNode el) {
-                      Widget renderedWidget;
+                  ...(properties['Elements'].value as ListElements)
+                      .listElements
+                      .map((ListElementNode el) {
+                    Widget renderedWidget;
 
-                      if (el.node is DataContainer && el.columnRelation != null) {
-                        final String data = item.value[el.columnRelation]?.data ?? 'no_data';
+                    if (el.node is DataContainer && el.columnRelation != null) {
+                      final String data =
+                          item.value[el.columnRelation]?.data ?? 'no_data';
 
-                        renderedWidget = el.toWidgetWithReplacedData(
-                          data: data,
-                          schemaNodeList: schemaNodeList,
-                          isPlayMode: isPlayMode,
-                        );
-                      } else {
-                        renderedWidget = el.toWidget(
-                          schemaNodeList: schemaNodeList,
-                          isPlayMode: isPlayMode,
-                        );
-                      }
-
-                      return Positioned(
-                        top: el.node.position.dy,
-                        left: el.node.position.dx,
-                        child: renderedWidget,
+                      renderedWidget = el.toWidgetWithReplacedData(
+                        data: data,
+                        schemaNodeList: schemaNodeList,
+                        isSelected: isSelected,
+                        isPlayMode: isPlayMode,
                       );
-                    })
+                    } else {
+                      renderedWidget = el.toWidget(
+                        schemaNodeList: schemaNodeList,
+                        isSelected: isSelected,
+                        isPlayMode: isPlayMode,
+                      );
+                    }
+
+                    return Positioned(
+                      top: el.node.position.dy,
+                      left: el.node.position.dx,
+                      child: renderedWidget,
+                    );
+                  })
                 ],
               ),
             ),

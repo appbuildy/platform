@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateSimple.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
-
-import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 
 enum ListTemplateType { simple, cards }
 
@@ -15,7 +12,11 @@ abstract class ListTemplate {
   ListTemplateType getType();
 
   Widget toWidget({
-    @required SchemaNodeList schemaNodeList,
+    @required Function onListClick, // should mock it in skeleton
+    @required MyTheme theme,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   });
 
