@@ -5,6 +5,7 @@ import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
+import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -76,6 +77,9 @@ class _AppPreviewState extends State<AppPreview> {
 
           final SchemaNode selectedNode = userActions.selectedNode();
           final UniqueKey selectedNodeId = selectedNode?.id;
+          final List<TabNavigation> tabs = userActions.bottomNavigation.tabs;
+          print(
+              '${tabs.length}'); // НЕ УДАЛЯТЬ!!!!!! БЛАГОДАРЯ ЕМУ СРАБАТЫВАЕТ ОБЗЕРВЕР И ТАБЫ ОБНОВЛЯЮТСЯ НОРМАЛЬНО
 
           return Transform.scale(
             scale: scale,
@@ -93,24 +97,26 @@ class _AppPreviewState extends State<AppPreview> {
               child: Container(
                 width: userActions.screens.currentScreenWorkspaceSize.dx + 4,
                 // 4px is for border (2 px on both sides)
-                height: userActions.screens.currentScreenWorkspaceSize.dy + userActions.screens.screenTabsHeight + 4,
+                height: userActions.screens.currentScreenWorkspaceSize.dy +
+                    userActions.screens.screenTabsHeight +
+                    4,
                 // 4px is for border (2 px on both sides)
                 decoration: BoxDecoration(
-                  color: userActions.screens.current.backgroundColor.color,
-                  borderRadius: widget.isPreview
-                      ? BorderRadius.zero
-                      : BorderRadius.circular(40.0),
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 0,
-                      blurRadius: 20,
-                      offset: Offset(0, 2),
-                      color: MyColors.black.withOpacity(0.15),
-                    )
-                  ],
-                  border: widget.isPreview
-                      ? Border()
-                      : Border.all(width: 2, color: MyColors.black)),
+                    color: userActions.screens.current.backgroundColor.color,
+                    borderRadius: widget.isPreview
+                        ? BorderRadius.zero
+                        : BorderRadius.circular(40.0),
+                    boxShadow: [
+                      BoxShadow(
+                        spreadRadius: 0,
+                        blurRadius: 20,
+                        offset: Offset(0, 2),
+                        color: MyColors.black.withOpacity(0.15),
+                      )
+                    ],
+                    border: widget.isPreview
+                        ? Border()
+                        : Border.all(width: 2, color: MyColors.black)),
                 child: ClipRRect(
                   borderRadius: widget.isPreview
                       ? BorderRadius.zero
@@ -119,57 +125,59 @@ class _AppPreviewState extends State<AppPreview> {
                     textDirection: TextDirection.ltr,
                     children: [
                       ...userActions.guidelineManager.buildAllLines(
-                          screenSize: widget.userActions.screens.currentScreenWorkspaceSize
-                      ),
+                          screenSize: widget
+                              .userActions.screens.currentScreenWorkspaceSize),
                       ...userActions.screens.current.components.map((node) {
                         final Function onPanEnd = (_) {
                           userActions.guidelineManager.setAllInvisible();
                           userActions.rerenderNode();
                         };
 
-                        Widget _renderWithSelected() => (
-                          SchemaNode.renderWithSelected(
-                            node: node,
-                            onPanEnd: onPanEnd,
-                            repositionAndResize: userActions.repositionAndResize,
-                            currentScreenWorkspaceSize: userActions.screens.currentScreenWorkspaceSize,
-                            isPlayMode: widget.isPlayMode,
-                            isSelected: selectedNodeId == node.id,
-                            toWidgetFunction: node.toWidget,
-                            isMagnetInteraction: true,
-                            selectNodeForEdit: userActions.selectNodeForEdit,
-                          )
-                        );
+                        Widget _renderWithSelected() =>
+                            (SchemaNode.renderWithSelected(
+                              node: node,
+                              onPanEnd: onPanEnd,
+                              repositionAndResize:
+                                  userActions.repositionAndResize,
+                              currentScreenWorkspaceSize: userActions
+                                  .screens.currentScreenWorkspaceSize,
+                              isPlayMode: widget.isPlayMode,
+                              isSelected: selectedNodeId == node.id,
+                              toWidgetFunction: node.toWidget,
+                              isMagnetInteraction: true,
+                              selectNodeForEdit: userActions.selectNodeForEdit,
+                            ));
 
-                        return
-                          Positioned(
-                            child: GestureDetector(
-                              onTap: () {
-                                widget.focusNode.requestFocus();
-                                if (widget.isPlayMode) {
-                                  if (node.type == SchemaNodeType.list) {
-                                    // чтобы прокидывать данные на каждый айтем листа
-                                    return;
-                                  }
-                                  (node.actions['Tap'] as Functionable)
-                                      .toFunction(userActions)();
-                                } else {
-                                  if (node.type == SchemaNodeType.list) {
-                                    (node as SchemaNodeList).unselectListElementNode();
-                                  }
-
-                                  userActions.selectNodeForEdit(node);
-
-                                  widget.selectStateToLayout(); // select menu layout
+                        return Positioned(
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.focusNode.requestFocus();
+                              if (widget.isPlayMode) {
+                                if (node.type == SchemaNodeType.list) {
+                                  // чтобы прокидывать данные на каждый айтем листа
+                                  return;
                                 }
-                              },
-                              child: !widget.isPlayMode
+                                (node.actions['Tap'] as Functionable)
+                                    .toFunction(userActions)();
+                              } else {
+                                if (node.type == SchemaNodeType.list) {
+                                  (node as SchemaNodeList)
+                                      .unselectListElementNode();
+                                }
+
+                                userActions.selectNodeForEdit(node);
+
+                                widget
+                                    .selectStateToLayout(); // select menu layout
+                              }
+                            },
+                            child: !widget.isPlayMode
                                 ? _renderWithSelected()
                                 : node.toWidget(isPlayMode: widget.isPlayMode),
-                            ),
-                            top: node.position.dy,
-                            left: node.position.dx,
-                          );
+                          ),
+                          top: node.position.dy,
+                          left: node.position.dx,
+                        );
                       }),
                       widget.isPreview
                           ? Container()
@@ -183,53 +191,55 @@ class _AppPreviewState extends State<AppPreview> {
                         left: 0,
                         child: userActions.screens.current.bottomTabsVisible
                             ? Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(
-                                      width: 1,
-                                      color: theme.separators.color))),
-                          child: Container(
-                            child: AppTabs(
-                              selectedScreenId:
-                              userActions.currentScreen.id,
-                              tabs: userActions.bottomNavigation.tabs,
-                              theme: userActions.currentTheme,
-                              onTap: (tab) {
-                                userActions.screens.selectById(tab.target);
-                                userActions.selectNodeForEdit(null);
-                              },
-                            ),
-                            width: userActions
-                                .screens.currentScreenWorkspaceSize.dx,
-                            height: userActions.screens.screenTabsHeight,
-                            decoration: BoxDecoration(
-                              color: userActions.screens.current.backgroundColor.color,
-                              borderRadius: widget.isPreview
-                                  ? BorderRadius.zero
-                                  : BorderRadius.only(
-                                  bottomLeft: Radius.circular(37.0),
-                                  bottomRight: Radius.circular(37.0)),
-                            ),
-                          ),
-                        )
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        top: BorderSide(
+                                            width: 1,
+                                            color: theme.separators.color))),
+                                child: Container(
+                                  child: AppTabs(
+                                    selectedScreenId:
+                                        userActions.currentScreen.id,
+                                    tabs: tabs,
+                                    theme: userActions.currentTheme,
+                                    onTap: (tab) {
+                                      userActions.screens
+                                          .selectById(tab.target);
+                                      userActions.selectNodeForEdit(null);
+                                    },
+                                  ),
+                                  width: userActions
+                                      .screens.currentScreenWorkspaceSize.dx,
+                                  height: userActions.screens.screenTabsHeight,
+                                  decoration: BoxDecoration(
+                                    color: userActions
+                                        .screens.current.backgroundColor.color,
+                                    borderRadius: widget.isPreview
+                                        ? BorderRadius.zero
+                                        : BorderRadius.only(
+                                            bottomLeft: Radius.circular(37.0),
+                                            bottomRight: Radius.circular(37.0)),
+                                  ),
+                                ),
+                              )
                             : Container(),
                       ),
                       widget.isPreview
-                        ? Container()
-                        : Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 7.0),
-                            child: Container(
-                              width: 134,
-                              height: 5,
-                              decoration: BoxDecoration(
-                                  color: Color(0xFF000000),
-                                  borderRadius: BorderRadius.circular(100),
+                          ? Container()
+                          : Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 7.0),
+                                child: Container(
+                                  width: 134,
+                                  height: 5,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFF000000),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                      ),
                     ],
                   ),
                 ),
