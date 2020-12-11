@@ -1,13 +1,23 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/ui/ColumnDivider.dart';
+import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
+import 'package:flutter_app/ui/SelectIconList.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'SchemaNodeSpawner.dart';
+import 'common/EditPropsColor.dart';
 import 'implementations.dart';
 
 // class MapSample extends StatefulWidget {
@@ -85,6 +95,8 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           'TargetLongitude': SchemaDoubleProperty('TargetLongitude', _kLake.target.longitude),
           'Tilt': SchemaDoubleProperty('Tilt', _kLake.tilt),
           'Zoom': SchemaDoubleProperty('Zoom', _kLake.zoom),
+          'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.arrowDown),
+          'IconColor': SchemaMyThemePropProperty('IconColor', parent.userActions.currentTheme.primary),
         };
   }
 
@@ -119,7 +131,7 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     return newProps;
   }
 
-  void changeCameraPosition(CameraPosition cameraPosition) {
+  void updateCameraPosition(CameraPosition cameraPosition) {
     this.properties['Bearing'] = SchemaDoubleProperty('Bearing', cameraPosition.bearing);
     this.properties['TargetLatitude'] = SchemaDoubleProperty('TargetLatitude', cameraPosition.target.latitude);
     this.properties['TargetLongitude'] = SchemaDoubleProperty('TargetLongitude', cameraPosition.target.longitude);
@@ -127,40 +139,106 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     this.properties['Zoom'] = SchemaDoubleProperty('Zoom', cameraPosition.zoom);
   }
 
+  Future<void> _goToLatLng(LatLng latitudeLongitude) async {
+    updateMarkers();
+
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(
+      CameraPosition(
+        bearing: this.properties['Bearing'].value,
+        target: latitudeLongitude,
+        tilt: this.properties['Tilt'].value,
+        zoom: this.properties['Zoom'].value,
+      )
+    ));
+  }
+
   UniqueKey uniqueKey = UniqueKey();
+
+  Marker get marker => Marker(
+    position: latitudeLongitude,
+    markerId: MarkerId('${UniqueKey()}'),
+    //icon: BitmapDescriptor.defaultMarker,
+    icon: _bitmapDescriptor == null
+      ? BitmapDescriptor.defaultMarker
+      : _bitmapDescriptor,
+  );
+
+  void updateMarkers() {
+    _markers.clear();
+    _markers.add(marker);
+  }
+
+  Set<Marker> _markers;
+
+  BitmapDescriptor _bitmapDescriptor;
+
+  void setBitmapDescriptor([IconData newIcon]) async {
+    IconData icon = newIcon == null ? this.properties['Icon'].value : newIcon;
+
+    final pictureRecorder = PictureRecorder();
+    final canvas = Canvas(pictureRecorder);
+
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
+
+    textPainter.text = TextSpan(
+        text: String.fromCharCode(icon.codePoint),
+        style: TextStyle(
+          inherit: false,
+          letterSpacing: 0.0,
+          fontSize: 48.0,
+          fontFamily: icon.fontFamily,
+          package: icon.fontPackage,
+          color: (this.properties['IconColor'].value as MyThemeProp).color,
+        )
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(0.0, 0.0));
+
+    final picture = pictureRecorder.endRecording();
+    final image = await picture.toImage(48, 48);
+    final bytes = await image.toByteData(format: ImageByteFormat.png);
+
+    this._bitmapDescriptor = BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+  }
 
   @override
   Widget toWidget({ bool isPlayMode }) {
+    if (this._markers == null) {
+      this._markers = { marker };
+    }
+
+    if (this._bitmapDescriptor == null) {
+      this.setBitmapDescriptor(FontAwesomeIcons.mapMarkerAlt);
+    }
+
     return Container(
       key: uniqueKey,
       width: this.size.dx,
       height: this.size.dy,
-      child: IgnorePointer(
-        ignoring: true,
-        child: AbsorbPointer(
-          absorbing: true,
-          child: GoogleMap(
-            mapType: MapType.normal,
-            zoomControlsEnabled: false,
-            zoomGesturesEnabled: false,
-            tiltGesturesEnabled: false,
-            scrollGesturesEnabled: false,
-            rotateGesturesEnabled: false,
-            initialCameraPosition: CameraPosition(
-              bearing: this.properties['Bearing'].value,
-              target: LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value),
-              tilt: this.properties['Tilt'].value,
-              zoom: this.properties['Zoom'].value
-            ),
-            onCameraMove: this.changeCameraPosition,
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          ),
+      child: GoogleMap(
+        mapType: MapType.normal,
+        zoomControlsEnabled: false,
+        zoomGesturesEnabled: false,
+        tiltGesturesEnabled: false,
+        scrollGesturesEnabled: false,
+        rotateGesturesEnabled: false,
+        markers: this._markers,
+        initialCameraPosition: CameraPosition(
+          bearing: this.properties['Bearing'].value,
+          target: LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value),
+          tilt: this.properties['Tilt'].value,
+          zoom: this.properties['Zoom'].value
         ),
+        onCameraMove: this.updateCameraPosition,
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
       ),
     );
   }
+
+  LatLng get latitudeLongitude => LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value);
 
   @override
   Widget toWidgetWithReplacedData({bool isPlayMode, String data}) {
@@ -172,8 +250,61 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
   Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
       Column(children: [
-        Container(),
-      ])
+        ColumnDivider(name: 'Data'),
+        Row(children: [
+          Text(
+            'Latitude',
+            style: MyTextStyle.regularCaption,
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: MyTextField(
+                defaultValue: properties['TargetLatitude'].value.toString(),
+                onChanged: (String value) {
+                  changePropertyTo(SchemaDoubleProperty('TargetLatitude', double.parse(value)));
+                  _goToLatLng(this.latitudeLongitude);
+                }),
+          )
+        ]),
+        Row(children: [
+          Text(
+            'Longitude',
+            style: MyTextStyle.regularCaption,
+          ),
+          SizedBox(
+            width: 15,
+          ),
+          Expanded(
+            child: MyTextField(
+                defaultValue: properties['TargetLongitude'].value.toString(),
+                onChanged: (String value) {
+                  changePropertyTo(SchemaDoubleProperty('TargetLongitude', double.parse(value)));
+                  _goToLatLng(this.latitudeLongitude);
+                }),
+          )
+        ]),
+        EditPropsColor(
+          currentTheme: parentSpawner.userActions.themeStore.currentTheme,
+          properties: properties,
+          changePropertyTo: (schemaNodeProperty, [bool, dynamic]) {
+            changePropertyTo(schemaNodeProperty);
+
+            this.setBitmapDescriptor();
+            this.updateMarkers();
+          },
+          propName: 'IconColor',
+        ),
+        // SelectIconList(
+        //     subListHeight: 470,
+        //     selectedIcon: this.properties['Icon'].value,
+        //     onChanged: (IconData icon) async {
+        //       await setBitmapDescriptor(icon);
+        //       updateMarkers();
+        //       changePropertyTo(SchemaIconProperty('Icon', icon));
+        //     })
+      ]),
     );
   }
 }
