@@ -22,7 +22,8 @@ void main() {
 
   setUp(() {
     schemaStore = SchemaStore(components: []);
-    SchemaNodeSpawner nodeSpawner = SchemaNodeSpawner(userActions: setupUserActions());
+    SchemaNodeSpawner nodeSpawner =
+        SchemaNodeSpawner(userActions: setupUserActions());
 
     text = nodeSpawner.spawnSchemaNodeText();
     btn = nodeSpawner.spawnSchemaNodeButton(position: Offset(1, 2));
@@ -30,7 +31,7 @@ void main() {
     schemaStore.add(text);
     schemaStore.add(btn);
 
-    selectNodeForEdit = (SchemaNode node) {};
+    selectNodeForEdit = (SchemaNode node, bool t) {};
 
     newProp = SchemaStringProperty('Text', '33');
     changeProp = ChangeNodeProperty(
