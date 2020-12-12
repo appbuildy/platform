@@ -26,8 +26,6 @@ abstract class ListTemplate {
     MyTheme currentTheme,
   });
 
-  Offset padding = Offset(0, 0);
-
   Widget widgetFor({
     @required SchemaListItemsProperty item,
     @required SchemaNodeList schemaNodeList,
@@ -52,5 +50,25 @@ double getListHeightByType(ListTemplateType type) {
     return 480.0;
   } else {
     return 195.0;
+  }
+}
+
+double getListItemHeightByType(ListTemplateType type) {
+  if (type == ListTemplateType.simple) {
+    return 100.0;
+  } else if (type == ListTemplateType.cards) {
+    return 150.0;
+  } else {
+    return 100.0;
+  }
+}
+
+double getListItemPaddingByType(ListTemplateType type) {
+  if (type == ListTemplateType.simple) {
+    return 0.0;
+  } else if (type == ListTemplateType.cards) {
+    return 15.0;
+  } else {
+    return 0.0;
   }
 }

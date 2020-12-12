@@ -6,12 +6,9 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
 import '../../Functionable.dart';
@@ -87,23 +84,6 @@ class ListTemplateCards extends ListTemplate {
           height: 15,
         ),
         // todo: подумать как сделать лучше изменение высота listItem'a
-        Row(children: [
-          Text(
-            'Height',
-            style: MyTextStyle.regularCaption,
-          ),
-          SizedBox(
-            width: 15,
-          ),
-          Expanded(
-            child: MyTextField(
-                defaultValue: properties['ListItemHeight'].value.toString(),
-                onChanged: (String value) {
-                  changePropertyTo(SchemaDoubleProperty(
-                      'ListItemHeight', double.parse(value)));
-                }),
-          )
-        ]),
         SizedBox(
           height: 15,
         ),
@@ -116,9 +96,6 @@ class ListTemplateCards extends ListTemplate {
     );
   }
 
-  @override
-  Offset padding = Offset(12, 0);
-
   Widget widgetFor({
     SchemaListItemsProperty item,
     @required MyTheme theme,
@@ -129,9 +106,9 @@ class ListTemplateCards extends ListTemplate {
   }) {
     return Padding(
       padding: EdgeInsets.only(
-          top: 11,
-          left: this.padding.dx.toDouble(),
-          right: this.padding.dx.toDouble()),
+          top: properties['ListItemPadding'].value,
+          left: properties['ListItemPadding'].value,
+          right: properties['ListItemPadding'].value),
       child: Row(
         children: [
           Expanded(

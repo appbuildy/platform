@@ -24,6 +24,7 @@ import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
@@ -112,6 +113,7 @@ class SchemaNodeList extends SchemaNode {
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
           'ListItemHeight': SchemaDoubleProperty('ListItemHeight', 100),
+          'ListItemPadding': SchemaDoubleProperty('ListItemPadding', 0),
         };
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
@@ -153,14 +155,16 @@ class SchemaNodeList extends SchemaNode {
               parent.userActions.themeStore.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
-          'ListItemHeight': SchemaDoubleProperty('ListItemHeight',
-              listTemplateType == ListTemplateType.simple ? 100 : 150),
+          'ListItemHeight': SchemaDoubleProperty(
+              'ListItemHeight', getListItemHeightByType(listTemplateType)),
+          'ListItemPadding': SchemaDoubleProperty(
+              'ListItemPadding', getListItemPaddingByType(listTemplateType)),
         };
 
-    final double listItemWidth = this.size.dx -
-        (this.properties['Template'].value as ListTemplate).padding.dx * 2;
+    final double listItemWidth =
+        this.size.dx - this.properties['ListItemPadding'].value * 2;
     final double listItemHeight = this.properties['ListItemHeight'].value -
-        (this.properties['Template'].value as ListTemplate).padding.dy * 2;
+        this.properties['ListItemPadding'].value * 2;
     final Offset listItemSize = Offset(listItemWidth, listItemHeight);
 
     ListElements listElements;
@@ -222,10 +226,9 @@ class SchemaNodeList extends SchemaNode {
   }
 
   Offset get listElementNodeWorkspaceSize => Offset(
-        this.size.dx -
-            (this.properties['Template'].value as ListTemplate).padding.dx * 2,
+        this.size.dx - this.properties['ListItemPadding'].value * 2,
         this.properties['ListItemHeight'].value -
-            (this.properties['Template'].value as ListTemplate).padding.dy * 2,
+            this.properties['ListItemPadding'].value * 2,
       );
 
   @override
@@ -331,8 +334,7 @@ class SchemaNodeList extends SchemaNode {
         minimalSize = currentNodeMinimalSize;
     });
 
-    double paddingToListItem =
-        (this.properties['Template'].value as ListTemplate).padding.dx * 2;
+    double paddingToListItem = this.properties['ListItemPadding'].value * 2;
 
     return minimalSize + paddingToListItem;
   }
@@ -594,45 +596,90 @@ class _ListToEditPropsState extends State<ListToEditProps>
             )
           : ConnectAirtableModal(),
       if (isItemsNotEmpty)
-        ColumnDivider(
-          name: 'Row Elements',
-        ),
-      if (isItemsNotEmpty)
-        (widget.schemaNodeList.properties['Elements'].value as ListElements)
-            .toEditProps(
-                schemaNodeList: widget.schemaNodeList,
-                onNodeSettingsClick: (ListElementNode listElementNode) {
-                  widget.schemaNodeList.selectListElementNode(listElementNode);
-                },
-                onListElementsUpdate: () {
-                  widget.changePropertyTo(SchemaListElementsProperty('Elements',
-                      widget.schemaNodeList.properties['Elements'].value));
-                  _pageSliderController.pages = getPageSliderPages();
-                }),
-      if (isItemsNotEmpty)
-        ColumnDivider(
-          name: 'Row Style',
-        ),
-      if (isItemsNotEmpty)
-        EditPropsColor(
-          currentTheme: widget
-              .schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
-          properties: widget.schemaNodeList.properties,
-          propName: 'ItemColor',
-          changePropertyTo: widget.changePropertyTo,
-        ),
-      if (isItemsNotEmpty)
-        (widget.schemaNodeList.properties['Template'].value as ListTemplate)
-            .rowStyle(
-          changePropertyTo: widget.changePropertyTo,
-          properties: widget.schemaNodeList.properties,
-          currentTheme: widget
-              .schemaNodeList.parentSpawner.userActions.themeStore.currentTheme,
-        ),
-      if (isItemsNotEmpty)
-        SizedBox(
-          height: 10,
-        ),
+        Column(
+          children: [
+            ColumnDivider(
+              name: 'Row Elements',
+            ),
+            (widget.schemaNodeList.properties['Elements'].value as ListElements)
+                .toEditProps(
+                    schemaNodeList: widget.schemaNodeList,
+                    onNodeSettingsClick: (ListElementNode listElementNode) {
+                      widget.schemaNodeList
+                          .selectListElementNode(listElementNode);
+                    },
+                    onListElementsUpdate: () {
+                      widget.changePropertyTo(SchemaListElementsProperty(
+                          'Elements',
+                          widget.schemaNodeList.properties['Elements'].value));
+                      _pageSliderController.pages = getPageSliderPages();
+                    }),
+            ColumnDivider(
+              name: 'Row Style',
+            ),
+            EditPropsColor(
+              currentTheme: widget.schemaNodeList.parentSpawner.userActions
+                  .themeStore.currentTheme,
+              properties: widget.schemaNodeList.properties,
+              propName: 'ItemColor',
+              changePropertyTo: widget.changePropertyTo,
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            Row(children: [
+              SizedBox(
+                width: 59,
+                child: Text(
+                  'Height',
+                  style: MyTextStyle.regularCaption,
+                ),
+              ),
+              Expanded(
+                child: MyTextField(
+                    defaultValue: widget
+                        .schemaNodeList.properties['ListItemHeight'].value
+                        .toString(),
+                    onChanged: (String value) {
+                      widget.changePropertyTo(SchemaDoubleProperty(
+                          'ListItemHeight', double.parse(value)));
+                    }),
+              )
+            ]),
+            SizedBox(
+              height: 12,
+            ),
+            Row(children: [
+              SizedBox(
+                width: 59,
+                child: Text(
+                  'Padding',
+                  style: MyTextStyle.regularCaption,
+                ),
+              ),
+              Expanded(
+                child: MyTextField(
+                    defaultValue: widget
+                        .schemaNodeList.properties['ListItemPadding'].value
+                        .toString(),
+                    onChanged: (String value) {
+                      widget.changePropertyTo(SchemaDoubleProperty(
+                          'ListItemPadding', double.parse(value)));
+                    }),
+              )
+            ]),
+            (widget.schemaNodeList.properties['Template'].value as ListTemplate)
+                .rowStyle(
+              changePropertyTo: widget.changePropertyTo,
+              properties: widget.schemaNodeList.properties,
+              currentTheme: widget.schemaNodeList.parentSpawner.userActions
+                  .themeStore.currentTheme,
+            ),
+            SizedBox(
+              height: 12,
+            ),
+          ],
+        )
     ]));
   }
 
