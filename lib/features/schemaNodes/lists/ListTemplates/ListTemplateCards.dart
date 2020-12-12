@@ -19,18 +19,28 @@ class ListTemplateCards extends ListTemplate {
   Widget toWidget({
     @required Function onListClick, // should mock it in skeleton
     @required MyTheme theme,
+    @required Offset size,
     @required Map<String, SchemaNodeProperty> properties,
     @required bool isSelected,
     SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
+    final width = size.dx - properties['ListItemPadding'].value * 2;
+    final additionalPaddings = (properties['ListItemsPerRow'].value - 1) *
+        properties['ListItemPadding'].value;
+    final height = properties['ListItemHeight'].value;
+
+    final aspectRatio =
+        ((width - additionalPaddings) / properties['ListItemsPerRow'].value) /
+            height;
+
     return GestureDetector(
       onTap: () {
         onListClick();
       },
       child: GridView.count(
           physics: NeverScrollableScrollPhysics(),
-          childAspectRatio: 2,
+          childAspectRatio: aspectRatio,
           padding: EdgeInsets.all(properties['ListItemPadding'].value),
           crossAxisSpacing: properties['ListItemPadding'].value,
           mainAxisSpacing: properties['ListItemPadding'].value,

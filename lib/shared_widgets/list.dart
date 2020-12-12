@@ -37,6 +37,7 @@ class List extends StatelessWidget {
         child: SingleChildScrollView(
           child: (properties['Template'].value as ListTemplate).toWidget(
             schemaNodeList: schemaNodeList,
+            size: size,
             onListClick: onListClick,
             theme: theme,
             properties: properties,
@@ -52,6 +53,7 @@ class List extends StatelessWidget {
       height: size.dy,
       child: (properties['Template'].value as ListTemplate).toWidget(
         schemaNodeList: schemaNodeList,
+        size: size,
         onListClick: onListClick,
         theme: theme,
         properties: properties,
