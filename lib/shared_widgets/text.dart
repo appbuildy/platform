@@ -23,12 +23,15 @@ class Text extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(2.0),
-            child: Cupertino.Text(
-              properties['Text'].value,
-              style: TextStyle(
-                  fontSize: properties['FontSize'].value,
-                  fontWeight: properties['FontWeight'].value,
-                  color: getThemeColor(theme, properties['FontColor'])),
+            child: Opacity(
+              opacity: properties['FontOpacity'].value,
+              child: Cupertino.Text(
+                properties['Text'].value,
+                style: TextStyle(
+                    fontSize: properties['FontSize'].value,
+                    fontWeight: properties['FontWeight'].value,
+                    color: getThemeColor(theme, properties['FontColor'])),
+              ),
             ),
           ),
         ],

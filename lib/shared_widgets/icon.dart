@@ -14,19 +14,22 @@ class Icon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
-      decoration: BoxDecoration(
+    return Opacity(
+      opacity: properties['Opacity'].value,
+      child: Container(
+        width: size.dx,
+        height: size.dy,
+        decoration: BoxDecoration(
+            borderRadius:
+                BorderRadius.circular(properties['BorderRadiusValue'].value)),
+        child: ClipRRect(
           borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value)),
-      child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(properties['BorderRadiusValue'].value),
-        child: FaIcon(
-          properties['Icon'].value,
-          size: properties['IconSize'].value,
-          color: getThemeColor(theme, properties['IconColor']),
+              BorderRadius.circular(properties['BorderRadiusValue'].value),
+          child: FaIcon(
+            properties['Icon'].value,
+            size: properties['IconSize'].value,
+            color: getThemeColor(theme, properties['IconColor']),
+          ),
         ),
       ),
     );

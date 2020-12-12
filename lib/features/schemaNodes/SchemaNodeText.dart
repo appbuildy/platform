@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
@@ -46,11 +46,12 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),
-          'FontColor': SchemaMyThemePropProperty(
-              'FontColor', color ?? parent.userActions.themeStore.currentTheme.general),
+          'FontColor': SchemaMyThemePropProperty('FontColor',
+              color ?? parent.userActions.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', fontSize ?? 16),
           'FontWeight': SchemaFontWeightProperty(
               'FontWeight', fontWeight ?? FontWeight.w500),
+          'FontOpacity': SchemaDoubleProperty('FontOpacity', 1),
           'Column': SchemaStringProperty('Column', column ?? null),
           'MainAlignment': SchemaMainAlignmentProperty(
               'MainAlignment', MainAxisAlignment.start),
@@ -86,7 +87,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
   }
 
   @override
-  Widget toWidget({ bool isPlayMode }) {
+  Widget toWidget({bool isPlayMode}) {
     return Shared.Text(
       properties: this.properties,
       theme: this.parentSpawner.userActions.themeStore.currentTheme,
@@ -94,36 +95,40 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     );
   }
 
-  Widget toWidgetWithReplacedData({ bool isPlayMode, String data }) {
+  Widget toWidgetWithReplacedData({bool isPlayMode, String data}) {
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
-    return Shared.Text(properties: properties, theme: parentSpawner.userActions.themeStore.currentTheme, size: size);
+    return Shared.Text(
+        properties: properties,
+        theme: parentSpawner.userActions.themeStore.currentTheme,
+        size: size);
   }
 
   void updateOnColumnDataChange(String newValue) {
-    parentSpawner.userActions.changePropertyTo(SchemaStringProperty("Text", newValue));
+    parentSpawner.userActions
+        .changePropertyTo(SchemaStringProperty("Text", newValue));
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  Widget toEditProps(wrapInRootProps,
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     log(parentSpawner.userActions.remoteAttributeList().toString());
-    return wrapInRootProps(
-      Column(children: [
-        ColumnDivider(name: 'Edit Data'),
-        EditPropsText(
-          id: id,
-          properties: properties,
-          propName: 'Text',
-          changePropertyTo: changePropertyTo,
-          textDebouncer: textDebouncer,
-        ),
-        this.toEditOnlyStyle(changePropertyTo),
-      ])
-    );
+    return wrapInRootProps(Column(children: [
+      ColumnDivider(name: 'Edit Data'),
+      EditPropsText(
+        id: id,
+        properties: properties,
+        propName: 'Text',
+        changePropertyTo: changePropertyTo,
+        textDebouncer: textDebouncer,
+      ),
+      this.toEditOnlyStyle(changePropertyTo),
+    ]));
   }
 
-  Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  Widget toEditOnlyStyle(
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return Column(children: [
       ColumnDivider(
         name: 'Text Style',

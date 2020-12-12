@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
@@ -32,7 +31,7 @@ class EditPropsIconStyle extends StatelessWidget {
           propName: 'IconColor',
         ),
         SizedBox(
-          height: 10,
+          height: 12,
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           SizedBox(
@@ -57,14 +56,10 @@ class EditPropsIconStyle extends StatelessWidget {
                   SelectOption('96', 96),
                 ],
                 onChange: (SelectOption option) {
-                  changePropertyTo(
-                      SchemaIntProperty('IconSize', option.value));
+                  changePropertyTo(SchemaIntProperty('IconSize', option.value));
                 }),
           )
         ]),
-        SizedBox(
-          height: 10,
-        ),
       ],
     );
   }

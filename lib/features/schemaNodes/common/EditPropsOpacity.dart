@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySlider.dart';
 
-class EditPropsCorners extends StatelessWidget {
+class EditPropsOpacity extends StatelessWidget {
   final double value;
   final Function onChanged;
 
-  const EditPropsCorners(
+  const EditPropsOpacity(
       {Key key, @required this.value, @required this.onChanged})
       : super(key: key);
 
@@ -18,7 +18,7 @@ class EditPropsCorners extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Corners',
+            'Opacity',
             style: MyTextStyle.regularCaption,
           ),
           SizedBox(width: 0),
@@ -27,10 +27,10 @@ class EditPropsCorners extends StatelessWidget {
               children: [
                 Expanded(
                   child: MySlider(
-                    max: 0.5,
-                    value: value / 100,
-                    onChanged: (value) {
-                      onChanged((value * 100).toInt());
+                    max: 1,
+                    value: value,
+                    onChanged: (double value) {
+                      onChanged(num.parse(value.toStringAsFixed(2)));
                     },
                   ),
                 ),

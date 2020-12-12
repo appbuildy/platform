@@ -13,16 +13,19 @@ class Shape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
-      decoration: BoxDecoration(
-          color: getThemeColor(
-            theme,
-            properties['Color'],
-          ),
-          borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value)),
+    return Opacity(
+      opacity: properties['Opacity'].value,
+      child: Container(
+        width: size.dx,
+        height: size.dy,
+        decoration: BoxDecoration(
+            color: getThemeColor(
+              theme,
+              properties['Color'],
+            ),
+            borderRadius:
+                BorderRadius.circular(properties['BorderRadiusValue'].value)),
+      ),
     );
   }
 }

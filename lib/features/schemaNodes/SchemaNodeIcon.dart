@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
@@ -13,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'SchemaNodeSpawner.dart';
 import 'common/EditPropsIconStyle.dart';
+import 'common/EditPropsOpacity.dart';
 
 class SchemaNodeIcon extends SchemaNode {
   SchemaNodeIcon({
@@ -45,6 +46,7 @@ class SchemaNodeIcon extends SchemaNode {
           'BoxShadowColor': SchemaMyThemePropProperty(
               'BoxShadowColor', parent.userActions.currentTheme.general),
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
+          'Opacity': SchemaDoubleProperty('Opacity', 1),
         };
   }
 
@@ -72,7 +74,7 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toWidget({ bool isPlayMode }) {
+  Widget toWidget({bool isPlayMode}) {
     return Shared.Icon(
       properties: properties,
       theme: parentSpawner.userActions.themeStore.currentTheme,
@@ -81,27 +83,35 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
-    return wrapInRootProps(
-      Column(children: [
-        ColumnDivider(
-          name: 'Icon Style',
-        ),
-        EditPropsIconStyle(
-          currentTheme: parentSpawner.userActions.themeStore.currentTheme,
-          changePropertyTo: changePropertyTo,
-          properties: properties,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        SelectIconList(
-          subListHeight: 470,
+  Widget toEditProps(wrapInRootProps,
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+    return wrapInRootProps(Column(children: [
+      ColumnDivider(
+        name: 'Icon Style',
+      ),
+      EditPropsIconStyle(
+        currentTheme: parentSpawner.userActions.themeStore.currentTheme,
+        changePropertyTo: changePropertyTo,
+        properties: properties,
+      ),
+      SizedBox(
+        height: 12,
+      ),
+      EditPropsOpacity(
+        value: properties['Opacity'].value,
+        onChanged: (double value) {
+          changePropertyTo(SchemaDoubleProperty('Opacity', value));
+        },
+      ),
+      SizedBox(
+        height: 12,
+      ),
+      SelectIconList(
+          subListHeight: 350,
           selectedIcon: properties['Icon'].value,
           onChanged: (IconData icon) {
             changePropertyTo(SchemaIconProperty('Icon', icon));
           })
-      ])
-    );
+    ]));
   }
 }
