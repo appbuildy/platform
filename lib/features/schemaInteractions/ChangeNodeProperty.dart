@@ -24,7 +24,7 @@ class ChangeNodeProperty extends BaseAction {
     this.node = node;
     this.oldValue = newProp.value;
     this.changeAction = changeAction;
-    this.selectNodeForEdit = selectNodeForEdit;
+    this.selectNodeForEdit = selectNodeForEdit ?? (_n, _b) => {};
   }
 
   @override
@@ -42,7 +42,8 @@ class ChangeNodeProperty extends BaseAction {
 //    if (oldValue == null) return;
     executed = true;
     propsOrActions[property.name].value = property.value;
-    selectNodeForEdit(node, true); // reselect node to updates be applied on the right bar
+    selectNodeForEdit(
+        node, true); // reselect node to updates be applied on the right bar
     schemaStore.update(node);
   }
 
@@ -55,7 +56,7 @@ class ChangeNodeProperty extends BaseAction {
   void undo() {
     if (!executed) return;
     node.properties[property.name].value = oldValue;
-    selectNodeForEdit(node);
+    selectNodeForEdit(node, false);
     schemaStore.update(node);
   }
 }

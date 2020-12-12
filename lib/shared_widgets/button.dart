@@ -13,8 +13,11 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var opacity = properties['Opacity']?.value ?? 1.0;
+    var fontOpacity = properties['fontOpacity']?.value ?? 1.0;
+
     return Opacity(
-      opacity: properties['Opacity'].value,
+      opacity: opacity,
       child: Container(
         width: size.dx,
         height: size.dy,
@@ -43,7 +46,7 @@ class Button extends StatelessWidget {
           crossAxisAlignment: properties['CrossAlignment'].value,
           children: [
             Opacity(
-              opacity: properties['FontOpacity'].value,
+              opacity: fontOpacity,
               child: Text(
                 properties['Text'].value,
                 style: TextStyle(
