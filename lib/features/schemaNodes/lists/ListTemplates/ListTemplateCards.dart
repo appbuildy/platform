@@ -28,7 +28,13 @@ class ListTemplateCards extends ListTemplate {
       onTap: () {
         onListClick();
       },
-      child: Column(
+      child: GridView.count(
+          physics: NeverScrollableScrollPhysics(),
+          childAspectRatio: 2,
+          padding: EdgeInsets.all(properties['ListItemPadding'].value),
+          crossAxisSpacing: properties['ListItemPadding'].value,
+          mainAxisSpacing: properties['ListItemPadding'].value,
+          crossAxisCount: properties['ListItemsPerRow'].value,
           children: properties['Items']
               .value
               .values
@@ -104,72 +110,60 @@ class ListTemplateCards extends ListTemplate {
     SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   }) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: properties['ListItemPadding'].value,
-          left: properties['ListItemPadding'].value,
-          right: properties['ListItemPadding'].value),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              height: properties['ListItemHeight'].value,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      properties['ItemRadiusValue'].value),
-                  color: getThemeColor(
-                    theme,
-                    properties['ItemColor'],
-                  ),
-                  boxShadow: properties['BoxShadow'].value
-                      ? [
-                          BoxShadow(
-                            color: getThemeColor(
-                              theme,
-                              properties['BoxShadowColor'],
-                            ).withOpacity(properties['BoxShadowOpacity'].value),
-                            blurRadius: properties['BoxShadowBlur'].value,
-                            offset: Offset(0.0, 2.0),
-                            spreadRadius: 0,
-                          )
-                        ]
-                      : []),
-              clipBehavior: Clip.hardEdge,
-              child: Stack(
-                children: [
-                  ...(properties['Elements'].value as ListElements)
-                      .listElements
-                      .map((ListElementNode el) {
-                    Widget renderedWidget;
-
-                    if (el.node is DataContainer && el.columnRelation != null) {
-                      final String data =
-                          item.value[el.columnRelation]?.data ?? 'no_data';
-
-                      renderedWidget = el.toWidgetWithReplacedData(
-                        data: data,
-                        schemaNodeList: schemaNodeList,
-                        isSelected: isSelected,
-                        isPlayMode: isPlayMode,
-                      );
-                    } else {
-                      renderedWidget = el.toWidget(
-                        schemaNodeList: schemaNodeList,
-                        isSelected: isSelected,
-                        isPlayMode: isPlayMode,
-                      );
-                    }
-
-                    return Positioned(
-                      top: el.node.position.dy,
-                      left: el.node.position.dx,
-                      child: renderedWidget,
-                    );
-                  })
-                ],
-              ),
-            ),
+    return Container(
+      height: properties['ListItemHeight'].value,
+      decoration: BoxDecoration(
+          borderRadius:
+              BorderRadius.circular(properties['ItemRadiusValue'].value),
+          color: getThemeColor(
+            theme,
+            properties['ItemColor'],
           ),
+          boxShadow: properties['BoxShadow'].value
+              ? [
+                  BoxShadow(
+                    color: getThemeColor(
+                      theme,
+                      properties['BoxShadowColor'],
+                    ).withOpacity(properties['BoxShadowOpacity'].value),
+                    blurRadius: properties['BoxShadowBlur'].value,
+                    offset: Offset(0.0, 2.0),
+                    spreadRadius: 0,
+                  )
+                ]
+              : []),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          ...(properties['Elements'].value as ListElements)
+              .listElements
+              .map((ListElementNode el) {
+            Widget renderedWidget;
+
+            if (el.node is DataContainer && el.columnRelation != null) {
+              final String data =
+                  item.value[el.columnRelation]?.data ?? 'no_data';
+
+              renderedWidget = el.toWidgetWithReplacedData(
+                data: data,
+                schemaNodeList: schemaNodeList,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            } else {
+              renderedWidget = el.toWidget(
+                schemaNodeList: schemaNodeList,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            }
+
+            return Positioned(
+              top: el.node.position.dy,
+              left: el.node.position.dx,
+              child: renderedWidget,
+            );
+          })
         ],
       ),
     );

@@ -20,6 +20,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/list.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
+import 'package:flutter_app/ui/Counter.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
@@ -114,6 +115,7 @@ class SchemaNodeList extends SchemaNode {
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
           'ListItemHeight': SchemaDoubleProperty('ListItemHeight', 100),
           'ListItemPadding': SchemaDoubleProperty('ListItemPadding', 0),
+          'ListItemsPerRow': SchemaIntProperty('ListItemsPerRow', 1),
         };
 
     textDebouncer = Debouncer(milliseconds: 500, prevValue: '322');
@@ -159,12 +161,13 @@ class SchemaNodeList extends SchemaNode {
               'ListItemHeight', getListItemHeightByType(listTemplateType)),
           'ListItemPadding': SchemaDoubleProperty(
               'ListItemPadding', getListItemPaddingByType(listTemplateType)),
+          'ListItemsPerRow': SchemaIntProperty('ListItemsPerRow', 1),
         };
 
     final double listItemWidth =
         this.size.dx - this.properties['ListItemPadding'].value * 2;
     final double listItemHeight = this.properties['ListItemHeight'].value -
-        this.properties['ListItemPadding'].value * 2;
+        this.properties['ListItemPadding'].value;
     final Offset listItemSize = Offset(listItemWidth, listItemHeight);
 
     ListElements listElements;
@@ -227,8 +230,7 @@ class SchemaNodeList extends SchemaNode {
 
   Offset get listElementNodeWorkspaceSize => Offset(
         this.size.dx - this.properties['ListItemPadding'].value * 2,
-        this.properties['ListItemHeight'].value -
-            this.properties['ListItemPadding'].value * 2,
+        this.properties['ListItemHeight'].value,
       );
 
   @override
@@ -617,6 +619,30 @@ class _ListToEditPropsState extends State<ListToEditProps>
             ColumnDivider(
               name: 'Row Style',
             ),
+            Row(children: [
+              SizedBox(
+                child: Text(
+                  'Items Per Row',
+                  style: MyTextStyle.regularCaption,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: Counter(
+                  initNumber:
+                      widget.schemaNodeList.properties['ListItemsPerRow'].value,
+                  counterCallback: (num) {
+                    widget.changePropertyTo(
+                        SchemaIntProperty('ListItemsPerRow', num));
+                  },
+                ),
+              )
+            ]),
+            SizedBox(
+              height: 12,
+            ),
             EditPropsColor(
               currentTheme: widget.schemaNodeList.parentSpawner.userActions
                   .themeStore.currentTheme,
@@ -651,21 +677,22 @@ class _ListToEditPropsState extends State<ListToEditProps>
             ),
             Row(children: [
               SizedBox(
-                width: 59,
+                width: 100,
                 child: Text(
                   'Padding',
                   style: MyTextStyle.regularCaption,
                 ),
               ),
               Expanded(
-                child: MyTextField(
-                    defaultValue: widget
-                        .schemaNodeList.properties['ListItemPadding'].value
-                        .toString(),
-                    onChanged: (String value) {
-                      widget.changePropertyTo(SchemaDoubleProperty(
-                          'ListItemPadding', double.parse(value)));
-                    }),
+                child: Counter(
+                  canBeZero: true,
+                  initNumber:
+                      widget.schemaNodeList.properties['ListItemPadding'].value,
+                  counterCallback: (num) {
+                    widget.changePropertyTo(SchemaDoubleProperty(
+                        'ListItemPadding', num.toDouble()));
+                  },
+                ),
               )
             ]),
             (widget.schemaNodeList.properties['Template'].value as ListTemplate)
