@@ -11,6 +11,7 @@ import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyButton.dart';
@@ -87,19 +88,20 @@ String getNodeIconPath(String nodeType) {
 }
 
 Function getSpawnFunction({SchemaNodeSpawner schemaNodeSpawner, nodeType}) {
+  var spawner = schemaNodeSpawner ?? SchemaNodeSpawner(userActions: (null));
   switch (nodeType) {
     case 'SchemaNodeType.icon':
-      return schemaNodeSpawner.spawnSchemaNodeIcon;
+      return spawner.spawnSchemaNodeIcon;
     case 'SchemaNodeType.button':
-      return schemaNodeSpawner.spawnSchemaNodeButton;
+      return spawner.spawnSchemaNodeButton;
     case 'SchemaNodeType.text':
-      return schemaNodeSpawner.spawnSchemaNodeText;
+      return spawner.spawnSchemaNodeText;
     case 'SchemaNodeType.shape':
-      return schemaNodeSpawner.spawnSchemaNodeShape;
+      return spawner.spawnSchemaNodeShape;
     case 'SchemaNodeType.image':
-      return schemaNodeSpawner.spawnSchemaNodeImage;
+      return spawner.spawnSchemaNodeImage;
     default:
-      return schemaNodeSpawner.spawnSchemaNodeButton;
+      return spawner.spawnSchemaNodeButton;
   }
 }
 
@@ -113,13 +115,14 @@ class ListElements {
 
   ListElements.withSimpleListTemplate(
       {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+    var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
 
     final double imageNodeXYOffset = 22;
     final double imageNodeWidthHeight = 56;
     final double textNodeHeight = 28;
 
-    final SchemaNode imageNode = schemaNodeSpawner.spawnSchemaNodeImage(
+    final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
       size: Offset(imageNodeWidthHeight, imageNodeWidthHeight),
       position: Offset(imageNodeXYOffset, imageNodeXYOffset),
@@ -191,7 +194,8 @@ class ListElements {
       {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
     this.allColumns = allColumns ?? [];
 
-    final SchemaNode imageNode = schemaNodeSpawner.spawnSchemaNodeImage(
+    var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
+    final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
       size: Offset(listItemSize.dx, 80),
       position: Offset(0, 0),
@@ -330,7 +334,8 @@ class ListElements {
       SchemaNodeSpawner schemaNodeSpawner) {
     final SchemaNode deserializedNode = ComponentLoadedFromJson(
             jsonComponent: jsonListElement['node'],
-            schemaNodeSpawner: schemaNodeSpawner)
+            schemaNodeSpawner:
+                schemaNodeSpawner ?? SchemaNodeSpawner(userActions: null))
         .load();
 
     return ListElementNode(
@@ -586,6 +591,7 @@ class ListElementNode {
   Widget toWidget({
     SchemaNodeList schemaNodeList,
     bool isSelected = false,
+    MyTheme theme = null,
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
@@ -614,12 +620,13 @@ class ListElementNode {
   Widget toWidgetWithReplacedData({
     @required String data,
     bool isSelected = false,
+    MyTheme theme = null,
     SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
-      return (this.node as DataContainer)
-          .toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode);
+      return (this.node as DataContainer).toWidgetWithReplacedData(
+          theme: theme, data: data, isPlayMode: isPlayMode);
     }
 
     return GestureDetector(
@@ -629,14 +636,15 @@ class ListElementNode {
         child: SchemaNode.renderWithSelected(
             node: node,
             onPanEnd: (_) => {},
+            theme: theme,
             repositionAndResize: this.repositionAndResize,
             currentScreenWorkspaceSize:
                 schemaNodeList.listElementNodeWorkspaceSize,
             isPlayMode: isPlayMode,
             isSelected: schemaNodeList.selectedListElementNode?.id == this.id,
-            toWidgetFunction: ({bool isPlayMode}) => (this.node
-                    as DataContainer)
-                .toWidgetWithReplacedData(data: data, isPlayMode: isPlayMode),
+            toWidgetFunction: ({bool isPlayMode}) =>
+                (this.node as DataContainer).toWidgetWithReplacedData(
+                    theme: theme, data: data, isPlayMode: isPlayMode),
             isMagnetInteraction: false,
             selectNodeForEdit: (_) {
               schemaNodeList.selectListElementNode(this);

@@ -103,8 +103,13 @@ class WidgetDecorator extends StatelessWidget {
   }
 
   _onTap(context) {
-    var fun = onTap ?? (context) => () => {};
-    return fun(context);
+    try {
+      var fun = onTap ?? (context) => () => {};
+      return fun(context);
+    } catch (e) {
+      print('failed to load onTap');
+      return () => {};
+    }
   }
 
   @override

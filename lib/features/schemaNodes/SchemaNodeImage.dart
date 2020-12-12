@@ -7,6 +7,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/image.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
@@ -79,7 +80,8 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
     return Shared.Image(properties: this.properties, size: this.size);
   }
 
-  Widget toWidgetWithReplacedData({bool isPlayMode, String data}) {
+  Widget toWidgetWithReplacedData(
+      {bool isPlayMode, String data, MyTheme theme = null}) {
     var properties = this._copyProperties();
     properties['Url'] = SchemaStringProperty('Url', data ?? 'no_data');
 

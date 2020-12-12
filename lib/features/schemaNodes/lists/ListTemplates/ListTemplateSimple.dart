@@ -22,6 +22,8 @@ class ListTemplateSimple extends ListTemplate {
     SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
+    print(schemaNodeList.properties);
+    print('ALL PROPS');
     return GestureDetector(
       onTap: () {
         print('ListTemplateSimple');

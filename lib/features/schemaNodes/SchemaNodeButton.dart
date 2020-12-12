@@ -19,6 +19,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/button.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
 
@@ -105,13 +106,14 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     );
   }
 
-  Widget toWidgetWithReplacedData({bool isPlayMode, String data}) {
+  Widget toWidgetWithReplacedData(
+      {bool isPlayMode, String data, MyTheme theme = null}) {
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
     return Shared.Button(
       properties: properties,
-      theme: parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? parentSpawner.userActions.themeStore.currentTheme,
       size: size,
     );
   }

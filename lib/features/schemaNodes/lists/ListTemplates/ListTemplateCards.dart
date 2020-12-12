@@ -153,21 +153,21 @@ class ListTemplateCards extends ListTemplate {
             if (el.node is DataContainer && el.columnRelation != null) {
               final String data =
                   item.value[el.columnRelation]?.data ?? 'no_data';
-
-              renderedWidget = el.toWidgetWithReplacedData(
-                data: data,
-                schemaNodeList: schemaNodeList,
-                isSelected: isSelected,
-                isPlayMode: isPlayMode,
-              );
-            } else {
-              renderedWidget = el.toWidget(
-                schemaNodeList: schemaNodeList,
-                isSelected: isSelected,
-                isPlayMode: isPlayMode,
-              );
-            }
-
+                      renderedWidget = el.toWidgetWithReplacedData(
+                        data: data,
+                        theme: theme,
+                        schemaNodeList: schemaNodeList,
+                        isSelected: isSelected,
+                        isPlayMode: isPlayMode,
+                      );
+                    } else {
+                      renderedWidget = el.toWidget(
+                        schemaNodeList: schemaNodeList,
+                        theme: theme,
+                        isSelected: isSelected,
+                        isPlayMode: isPlayMode,
+                      );
+                    }
             return Positioned(
               top: el.node.position.dy,
               left: el.node.position.dx,
