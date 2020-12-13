@@ -22,15 +22,14 @@ class ListTemplateSimple extends ListTemplate {
     SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
-    print(schemaNodeList.properties);
-    print('ALL PROPS');
     return GestureDetector(
       onTap: () {
-        print('ListTemplateSimple');
-        schemaNodeList.onListClick();
+        onListClick();
       },
       child: Column(
-          children: schemaNodeList.properties['Items'].value.values
+          children: properties['Items']
+              .value
+              .values
               .map((item) {
                 if (isPlayMode) {
                   return GestureDetector(
