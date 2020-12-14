@@ -73,3 +73,17 @@ double getListItemPaddingByType(ListTemplateType type) {
     return 0.0;
   }
 }
+
+double getAspectRatio(
+    {Offset size, Map<String, SchemaNodeProperty> properties}) {
+  final width = size.dx - properties['ListItemPadding'].value * 2;
+  final additionalPaddings = (properties['ListItemsPerRow'].value - 1) *
+      properties['ListItemPadding'].value;
+  final height = properties['ListItemHeight'].value;
+
+  final aspectRatio =
+      ((width - additionalPaddings) / properties['ListItemsPerRow'].value) /
+          height;
+
+  return aspectRatio;
+}

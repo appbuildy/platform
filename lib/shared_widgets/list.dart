@@ -30,24 +30,6 @@ class List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isPlayMode || isBuild) {
-      return Container(
-        width: size.dx,
-        height: size.dy,
-        child: SingleChildScrollView(
-          child: (properties['Template'].value as ListTemplate).toWidget(
-            schemaNodeList: schemaNodeList,
-            size: size,
-            onListClick: onListClick,
-            theme: theme,
-            properties: properties,
-            isSelected: isSelected,
-            isPlayMode: isPlayMode,
-          ),
-        ),
-      );
-    }
-
     return Container(
       width: size.dx,
       height: size.dy,
@@ -58,7 +40,7 @@ class List extends StatelessWidget {
         theme: theme,
         properties: properties,
         isSelected: isSelected,
-        isPlayMode: isPlayMode,
+        isPlayMode: isPlayMode || isBuild,
       ),
     );
   }

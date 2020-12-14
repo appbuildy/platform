@@ -22,11 +22,21 @@ class ListTemplateSimple extends ListTemplate {
     SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
+    final aspectRatio = getAspectRatio(size: size, properties: properties);
+
     return GestureDetector(
       onTap: () {
         onListClick();
       },
-      child: Column(
+      child: GridView.count(
+          physics: isPlayMode
+              ? AlwaysScrollableScrollPhysics()
+              : NeverScrollableScrollPhysics(),
+          childAspectRatio: aspectRatio,
+          padding: EdgeInsets.all(properties['ListItemPadding'].value),
+          crossAxisSpacing: properties['ListItemPadding'].value,
+          mainAxisSpacing: properties['ListItemPadding'].value,
+          crossAxisCount: properties['ListItemsPerRow'].value,
           children: properties['Items']
               .value
               .values
@@ -92,75 +102,54 @@ class ListTemplateSimple extends ListTemplate {
     SchemaNodeList schemaNodeList,
     @required bool isPlayMode,
   }) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: properties['ListItemPadding'].value,
-          left: properties['ListItemPadding'].value,
-          right: properties['ListItemPadding'].value),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              children: [
-                Container(
-                  height: properties['ListItemHeight'].value,
-                  decoration: BoxDecoration(
-                    color: getThemeColor(
-                      theme,
-                      properties['ItemColor'],
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      ...(properties['Elements'].value as ListElements)
-                          .listElements
-                          .map((ListElementNode el) {
-                        Widget renderedWidget;
-
-                        if (el.node is DataContainer &&
-                            el.columnRelation != null) {
-                          final String data =
-                              item.value[el.columnRelation]?.data ?? 'no_data';
-
-                          renderedWidget = el.toWidgetWithReplacedData(
-                            data: data,
-                            schemaNodeList: schemaNodeList,
-                            isSelected: isSelected,
-                            isPlayMode: isPlayMode,
-                          );
-                        } else {
-                          renderedWidget = el.toWidget(
-                            schemaNodeList: schemaNodeList,
-                            isSelected: isSelected,
-                            isPlayMode: isPlayMode,
-                          );
-                        }
-
-                        return Positioned(
-                          top: el.node.position.dy,
-                          left: el.node.position.dx,
-                          child: renderedWidget,
-                        );
-                      })
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 1,
-                        color: getThemeColor(
-                          theme,
-                          properties['SeparatorsColor'],
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+    return Container(
+      height: properties['ListItemHeight'].value,
+      decoration: BoxDecoration(
+        color: getThemeColor(
+          theme,
+          properties['ItemColor'],
+        ),
+        border: Border(
+          bottom: BorderSide(
+            width: 1,
+            color: getThemeColor(
+              theme,
+              properties['SeparatorsColor'],
             ),
           ),
+        ),
+      ),
+      child: Stack(
+        children: [
+          ...(properties['Elements'].value as ListElements)
+              .listElements
+              .map((ListElementNode el) {
+            Widget renderedWidget;
+
+            if (el.node is DataContainer && el.columnRelation != null) {
+              final String data =
+                  item.value[el.columnRelation]?.data ?? 'no_data';
+
+              renderedWidget = el.toWidgetWithReplacedData(
+                data: data,
+                schemaNodeList: schemaNodeList,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            } else {
+              renderedWidget = el.toWidget(
+                schemaNodeList: schemaNodeList,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            }
+
+            return Positioned(
+              top: el.node.position.dy,
+              left: el.node.position.dx,
+              child: renderedWidget,
+            );
+          })
         ],
       ),
     );

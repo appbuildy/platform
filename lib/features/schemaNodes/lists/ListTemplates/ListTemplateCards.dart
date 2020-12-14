@@ -25,21 +25,16 @@ class ListTemplateCards extends ListTemplate {
     SchemaNodeList schemaNodeList,
     bool isPlayMode = false,
   }) {
-    final width = size.dx - properties['ListItemPadding'].value * 2;
-    final additionalPaddings = (properties['ListItemsPerRow'].value - 1) *
-        properties['ListItemPadding'].value;
-    final height = properties['ListItemHeight'].value;
-
-    final aspectRatio =
-        ((width - additionalPaddings) / properties['ListItemsPerRow'].value) /
-            height;
+    final aspectRatio = getAspectRatio(size: size, properties: properties);
 
     return GestureDetector(
       onTap: () {
         onListClick();
       },
       child: GridView.count(
-          physics: NeverScrollableScrollPhysics(),
+          physics: isPlayMode
+              ? AlwaysScrollableScrollPhysics()
+              : NeverScrollableScrollPhysics(),
           childAspectRatio: aspectRatio,
           padding: EdgeInsets.all(properties['ListItemPadding'].value),
           crossAxisSpacing: properties['ListItemPadding'].value,
@@ -153,21 +148,21 @@ class ListTemplateCards extends ListTemplate {
             if (el.node is DataContainer && el.columnRelation != null) {
               final String data =
                   item.value[el.columnRelation]?.data ?? 'no_data';
-                      renderedWidget = el.toWidgetWithReplacedData(
-                        data: data,
-                        theme: theme,
-                        schemaNodeList: schemaNodeList,
-                        isSelected: isSelected,
-                        isPlayMode: isPlayMode,
-                      );
-                    } else {
-                      renderedWidget = el.toWidget(
-                        schemaNodeList: schemaNodeList,
-                        theme: theme,
-                        isSelected: isSelected,
-                        isPlayMode: isPlayMode,
-                      );
-                    }
+              renderedWidget = el.toWidgetWithReplacedData(
+                data: data,
+                theme: theme,
+                schemaNodeList: schemaNodeList,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            } else {
+              renderedWidget = el.toWidget(
+                schemaNodeList: schemaNodeList,
+                theme: theme,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            }
             return Positioned(
               top: el.node.position.dy,
               left: el.node.position.dx,
