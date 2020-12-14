@@ -147,7 +147,8 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
           break;
         case 'ListElementsProperty':
           {
-            return SchemaListElementsProperty.fromJson(targetJson, schemaNodeSpawner);
+            return SchemaListElementsProperty.fromJson(
+                targetJson, schemaNodeSpawner);
           }
           break;
         case 'SchemaListTemplateProperty':
@@ -160,8 +161,9 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
             print("No .fromJson for $targetJson");
           }
       }
-    } catch (e) {
-      print("Failed to deserialize $targetJson");
+    } catch (e, stacktrace) {
+      print("Failed to deserialize SchemaNode: $targetJson");
+      print(stacktrace);
       throw (e);
     }
     return null;

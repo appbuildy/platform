@@ -14,6 +14,7 @@ abstract class ListTemplate {
   Widget toWidget({
     @required Function onListClick, // should mock it in skeleton
     @required MyTheme theme,
+    @required Offset size,
     @required Map<String, SchemaNodeProperty> properties,
     @required bool isSelected,
     SchemaNodeList schemaNodeList,
@@ -25,8 +26,6 @@ abstract class ListTemplate {
     Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo,
     MyTheme currentTheme,
   });
-
-  Offset padding = Offset(0, 0);
 
   Widget widgetFor({
     @required SchemaListItemsProperty item,
@@ -53,4 +52,38 @@ double getListHeightByType(ListTemplateType type) {
   } else {
     return 195.0;
   }
+}
+
+double getListItemHeightByType(ListTemplateType type) {
+  if (type == ListTemplateType.simple) {
+    return 100.0;
+  } else if (type == ListTemplateType.cards) {
+    return 150.0;
+  } else {
+    return 100.0;
+  }
+}
+
+double getListItemPaddingByType(ListTemplateType type) {
+  if (type == ListTemplateType.simple) {
+    return 0.0;
+  } else if (type == ListTemplateType.cards) {
+    return 15.0;
+  } else {
+    return 0.0;
+  }
+}
+
+double getAspectRatio(
+    {Offset size, Map<String, SchemaNodeProperty> properties}) {
+  final width = size.dx - properties['ListItemPadding'].value * 2;
+  final additionalPaddings = (properties['ListItemsPerRow'].value - 1) *
+      properties['ListItemPadding'].value;
+  final height = properties['ListItemHeight'].value;
+
+  final aspectRatio =
+      ((width - additionalPaddings) / properties['ListItemsPerRow'].value) /
+          height;
+
+  return aspectRatio;
 }

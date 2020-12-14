@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
@@ -10,6 +10,7 @@ import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
 
 import 'SchemaNodeSpawner.dart';
+import 'common/EditPropsOpacity.dart';
 
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
@@ -31,6 +32,7 @@ class SchemaNodeShape extends SchemaNode {
           'Color': SchemaMyThemePropProperty(
               'Color', parent.userActions.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
+          'Opacity': SchemaDoubleProperty('Opacity', 1),
         };
   }
 
@@ -58,7 +60,7 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toWidget({ bool isPlayMode }) {
+  Widget toWidget({bool isPlayMode}) {
     return Shared.Shape(
       properties: properties,
       theme: parentSpawner.userActions.themeStore.currentTheme,
@@ -67,31 +69,38 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
-    return wrapInRootProps(
-      Column(
-        children: [
-          ColumnDivider(
-            name: 'Shape Style',
-          ),
-          EditPropsColor(
-            currentTheme: parentSpawner.userActions.themeStore.currentTheme,
-            properties: properties,
-            propName: 'Color',
-            changePropertyTo: changePropertyTo,
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          EditPropsCorners(
-            value: properties['BorderRadiusValue'].value,
-            onChanged: (int value) {
-              changePropertyTo(
-                  SchemaIntProperty('BorderRadiusValue', value));
-            },
-          )
-        ],
-      )
-    );
+  Widget toEditProps(wrapInRootProps,
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+    return wrapInRootProps(Column(
+      children: [
+        ColumnDivider(
+          name: 'Shape Style',
+        ),
+        EditPropsColor(
+          currentTheme: parentSpawner.userActions.themeStore.currentTheme,
+          properties: properties,
+          propName: 'Color',
+          changePropertyTo: changePropertyTo,
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        EditPropsCorners(
+          value: properties['BorderRadiusValue'].value,
+          onChanged: (int value) {
+            changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+          },
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        EditPropsOpacity(
+          value: properties['Opacity'].value,
+          onChanged: (double value) {
+            changePropertyTo(SchemaDoubleProperty('Opacity', value));
+          },
+        ),
+      ],
+    ));
   }
 }
