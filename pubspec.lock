@@ -204,13 +204,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.11"
-  flinq:
-    dependency: transitive
-    description:
-      name: flinq
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -223,13 +216,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.4"
-  flutter_google_maps:
-    dependency: "direct main"
-    description:
-      name: flutter_google_maps
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
   flutter_mobx:
     dependency: "direct main"
     description:
@@ -282,13 +268,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  google_directions_api:
-    dependency: transitive
-    description:
-      name: google_directions_api
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.0"
   google_maps:
     dependency: transitive
     description:
@@ -317,13 +296,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0+8"
-  google_polyline_algorithm:
-    dependency: transitive
-    description:
-      name: google_polyline_algorithm
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   graphs:
     dependency: transitive
     description:
@@ -707,13 +679,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  uuid:
-    dependency: transitive
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.2"
   vector_math:
     dependency: transitive
     description:

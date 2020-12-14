@@ -77,6 +77,9 @@ abstract class _SchemaStore with Store {
   void update(SchemaNode schemaNode) {
     final index =
         components.indexWhere((element) => element.id == schemaNode.id);
+
+    if (index < 0) return;
+
     components.replaceRange(index, index + 1, [schemaNode]);
   }
 
