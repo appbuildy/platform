@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
@@ -95,9 +97,11 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           'TargetLongitude': SchemaDoubleProperty('TargetLongitude', _kLake.target.longitude),
           'Tilt': SchemaDoubleProperty('Tilt', _kLake.tilt),
           'Zoom': SchemaDoubleProperty('Zoom', _kLake.zoom),
-          'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.arrowDown),
+          'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.mapMarkerAlt),
           'IconColor': SchemaMyThemePropProperty('IconColor', parent.userActions.currentTheme.primary),
         };
+
+    this.setBitmapDescriptor();
   }
 
   static final CameraPosition _kLake = CameraPosition(
@@ -153,7 +157,7 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     ));
   }
 
-  UniqueKey uniqueKey = UniqueKey();
+  GlobalKey mapKey = GlobalKey();
 
   Marker get marker => Marker(
     position: latitudeLongitude,
@@ -176,7 +180,9 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
   void setBitmapDescriptor([IconData newIcon]) async {
     IconData icon = newIcon == null ? this.properties['Icon'].value : newIcon;
 
-    final pictureRecorder = PictureRecorder();
+    if (icon == null) return;
+
+    final pictureRecorder = ui.PictureRecorder();
     final canvas = Canvas(pictureRecorder);
 
     final textPainter = TextPainter(textDirection: TextDirection.ltr);
@@ -197,43 +203,56 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
 
     final picture = pictureRecorder.endRecording();
     final image = await picture.toImage(48, 48);
-    final bytes = await image.toByteData(format: ImageByteFormat.png);
+    final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
 
     this._bitmapDescriptor = BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+
+    this._markers = { marker };
+
+    this.parentSpawner.userActions.rerenderNode();
   }
+
+  Uint8List snapshot;
+
+  // void screenShot() async {
+  //   RenderRepaintBoundary boundary = await mapKey.currentContext.findRenderObject();
+  //   print('here');
+  //   ui.Image image = await boundary.toImage();
+  //   print('here2');
+  //   ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //   print('here3');
+  //
+  //   print(byteData);
+  // }
 
   @override
   Widget toWidget({ bool isPlayMode }) {
-    if (this._markers == null) {
-      this._markers = { marker };
-    }
 
-    if (this._bitmapDescriptor == null) {
-      this.setBitmapDescriptor(FontAwesomeIcons.mapMarkerAlt);
-    }
-
-    return Container(
-      key: uniqueKey,
-      width: this.size.dx,
-      height: this.size.dy,
-      child: GoogleMap(
-        mapType: MapType.normal,
-        zoomControlsEnabled: false,
-        zoomGesturesEnabled: false,
-        tiltGesturesEnabled: false,
-        scrollGesturesEnabled: false,
-        rotateGesturesEnabled: false,
-        markers: this._markers,
-        initialCameraPosition: CameraPosition(
-          bearing: this.properties['Bearing'].value,
-          target: LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value),
-          tilt: this.properties['Tilt'].value,
-          zoom: this.properties['Zoom'].value
+    return RepaintBoundary(
+      key: mapKey,
+      child: Container(
+        width: this.size.dx,
+        height: this.size.dy,
+        child: GoogleMap(
+          mapType: MapType.normal,
+          zoomControlsEnabled: false,
+          zoomGesturesEnabled: false,
+          tiltGesturesEnabled: false,
+          scrollGesturesEnabled: false,
+          rotateGesturesEnabled: false,
+          markers: this._markers,
+          initialCameraPosition: CameraPosition(
+            bearing: this.properties['Bearing'].value,
+            target: LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value),
+            tilt: this.properties['Tilt'].value,
+            zoom: this.properties['Zoom'].value
+          ),
+          onCameraMove: this.updateCameraPosition,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+            //screenShot();
+          },
         ),
-        onCameraMove: this.updateCameraPosition,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
       ),
     );
   }
@@ -241,7 +260,7 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
   LatLng get latitudeLongitude => LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value);
 
   @override
-  Widget toWidgetWithReplacedData({bool isPlayMode, String data}) {
+  Widget toWidgetWithReplacedData({bool isPlayMode, String data, MyTheme theme = null}) {
     // TODO: implement toWidgetWithReplacedData
     return this.toWidget(isPlayMode: isPlayMode);
   }
@@ -296,14 +315,14 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           },
           propName: 'IconColor',
         ),
-        // SelectIconList(
-        //     subListHeight: 470,
-        //     selectedIcon: this.properties['Icon'].value,
-        //     onChanged: (IconData icon) async {
-        //       await setBitmapDescriptor(icon);
-        //       updateMarkers();
-        //       changePropertyTo(SchemaIconProperty('Icon', icon));
-        //     })
+        SelectIconList(
+            subListHeight: 470,
+            selectedIcon: this.properties['Icon'].value,
+            onChanged: (IconData icon) async {
+              await setBitmapDescriptor(icon);
+              updateMarkers();
+              changePropertyTo(SchemaIconProperty('Icon', icon));
+            })
       ]),
     );
   }
