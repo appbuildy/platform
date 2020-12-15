@@ -18,25 +18,30 @@ class ToolboxHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pad = padding ??
-        const EdgeInsets.only(
-          left: 20.0,
-          right: 10.0,
-        );
-
-    return Container(
-      height: headerHeight,
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
-      child: Padding(
-        padding: pad,
-        child: Row(
-          children: [
-            leftWidget ?? Container(height: 38, width: 38),
+    return SizedBox(
+      height: kHeaderHeight,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+            width: 1,
+            color: MyColors.gray,
+          )),
+        ),
+        child: Padding(
+          padding: padding ??
+              const EdgeInsets.only(
+                left: 20.0,
+                right: 10.0,
+              ),
+          child: Row(children: [
+            leftWidget ?? SizedBox(height: 38, width: 38),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
-                child: Center(
+              child: Align(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 20.0,
+                  ),
                   child: Text(
                     title,
                     style: MyTextStyle.mediumTitle,
@@ -44,12 +49,8 @@ class ToolboxHeader extends StatelessWidget {
                 ),
               ),
             ),
-            rightWidget ??
-                Container(
-                  height: 38,
-                  width: 38,
-                ),
-          ],
+            rightWidget ?? SizedBox(height: 38, width: 38),
+          ]),
         ),
       ),
     );

@@ -6,7 +6,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
-import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
+import 'package:flutter_app/shared_widgets/shared_widgets.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 
@@ -58,8 +58,11 @@ class SchemaNodeShape extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode, UserAction userActions}) {
-    return Shared.Shape(
-        properties: properties, theme: themeStore.currentTheme, size: size);
+    return SharedShape(
+      properties: properties,
+      theme: themeStore.currentTheme,
+      size: size,
+    );
   }
 
   @override

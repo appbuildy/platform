@@ -1,43 +1,45 @@
-import 'package:flutter/cupertino.dart' as Cupertino;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+part of 'shared_widgets.dart';
 
-class Image extends StatelessWidget {
-  BoxFit getFitOnString(String fit) {
-    if (fit == 'Contain') {
-      return BoxFit.contain;
-    } else if (fit == 'Cover') {
+/// convert string value to image fit
+BoxFit _boxfitFromString(String fit) {
+  switch (fit) {
+    case 'Cover':
       return BoxFit.cover;
-    } else if (fit == 'Fill') {
+    case 'Fill':
       return BoxFit.fill;
-    } else if (fit == 'None') {
+    case 'None':
       return BoxFit.none;
-    }
+    case 'Contain':
+    default:
+      return BoxFit.contain;
   }
+}
 
-  const Image({Key key, this.theme, this.size, this.properties})
+class SharedImage extends StatelessWidget {
+  const SharedImage({Key key, this.theme, this.size, this.properties})
       : super(key: key);
 
   final Map<String, SchemaNodeProperty> properties;
-  final Offset size;
   final MyTheme theme;
+  final Offset size;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: size.dx,
-      height: size.dy,
+    return DecoratedBox(
       decoration: BoxDecoration(
-          borderRadius:
-              BorderRadius.circular(properties['BorderRadiusValue'].value)),
+        borderRadius: BorderRadius.circular(
+          properties['BorderRadiusValue'].value,
+        ),
+      ),
       child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(properties['BorderRadiusValue'].value),
-        child: Cupertino.Image.network(
+        borderRadius: BorderRadius.circular(
+          properties['BorderRadiusValue'].value,
+        ),
+        child: Image.network(
           properties['Url'].value,
-          fit: getFitOnString(properties['Fit'].value),
+          height: size.dx,
+          width: size.dy,
+          fit: _boxfitFromString(properties['Fit'].value),
         ),
       ),
     );

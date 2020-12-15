@@ -45,7 +45,7 @@ class _AppLayoutState extends State<AppLayout> {
   }
 
   void _handleFocusChange() {
-    if (_focusNode.hasFocus != _focused) {
+    if (mounted && _focusNode.hasFocus != _focused) {
       setState(() {
         _focused = _focusNode.hasFocus;
       });
@@ -53,7 +53,7 @@ class _AppLayoutState extends State<AppLayout> {
   }
 
   void selectState(ToolboxStates newState) {
-    if (newState != toolboxState) {
+    if (mounted && newState != toolboxState) {
       setState(() {
         toolboxState = newState;
       });
@@ -141,7 +141,7 @@ class _AppLayoutState extends State<AppLayout> {
             selectState(ToolboxStates.layout);
           },
           userActions: widget.userActions,
-          selectPlayModeToFalse: () {
+          setPlayModeToFalse: () {
             if (isPlayMode == true) {
               setState(() {
                 isPlayMode = false;
@@ -158,97 +158,81 @@ class _AppLayoutState extends State<AppLayout> {
       onTap: () {
         _focusNode.requestFocus();
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Toolbox(
+              toolboxState: toolboxState,
+              selectState: selectState,
+              userActions: widget.userActions),
           Expanded(
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Toolbox(
-                    toolboxState: toolboxState,
-                    selectState: selectState,
-                    userActions: widget.userActions),
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AppActions(userActions: widget.userActions),
-                      Expanded(
-                        child: Container(
-                          color: MyColors.lightGray,
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Align(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SingleChildScrollView(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 20.0,
-                                            bottom: 20,
-                                            left: 30,
-                                            right: 30),
-                                        child: AppPreview(
-                                          focusNode: _focusNode,
-                                          isPlayMode: isPlayMode,
-                                          selectStateToLayout: () {
-                                            selectState(ToolboxStates.layout);
-                                          },
-                                          userActions: widget.userActions,
-                                          selectPlayModeToFalse: () {
-                                            if (isPlayMode == true) {
-                                              setState(() {
-                                                isPlayMode = false;
-                                              });
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                  bottom: 13.0,
-                                  left: 13.0,
-                                  child: Container(
-                                    width: 196,
-                                    child: SingleChildScrollView(
-                                      child: PlayModeSwitch(
-                                          isPlayMode: isPlayMode,
-                                          selectPlayMode: (bool newIsPlayMode) {
-                                            setState(() {
-                                              isPlayMode = newIsPlayMode;
-
-                                              if (newIsPlayMode) {
-                                                widget.userActions
-                                                    .selectNodeForEdit(null);
-                                              }
-                                            });
-                                          }),
-                                    ),
-                                  ))
-                            ],
-                          ),
+                AppActions(userActions: widget.userActions),
+                Expanded(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: MyColors.lightGray,
+                    ),
+                    child: Stack(
+                      // clipBehavior: Clip.none,
+                      children: [
+                        Positioned.fill(
+                          bottom: 13.0 + 36 + 24,
+                          top: 13,
+                          left: 13,
+                          right: 13,
+                          child: Align(
+                              child: SingleChildScrollView(
+                            physics: NeverScrollableScrollPhysics(),
+                            child: AppPreview(
+                              focusNode: _focusNode,
+                              isPlayMode: isPlayMode,
+                              selectStateToLayout: () {
+                                selectState(ToolboxStates.layout);
+                              },
+                              userActions: widget.userActions,
+                              setPlayModeToFalse: () {
+                                if (isPlayMode == true) {
+                                  setState(() {
+                                    isPlayMode = false;
+                                  });
+                                }
+                              },
+                            ),
+                          )),
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          bottom: 13.0,
+                          right: 13.0,
+                          width: 180,
+                          height: 36,
+                          child: PlayModeSwitch(
+                              isPlayMode: isPlayMode,
+                              selectPlayMode: (bool newIsPlayMode) {
+                                if (isPlayMode != newIsPlayMode)
+                                  setState(() {
+                                    isPlayMode = newIsPlayMode;
+
+                                    if (newIsPlayMode) {
+                                      widget.userActions
+                                          .selectNodeForEdit(null);
+                                    }
+                                  });
+                              }),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  child: RightToolbox(
-                      toolboxState: toolboxState,
-                      selectState: selectState,
-                      userActions: widget.userActions),
-                )
               ],
             ),
-          )
+          ),
+          RightToolbox(
+              toolboxState: toolboxState,
+              selectState: selectState,
+              userActions: widget.userActions),
         ],
       ),
     );

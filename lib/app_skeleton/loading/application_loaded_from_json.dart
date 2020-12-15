@@ -23,7 +23,7 @@ class ApplicationLoadedFromJson implements IApplicationLoad {
     Map<RandomKey, Screen> map = {};
     jsonApp['canvas']['screens'].forEach((screen) {
       var deserializedScreen =
-          Screen.fromJson(screen, bottomNavigation: bottomNavigation);
+          Screen.fromJson(screen, bottomNavigator: bottomNavigation);
       map[deserializedScreen.id] = deserializedScreen;
     });
     return map;

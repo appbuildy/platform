@@ -1,19 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-
-import 'button.dart';
+part of 'shared_widgets.dart';
 
 class SharedWidget {
-  static Button button({text = 'test'}) {
+  static SharedButton button({text = 'test'}) {
     var theme = MyThemes.allThemes['blue'];
     Map<String, SchemaNodeProperty> properties = {
       'Text': SchemaStringProperty('Text', text ?? 'Button'),
@@ -38,6 +26,7 @@ class SharedWidget {
       'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.5),
     };
 
-    return Button(properties: properties, size: Offset(50, 100), theme: theme);
+    return SharedButton(
+        properties: properties, size: Offset(50, 100), theme: theme);
   }
 }

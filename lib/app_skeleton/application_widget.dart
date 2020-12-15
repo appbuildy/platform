@@ -71,13 +71,7 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
   }
 
   Future<void> initPreview() async {
-    // try {
-    // Widget applicationLoad = await preview.load();
-    // setState(() {
-    //   application = applicationLoad;
-    // });
     endLoadingAnimation();
-    // } catch (e) {}
   }
 
   @override

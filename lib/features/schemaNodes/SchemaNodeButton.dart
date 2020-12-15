@@ -18,7 +18,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentP
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
-import 'package:flutter_app/shared_widgets/button.dart' as Shared;
+import 'package:flutter_app/shared_widgets/shared_widgets.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/AppThemeStore.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
@@ -97,8 +97,11 @@ class SchemaNodeButton extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode, UserAction userActions}) {
-    return Shared.Button(
-        properties: properties, theme: themeStore.currentTheme, size: size);
+    return SharedButton(
+      properties: properties,
+      theme: themeStore.currentTheme,
+      size: size,
+    );
   }
 
   @override

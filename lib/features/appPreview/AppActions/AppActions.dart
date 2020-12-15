@@ -138,7 +138,7 @@ class AppActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: headerHeight,
+      height: kHeaderHeight,
       decoration: BoxDecoration(
           color: MyColors.white,
           border: Border(

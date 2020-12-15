@@ -1,11 +1,7 @@
-import 'package:flutter/cupertino.dart' as Cupertino;
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/utils/getThemeColor.dart';
+part of 'shared_widgets.dart';
 
-class Text extends StatelessWidget {
-  const Text({Key key, this.theme, this.size, this.properties})
+class SharedText extends StatelessWidget {
+  const SharedText({Key key, this.theme, this.size, this.properties})
       : super(key: key);
 
   final Map<String, SchemaNodeProperty> properties;
@@ -23,12 +19,13 @@ class Text extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(2.0),
-            child: Cupertino.Text(
+            child: Text(
               properties['Text'].value,
               style: TextStyle(
-                  fontSize: properties['FontSize'].value,
-                  fontWeight: properties['FontWeight'].value,
-                  color: getThemeColor(theme, properties['FontColor'])),
+                fontSize: properties['FontSize'].value,
+                fontWeight: properties['FontWeight'].value,
+                color: getThemeColor(theme, properties['FontColor']),
+              ),
             ),
           ),
         ],

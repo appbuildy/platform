@@ -42,8 +42,7 @@ class _PlayModeSwitchState extends State<PlayModeSwitch>
   Widget build(BuildContext context) {
     return Cursor(
       cursor: CursorEnum.pointer,
-      child: Container(
-          height: 36,
+      child: DecoratedBox(
           decoration: BoxDecoration(
               gradient: MyGradients.mediumBlue,
               borderRadius: BorderRadius.circular(6)),
@@ -52,80 +51,97 @@ class _PlayModeSwitchState extends State<PlayModeSwitch>
               AnimatedBuilder(
                 animation: _animation,
                 builder: (context, _) {
-                  return Padding(
-                    padding: const EdgeInsets.all(2.0),
-                    child: Transform(
-                      transform: Matrix4.identity()
-                        ..translate(_animation.value * 96),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: MyColors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: MyColors.black.withOpacity(0.3),
-                                    spreadRadius: 0,
-                                    blurRadius: 6,
-                                    offset: Offset(0, 2))
-                              ],
-                              borderRadius: BorderRadius.circular(6)),
-                          width: 96),
+                  return Transform(
+                    transform: Matrix4.identity()
+                      ..translate(_animation.value * 90),
+                    child: Container(
+                      margin: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: MyColors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: MyColors.black.withOpacity(0.3),
+                            spreadRadius: 0,
+                            blurRadius: 6,
+                            offset: Offset(0, 2),
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      width: 88,
                     ),
                   );
                 },
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        widget.selectPlayMode(false);
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Center(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.network(
-                                'assets/icons/meta/btn-mode-select.svg'),
-                            SizedBox(
-                              width: 6,
-                            ),
-                            Text(
-                              'Select',
-                              style: MyTextStyle.regularTitle,
-                            ),
-                          ],
-                        )),
+              Positioned.fill(
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          widget.selectPlayMode(false);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Image.network(
+                                'assets/icons/meta/btn-mode-select.svg',
+                                height: 18,
+                                width: 18,
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Select',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: MyTextStyle.regularTitle,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        widget.selectPlayMode(true);
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: Center(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Play',
-                              style: MyTextStyle.regularTitle,
-                            ),
-                            SizedBox(
-                              width: 6,
-                            ),
-                            Image.network(
-                                'assets/icons/meta/btn-mode-play.svg'),
-                          ],
-                        )),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          widget.selectPlayMode(true);
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  'Play',
+                                  style: MyTextStyle.regularTitle,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 6,
+                              ),
+                              Image.network(
+                                'assets/icons/meta/btn-mode-play.svg',
+                                height: 18,
+                                width: 18,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               )
             ],
           )),

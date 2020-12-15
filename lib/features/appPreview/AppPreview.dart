@@ -13,17 +13,19 @@ enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
 
 class AppPreview extends StatefulWidget {
   final UserAction userActions;
+  final FocusNode focusNode;
   final bool isPlayMode;
   final bool isPreview;
-  final Function selectPlayModeToFalse;
-  final Function selectStateToLayout;
-  final FocusNode focusNode;
+
+  /// disable play mode
+  final VoidCallback setPlayModeToFalse;
+  final VoidCallback selectStateToLayout;
 
   const AppPreview({
     Key key,
     this.userActions,
     this.isPlayMode,
-    this.selectPlayModeToFalse,
+    this.setPlayModeToFalse,
     this.isPreview = false,
     this.selectStateToLayout,
     this.focusNode,
@@ -44,7 +46,7 @@ class _AppPreviewState extends State<AppPreview> {
 
   Widget renderWithSelected({SchemaNode node}) {
     final isSelected = userActions.selectedNode() != null &&
-        userActions.selectedNode().id == node.id;
+        userActions.selectedNode().id == node?.id;
 
     final List<Widget> dots = isSelected
         ? [
@@ -220,7 +222,7 @@ class _AppPreviewState extends State<AppPreview> {
               ),
             ),
           ]
-        : [Container()];
+        : [];
 
     final lines = isSelected
         ? [
@@ -445,13 +447,14 @@ class _AppPreviewState extends State<AppPreview> {
   Widget build(BuildContext context) {
     return DragTarget<SchemaNode>(
       onAcceptWithDetails: (details) {
-        final newPosition = WidgetPositionAfterDropOnPreview(context, details)
-            .calculate(
-                userActions.screens.currentScreenWorkspaceSize.dx,
-                widget.userActions.screens.currentScreenWorkspaceSize.dy,
-                details.data.size);
+        final newPosition =
+            WidgetPositionAfterDropOnPreview(context, details).calculate(
+          userActions.screens.currentScreenWorkspaceSize.dx,
+          widget.userActions.screens.currentScreenWorkspaceSize.dy,
+          details.data.size,
+        );
         userActions.placeWidget(details.data, newPosition);
-        widget.selectPlayModeToFalse();
+        widget.setPlayModeToFalse();
 
         widget.focusNode.requestFocus();
       },
@@ -506,94 +509,104 @@ class _AppPreviewState extends State<AppPreview> {
                 child: Stack(
                   textDirection: TextDirection.ltr,
                   children: [
-                    ...userActions.currentScreen.guidelineManager.buildAllLines(
-                        screenSize: widget
-                            .userActions.screens.currentScreenWorkspaceSize),
-                    ...userActions.screens.current.components.map((node) =>
-                        Positioned(
-                            child: GestureDetector(
-                                onTapDown: (details) {
-                                  widget.focusNode.requestFocus();
-
-                                  if (widget.isPlayMode) {
-                                    if (node.type == SchemaNodeType.list) {
-                                      // чтобы прокидывать данные на каждый айтем листа
-                                      return;
-                                    }
-                                    (node.actions['Tap'] as Functionable)
-                                        .toFunction(userActions)();
-                                  } else {
-                                    userActions.selectNodeForEdit(node);
-                                    widget
-                                        .selectStateToLayout(); // select menu layout
-                                  }
-                                },
-                                child: widget.isPlayMode
-                                    ? node.toWidget(
-                                        isPlayMode: widget.isPlayMode,
-                                        userActions: widget.userActions)
-                                    : renderWithSelected(
-                                        node: node,
-                                      )),
-                            top: node.position.dy,
-                            left: node.position.dx)),
-                    widget.isPreview
-                        ? Container()
-                        : Positioned(
-                            top: 0,
-                            left: 0,
-                            child: Image.network(
-                                'assets/icons/meta/status-bar.svg')),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      child: userActions.screens.current.bottomTabsVisible
-                          ? Container(
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      top: BorderSide(
-                                          width: 1,
-                                          color: theme.separators.color))),
-                              child: Container(
-                                child: AppTabs(
-                                  selectedScreenId:
-                                      userActions.currentScreen.id,
-                                  tabs: userActions.bottomNavigation.tabs,
-                                  theme: userActions.currentTheme,
-                                  onTap: (tab) {
-                                    userActions.screens.selectById(tab.target);
-                                    userActions.selectNodeForEdit(null);
-                                  },
-                                ),
-                                width: userActions
-                                    .screens.currentScreenWorkspaceSize.dx,
-                                height: userActions.screens.screenTabsHeight,
-                                decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: widget.isPreview
-                                      ? BorderRadius.zero
-                                      : BorderRadius.only(
-                                          bottomLeft: Radius.circular(37.0),
-                                          bottomRight: Radius.circular(37.0)),
-                                ),
-                              ),
-                            )
-                          : Container(),
+                    // guideline builder
+                    //? i suppose it should be above other widgets ?
+                    ...?userActions.currentScreen?.guidelineManager
+                        ?.buildAllLines(
+                      screenSize:
+                          widget.userActions.screens.currentScreenWorkspaceSize,
                     ),
-                    widget.isPreview
-                        ? Container()
-                        : Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 7.0),
-                              child: Container(
-                                width: 134,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                    color: Color(0xFF000000),
-                                    borderRadius: BorderRadius.circular(100)),
+
+                    ...?userActions.screens.current.components?.map(
+                      (node) => Positioned(
+                          child: GestureDetector(
+                              onTapDown: (details) {
+                                widget.focusNode.requestFocus();
+
+                                if (widget.isPlayMode) {
+                                  if (node.type == SchemaNodeType.list) {
+                                    // чтобы прокидывать данные на каждый айтем листа
+                                    return;
+                                  }
+                                  (node.actions['Tap'] as Functionable)
+                                      .toFunction(userActions)();
+                                } else {
+                                  userActions.selectNodeForEdit(node);
+                                  widget
+                                      .selectStateToLayout(); // select menu layout
+                                }
+                              },
+                              child: widget.isPlayMode
+                                  ? node.toWidget(
+                                      isPlayMode: widget.isPlayMode,
+                                      userActions: widget.userActions)
+                                  : renderWithSelected(
+                                      node: node,
+                                    )),
+                          top: node.position.dy,
+                          left: node.position.dx),
+                    ),
+
+                    // status bar data
+                    if (!widget.isPreview)
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child:
+                            Image.network('assets/icons/meta/status-bar.svg'),
+                      ),
+
+                    // bottom tab bar
+                    if (userActions.screens.current.bottomTabsVisible)
+                      Positioned(
+                          bottom: 0,
+                          left: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                top: BorderSide(
+                                  width: 1,
+                                  color: theme.separators.color,
+                                ),
                               ),
-                            )),
+                            ),
+                            child: Container(
+                              child: AppTabs(
+                                selectedScreenId: userActions.currentScreen.id,
+                                tabs: userActions.bottomNavigation.tabs,
+                                theme: userActions.currentTheme,
+                                onTap: (tab) {
+                                  userActions.screens.selectById(tab.target);
+                                  userActions.selectNodeForEdit(null);
+                                },
+                              ),
+                              width: userActions
+                                  .screens.currentScreenWorkspaceSize.dx,
+                              height: userActions.screens.screenTabsHeight,
+                              decoration: BoxDecoration(
+                                borderRadius: widget.isPreview
+                                    ? BorderRadius.zero
+                                    : BorderRadius.only(
+                                        bottomLeft: Radius.circular(37.0),
+                                        bottomRight: Radius.circular(37.0),
+                                      ),
+                              ),
+                            ),
+                          )),
+                    // bottom iphone inset
+                    if (!widget.isPreview)
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 7.0),
+                          width: 134,
+                          height: 5,
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -607,6 +620,7 @@ class _AppPreviewState extends State<AppPreview> {
 
 const double _kDotSize = 11;
 
+/// Corner dot of widget seleciton
 class SelectionDotWidget extends StatelessWidget {
   const SelectionDotWidget({Key key}) : super(key: key);
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
+
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -77,11 +78,13 @@ class ToolboxMenu extends StatelessWidget {
       children: [
         Container(
           width: 80,
-          height: headerHeight,
+          height: kHeaderHeight,
           child: Image.network('assets/icons/meta/logo.svg'),
           decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
+            border: Border(
+              bottom: BorderSide(width: 1, color: MyColors.gray),
+            ),
+          ),
         ),
         buildOption(ToolboxStates.pages),
         buildOption(ToolboxStates.layout),

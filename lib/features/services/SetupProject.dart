@@ -14,9 +14,8 @@ class SetupProject {
 
   const SetupProject({this.userStore, this.settings, this.attributes});
 
-  Future<Project> setup([auth, client]) async {
-    return await setupAuthorized(auth, client);
-  }
+  Future<Project> setup([auth, client]) async =>
+      await setupAuthorized(auth, client);
 
   Future<Project> setupAuthorized(
       [AuthenticationService auth, http.Client client]) async {

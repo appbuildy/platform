@@ -13,9 +13,7 @@ class ComponentProperties {
   Map<String, skeleton_action.Action> previewActions;
   Map<String, dynamic> jsonComponent;
 
-  ComponentProperties(jsonComponent) {
-    this.jsonComponent = jsonComponent;
-
+  ComponentProperties(this.jsonComponent) {
     _loadPosition();
     _loadSize();
     _loadProperies();

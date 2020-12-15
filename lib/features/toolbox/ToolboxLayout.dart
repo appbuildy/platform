@@ -38,190 +38,184 @@ class ToolboxLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeStore = userActions.themeStore;
-
     final MyModal modal = MyModal();
 
-    return Container(
+    return SizedBox(
       width: toolboxWidth,
-      height: MediaQuery.of(context).size.height,
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              children: [
-                Observer(builder: (BuildContext context) {
-                  return ToolboxTitle('Components');
-                }),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 10),
-                  child: Column(
-                    children: [
-                      ToolBoxCaption('Basics'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ToolboxComponent(
-                            schemaNode:
-                                SchemaNodeButton(themeStore: themeStore),
-                          ),
-                          ToolboxComponent(
-                            schemaNode: SchemaNodeText(themeStore: themeStore),
-                          ),
-                          ToolboxComponent(
-                            schemaNode: SchemaNodeIcon(themeStore: themeStore),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ToolboxComponent(
-                            schemaNode: SchemaNodeImage(),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          ToolboxComponent(
-                            schemaNode: SchemaNodeShape(
-                              themeStore: themeStore,
-                            ),
-                          ),
-                        ],
-                      ),
-                      ToolBoxCaption('Listing'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          ToolboxComponent(
-                            defaultTitle: 'List',
-                            defaultType: SchemaNodeType.listDefault,
-                            schemaNode: SchemaNodeList(
-                              themeStore: themeStore,
-                              listTemplateType: ListTemplateType.simple,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          ToolboxComponent(
-                            defaultTitle: 'Cards',
-                            defaultType: SchemaNodeType.listCards,
-                            schemaNode: SchemaNodeList(
-                              themeStore: themeStore,
-                              listTemplateType: ListTemplateType.cards,
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 13),
-              child: Container(
-                width: 270,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    begin: AlignmentDirectional.centerEnd,
-                    end: AlignmentDirectional.centerStart,
-                    colors: [Color(0xFF00b1ff), Color(0xFF0083ff)],
-                  ),
-                ),
-                child: Stack(
+      // height: MediaQuery.of(context).size.height,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Column(
+            children: [
+              Observer(
+                builder: (BuildContext context) =>
+                    ToolboxTitle(title: 'Components'),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 10),
+                child: Column(
                   children: [
-                    Align(
-                        alignment: Alignment.topRight,
-                        child: Image.network(
-                            'assets/icons/meta/request-feature.svg')),
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 16, top: 13, left: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Need a Feature?',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: MyColors.white,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text('We ll make it live — tell us about it',
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: MyColors.white,
-                                    fontWeight: FontWeight.w500)),
-                            SizedBox(
-                              height: 12,
-                            ),
-                            Cursor(
-                              cursor: CursorEnum.pointer,
-                              child: GestureDetector(
-                                onTap: () {
-                                  modal.show(
-                                      context: context,
-                                      child: Container(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 20,
-                                              right: 0,
-                                            ),
-                                            child: IFrame(
-                                              src:
-                                                  'https://www.appbuildy.com/upvoty',
-                                            ),
-                                          )),
-                                      onClose: () {
-                                        print('kekmek');
-                                      });
-                                },
-                                child: HoverOpacity(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: MyColors.white,
-                                        borderRadius: BorderRadius.circular(6),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              blurRadius: 5,
-                                              spreadRadius: 0,
-                                              offset: Offset(0, 2),
-                                              color: MyColors.black
-                                                  .withOpacity(0.2))
-                                        ]),
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 4,
-                                          bottom: 6,
-                                          left: 12,
-                                          right: 12),
-                                      child: Text('Request Feature',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: MyColors.textBlue,
-                                              fontWeight: FontWeight.w600)),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        )),
+                    ToolBoxCaption('Basics'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ToolboxComponent(
+                          schemaNode: SchemaNodeButton(themeStore: themeStore),
+                        ),
+                        ToolboxComponent(
+                          schemaNode: SchemaNodeText(themeStore: themeStore),
+                        ),
+                        ToolboxComponent(
+                          schemaNode: SchemaNodeIcon(themeStore: themeStore),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ToolboxComponent(
+                          schemaNode: SchemaNodeImage(),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        ToolboxComponent(
+                          schemaNode: SchemaNodeShape(
+                            themeStore: themeStore,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ToolBoxCaption('Listing'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        ToolboxComponent(
+                          defaultTitle: 'List',
+                          defaultType: SchemaNodeType.listDefault,
+                          schemaNode: SchemaNodeList(
+                            themeStore: themeStore,
+                            listTemplateType: ListTemplateType.simple,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        ToolboxComponent(
+                          defaultTitle: 'Cards',
+                          defaultType: SchemaNodeType.listCards,
+                          schemaNode: SchemaNodeList(
+                            themeStore: themeStore,
+                            listTemplateType: ListTemplateType.cards,
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
-            )
-          ],
-        ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 13),
+            child: Container(
+              width: 270,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  begin: AlignmentDirectional.centerEnd,
+                  end: AlignmentDirectional.centerStart,
+                  colors: [Color(0xFF00b1ff), Color(0xFF0083ff)],
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: Image.network(
+                          'assets/icons/meta/request-feature.svg')),
+                  Padding(
+                      padding:
+                          const EdgeInsets.only(bottom: 16, top: 13, left: 16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Need a Feature?',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: MyColors.white,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text('We ll make it live — tell us about it',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: MyColors.white,
+                                  fontWeight: FontWeight.w500)),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          Cursor(
+                            cursor: CursorEnum.pointer,
+                            child: GestureDetector(
+                              onTap: () {
+                                modal.show(
+                                    context: context,
+                                    child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 20,
+                                            right: 0,
+                                          ),
+                                          child: IFrame(
+                                            src:
+                                                'https://www.appbuildy.com/upvoty',
+                                          ),
+                                        )),
+                                    onClose: () {
+                                      print('kekmek');
+                                    });
+                              },
+                              child: HoverOpacity(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: MyColors.white,
+                                      borderRadius: BorderRadius.circular(6),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 5,
+                                            spreadRadius: 0,
+                                            offset: Offset(0, 2),
+                                            color:
+                                                MyColors.black.withOpacity(0.2))
+                                      ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 4, bottom: 6, left: 12, right: 12),
+                                    child: Text('Request Feature',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: MyColors.textBlue,
+                                            fontWeight: FontWeight.w600)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

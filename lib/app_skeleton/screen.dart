@@ -7,28 +7,27 @@ import 'package:flutter_app/utils/RandomKey.dart';
 
 class Screen extends StatelessWidget {
   final RandomKey id;
-  final BottomNavigation bottomNavigation;
+  final BottomNavigation bottomNavigator;
   final List<WidgetDecorator> widgets;
 
-  Screen({Key key, this.widgets, this.id, this.bottomNavigation})
+  Screen({Key key, this.widgets, this.id, this.bottomNavigator})
       : super(key: key);
 
-  factory Screen.fromJson(Map<String, dynamic> jsonScreen,
-      {BottomNavigation bottomNavigation}) {
-    return ScreenLoadFromJson(jsonScreen).load(bottomNavigation);
-  }
+  factory Screen.fromJson(
+    Map<String, dynamic> jsonScreen, {
+    BottomNavigation bottomNavigator,
+  }) =>
+      ScreenLoadFromJson(jsonScreen).load(bottomNavigator);
 
   @override
   Widget build(BuildContext context) {
-    var nav = bottomNavigation ?? Container();
-
     return Scaffold(
-        body: Stack(
-      children: [
-        ...widgets,
-        // if (bottomNavigation != null) bottomNavigation,
-        nav,
-      ],
-    ));
+      body: Stack(
+        children: [
+          ...widgets,
+          if (bottomNavigator != null) bottomNavigator,
+        ],
+      ),
+    );
   }
 }

@@ -94,7 +94,7 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
     return Column(
       children: [
         ToolboxTitle(
-          'Settings',
+          title: 'Settings',
         ),
         Padding(
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),

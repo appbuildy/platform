@@ -1,19 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
-import 'package:flutter_app/shared_widgets/button.dart';
-import 'package:flutter_app/shared_widgets/shape.dart';
-import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
-import 'package:flutter_app/shared_widgets/icon.dart' as shared_widgets;
-import 'package:flutter_app/shared_widgets/image.dart' as shared_widgets;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
-class WidgetDecorator extends StatelessWidget {
-  const WidgetDecorator({Key key, this.onTap, this.widget, this.position})
-      : super(key: key);
+import 'shared_widgets.dart';
 
-  final Widget widget;
+class WidgetDecorator extends StatelessWidget {
+  const WidgetDecorator({
+    Key key,
+    this.position,
+    this.size,
+    this.child,
+    this.onTap,
+  }) : super(key: key);
+
+  final Widget child;
   final Offset position;
-  final Function onTap;
+  final Offset size;
+  final VoidCallback onTap;
 
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent) {
     var theme = MyThemes.allThemes['blue'];
@@ -24,89 +27,104 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.button':
         {
           return WidgetDecorator(
-              onTap: previewActions['Tap'].functionAction,
-              position: componentProperties.position,
-              widget: Button(
-                  properties: componentProperties.properties,
-                  size: componentProperties.size,
-                  theme: theme));
+            onTap: previewActions['Tap'].functionAction,
+            position: componentProperties.position,
+            child: SharedButton(
+              properties: componentProperties.properties,
+              size: componentProperties.size,
+              theme: theme,
+            ),
+          );
         }
         break;
       case 'SchemaNodeType.text':
         {
           return WidgetDecorator(
-              onTap: () => {},
-              position: componentProperties.position,
-              widget: shared_widgets.Text(
-                  properties: componentProperties.properties,
-                  size: componentProperties.size,
-                  theme: theme));
+            // onTap: () => {},
+            position: componentProperties.position,
+            child: SharedText(
+                properties: componentProperties.properties,
+                size: componentProperties.size,
+                theme: theme),
+          );
         }
         break;
 
       case 'SchemaNodeType.shape':
         {
           return WidgetDecorator(
-              onTap: () => {},
-              position: componentProperties.position,
-              widget: Shape(
-                  properties: componentProperties.properties,
-                  size: componentProperties.size,
-                  theme: theme));
+            // onTap: () => {},
+            position: componentProperties.position,
+            child: SharedShape(
+              properties: componentProperties.properties,
+              size: componentProperties.size,
+              theme: theme,
+            ),
+          );
         }
         break;
 
       case 'SchemaNodeType.icon':
         {
           return WidgetDecorator(
-              onTap: () => {},
-              position: componentProperties.position,
-              widget: shared_widgets.Icon(
-                  properties: componentProperties.properties,
-                  size: componentProperties.size,
-                  theme: theme));
+            // onTap: () => {},
+            position: componentProperties.position,
+            child: SharedIcon(
+              properties: componentProperties.properties,
+              size: componentProperties.size,
+              theme: theme,
+            ),
+          );
         }
         break;
 
       case 'SchemaNodeType.list':
         {
           return WidgetDecorator(
-              onTap: () => {},
-              position: componentProperties.position,
-              widget: Button(
-                  properties: componentProperties.properties,
-                  size: componentProperties.size,
-                  theme: theme));
+            // onTap: () => {},
+            position: componentProperties.position,
+            child: SharedButton(
+              properties: componentProperties.properties,
+              size: componentProperties.size,
+              theme: theme,
+            ),
+          );
         }
         break;
       case 'SchemaNodeType.image':
         return WidgetDecorator(
-            onTap: () => {},
-            position: componentProperties.position,
-            widget: shared_widgets.Image(
-                properties: componentProperties.properties,
-                size: componentProperties.size,
-                theme: theme));
+          // onTap: () => {},
+          position: componentProperties.position,
+          child: SharedImage(
+            properties: componentProperties.properties,
+            size: componentProperties.size,
+            theme: theme,
+          ),
+        );
         break;
     }
     return WidgetDecorator(
-        onTap: () => {},
-        position: componentProperties.position,
-        widget: shared_widgets.Image(
-            properties: componentProperties.properties,
-            size: componentProperties.size,
-            theme: theme));
-  }
-
-  _onTap(context) {
-    onTap ?? (context) => () => {};
+      // onTap: () => {},
+      position: componentProperties.position,
+      child: SharedImage(
+        properties: componentProperties.properties,
+        size: componentProperties.size,
+        theme: theme,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        left: position.dx,
-        top: position.dy,
-        child: GestureDetector(onTap: _onTap(context), child: this.widget));
+      left: position.dx,
+      top: position.dy,
+      height: size.dx,
+      width: size.dy,
+      child: GestureDetector(
+        onTap: onTap,
+        child: this.child,
+      ),
+    );
   }
 }

@@ -1,1 +1,1 @@
-final double headerHeight = 60.0;
+const double kHeaderHeight = 60.0;

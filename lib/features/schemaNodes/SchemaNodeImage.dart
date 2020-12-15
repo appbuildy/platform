@@ -6,7 +6,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
-import 'package:flutter_app/shared_widgets/image.dart' as Shared;
+import 'package:flutter_app/shared_widgets/shared_widgets.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
@@ -16,15 +16,15 @@ import 'package:flutter_app/utils/Debouncer.dart';
 class SchemaNodeImage extends SchemaNode {
   Debouncer<String> textDebouncer;
 
-  SchemaNodeImage(
-      {Offset position,
-      Offset size,
-      Map<String, SchemaNodeProperty> properties,
-      String column,
-      Map<String, SchemaNodeProperty> actions,
-      String url,
-      UniqueKey id})
-      : super() {
+  SchemaNodeImage({
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    String column,
+    Map<String, SchemaNodeProperty> actions,
+    String url,
+    UniqueKey id,
+  }) : super() {
     this.type = SchemaNodeType.image;
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 210.0);
@@ -40,8 +40,10 @@ class SchemaNodeImage extends SchemaNode {
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Fit': SchemaStringProperty('Fit', 'Cover')
         };
-    textDebouncer =
-        Debouncer(milliseconds: 500, prevValue: this.properties['Url'].value);
+    textDebouncer = Debouncer(
+      milliseconds: 500,
+      prevValue: this.properties['Url'].value,
+    );
   }
 
   @override
@@ -69,7 +71,7 @@ class SchemaNodeImage extends SchemaNode {
 
   @override
   Widget toWidget({bool isPlayMode, UserAction userActions}) {
-    return Shared.Image(properties: properties, size: size);
+    return SharedImage(properties: properties, size: size);
   }
 
   void updateOnColumnDataChange(UserAction userActions, String newValue) {
@@ -125,8 +127,9 @@ class SchemaNodeImage extends SchemaNode {
       EditPropsCorners(
         value: properties['BorderRadiusValue'].value,
         onChanged: (int value) {
-          userActions
-              .changePropertyTo(SchemaIntProperty('BorderRadiusValue', value));
+          userActions.changePropertyTo(
+            SchemaIntProperty('BorderRadiusValue', value),
+          );
         },
       ),
     ]);

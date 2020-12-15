@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/utils/getThemeColor.dart';
+part of 'shared_widgets.dart';
 
-class Shape extends StatelessWidget {
-  const Shape({Key key, this.theme, this.size, this.properties})
+class SharedShape extends StatelessWidget {
+  const SharedShape({Key key, this.theme, this.size, this.properties})
       : super(key: key);
 
   final Map<String, SchemaNodeProperty> properties;

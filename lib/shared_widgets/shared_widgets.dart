@@ -1,0 +1,20 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/utils/getThemeColor.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+part 'widget.dart';
+part 'icon.dart';
+part 'button.dart';
+part 'image.dart';
+part 'shape.dart';
+part 'text.dart';

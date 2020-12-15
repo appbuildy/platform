@@ -7,9 +7,9 @@ const toolboxWidth = 311.0;
 class ToolboxTitle extends StatelessWidget {
   final String title;
 
-  const ToolboxTitle(
-    this.title, {
+  const ToolboxTitle({
     Key key,
+    @required this.title,
   }) : super(key: key);
 
   @override
@@ -18,10 +18,15 @@ class ToolboxTitle extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            height: headerHeight,
+            height: kHeaderHeight,
             decoration: BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
+              border: Border(
+                bottom: BorderSide(
+                  width: 1,
+                  color: MyColors.gray,
+                ),
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
               child: Center(

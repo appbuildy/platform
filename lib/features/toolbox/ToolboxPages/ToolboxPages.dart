@@ -64,7 +64,7 @@ class _ToolboxPagesState extends State<ToolboxPages>
     return Column(
       children: [
         ToolboxTitle(
-          'Tabs & Pages',
+          title: 'Tabs & Pages',
         ),
         Padding(
           padding: EdgeInsets.only(left: 20, right: 10),

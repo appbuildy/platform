@@ -1,4 +1,4 @@
-import 'package:flutter_app/shared_widgets/button.dart';
+import 'package:flutter_app/shared_widgets/shared_widgets.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -95,6 +95,6 @@ void main() {
 
   test('.fromJson()', () {
     var widget = WidgetDecorator.fromJson(jsonComponent);
-    expect(widget.widget, isA<Button>());
+    expect(widget.child, isA<SharedButton>());
   });
 }
