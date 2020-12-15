@@ -73,11 +73,12 @@ class SchemaNodeButton extends SchemaNode {
   }
 
   @override
-  SchemaNode copy(
-      {Offset position,
-      Offset size,
-      UniqueKey id,
-      bool saveProperties = true}) {
+  SchemaNode copy({
+    Offset position,
+    Offset size,
+    UniqueKey id,
+    bool saveProperties = true,
+  }) {
     return SchemaNodeButton(
         position: position ?? this.position,
         id: id ?? this.id,
@@ -100,7 +101,6 @@ class SchemaNodeButton extends SchemaNode {
     return SharedButton(
       properties: properties,
       theme: themeStore.currentTheme,
-      size: size,
     );
   }
 

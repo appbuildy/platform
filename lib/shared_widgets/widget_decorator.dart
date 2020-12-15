@@ -31,7 +31,6 @@ class WidgetDecorator extends StatelessWidget {
             position: componentProperties.position,
             child: SharedButton(
               properties: componentProperties.properties,
-              size: componentProperties.size,
               theme: theme,
             ),
           );
@@ -40,7 +39,6 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.text':
         {
           return WidgetDecorator(
-            // onTap: () => {},
             position: componentProperties.position,
             child: SharedText(
                 properties: componentProperties.properties,
@@ -53,7 +51,6 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.shape':
         {
           return WidgetDecorator(
-            // onTap: () => {},
             position: componentProperties.position,
             child: SharedShape(
               properties: componentProperties.properties,
@@ -67,11 +64,9 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.icon':
         {
           return WidgetDecorator(
-            // onTap: () => {},
             position: componentProperties.position,
             child: SharedIcon(
               properties: componentProperties.properties,
-              size: componentProperties.size,
               theme: theme,
             ),
           );
@@ -81,19 +76,17 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.list':
         {
           return WidgetDecorator(
-            // onTap: () => {},
             position: componentProperties.position,
             child: SharedButton(
               properties: componentProperties.properties,
-              size: componentProperties.size,
               theme: theme,
             ),
           );
         }
         break;
       case 'SchemaNodeType.image':
+      default:
         return WidgetDecorator(
-          // onTap: () => {},
           position: componentProperties.position,
           child: SharedImage(
             properties: componentProperties.properties,
@@ -103,15 +96,6 @@ class WidgetDecorator extends StatelessWidget {
         );
         break;
     }
-    return WidgetDecorator(
-      // onTap: () => {},
-      position: componentProperties.position,
-      child: SharedImage(
-        properties: componentProperties.properties,
-        size: componentProperties.size,
-        theme: theme,
-      ),
-    );
   }
 
   @override

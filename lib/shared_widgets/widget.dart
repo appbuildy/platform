@@ -26,7 +26,6 @@ class SharedWidget {
       'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.5),
     };
 
-    return SharedButton(
-        properties: properties, size: Offset(50, 100), theme: theme);
+    return SharedButton(properties: properties, theme: theme);
   }
 }

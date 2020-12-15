@@ -78,7 +78,6 @@ class SchemaNodeIcon extends SchemaNode {
     return SharedIcon(
       properties: properties,
       theme: themeStore.currentTheme,
-      size: size,
     );
   }
 
