@@ -20,6 +20,11 @@
 4. ```flutter channel beta```
 5. ```flutter config --enable-web```
 
+# Запустить Preview локально 
+
+1. Заходим в билдер, выбираем Share в правом верхнем углу. Копируем от туда slug от project-id (пример: `throbbing-shape-1519`)
+2. ```http://localhost:64037/?project_id=${project_id}&preview_mode=enabled&url=http://www.appbuildy.com#/```
+
 
 
 ## Getting Started

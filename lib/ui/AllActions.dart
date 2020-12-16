@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
@@ -31,7 +33,10 @@ class _AllActionsState extends State<AllActions> {
   @override
   void initState() {
     super.initState();
-    isVisible = widget.userActions.selectedNode().actions['Tap'].value != null;
+    isVisible =
+        (widget.userActions.selectedNode().actions['Tap'] as Functionable)
+                .type !=
+            SchemaActionType.doNothing;
   }
 
   void _createDetailedInfoForList(SchemaNode selectedNode, String tableName) {
@@ -60,11 +65,11 @@ class _AllActionsState extends State<AllActions> {
 
     final detailedComponents = [
       widget.userActions.schemaNodeSpawner.spawnSchemaNodeImage(
-          position: Offset(0, 0),
-          url: isInRange(2)
-              ? detailedInfo.rowData[listColumns[2]].data
-              : detailedInfo.rowData[listColumns[0]].data,
-          column: isInRange(2) ? listColumns[2] : listColumns[0],
+        position: Offset(0, 0),
+        url: isInRange(2)
+            ? detailedInfo.rowData[listColumns[2]].data
+            : detailedInfo.rowData[listColumns[0]].data,
+        column: isInRange(2) ? listColumns[2] : listColumns[0],
       ),
       widget.userActions.schemaNodeSpawner.spawnSchemaNodeIcon(
           position: Offset(14, 40),
@@ -89,9 +94,8 @@ class _AllActionsState extends State<AllActions> {
           fontWeight: FontWeight.w400,
           color: themeStore.currentTheme.generalSecondary,
           column: isInRange(1) ? listColumns[1] : listColumns[0]),
-      widget.userActions.schemaNodeSpawner.spawnSchemaNodeButton(
-          position: Offset(14, 295),
-          text: 'Contact Us'),
+      widget.userActions.schemaNodeSpawner
+          .spawnSchemaNodeButton(position: Offset(14, 295), text: 'Contact Us'),
       widget.userActions.schemaNodeSpawner.spawnSchemaNodeText(
           position: Offset(14, 360),
           size: Offset(343, 300),
@@ -132,8 +136,7 @@ class _AllActionsState extends State<AllActions> {
               onTap: () {
                 setState(() {
                   if (isVisible) {
-                    widget.userActions
-                        .changeActionTo(GoToScreenAction('Tap', null));
+                    widget.userActions.changeActionTo(MyDoNothingAction());
                   } else {
                     if (selectedNode.type == SchemaNodeType.list) {
                       _createDetailedInfoForList(

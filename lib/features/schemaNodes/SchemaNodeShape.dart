@@ -5,12 +5,12 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
 
 import 'SchemaNodeSpawner.dart';
 import 'common/EditPropsOpacity.dart';
+import 'my_do_nothing_action.dart';
 
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
@@ -26,7 +26,7 @@ class SchemaNodeShape extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction()};
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(
