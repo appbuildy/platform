@@ -91,7 +91,7 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.listTemplateType = listTemplateType;
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
@@ -139,7 +139,7 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.listTemplateType = listTemplateType;
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),

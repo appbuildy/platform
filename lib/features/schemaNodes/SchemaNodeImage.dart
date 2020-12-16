@@ -39,7 +39,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 210.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Url': SchemaStringProperty('Url', url ?? defaultPicture),

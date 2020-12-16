@@ -26,7 +26,7 @@ class SchemaNodeShape extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(

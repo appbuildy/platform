@@ -42,7 +42,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),

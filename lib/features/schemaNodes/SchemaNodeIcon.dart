@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
@@ -33,7 +33,7 @@ class SchemaNodeIcon extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': tapAction ?? MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': tapAction ?? MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Icon':
