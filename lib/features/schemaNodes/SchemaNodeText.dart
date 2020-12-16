@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/text.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -42,7 +42,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction()};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),

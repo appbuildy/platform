@@ -14,6 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'SchemaNodeSpawner.dart';
 import 'common/EditPropsIconStyle.dart';
 import 'common/EditPropsOpacity.dart';
+import 'my_do_nothing_action.dart';
 
 class SchemaNodeIcon extends SchemaNode {
   SchemaNodeIcon({
@@ -32,8 +33,7 @@ class SchemaNodeIcon extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
     this.id = id ?? UniqueKey();
-    this.actions =
-        actions ?? {'Tap': tapAction ?? GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': tapAction ?? MyDoNothingAction()};
     this.properties = properties ??
         {
           'Icon':

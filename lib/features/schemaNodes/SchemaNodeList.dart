@@ -17,7 +17,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaListTemplatePr
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/list.dart' as Shared;
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/Counter.dart';
@@ -30,6 +29,8 @@ import 'package:flutter_app/ui/PageSliderAnimator.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
+
+import 'my_do_nothing_action.dart';
 
 class EditPropsAnimation extends StatefulWidget {
   final BuildWidgetFunction rootPage;
@@ -90,7 +91,7 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.listTemplateType = listTemplateType;
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction()};
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
@@ -138,7 +139,7 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.listTemplateType = listTemplateType;
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction()};
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
