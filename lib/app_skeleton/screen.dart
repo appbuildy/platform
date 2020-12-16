@@ -5,6 +5,8 @@ import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
+const double kScreenHeight = 1800;
+
 class Screen extends StatelessWidget {
   final RandomKey id;
   final BottomNavigation bottomNavigator;
@@ -21,13 +23,27 @@ class Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          ...widgets,
-          if (bottomNavigator != null) bottomNavigator,
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: AspectRatio(
+              aspectRatio: 375 / 812,
+              child: FittedBox(
+                child: Stack(
+                  children: widgets,
+                ),
+              ),
+            ),
+          ),
+        ),
+        if (bottomNavigator != null)
+          SizedBox(
+            height: kBottomNavBarHeight,
+            child: bottomNavigator,
+          ),
+      ],
     );
   }
 }

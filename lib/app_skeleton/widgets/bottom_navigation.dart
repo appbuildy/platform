@@ -7,6 +7,8 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
+const double kBottomNavBarHeight = 82;
+
 class BottomNavigation extends StatelessWidget {
   final List<TabNavigation> tabs;
 
@@ -29,10 +31,8 @@ class BottomNavigation extends StatelessWidget {
     final store = Provider.of<ScreenStore>(context);
 
     return isVisible
-        ? Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+        ? SizedBox(
+            height: 82,
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: AspectRatio(
