@@ -126,13 +126,6 @@ class ListTemplateSimple extends ListTemplate {
               .map((ListElementNode el) {
             Widget renderedWidget;
 
-            print('THEME 3');
-            print('THEME 3');
-            print('THEME 3');
-            print('THEME 3');
-            print(theme);
-            print('THEME 3');
-            print('THEME 3');
             if (el.node is DataContainer && el.columnRelation != null) {
               final String data =
                   item.value[el.columnRelation]?.data ?? 'no_data';
