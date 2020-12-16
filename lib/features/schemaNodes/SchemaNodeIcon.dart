@@ -7,6 +7,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -74,10 +75,10 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Icon(
       properties: properties,
-      theme: parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? parentSpawner.userActions.themeStore.currentTheme,
       size: size,
     );
   }

@@ -76,7 +76,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Image(properties: this.properties, size: this.size);
   }
 
