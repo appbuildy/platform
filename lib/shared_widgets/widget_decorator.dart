@@ -16,7 +16,8 @@ class WidgetDecorator extends StatelessWidget {
   final Offset position;
   final Function onTap;
 
-  factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent) {
+  factory WidgetDecorator.fromJson(
+      Map<String, dynamic> jsonComponent, project) {
     var theme = MyThemes.allThemes['blue'];
     //todo: add schemaNodeSpawner to args
     var componentProperties = ComponentProperties(jsonComponent);
@@ -73,11 +74,6 @@ class WidgetDecorator extends StatelessWidget {
 
       case 'SchemaNodeType.list':
         {
-          print('THEME');
-          print('THEME');
-          print(theme);
-          print('THEME');
-          print('THEME');
           return WidgetDecorator(
               onTap: () => {},
               position: componentProperties.position,
