@@ -73,6 +73,11 @@ class WidgetDecorator extends StatelessWidget {
 
       case 'SchemaNodeType.list':
         {
+          print('THEME');
+          print('THEME');
+          print(theme);
+          print('THEME');
+          print('THEME');
           return WidgetDecorator(
               onTap: () => {},
               position: componentProperties.position,

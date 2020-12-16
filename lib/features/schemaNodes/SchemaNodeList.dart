@@ -18,6 +18,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropPro
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/shared_widgets/list.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/Counter.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
@@ -393,12 +394,12 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.List(
       size: this.size,
       schemaNodeList: this,
       onListClick: this.onListClick,
-      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       properties: this.properties,
       isSelected: this.isSelected,
       isPlayMode: isPlayMode,
