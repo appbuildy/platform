@@ -21,6 +21,54 @@ class Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     var nav = bottomNavigation ?? Container();
 
-    return Scaffold(body: Stack(children: [...widgets, nav]));
+    double screenHeightInConstructor = 812;
+    double screenWidthInConstructor = 375;
+
+    var currentScreenSize = MediaQuery.of(context).size;
+
+    double screenHeight = currentScreenSize.height;
+    double screenWidth = currentScreenSize.width;
+
+    double scaleFactor = screenWidth / screenWidthInConstructor;
+
+    final double navHeight = 84;
+
+    final double heightWithoutNavigationFromConstructor = (screenHeightInConstructor - navHeight) * scaleFactor;
+    final double heightWithoutNavigationFromCurrentScreen= screenHeight - navHeight;
+
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: heightWithoutNavigationFromCurrentScreen,
+            child: SingleChildScrollView(
+              child: Container(
+                width: screenWidth,
+                height: heightWithoutNavigationFromConstructor > heightWithoutNavigationFromCurrentScreen ? heightWithoutNavigationFromConstructor : heightWithoutNavigationFromCurrentScreen,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                ),
+                child: Transform.scale(
+                  alignment: AlignmentDirectional.topStart,
+                  scale: scaleFactor,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(),
+                      ...widgets,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            width: screenWidth,
+            child: nav,
+          ),
+        ],
+      ),
+    );
   }
 }
