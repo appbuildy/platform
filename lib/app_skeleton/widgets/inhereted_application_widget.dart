@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class InheretedApplicationWidget extends InheritedWidget {
+class InheritedApplicationWidget extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {
     return true;

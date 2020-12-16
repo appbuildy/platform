@@ -37,7 +37,7 @@ class MyIconRectangleButton extends StatelessWidget {
       onTap: onTap,
       child: Cursor(
         cursor: isActive ? CursorEnum.defaultCursor : CursorEnum.pointer,
-        child: Container(
+        child: SizedBox(
           width: 32,
           height: 32,
           child: HoverDecoration(

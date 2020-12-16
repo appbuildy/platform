@@ -18,24 +18,29 @@ class UndoRedo extends StatelessWidget {
     return Observer(
       builder: (BuildContext context) {
         return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IconCircleButton(
-                onTap: userActions.undo,
-                isDisabled: userActions.isActionsDoneEmpty,
-                icon: Image.network(
-                  'assets/icons/meta/action-undo.svg',
-                  color:
-                      userActions.isActionsDoneEmpty ? MyColors.iconGray : null,
-                )),
+              onTap: userActions.undo,
+              isDisabled: userActions.isActionsDoneEmpty,
+              icon: Image.network(
+                'assets/icons/meta/action-undo.svg',
+                color:
+                    userActions.isActionsDoneEmpty ? MyColors.iconGray : null,
+              ),
+            ),
             IconCircleButton(
-                isDisabled: isRedoDisabled,
-                icon: Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(math.pi),
-                    child: Image.network(
-                      'assets/icons/meta/action-undo.svg',
-                      color: isRedoDisabled ? MyColors.iconGray : null,
-                    ))),
+              isDisabled: isRedoDisabled,
+              icon: Transform(
+                alignment: Alignment.center,
+                transform: Matrix4.rotationY(math.pi),
+                child: Image.network(
+                  'assets/icons/meta/action-undo.svg',
+                  color: isRedoDisabled ? MyColors.iconGray : null,
+                ),
+              ),
+            ),
           ],
         );
       },

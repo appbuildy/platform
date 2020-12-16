@@ -16,26 +16,29 @@ class ComponentLoadedFromJson implements IComponentLoader {
 
   @override
   SchemaNode load() {
-    final componentProperties = ComponentProperties(jsonComponent, schemaNodeSpawner: schemaNodeSpawner);
+    final componentProperties = ComponentProperties(
+      jsonComponent,
+      schemaNodeSpawner: schemaNodeSpawner,
+    );
 
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':
         {
           return schemaNodeSpawner.spawnSchemaNodeButton(
-              position: componentProperties.position,
-              size: componentProperties.size,
-              properties: componentProperties.properties,
-              actions: componentProperties.actions,
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
           );
         }
 
       case 'SchemaNodeType.text':
         {
           return schemaNodeSpawner.spawnSchemaNodeText(
-              position: componentProperties.position,
-              size: componentProperties.size,
-              properties: componentProperties.properties,
-              actions: componentProperties.actions,
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
           );
         }
         break;
@@ -43,10 +46,10 @@ class ComponentLoadedFromJson implements IComponentLoader {
       case 'SchemaNodeType.shape':
         {
           return schemaNodeSpawner.spawnSchemaNodeShape(
-              position: componentProperties.position,
-              size: componentProperties.size,
-              properties: componentProperties.properties,
-              actions: componentProperties.actions,
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
           );
         }
         break;
@@ -54,10 +57,10 @@ class ComponentLoadedFromJson implements IComponentLoader {
       case 'SchemaNodeType.icon':
         {
           return schemaNodeSpawner.spawnSchemaNodeIcon(
-              position: componentProperties.position,
-              size: componentProperties.size,
-              properties: componentProperties.properties,
-              actions: componentProperties.actions,
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
           );
         }
         break;
@@ -65,30 +68,30 @@ class ComponentLoadedFromJson implements IComponentLoader {
       case 'SchemaNodeType.list':
         {
           return schemaNodeSpawner.spawnSchemaNodeList(
-              listTemplateType: ListTemplateType.cards,
-              position: componentProperties.position,
-              size: componentProperties.size,
-              properties: componentProperties.properties,
-              actions: componentProperties.actions,
+            listTemplateType: ListTemplateType.cards,
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
           );
         }
         break;
       case 'SchemaNodeType.image':
         {
           return schemaNodeSpawner.spawnSchemaNodeImage(
-              position: componentProperties.position,
-              size: componentProperties.size,
-              properties: componentProperties.properties,
-              actions: componentProperties.actions,
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
           );
         }
         break;
     }
     return schemaNodeSpawner.spawnSchemaNodeButton(
-        position: componentProperties.position,
-        size: componentProperties.size,
-        properties: componentProperties.properties,
-        actions: componentProperties.actions,
+      position: componentProperties.position,
+      size: componentProperties.size,
+      properties: componentProperties.properties,
+      actions: componentProperties.actions,
     );
   }
 }

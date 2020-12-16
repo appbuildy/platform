@@ -51,11 +51,12 @@ class UserActions {
   SchemaNodeSpawner schemaNodeSpawner;
   Debouncer<SchemaNode> debouncer;
 
-  UserActions(
-      {Screens screens,
-      CurrentUserStore currentUserStore,
-      BottomNavigationStore bottomNavigationStore,
-      AppThemeStore themeStore}) {
+  UserActions({
+    Screens screens,
+    CurrentUserStore currentUserStore,
+    BottomNavigationStore bottomNavigationStore,
+    AppThemeStore themeStore,
+  }) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -177,8 +178,11 @@ class UserActions {
     });
   }
 
-  void changePropertyTo(ChangeableProperty prop,
-      [bool isAddedToDoneActions = true, prevValue]) {
+  void changePropertyTo(
+    ChangeableProperty prop, [
+    bool isAddedToDoneActions = true,
+    prevValue,
+  ]) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: this.selectNodeForEdit,
         schemaStore: currentScreen,
@@ -216,10 +220,11 @@ class UserActions {
   void deleteNode(
     SchemaNode node,
   ) {
-    final action = new DeleteNode(
-        node: node,
-        schemaStore: currentScreen,
-        selectNodeForEdit: selectNodeForEdit);
+    final action = DeleteNode(
+      node: node,
+      schemaStore: currentScreen,
+      selectNodeForEdit: selectNodeForEdit,
+    );
 
     action.execute();
     _actionsDone.add(action);
