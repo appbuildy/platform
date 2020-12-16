@@ -96,6 +96,7 @@ class SchemaNodeList extends SchemaNode {
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
+          'Base': SchemaStringProperty('Base', null),
           'Items': SchemaStringListProperty('Items', {}), //.sample()
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
