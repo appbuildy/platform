@@ -32,10 +32,6 @@ class List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('THEME 2');
-    print('THEME 2');
-    print(theme);
-    print('THEME 2');
     return Container(
       width: size.dx,
       height: size.dy,
