@@ -103,14 +103,17 @@ class AppActions extends StatelessWidget {
                         SizedBox(
                           height: 34,
                         ),
-                        QrImage(
-                          data:
-                              userActions.currentUserStore?.project?.slugUrl ??
-                                  'https://www.appbuildy.com',
-                          version: QrVersions.auto,
-                          padding: EdgeInsets.zero,
-                          size: 220,
-                          gapless: true,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: QrImage(
+                            data: userActions
+                                    .currentUserStore?.project?.slugUrl ??
+                                'https://www.appbuildy.com',
+                            version: QrVersions.auto,
+                            padding: EdgeInsets.zero,
+                            size: 220,
+                            gapless: true,
+                          ),
                         ),
                         SizedBox(
                           height: 24,
