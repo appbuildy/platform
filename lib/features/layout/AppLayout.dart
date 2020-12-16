@@ -7,7 +7,6 @@ import 'package:flutter_app/features/appPreview/AppPreview.dart';
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -42,6 +41,8 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNode.addListener(_handleFocusChange);
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
+
+    _focusNode.requestFocus();
   }
 
   void _handleFocusChange() {
@@ -76,45 +77,27 @@ class _AppLayoutState extends State<AppLayout> {
 
       if (e.logicalKey == LogicalKeyboardKey.arrowUp ||
           e.logicalKey == LogicalKeyboardKey.arrowDown) {
-        final bool isUp = e.logicalKey == LogicalKeyboardKey.arrowUp;
-
-        selectedNode.position = Offset(
-            selectedNode.position.dx,
-            SchemaNode.axisMove(
-              axisNodePosition: selectedNode.position.dy,
-              axisNodeSize: selectedNode.size.dy,
-              axisDelta: isUp ? -1 : 1,
-              axisScreenSize:
-                  widget.userActions.screens.currentScreenWorkspaceSize.dy,
-            ));
-
-        widget.userActions
-            .repositionAndResize(selectedNode, isAddedToDoneActions: false);
+        selectedNode.onUpOrDownPressed(
+            isUp: e.logicalKey == LogicalKeyboardKey.arrowUp,
+            currentScreenWorkspaceSize:
+                widget.userActions.screens.currentScreenWorkspaceSize,
+            repositionAndResize: widget.userActions.repositionAndResize);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft ||
           e.logicalKey == LogicalKeyboardKey.arrowRight) {
-        final bool isLeft = e.logicalKey == LogicalKeyboardKey.arrowLeft;
-
-        selectedNode.position = Offset(
-          SchemaNode.axisMove(
-            axisNodePosition: selectedNode.position.dx,
-            axisNodeSize: selectedNode.size.dx,
-            axisDelta: isLeft ? -1 : 1,
-            axisScreenSize:
-                widget.userActions.screens.currentScreenWorkspaceSize.dx,
-          ),
-          selectedNode.position.dy,
-        );
-
-        widget.userActions
-            .repositionAndResize(selectedNode, isAddedToDoneActions: false);
+        selectedNode.onLeftOrRightPressed(
+            isLeft: e.logicalKey == LogicalKeyboardKey.arrowLeft,
+            currentScreenWorkspaceSize:
+                widget.userActions.screens.currentScreenWorkspaceSize,
+            repositionAndResize: widget.userActions.repositionAndResize);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
-        widget.userActions.deleteNode(selectedNode);
-      } else if (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) {
-        widget.userActions.copyNode(selectedNode);
+        selectedNode.onDeletePressed(onDelete: widget.userActions.deleteNode);
+      } else if ((e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) ||
+          (e.logicalKey == LogicalKeyboardKey.keyC && e.isControlPressed)) {
+        selectedNode.onCopyPressed(onCopy: widget.userActions.copyNode);
       }
 
       return true;
@@ -165,9 +148,10 @@ class _AppLayoutState extends State<AppLayout> {
             child: Row(
               children: [
                 Toolbox(
-                    toolboxState: toolboxState,
-                    selectState: selectState,
-                    userActions: widget.userActions),
+                  toolboxState: toolboxState,
+                  selectState: selectState,
+                  userActions: widget.userActions,
+                ),
                 Flexible(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -189,10 +173,11 @@ class _AppLayoutState extends State<AppLayout> {
                                       physics: NeverScrollableScrollPhysics(),
                                       child: Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 20.0,
-                                            bottom: 20,
-                                            left: 30,
-                                            right: 30),
+                                          top: 20.0,
+                                          bottom: 20,
+                                          left: 30,
+                                          right: 30,
+                                        ),
                                         child: AppPreview(
                                           focusNode: _focusNode,
                                           isPlayMode: isPlayMode,
@@ -214,25 +199,27 @@ class _AppLayoutState extends State<AppLayout> {
                                 ),
                               ),
                               Positioned(
-                                  bottom: 13.0,
-                                  left: 13.0,
-                                  child: Container(
-                                    width: 196,
-                                    child: SingleChildScrollView(
-                                      child: PlayModeSwitch(
-                                          isPlayMode: isPlayMode,
-                                          selectPlayMode: (bool newIsPlayMode) {
-                                            setState(() {
-                                              isPlayMode = newIsPlayMode;
+                                bottom: 13.0,
+                                left: 13.0,
+                                child: Container(
+                                  width: 196,
+                                  child: SingleChildScrollView(
+                                    child: PlayModeSwitch(
+                                      isPlayMode: isPlayMode,
+                                      selectPlayMode: (bool newIsPlayMode) {
+                                        setState(() {
+                                          isPlayMode = newIsPlayMode;
 
-                                              if (newIsPlayMode) {
-                                                widget.userActions
-                                                    .selectNodeForEdit(null);
-                                              }
-                                            });
-                                          }),
+                                          if (newIsPlayMode) {
+                                            widget.userActions
+                                                .selectNodeForEdit(null);
+                                          }
+                                        });
+                                      },
                                     ),
-                                  ))
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
@@ -242,9 +229,10 @@ class _AppLayoutState extends State<AppLayout> {
                 ),
                 Container(
                   child: RightToolbox(
-                      toolboxState: toolboxState,
-                      selectState: selectState,
-                      userActions: widget.userActions),
+                    toolboxState: toolboxState,
+                    selectState: selectState,
+                    userActions: widget.userActions,
+                  ),
                 )
               ],
             ),

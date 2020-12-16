@@ -24,7 +24,7 @@ class ChangeNodeProperty extends BaseAction {
     this.node = node;
     this.oldValue = newProp.value;
     this.changeAction = changeAction;
-    this.selectNodeForEdit = selectNodeForEdit;
+    this.selectNodeForEdit = selectNodeForEdit ?? (_n, _b) => {};
   }
 
   @override
@@ -41,9 +41,14 @@ class ChangeNodeProperty extends BaseAction {
 
 //    if (oldValue == null) return;
     executed = true;
-    propsOrActions[property.name].value = property.value;
+    if (changeAction == ChangeAction.properties) {
+      propsOrActions[property.name].value = property.value;
+    } else {
+      // в наших экшенах не только валю меняется, а еще тип и тд потому что они Functionable
+      propsOrActions[property.name] = property;
+    }
     selectNodeForEdit(
-        node); // reselect node to updates be applied on the right bar
+        node, true); // reselect node to updates be applied on the right bar
     schemaStore.update(node);
   }
 
@@ -55,8 +60,13 @@ class ChangeNodeProperty extends BaseAction {
   @override
   void undo() {
     if (!executed) return;
+    if (changeAction == ChangeAction.properties) {
+      node.properties[property.name].value = oldValue;
+    } else {
+      node.properties[property.name] = oldValue;
+    }
     node.properties[property.name].value = oldValue;
-    selectNodeForEdit(node);
+    selectNodeForEdit(node, false);
     schemaStore.update(node);
   }
 }

@@ -16,6 +16,7 @@ import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.d
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/projects/LoadedProject.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
@@ -32,6 +33,7 @@ import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart';
 
 import 'ConnectToRemoteAttribute.dart';
+import 'GuidelinesManager/GuidelinesManager.dart';
 import 'GuidelinesManager/PositionAndSize.dart';
 
 class UserActions {
@@ -44,8 +46,9 @@ class UserActions {
   CurrentUserStore _currentUserStore;
   RemoteAttributes _remoteAttributes;
   RemoteSchemaPropertiesBinding _bindings;
-  List<String> remoteTableNames;
 
+  List<String> remoteTableNames;
+  SchemaNodeSpawner schemaNodeSpawner;
   Debouncer<SchemaNode> debouncer;
 
   UserActions({
@@ -63,7 +66,11 @@ class UserActions {
     _theme = themeStore;
     _screens = screens;
     _currentUserStore = currentUserStore;
+
+    schemaNodeSpawner = SchemaNodeSpawner(userActions: this);
   }
+
+  GuidelinesManager guidelineManager = GuidelinesManager();
 
   SchemaStore get currentScreen => _screens.current;
 
@@ -97,9 +104,12 @@ class UserActions {
     try {
       await _currentUserStore.setupProject(window, _remoteAttributes);
       var loadedProject = LoadedProject(
-          bottomNav: _bottomNavigation,
-          json: _currentUserStore.project.data['canvas'],
-          themeStore: _theme);
+        bottomNav: _bottomNavigation,
+        json: _currentUserStore.project.data['canvas'],
+        themeStore: this.themeStore,
+        schemaNodeSpawner: this.schemaNodeSpawner,
+      );
+
       final Screens screens = loadedProject.load();
       _bottomNavigation = loadedProject.bottomNav;
       print(_bottomNavigation.toJson());
@@ -108,6 +118,7 @@ class UserActions {
         _screens.all.createScreen(screen);
         _screens.selectByName(screen.name);
       });
+      print(currentUserStore.project.airtableTables);
     } catch (e) {
       print('loadProject() error $e');
       print('canvas error ${_currentUserStore.project.data['canvas']}');
@@ -152,12 +163,18 @@ class UserActions {
   }
 
   SchemaConverter get converter => SchemaConverter(
-      bottomNavigationStore: _bottomNavigation,
-      screens: screens.all,
-      theme: _theme.currentTheme);
+        bottomNavigationStore: _bottomNavigation,
+        screens: screens.all,
+        theme: _theme.currentTheme,
+      );
+
+  void saveProject() {
+    _currentUserStore.project.save(converter, client: http.Client());
+  }
+
   void startAutoSave() {
     Timer.periodic(new Duration(seconds: 10), (timer) {
-      _currentUserStore.project?.save(converter, client: http.Client());
+      this.saveProject();
     });
   }
 
@@ -167,11 +184,10 @@ class UserActions {
     prevValue,
   ]) {
     final action = ChangeNodeProperty(
-      selectNodeForEdit: selectNodeForEdit,
-      schemaStore: currentScreen,
-      node: selectedNode(),
-      newProp: prop,
-    );
+        selectNodeForEdit: this.selectNodeForEdit,
+        schemaStore: currentScreen,
+        node: selectedNode(),
+        newProp: prop);
 
     action.execute(prevValue);
     if (isAddedToDoneActions) {
@@ -180,8 +196,13 @@ class UserActions {
   }
 
   void rerenderNode() {
-    currentScreen.update(selectedNode());
-    debouncer?.stopTimer();
+    final SchemaNode selected = selectedNode();
+    if (selected != null) {
+      currentScreen.update(selectedNode());
+      if (debouncer != null) {
+        debouncer.stopTimer();
+      }
+    }
   }
 
   void copyNode(
@@ -218,10 +239,11 @@ class UserActions {
 
   SchemaNode placeWidget(SchemaNode node, Offset position) {
     final action = new PlaceWidget(
-        node: node,
-        schemaStore: currentScreen,
-        position: position,
-        selectNodeForEdit: selectNodeForEdit);
+      node: node,
+      schemaStore: currentScreen,
+      position: position,
+      selectNodeForEdit: selectNodeForEdit,
+    );
 
     action.execute();
     _actionsDone.add(action);
@@ -231,6 +253,9 @@ class UserActions {
 
   void repositionAndResize(SchemaNode updatedNode,
       {bool isAddedToDoneActions = true, SchemaNode prevValue}) {
+    if (selectedNode().id != updatedNode.id)
+      this.selectNodeForEdit(updatedNode);
+
     final action = RepositionAndResize(
       schemaStore: currentScreen,
       node: updatedNode,
@@ -279,16 +304,39 @@ class UserActions {
       ),
     );
 
-    this.screens.current.buildQuickGuides(
-        addedPositionAndSize: screenPaddingPositionAndSize,
-        ignoredNodeId: this.selectedNode().id);
+    // this.screens.current.buildQuickGuides(
+    //     addedPositionAndSize: screenPaddingPositionAndSize,
+    //     ignoredNodeId: this.selectedNode().id);
+    List<PositionAndSize> nodesPositionAndSize = [];
+
+    this.currentScreen.components.forEach((SchemaNode node) {
+      if (this.selectedNode().id != null && node.id == this.selectedNode().id)
+        return;
+
+      nodesPositionAndSize.add(PositionAndSize(
+          id: node.id, position: node.position, size: node.size));
+    });
+
+    if (screenPaddingPositionAndSize != null) {
+      nodesPositionAndSize.add(screenPaddingPositionAndSize);
+    }
+
+    this.guidelineManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
-  void selectNodeForEdit(SchemaNode node) {
+  void selectNodeForEdit(SchemaNode node, [reselectForUpdateToolbox = false]) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
 
+    // if (selectedNode() != null && selectedNode() is SchemaNodeList) {
+    //   print((selectedNode() as SchemaNodeList).listTemplateType);
+    //   print((selectedNode() as SchemaNodeList).selectedListElementNode);
+    // }
+
     if (node != null) {
-      this.buildQuickGuides();
+      if (!reselectForUpdateToolbox) {
+        this.buildQuickGuides();
+      }
+
       debouncer = Debouncer(milliseconds: 500, prevValue: node.copy());
     }
   }

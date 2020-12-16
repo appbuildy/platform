@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
@@ -11,15 +11,18 @@ import 'package:flutter_app/ui/IconRectangleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 
+import 'EditPropsOpacity.dart';
+
 class EditPropsFontStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
-  final UserActions userActions;
+  //final UserActions userActions;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final MyTheme currentTheme;
 
   const EditPropsFontStyle(
       {Key key,
       @required this.properties,
-      @required this.userActions,
+      @required this.changePropertyTo,
       @required this.currentTheme})
       : super(key: key);
 
@@ -31,7 +34,7 @@ class EditPropsFontStyle extends StatelessWidget {
         EditPropsColor(
           currentTheme: currentTheme,
           properties: properties,
-          userActions: userActions,
+          changePropertyTo: changePropertyTo,
           propName: 'FontColor',
         ),
         SizedBox(
@@ -64,8 +67,7 @@ class EditPropsFontStyle extends StatelessWidget {
                   SelectOption('96', 96),
                 ],
                 onChange: (SelectOption option) {
-                  userActions.changePropertyTo(
-                      SchemaIntProperty('FontSize', option.value));
+                  changePropertyTo(SchemaIntProperty('FontSize', option.value));
                 }),
           )
         ]),
@@ -94,14 +96,23 @@ class EditPropsFontStyle extends StatelessWidget {
                     SelectOption('Black', FontWeight.w900),
                   ],
                   onChange: (SelectOption option) {
-                    userActions.changePropertyTo(
+                    changePropertyTo(
                         SchemaFontWeightProperty('FontWeight', option.value));
                   }),
             )
           ],
         ),
         SizedBox(
-          height: 13,
+          height: 12,
+        ),
+        EditPropsOpacity(
+          value: properties['FontOpacity'].value,
+          onChanged: (double value) {
+            changePropertyTo(SchemaDoubleProperty('FontOpacity', value));
+          },
+        ),
+        SizedBox(
+          height: 14,
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,9 +131,8 @@ class EditPropsFontStyle extends StatelessWidget {
                   children: [
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
-                            SchemaCrossAlignmentProperty(
-                                'CrossAlignment', CrossAxisAlignment.start));
+                        changePropertyTo(SchemaCrossAlignmentProperty(
+                            'CrossAlignment', CrossAxisAlignment.start));
                       },
                       isActive: properties['CrossAlignment'].value ==
                           CrossAxisAlignment.start,
@@ -133,9 +143,8 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
-                            SchemaCrossAlignmentProperty(
-                                'CrossAlignment', CrossAxisAlignment.center));
+                        changePropertyTo(SchemaCrossAlignmentProperty(
+                            'CrossAlignment', CrossAxisAlignment.center));
                       },
                       isActive: properties['CrossAlignment'].value ==
                           CrossAxisAlignment.center,
@@ -146,9 +155,8 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
-                            SchemaCrossAlignmentProperty(
-                                'CrossAlignment', CrossAxisAlignment.end));
+                        changePropertyTo(SchemaCrossAlignmentProperty(
+                            'CrossAlignment', CrossAxisAlignment.end));
                       },
                       isActive: properties['CrossAlignment'].value ==
                           CrossAxisAlignment.end,
@@ -160,9 +168,8 @@ class EditPropsFontStyle extends StatelessWidget {
                   children: [
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
-                            SchemaMainAlignmentProperty(
-                                'MainAlignment', MainAxisAlignment.start));
+                        changePropertyTo(SchemaMainAlignmentProperty(
+                            'MainAlignment', MainAxisAlignment.start));
                       },
                       isActive: properties['MainAlignment'].value ==
                           MainAxisAlignment.start,
@@ -173,9 +180,8 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
-                            SchemaMainAlignmentProperty(
-                                'MainAlignment', MainAxisAlignment.center));
+                        changePropertyTo(SchemaMainAlignmentProperty(
+                            'MainAlignment', MainAxisAlignment.center));
                       },
                       isActive: properties['MainAlignment'].value ==
                           MainAxisAlignment.center,
@@ -186,9 +192,8 @@ class EditPropsFontStyle extends StatelessWidget {
                     ),
                     MyIconRectangleButton(
                       onTap: () {
-                        userActions.changePropertyTo(
-                            SchemaMainAlignmentProperty(
-                                'MainAlignment', MainAxisAlignment.end));
+                        changePropertyTo(SchemaMainAlignmentProperty(
+                            'MainAlignment', MainAxisAlignment.end));
                       },
                       isActive: properties['MainAlignment'].value ==
                           MainAxisAlignment.end,

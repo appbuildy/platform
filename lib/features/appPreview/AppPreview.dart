@@ -3,10 +3,10 @@ import 'package:flutter_app/features/appPreview/AppTabs.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/widgetTransformaions/WidgetPositionAfterDropOnPreview.dart';
-import 'package:flutter_app/ui/Cursor.dart';
+import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/ui/MyColors.dart';
-import 'package:flutter_app/utils/DeltaPanDetector.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 enum SideEnum { topLeft, topRight, bottomRight, bottomLeft }
@@ -42,405 +42,6 @@ class _AppPreviewState extends State<AppPreview> {
     userActions = widget.userActions;
   }
 
-  Widget renderWithSelected({SchemaNode node}) {
-    final isSelected = userActions.selectedNode() != null &&
-        userActions.selectedNode().id == node.id;
-
-    final Widget circle = Container(
-      width: 11,
-      height: 11,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: MyColors.white,
-        border: Border.all(width: 2, color: MyColors.mainBlue),
-      ),
-    );
-
-    final List<Widget> dots = isSelected
-        ? [
-            Positioned(
-              top: -2,
-              left: -2,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDy = node.position.dy;
-                  final double startDx = node.position.dx;
-
-                  node = SchemaNode.magnetTopResize(
-                    node: node,
-                    deltaDy: delta.dy,
-                    screenSizeDy:
-                        userActions.screens.currentScreenWorkspaceSize.dy,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-                  node = SchemaNode.magnetLeftResize(
-                    node: node,
-                    deltaDx: delta.dx,
-                    screenSizeDx:
-                        userActions.screens.currentScreenWorkspaceSize.dx,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDy = node.position.dy;
-                  final double endDx = node.position.dx;
-
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dx: startDx - endDx, dy: startDy - endDy);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
-              ),
-            ),
-            Positioned(
-              top: -2,
-              right: -2,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDy = node.position.dy;
-                  final double startDx = node.position.dx + node.size.dx;
-
-                  node = SchemaNode.magnetTopResize(
-                    node: node,
-                    deltaDy: delta.dy,
-                    screenSizeDy:
-                        userActions.screens.currentScreenWorkspaceSize.dy,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-                  node = SchemaNode.magnetRightResize(
-                    node: node,
-                    deltaDx: delta.dx,
-                    screenSizeDx:
-                        userActions.screens.currentScreenWorkspaceSize.dx,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDy = node.position.dy;
-                  final double endDx = node.position.dx + node.size.dx;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dx: startDx - endDx, dy: startDy - endDy);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(cursor: CursorEnum.neswResize, child: circle),
-              ),
-            ),
-            Positioned(
-              bottom: -2,
-              right: -2,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDx = node.position.dx + node.size.dx;
-                  final double startDy = node.position.dy + node.size.dy;
-
-                  node = SchemaNode.magnetBottomResize(
-                    node: node,
-                    deltaDy: delta.dy,
-                    screenSizeDy:
-                        userActions.screens.currentScreenWorkspaceSize.dy,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-                  node = SchemaNode.magnetRightResize(
-                    node: node,
-                    deltaDx: delta.dx,
-                    screenSizeDx:
-                        userActions.screens.currentScreenWorkspaceSize.dx,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDx = node.position.dx + node.size.dx;
-                  final double endDy = node.position.dy + node.size.dy;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dx: startDx - endDx, dy: startDy - endDy);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(cursor: CursorEnum.nwseResize, child: circle),
-              ),
-            ),
-            Positioned(
-              bottom: -2,
-              left: -2,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDx = node.position.dx;
-                  final double startDy = node.position.dy + node.size.dy;
-
-                  node = SchemaNode.magnetBottomResize(
-                    node: node,
-                    deltaDy: delta.dy,
-                    screenSizeDy:
-                        userActions.screens.currentScreenWorkspaceSize.dy,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-                  node = SchemaNode.magnetLeftResize(
-                    node: node,
-                    deltaDx: delta.dx,
-                    screenSizeDx:
-                        userActions.screens.currentScreenWorkspaceSize.dx,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDx = node.position.dx;
-                  final double endDy = node.position.dy + node.size.dy;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dx: startDx - endDx, dy: startDy - endDy);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(cursor: CursorEnum.neswResize, child: circle),
-              ),
-            ),
-          ]
-        : [Container()];
-
-    final lines = isSelected
-        ? [
-            Positioned(
-              top: 0,
-              left: 0,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (Offset delta) {
-                  final double startDy = node.position.dy;
-
-                  node = SchemaNode.magnetTopResize(
-                    node: node,
-                    deltaDy: delta.dy,
-                    screenSizeDy:
-                        userActions.screens.currentScreenWorkspaceSize.dy,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDy = node.position.dy;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dy: startDy - endDy);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(
-                  cursor: CursorEnum.nsResize,
-                  child: Container(
-                    width: node.size.dx,
-                    height: 10,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(width: 1, color: MyColors.mainBlue),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDx = node.position.dx + node.size.dx;
-
-                  node = SchemaNode.magnetRightResize(
-                    node: node,
-                    deltaDx: delta.dx,
-                    screenSizeDx:
-                        userActions.screens.currentScreenWorkspaceSize.dx,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDx = node.position.dx + node.size.dx;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dx: startDx - endDx);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(
-                  cursor: CursorEnum.ewResize,
-                  child: Container(
-                    width: 10,
-                    height: node.size.dy,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        right: BorderSide(width: 1, color: MyColors.mainBlue),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              bottom: 0,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDy = node.position.dy + node.size.dy;
-
-                  node = SchemaNode.magnetBottomResize(
-                    node: node,
-                    deltaDy: delta.dy,
-                    screenSizeDy:
-                        userActions.screens.currentScreenWorkspaceSize.dy,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDy = node.position.dy + node.size.dy;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dy: startDy - endDy);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(
-                  cursor: CursorEnum.nsResize,
-                  child: Container(
-                      width: node.size.dx,
-                      height: 10,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: MyColors.mainBlue)))),
-                ),
-              ),
-            ),
-            Positioned(
-              top: 0,
-              left: 0,
-              child: DeltaFromAnchorPointPanDetector(
-                onPanUpdate: (delta) {
-                  final double startDx = node.position.dx;
-                  node = SchemaNode.magnetLeftResize(
-                    node: node,
-                    deltaDx: delta.dx,
-                    screenSizeDx:
-                        userActions.screens.currentScreenWorkspaceSize.dx,
-                    guidelinesManager:
-                        userActions.screens.current.guidelineManager,
-                  );
-
-                  userActions.repositionAndResize(node,
-                      isAddedToDoneActions: false);
-
-                  final double endDx = node.position.dx;
-                  return DeltaFromAnchorPointPanDetector.positionChanged(
-                      dx: startDx - endDx);
-                },
-                onPanEnd: (_) {
-                  userActions.currentScreen.guidelineManager.setAllInvisible();
-                  userActions.rerenderNode();
-                },
-                child: Cursor(
-                  cursor: CursorEnum.ewResize,
-                  child: Container(
-                    width: 10,
-                    height: node.size.dy,
-                    decoration: BoxDecoration(
-                      border: Border(
-                        left: BorderSide(width: 1, color: MyColors.mainBlue),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ]
-        : [Container()];
-
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
-      children: [
-        DeltaFromAnchorPointPanDetector(
-          onPanUpdate: (delta) {
-            if (!isSelected) {
-              userActions.selectNodeForEdit(node);
-            }
-
-            final startDx = node.position.dx;
-            final startDy = node.position.dy;
-
-            node = SchemaNode.magnetHorizontalMove(
-              node: node,
-              deltaDx: delta.dx,
-              screenSizeDx: userActions.screens.currentScreenWorkspaceSize.dx,
-              guidelinesManager: userActions.screens.current.guidelineManager,
-            );
-
-            node = SchemaNode.magnetVerticalMove(
-              node: node,
-              deltaDy: delta.dy,
-              screenSizeDy: userActions.screens.currentScreenWorkspaceSize.dy,
-              guidelinesManager: userActions.screens.current.guidelineManager,
-            );
-
-            userActions.repositionAndResize(node, isAddedToDoneActions: false);
-
-            final endDx = node.position.dx;
-            final endDy = node.position.dy;
-            return DeltaFromAnchorPointPanDetector.positionChanged(
-                dx: startDx - endDx, dy: startDy - endDy);
-          },
-          onPanEnd: (_) {
-            userActions.currentScreen.guidelineManager.setAllInvisible();
-            userActions.rerenderNode();
-          },
-          child: Cursor(
-            cursor: CursorEnum.move,
-            child: Container(
-              width: node.size.dx,
-              height: node.size.dy,
-              child: node.toWidget(isPlayMode: widget.isPlayMode),
-            ),
-          ),
-        ),
-        ...lines,
-        ...dots,
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return DragTarget<SchemaNode>(
@@ -474,127 +75,173 @@ class _AppPreviewState extends State<AppPreview> {
         return Observer(builder: (context) {
           final theme = userActions.currentTheme;
 
+          final SchemaNode selectedNode = userActions.selectedNode();
+          final UniqueKey selectedNodeId = selectedNode?.id;
+          final List<TabNavigation> tabs = userActions.bottomNavigation.tabs;
+          print(
+              '${tabs.length}'); // НЕ УДАЛЯТЬ!!!!!! БЛАГОДАРЯ ЕМУ СРАБАТЫВАЕТ ОБЗЕРВЕР И ТАБЫ ОБНОВЛЯЮТСЯ НОРМАЛЬНО
+
           return Transform.scale(
             scale: scale,
             alignment: Alignment.topCenter,
-            child: Container(
-              width: userActions.screens.currentScreenWorkspaceSize.dx + 4,
-              // 4px is for border (2 px on both sides)
-              height: userActions.screens.currentScreenWorkspaceSize.dy +
-                  userActions.screens.screenTabsHeight +
-                  4,
-              // 4px is for border (2 px on both sides)
-              decoration: BoxDecoration(
-                  color: userActions.screens.current.backgroundColor.color,
-                  borderRadius: widget.isPreview
-                      ? BorderRadius.zero
-                      : BorderRadius.circular(40.0),
-                  boxShadow: [
-                    BoxShadow(
+            child: GestureDetector(
+              onTap: () {
+                if (selectedNode != null) {
+                  if (selectedNode.type == SchemaNodeType.list) {
+                    (selectedNode as SchemaNodeList).unselectListElementNode();
+                  }
+
+                  userActions.selectNodeForEdit(null);
+                }
+              },
+              child: Container(
+                width: userActions.screens.currentScreenWorkspaceSize.dx + 4,
+                // 4px is for border (2 px on both sides)
+                height: userActions.screens.currentScreenWorkspaceSize.dy +
+                    userActions.screens.screenTabsHeight +
+                    4,
+                // 4px is for border (2 px on both sides)
+                decoration: BoxDecoration(
+                    color: userActions.screens.current.backgroundColor.color,
+                    borderRadius: widget.isPreview
+                        ? BorderRadius.zero
+                        : BorderRadius.circular(40.0),
+                    boxShadow: [
+                      BoxShadow(
                         spreadRadius: 0,
                         blurRadius: 20,
                         offset: Offset(0, 2),
-                        color: MyColors.black.withOpacity(0.15))
-                  ],
-                  border: widget.isPreview
-                      ? Border()
-                      : Border.all(width: 2, color: MyColors.black)),
-              child: ClipRRect(
-                borderRadius: widget.isPreview
-                    ? BorderRadius.zero
-                    : BorderRadius.circular(39.0),
-                child: Stack(
-                  textDirection: TextDirection.ltr,
-                  children: [
-                    ...userActions.currentScreen.guidelineManager.buildAllLines(
-                        screenSize: widget
-                            .userActions.screens.currentScreenWorkspaceSize),
-                    ...userActions.screens.current.components.map((node) =>
-                        Positioned(
-                            child: GestureDetector(
-                                onTapDown: (details) {
-                                  widget.focusNode.requestFocus();
+                        color: MyColors.black.withOpacity(0.15),
+                      )
+                    ],
+                    border: widget.isPreview
+                        ? Border()
+                        : Border.all(width: 2, color: MyColors.black)),
+                child: ClipRRect(
+                  borderRadius: widget.isPreview
+                      ? BorderRadius.zero
+                      : BorderRadius.circular(39.0),
+                  child: Stack(
+                    textDirection: TextDirection.ltr,
+                    children: [
+                      ...userActions.guidelineManager.buildAllLines(
+                          screenSize: widget
+                              .userActions.screens.currentScreenWorkspaceSize),
+                      ...userActions.screens.current.components.map((node) {
+                        final Function onPanEnd = (_) {
+                          userActions.guidelineManager.setAllInvisible();
+                          userActions.rerenderNode();
+                        };
 
-                                  if (widget.isPlayMode) {
-                                    if (node.type == SchemaNodeType.list) {
-                                      // чтобы прокидывать данные на каждый айтем листа
-                                      return;
-                                    }
-                                    (node.actions['Tap'] as Functionable)
-                                        .toFunction(userActions)();
-                                  } else {
-                                    userActions.selectNodeForEdit(node);
-                                    widget
-                                        .selectStateToLayout(); // select menu layout
-                                  }
-                                },
-                                child: widget.isPlayMode
-                                    ? node.toWidget(
-                                        isPlayMode: widget.isPlayMode,
-                                        userActions: widget.userActions)
-                                    : renderWithSelected(
-                                        node: node,
-                                      )),
-                            top: node.position.dy,
-                            left: node.position.dx)),
-                    widget.isPreview
-                        ? Container()
-                        : Positioned(
-                            top: 0,
-                            left: 0,
-                            child: Image.network(
-                                'assets/icons/meta/status-bar.svg')),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      child: userActions.screens.current.bottomTabsVisible
-                          ? Container(
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                      top: BorderSide(
-                                          width: 1,
-                                          color: theme.separators.color))),
-                              child: Container(
-                                child: AppTabs(
-                                  selectedScreenId:
-                                      userActions.currentScreen.id,
-                                  tabs: userActions.bottomNavigation.tabs,
-                                  theme: userActions.currentTheme,
-                                  onTap: (tab) {
-                                    userActions.screens.selectById(tab.target);
-                                    userActions.selectNodeForEdit(null);
-                                  },
-                                ),
-                                width: userActions
-                                    .screens.currentScreenWorkspaceSize.dx,
-                                height: userActions.screens.screenTabsHeight,
+                        Widget _renderWithSelected() =>
+                            (SchemaNode.renderWithSelected(
+                              node: node,
+                              onPanEnd: onPanEnd,
+                              repositionAndResize:
+                                  userActions.repositionAndResize,
+                              currentScreenWorkspaceSize: userActions
+                                  .screens.currentScreenWorkspaceSize,
+                              isPlayMode: widget.isPlayMode,
+                              isSelected: selectedNodeId == node.id,
+                              toWidgetFunction: node.toWidget,
+                              isMagnetInteraction: true,
+                              selectNodeForEdit: userActions.selectNodeForEdit,
+                            ));
+
+                        return Positioned(
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.focusNode.requestFocus();
+                              if (widget.isPlayMode) {
+                                if (node.type == SchemaNodeType.list) {
+                                  // чтобы прокидывать данные на каждый айтем листа
+                                  return;
+                                }
+                                (node.actions['Tap'] as Functionable)
+                                    .toFunction(userActions)();
+                              } else {
+                                if (node.type == SchemaNodeType.list) {
+                                  (node as SchemaNodeList)
+                                      .unselectListElementNode();
+                                }
+
+                                userActions.selectNodeForEdit(node);
+
+                                widget
+                                    .selectStateToLayout(); // select menu layout
+                              }
+                            },
+                            child: !widget.isPlayMode
+                                ? _renderWithSelected()
+                                : node.toWidget(isPlayMode: widget.isPlayMode),
+                          ),
+                          top: node.position.dy,
+                          left: node.position.dx,
+                        );
+                      }),
+                      widget.isPreview
+                          ? Container()
+                          : Positioned(
+                              top: 0,
+                              left: 0,
+                              child: Image.network(
+                                  'assets/icons/meta/status-bar.svg')),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        child: userActions.screens.current.bottomTabsVisible
+                            ? Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: widget.isPreview
-                                      ? BorderRadius.zero
-                                      : BorderRadius.only(
-                                          bottomLeft: Radius.circular(37.0),
-                                          bottomRight: Radius.circular(37.0)),
+                                    border: Border(
+                                        top: BorderSide(
+                                            width: 1,
+                                            color: theme.separators.color))),
+                                child: Container(
+                                  child: AppTabs(
+                                    selectedScreenId:
+                                        userActions.currentScreen.id,
+                                    tabs: tabs,
+                                    theme: userActions.currentTheme,
+                                    onTap: (tab) {
+                                      userActions.screens
+                                          .selectById(tab.target);
+                                      userActions.selectNodeForEdit(null);
+                                    },
+                                  ),
+                                  width: userActions
+                                      .screens.currentScreenWorkspaceSize.dx,
+                                  height: userActions.screens.screenTabsHeight,
+                                  decoration: BoxDecoration(
+                                    color: userActions
+                                        .screens.current.backgroundColor.color,
+                                    borderRadius: widget.isPreview
+                                        ? BorderRadius.zero
+                                        : BorderRadius.only(
+                                            bottomLeft: Radius.circular(37.0),
+                                            bottomRight: Radius.circular(37.0)),
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Container(),
-                    ),
-                    widget.isPreview
-                        ? Container()
-                        : Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 7.0),
-                              child: Container(
-                                width: 134,
-                                height: 5,
-                                decoration: BoxDecoration(
+                              )
+                            : Container(),
+                      ),
+                      widget.isPreview
+                          ? Container()
+                          : Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 7.0),
+                                child: Container(
+                                  width: 134,
+                                  height: 5,
+                                  decoration: BoxDecoration(
                                     color: Color(0xFF000000),
-                                    borderRadius: BorderRadius.circular(100)),
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                ),
                               ),
-                            )),
-                  ],
+                            ),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -1,4 +1,8 @@
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'dart:convert';
+
+import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -92,7 +96,7 @@ void main() {
       }
     }
   };
-  SchemaNode loaded = ComponentLoadedFromJson(jsonComponent).load();
+  SchemaNode loaded = ComponentLoadedFromJson(jsonComponent: jsonComponent, schemaNodeSpawner: SchemaNodeSpawner(userActions: setupUserActions())).load();
 
   test('load() loads size', () {
     expect(loaded.size.dx, 343);

@@ -28,16 +28,16 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
   void initState() {
     super.initState();
 
-    Map<SettingsEnum, Widget> sliderAnimationPages = {
-      SettingsEnum.information: BuildToolboxInformationPage(goBackToSettings: goBack, userActions: widget.userActions),
-      SettingsEnum.theme: BuildToolboxThemePage(goBackToSettings: goBack, userActions: widget.userActions),
-      SettingsEnum.airtable: BuildToolboxAirtablePage(goBackToSettings: goBack, userActions: widget.userActions),
+    Map<SettingsEnum, BuildWidgetFunction> sliderAnimationPages = {
+      SettingsEnum.information: () => BuildToolboxInformationPage(goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.theme: () => BuildToolboxThemePage(goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.airtable: () => BuildToolboxAirtablePage(goBackToSettings: goBack, userActions: widget.userActions),
     };
 
     pageSliderController = PageSliderController<SettingsEnum>(
       vsync: this,
-      rootPage: _buildMain(),
-      pagesMap: sliderAnimationPages,
+      buildRoot: _buildMain,
+      buildPages: sliderAnimationPages,
     );
   }
 

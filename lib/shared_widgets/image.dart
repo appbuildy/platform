@@ -35,9 +35,12 @@ class Image extends StatelessWidget {
       child: ClipRRect(
         borderRadius:
             BorderRadius.circular(properties['BorderRadiusValue'].value),
-        child: Cupertino.Image.network(
-          properties['Url'].value,
-          fit: getFitOnString(properties['Fit'].value),
+        child: Opacity(
+          opacity: properties['Opacity'].value,
+          child: Cupertino.Image.network(
+            properties['Url'].value,
+            fit: getFitOnString(properties['Fit'].value),
+          ),
         ),
       ),
     );

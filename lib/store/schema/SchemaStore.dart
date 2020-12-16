@@ -28,28 +28,6 @@ abstract class _SchemaStore with Store {
     this.bottomTabsVisible = bottomTabsVisible ?? true;
     this.backgroundColor = backgroundColor ??
         MyThemeProp(name: 'background', color: Color(0xFFffffff));
-
-   // this.quickGuideManager = QuickGuideManager();
-  }
-
-  //QuickGuideManager quickGuideManager;
-
-  GuidelinesManager guidelineManager = GuidelinesManager();
-
-  void buildQuickGuides({ PositionAndSize addedPositionAndSize, UniqueKey ignoredNodeId }) {
-    List<PositionAndSize> nodesPositionAndSize = [];
-
-    this.components.forEach((SchemaNode node) {
-      if (ignoredNodeId != null && node.id == ignoredNodeId) return;
-
-      nodesPositionAndSize.add(PositionAndSize(id: node.id, position: node.position, size: node.size));
-    });
-
-    if (addedPositionAndSize != null) {
-      nodesPositionAndSize.add(addedPositionAndSize);
-    }
-
-    this.guidelineManager.makeAllObjectGuides(nodesPositionAndSize);
   }
 
   @observable

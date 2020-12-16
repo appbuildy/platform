@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
@@ -32,7 +33,10 @@ class _AllActionsState extends State<AllActions> {
   @override
   void initState() {
     super.initState();
-    isVisible = widget.userActions.selectedNode().actions['Tap'].value != null;
+    isVisible =
+        (widget.userActions.selectedNode().actions['Tap'] as Functionable)
+                .type !=
+            SchemaActionType.doNothing;
   }
 
   void _createDetailedInfoForList(SchemaNode selectedNode, String tableName) {
@@ -60,46 +64,41 @@ class _AllActionsState extends State<AllActions> {
     }
 
     final detailedComponents = [
-      SchemaNodeImage(
-          position: Offset(0, 0),
-          url: isInRange(2)
-              ? detailedInfo.rowData[listColumns[2]].data
-              : detailedInfo.rowData[listColumns[0]].data,
-          column: isInRange(2) ? listColumns[2] : listColumns[0]),
-      SchemaNodeIcon(
-          themeStore: themeStore,
+      widget.userActions.schemaNodeSpawner.spawnSchemaNodeImage(
+        position: Offset(0, 0),
+        url: isInRange(2)
+            ? detailedInfo.rowData[listColumns[2]].data
+            : detailedInfo.rowData[listColumns[0]].data,
+        column: isInRange(2) ? listColumns[2] : listColumns[0],
+      ),
+      widget.userActions.schemaNodeSpawner.spawnSchemaNodeIcon(
           position: Offset(14, 40),
           tapAction: GoToScreenAction('Tap', detailedInfo.screenId),
           iconSize: 24,
           icon: FontAwesomeIcons.arrowLeft),
-      SchemaNodeText(
+      widget.userActions.schemaNodeSpawner.spawnSchemaNodeText(
           position: Offset(14, 220),
           size: Offset(343, 35),
-          themeStore: themeStore,
           text: isInRange(0)
               ? detailedInfo.rowData[listColumns[0]].data
               : detailedInfo.rowData[listColumns[0]].data,
           fontSize: 24,
           fontWeight: FontWeight.w600,
           column: isInRange(0) ? listColumns[0] : listColumns[0]),
-      SchemaNodeText(
+      widget.userActions.schemaNodeSpawner.spawnSchemaNodeText(
           position: Offset(14, 260),
           size: Offset(343, 25),
-          themeStore: themeStore,
           text: isInRange(1)
               ? detailedInfo.rowData[listColumns[1]].data
               : detailedInfo.rowData[listColumns[0]].data,
           fontWeight: FontWeight.w400,
           color: themeStore.currentTheme.generalSecondary,
           column: isInRange(1) ? listColumns[1] : listColumns[0]),
-      SchemaNodeButton(
-          themeStore: themeStore,
-          position: Offset(14, 295),
-          text: 'Contact Us'),
-      SchemaNodeText(
+      widget.userActions.schemaNodeSpawner
+          .spawnSchemaNodeButton(position: Offset(14, 295), text: 'Contact Us'),
+      widget.userActions.schemaNodeSpawner.spawnSchemaNodeText(
           position: Offset(14, 360),
           size: Offset(343, 300),
-          themeStore: themeStore,
           text: isInRange(3)
               ? detailedInfo.rowData[listColumns[3]].data
               : detailedInfo.rowData[listColumns[0]].data,
@@ -137,8 +136,7 @@ class _AllActionsState extends State<AllActions> {
               onTap: () {
                 setState(() {
                   if (isVisible) {
-                    widget.userActions
-                        .changeActionTo(GoToScreenAction('Tap', null));
+                    widget.userActions.changeActionTo(MyDoNothingAction());
                   } else {
                     if (selectedNode.type == SchemaNodeType.list) {
                       _createDetailedInfoForList(

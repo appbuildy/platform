@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
@@ -9,13 +8,14 @@ import 'package:flutter_app/ui/MySelects/MySelects.dart';
 
 class EditPropsIconStyle extends StatelessWidget {
   final Map<String, SchemaNodeProperty> properties;
-  final UserActions userActions;
+  // final UserActions userActions;
+  final Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo;
   final MyTheme currentTheme;
 
   const EditPropsIconStyle(
       {Key key,
       @required this.properties,
-      @required this.userActions,
+      @required this.changePropertyTo,
       @required this.currentTheme})
       : super(key: key);
 
@@ -27,11 +27,11 @@ class EditPropsIconStyle extends StatelessWidget {
         EditPropsColor(
           currentTheme: currentTheme,
           properties: properties,
-          userActions: userActions,
+          changePropertyTo: changePropertyTo,
           propName: 'IconColor',
         ),
         SizedBox(
-          height: 10,
+          height: 12,
         ),
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           SizedBox(
@@ -56,14 +56,10 @@ class EditPropsIconStyle extends StatelessWidget {
                   SelectOption('96', 96),
                 ],
                 onChange: (SelectOption option) {
-                  userActions.changePropertyTo(
-                      SchemaIntProperty('IconSize', option.value));
+                  changePropertyTo(SchemaIntProperty('IconSize', option.value));
                 }),
           )
         ]),
-        SizedBox(
-          height: 10,
-        ),
       ],
     );
   }

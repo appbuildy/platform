@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 
-import '../ToolboxUI.dart';
+import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 
 class ToolboxData extends StatefulWidget {
   final UserActions userActions;
@@ -25,7 +25,7 @@ class _ToolboxDataState extends State<ToolboxData> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 20, right: 10),
-          child: ConnectAirtableModal(isInToolbox: true),
+          child: ConnectAirtableModal(isInToolbox: true, userActions: widget.userActions),
         ),
         SizedBox(
           height: 150,
@@ -43,7 +43,7 @@ class _ToolboxDataState extends State<ToolboxData> {
         width: toolboxWidth,
         height: MediaQuery.of(context).size.height,
         child: (widget.userActions.currentUserStore.project != null &&
-                widget.userActions.currentUserStore.project.slugUrl != null)
+                widget.userActions.currentUserStore.project.base != null)
             ? Container()
             : buildConnectAirtable());
   }

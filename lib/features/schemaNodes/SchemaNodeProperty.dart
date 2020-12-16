@@ -18,6 +18,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProp
 import 'package:flutter_app/features/schemaNodes/properties/SchemaTextAlignProperty.dart';
 import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 
+import 'SchemaNodeSpawner.dart';
 import 'my_do_nothing_action.dart';
 import 'properties/SchemaStringProperty.dart';
 
@@ -71,7 +72,7 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
   }
 
   static SchemaNodeProperty deserializeFromJson(
-      Map<String, dynamic> targetJson) {
+      Map<String, dynamic> targetJson, SchemaNodeSpawner schemaNodeSpawner) {
     try {
       switch (targetJson['propertyClass']) {
         case 'SchemaFontWeightProperty':
@@ -146,7 +147,8 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
           break;
         case 'ListElementsProperty':
           {
-            return ListElementsProperty.fromJson(targetJson);
+            return SchemaListElementsProperty.fromJson(
+                targetJson, schemaNodeSpawner);
           }
           break;
         case 'SchemaListTemplateProperty':
@@ -159,8 +161,9 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
             print("No .fromJson for $targetJson");
           }
       }
-    } catch (e) {
-      print("Failed to deserialize $targetJson");
+    } catch (e, stacktrace) {
+      print("Failed to deserialize SchemaNode: $targetJson");
+      print(stacktrace);
       throw (e);
     }
     return null;

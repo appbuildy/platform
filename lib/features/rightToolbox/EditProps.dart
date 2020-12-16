@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
@@ -45,108 +46,114 @@ class EditProps extends StatelessWidget {
           );
         }
 
-        return Column(children: [
-          Container(
-            decoration: BoxDecoration(
-                border:
-                    Border(left: BorderSide(width: 1, color: MyColors.gray))),
-            child: ToolboxHeader(
-                padding: const EdgeInsets.only(
-                  left: 10.0,
-                  right: 10.0,
-                ),
-                leftWidget: IconCircleButton(
-                  onTap: () {
-                    userActions.selectNodeForEdit(null);
-                  },
-                  assetPath: 'assets/icons/meta/btn-close.svg',
-                ),
-                rightWidget: WithInfo(
-                    isShowAlways: true,
-                    isOnLeft: true,
-                    defaultDecoration: BoxDecoration(
-                        gradient: MyGradients.plainWhite,
-                        shape: BoxShape.circle),
-                    hoverDecoration: BoxDecoration(
-                        gradient: MyGradients.lightBlue,
-                        shape: BoxShape.circle),
-                    position: Offset(0, 2),
-                    onBringFront: () {
-                      userActions.currentScreen.bringFront(selectedNode);
+        Widget wrapInRootEditProps(Widget child) {
+          return Column(children: [
+            Container(
+              decoration: BoxDecoration(
+                  border:
+                  Border(left: BorderSide(width: 1, color: MyColors.gray))),
+              child: ToolboxHeader(
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                    right: 10.0,
+                  ),
+                  leftWidget: IconCircleButton(
+                    onTap: () {
+                      userActions.selectNodeForEdit(null);
                     },
-                    onSendBack: () {
-                      userActions.currentScreen.sendBack(selectedNode);
-                    },
-                    onDuplicate: () {
-                      userActions.copyNode(selectedNode);
-                    },
-                    onDelete: () {
-                      userActions.deleteNode(selectedNode);
-                    },
-                    child: Container(
-                      width: 38,
-                      height: 38,
-                      color: Colors.transparent,
-                    )),
-                title: selectedNode.type.toString().split('.')[1].capitalize()),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
-            child: Column(
-              children: [
-                AllActions(
-                  key: selectedNode.id,
-                  userActions: userActions,
-                  screens: screens,
-                ),
-                detailedInfo != null &&
-                        selectedNode.properties['Column'] != null
-                    ? Column(
+                    assetPath: 'assets/icons/meta/btn-close.svg',
+                  ),
+                  rightWidget: WithInfo(
+                      isShowAlways: true,
+                      isOnLeft: true,
+                      defaultDecoration: BoxDecoration(
+                          gradient: MyGradients.plainWhite,
+                          shape: BoxShape.circle),
+                      hoverDecoration: BoxDecoration(
+                          gradient: MyGradients.lightBlue,
+                          shape: BoxShape.circle),
+                      position: Offset(0, 2),
+                      onBringFront: () {
+                        userActions.currentScreen.bringFront(selectedNode);
+                      },
+                      onSendBack: () {
+                        userActions.currentScreen.sendBack(selectedNode);
+                      },
+                      onDuplicate: () {
+                        userActions.copyNode(selectedNode);
+                      },
+                      onDelete: () {
+                        userActions.deleteNode(selectedNode);
+                      },
+                      child: Container(
+                        width: 38,
+                        height: 38,
+                        color: Colors.transparent,
+                      )),
+                  title: selectedNode.type.toString().split('.')[1].capitalize()),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
+              child: Column(
+                children: [
+                  AllActions(
+                    key: selectedNode.id,
+                    userActions: userActions,
+                    screens: screens,
+                  ),
+                  detailedInfo != null &&
+                      selectedNode.properties['Column'] != null
+                      ? Column(
+                    children: [
+                      ColumnDivider(name: 'Data Source'),
+                      Row(
                         children: [
-                          ColumnDivider(name: 'Data Source'),
-                          Row(
-                            children: [
-                              SizedBox(
-                                child: Text('Column'),
-                                width: 59,
-                              ),
-                              Expanded(
-                                  child: MyClickSelect(
+                          SizedBox(
+                            child: Text('Column'),
+                            width: 59,
+                          ),
+                          Expanded(
+                              child: MyClickSelect(
                                 placeholder: 'Select Column',
                                 selectedValue:
-                                    selectedNode.properties['Column'].value,
+                                selectedNode.properties['Column'].value,
                                 defaultIcon: Container(
                                     child: Image.network(
-                                  'assets/icons/meta/btn-detailed-info-big.svg',
-                                  fit: BoxFit.contain,
-                                )),
+                                      'assets/icons/meta/btn-detailed-info-big.svg',
+                                      fit: BoxFit.contain,
+                                    )),
                                 onChange: (SelectOption element) {
                                   userActions.changePropertyTo(
                                       SchemaStringProperty(
                                           'Column', element.value));
                                   (selectedNode as dynamic)
                                       .updateOnColumnDataChange(
-                                          userActions,
-                                          detailedInfo
-                                              .rowData[element.value].data);
+                                      detailedInfo
+                                          .rowData[element.value].data);
                                 },
                                 options: columns
                                     .map((e) => SelectOption(e, e))
                                     .toList(),
                               ))
-                            ],
-                          )
                         ],
                       )
-                    : Container(),
-                selectedNode.toEditProps(userActions),
-              ],
+                    ],
+                  )
+                      : Container(),
+                  child,
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 40,
-          ),
-        ]);
+            SizedBox(
+              height: 40,
+            ),
+          ]);
+        }
+
+        return selectedNode.toEditProps(
+          wrapInRootEditProps,
+          userActions.changePropertyTo,
+        );
       },
     );
   }

@@ -1,57 +1,83 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
+import 'package:flutter_app/features/schemaNodes/implementations.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
+
+import '../../Functionable.dart';
 
 class ListTemplateCards extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.cards;
 
-  Widget toWidget(
-      {MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties,
-      Map<String, SchemaNodeProperty> actions,
-      UserActions userActions,
-      bool isPlayMode = false}) {
-    return Column(
-        children: properties['Items']
-            .value
-            .values
-            .map((item) {
-              if (isPlayMode) {
-                return GestureDetector(
-                  onTap: () {
-                      (actions['Tap'] as Functionable)
-                          .toFunction(userActions)(item.value);
-                  },
-                  child: widgetFor(
+  Widget toWidget({
+    @required Function onListClick, // should mock it in skeleton
+    @required MyTheme theme,
+    @required Offset size,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
+    bool isPlayMode = false,
+  }) {
+    final aspectRatio = getAspectRatio(size: size, properties: properties);
+
+    return GestureDetector(
+      onTap: () {
+        onListClick();
+      },
+      child: GridView.count(
+          physics: isPlayMode
+              ? AlwaysScrollableScrollPhysics()
+              : NeverScrollableScrollPhysics(),
+          childAspectRatio: aspectRatio,
+          padding: EdgeInsets.all(properties['ListItemPadding'].value),
+          crossAxisSpacing: properties['ListItemPadding'].value,
+          mainAxisSpacing: properties['ListItemPadding'].value,
+          crossAxisCount: properties['ListItemsPerRow'].value,
+          children: properties['Items']
+              .value
+              .values
+              .map((item) {
+                if (isPlayMode) {
+                  return GestureDetector(
+                    onTap: () {
+                      (schemaNodeList.actions['Tap'] as Functionable)
+                          .toFunction(schemaNodeList
+                              .parentSpawner.userActions)(item.value);
+                    },
+                    child: widgetFor(
                       item: item,
-                      elements: properties['Elements'].value,
-                      currentTheme: currentTheme,
-                      properties: properties),
-                );
-              }
-              return widgetFor(
+                      schemaNodeList: schemaNodeList,
+                      theme: theme,
+                      properties: properties,
+                      isSelected: isSelected,
+                      isPlayMode: isPlayMode,
+                    ),
+                  );
+                }
+                return widgetFor(
                   item: item,
-                  elements: properties['Elements'].value,
-                  currentTheme: currentTheme,
-                  properties: properties);
-            })
-            .toList()
-            .cast<Widget>());
+                  schemaNodeList: schemaNodeList,
+                  theme: theme,
+                  properties: properties,
+                  isSelected: isSelected,
+                  isPlayMode: isPlayMode,
+                );
+              })
+              .toList()
+              .cast<Widget>()),
+    );
   }
 
   Widget rowStyle({
     Map<String, SchemaNodeProperty> properties,
-    UserActions userActions,
+    Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo,
     MyTheme currentTheme,
   }) {
     return Column(
@@ -62,99 +88,87 @@ class ListTemplateCards extends ListTemplate {
         EditPropsCorners(
           value: properties['ItemRadiusValue'].value,
           onChanged: (int value) {
-            userActions
-                .changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
+            changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
           },
         ),
         SizedBox(
           height: 15,
         ),
+        // todo: подумать как сделать лучше изменение высота listItem'a
+        SizedBox(
+          height: 15,
+        ),
         EditPropsShadow(
           properties: properties,
-          userActions: userActions,
+          changePropertyTo: changePropertyTo,
           currentTheme: currentTheme,
         )
       ],
     );
   }
 
-  Widget widgetFor(
-      {SchemaListItemsProperty item,
-      ListElements elements,
-      MyTheme currentTheme,
-      Map<String, SchemaNodeProperty> properties,
-      bool isPlayMode}) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 11, left: 12, right: 12),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                      properties['ItemRadiusValue'].value),
-                  color: getThemeColor(
-                    currentTheme,
-                    properties['ItemColor'],
-                  ),
-                  boxShadow: properties['BoxShadow'].value
-                      ? [
-                          BoxShadow(
-                              color: getThemeColor(currentTheme,
-                                      properties['BoxShadowColor'])
-                                  .withOpacity(
-                                      properties['BoxShadowOpacity'].value),
-                              blurRadius: properties['BoxShadowBlur'].value,
-                              offset: Offset(0.0, 2.0),
-                              spreadRadius: 0)
-                        ]
-                      : []),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  elements.image != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(
-                                properties['ItemRadiusValue'].value),
-                            topRight: Radius.circular(
-                                properties['ItemRadiusValue'].value),
-                          ),
-                          child: Image.network(
-                            item.value[elements.image.column]?.data ?? '',
-                            fit: BoxFit.cover,
-                            height: 80,
-                            width: 351,
-                          ),
-                        )
-                      : Container(),
-                  elements.title != null
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                              left: 13,
-                              right: 13,
-                              top: 11.0,
-                              bottom: elements.subtitle != null ? 0 : 12),
-                          child: Text(
-                            item.value[elements.title.column]?.data ?? '',
-                            style: MyTextStyle.regularTitle,
-                          ),
-                        )
-                      : Container(),
-                  elements.subtitle != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                              left: 13, right: 13, top: 3, bottom: 12),
-                          child: Text(
-                            item.value[elements.subtitle.column]?.data ?? '',
-                            style: MyTextStyle.regularCaption,
-                          ),
-                        )
-                      : Container(),
-                ],
-              ),
-            ),
+  Widget widgetFor({
+    SchemaListItemsProperty item,
+    @required MyTheme theme,
+    @required Map<String, SchemaNodeProperty> properties,
+    @required bool isSelected,
+    SchemaNodeList schemaNodeList,
+    @required bool isPlayMode,
+  }) {
+    return Container(
+      height: properties['ListItemHeight'].value,
+      decoration: BoxDecoration(
+          borderRadius:
+              BorderRadius.circular(properties['ItemRadiusValue'].value),
+          color: getThemeColor(
+            theme,
+            properties['ItemColor'],
           ),
+          boxShadow: properties['BoxShadow'].value
+              ? [
+                  BoxShadow(
+                    color: getThemeColor(
+                      theme,
+                      properties['BoxShadowColor'],
+                    ).withOpacity(properties['BoxShadowOpacity'].value),
+                    blurRadius: properties['BoxShadowBlur'].value,
+                    offset: Offset(0.0, 2.0),
+                    spreadRadius: 0,
+                  )
+                ]
+              : []),
+      clipBehavior: Clip.hardEdge,
+      child: Stack(
+        children: [
+          ...(properties['Elements'].value as ListElements)
+              .listElements
+              .map((ListElementNode el) {
+            Widget renderedWidget;
+
+            if (el.node is DataContainer && el.columnRelation != null) {
+              final String data =
+                  item.value[el.columnRelation]?.data ?? 'no_data';
+              renderedWidget = el.toWidgetWithReplacedData(
+                data: data,
+                theme: theme,
+                schemaNodeList: schemaNodeList,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            } else {
+              renderedWidget = el.toWidget(
+                schemaNodeList: schemaNodeList,
+                theme: theme,
+                isSelected: isSelected,
+                isPlayMode: isPlayMode,
+              );
+            }
+            return Positioned(
+              top: el.node.position.dy,
+              left: el.node.position.dx,
+              child: renderedWidget,
+            );
+          })
         ],
       ),
     );
