@@ -47,9 +47,6 @@ class Screen extends StatelessWidget {
               child: Container(
                 width: screenWidth,
                 height: heightWithoutNavigationFromConstructor > heightWithoutNavigationFromCurrentScreen ? heightWithoutNavigationFromConstructor : heightWithoutNavigationFromCurrentScreen,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                ),
                 child: Transform.scale(
                   alignment: AlignmentDirectional.topStart,
                   scale: scaleFactor,
