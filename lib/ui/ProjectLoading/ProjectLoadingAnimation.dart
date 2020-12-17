@@ -4,14 +4,17 @@ import 'package:flutter_app/ui/ProjectLoading/AppBuildyLogoAnimation.dart';
 
 class ProjectLoadingAnimation extends StatefulWidget {
   @override
-  _ProjectLoadingAnimationState createState() => _ProjectLoadingAnimationState();
+  _ProjectLoadingAnimationState createState() =>
+      _ProjectLoadingAnimationState();
 }
 
-class _ProjectLoadingAnimationState extends State<ProjectLoadingAnimation> with TickerProviderStateMixin {
+class _ProjectLoadingAnimationState extends State<ProjectLoadingAnimation>
+    with TickerProviderStateMixin {
   AnimationController _controller;
   Animation _animation;
 
   void initState() {
+    super.initState();
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 500),
@@ -23,8 +26,6 @@ class _ProjectLoadingAnimationState extends State<ProjectLoadingAnimation> with 
     );
 
     _controller.forward();
-
-    super.initState();
   }
 
   @override
@@ -50,12 +51,12 @@ class _ProjectLoadingAnimationState extends State<ProjectLoadingAnimation> with 
                     AppBuildyLogoAnimation(),
                     SizedBox(height: 20.0),
                     Text(
-                        'Making it shine...',
-                        style: TextStyle(
-                          color: MyColors.black,
-                          fontSize: 34,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      'Making it shine...',
+                      style: TextStyle(
+                        color: MyColors.black,
+                        fontSize: 34,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),

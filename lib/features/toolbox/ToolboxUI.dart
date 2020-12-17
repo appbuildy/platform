@@ -18,7 +18,7 @@ class ToolboxTitle extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            height: headerHeight,
+            height: builderConst.headerHeight,
             decoration: BoxDecoration(
                 border:
                     Border(bottom: BorderSide(width: 1, color: MyColors.gray))),

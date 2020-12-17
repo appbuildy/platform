@@ -99,7 +99,7 @@ class MyModal {
           decoration: BoxDecoration(color: Color.fromRGBO(61, 62, 75, 0.4)),
           alignment: AlignmentDirectional.center,
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: headerHeight),
+            padding: EdgeInsets.symmetric(vertical: builderConst.headerHeight),
             child: content,
           ),
         ),
@@ -117,8 +117,8 @@ class MyModal {
     if (this._overlayEntry != null) this.close();
 
     this._overlayEntry = OverlayEntry(
-      builder: (BuildContext context) => this._buildModal(child, width, height)
-    );
+        builder: (BuildContext context) =>
+            this._buildModal(child, width, height));
     this.onClose = onClose;
 
     Overlay.of(context).insert(this._overlayEntry);

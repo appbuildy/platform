@@ -14,7 +14,6 @@ class _AppBuildyLogoAnimationState extends State<AppBuildyLogoAnimation>
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(vsync: this);
   }
 
@@ -26,26 +25,26 @@ class _AppBuildyLogoAnimationState extends State<AppBuildyLogoAnimation>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Lottie.asset(
-          'lottie_animations/loading.json',
-          width: 150,
-          height: 150,
-          fit: BoxFit.fill,
-          controller: _controller,
-          onLoaded: (composition) {
-            _controller
-              ..duration = Duration(milliseconds: 1250)
-              ..forward()
-              ..addStatusListener((status) {
-                if (status == AnimationStatus.completed) {
-                  _controller.value = 0;
-                } else if (status == AnimationStatus.dismissed) {
-                  _controller.forward();
-                }
-              });
-          }
-      ),
+    return Lottie.asset(
+      'lottie_animations/loading.json',
+      width: 150,
+      height: 150,
+      fit: BoxFit.fill,
+      controller: _controller,
+      onLoaded: (composition) {
+        _controller
+          ..duration = Duration(milliseconds: 1250)
+          ..forward()
+          ..addStatusListener(
+            (status) {
+              if (status == AnimationStatus.completed) {
+                _controller.value = 0;
+              } else if (status == AnimationStatus.dismissed) {
+                _controller.forward();
+              }
+            },
+          );
+      },
     );
   }
 }

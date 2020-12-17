@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
 class ApplicationWidget extends StatefulWidget {
@@ -16,23 +17,23 @@ class ApplicationWidget extends StatefulWidget {
 }
 
 class _ApplicationWidgetState extends State<ApplicationWidget> {
-  static const Duration minLoadingAnimationDurationTime = Duration(seconds: 1);
-
   Widget body;
 
   @override
   void initState() {
     super.initState();
     body = ProjectLoadingAnimation();
+
+    /// wait until loaded or for minLoadingAnimationDuration
     Future.wait([
-      Future.delayed(minLoadingAnimationDurationTime),
-      widget.preview.load().then((Widget loadedPreview) =>
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            setState(() {
-              body = loadedPreview;
-            });
-          }))
-    ]);
+      Future.delayed(appConst.minLoadingDuration),
+      widget.preview.load().then(
+            (Widget loadedPreview) => body = loadedPreview,
+          ),
+    ]).then(
+      (_) =>
+          WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {})),
+    );
   }
 
   @override

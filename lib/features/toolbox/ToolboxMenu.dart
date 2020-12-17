@@ -77,7 +77,7 @@ class ToolboxMenu extends StatelessWidget {
       children: [
         Container(
           width: 80,
-          height: headerHeight,
+          height: builderConst.headerHeight,
           child: Image.network('assets/icons/meta/logo.svg'),
           decoration: BoxDecoration(
               border:
