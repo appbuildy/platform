@@ -11,13 +11,13 @@ const double kNavbarHeight = 82;
 class Screen extends StatelessWidget {
   final List<WidgetDecorator> widgets;
   final RandomKey id;
-  final BottomNavigation bottomNavigation;
+  final AppBuildyBottomNavBar bottomNavigation;
 
   Screen({Key key, this.widgets, this.id, this.bottomNavigation})
       : super(key: key);
 
   factory Screen.fromJson(Map<String, dynamic> jsonScreen,
-      {BottomNavigation botNavBar}) {
+      {AppBuildyBottomNavBar botNavBar}) {
     return ScreenLoadFromJson(jsonScreen).load(botNavBar);
   }
 

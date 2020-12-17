@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/app_skeleton/entities/action.dart'
-    as skeleton_action;
-import 'package:flutter_app/app_skeleton/loading/i_action_load.dart';
+import 'package:flutter_app/app_skeleton/entities/sk_action.dart';
+import 'package:flutter_app/app_skeleton/loading/i_loader.dart';
 
-class ActionLoadFromJson implements IActionLoad {
+class ActionLoadFromJson implements ILoader<SkAction> {
   Map<String, dynamic> jsonAction;
   ActionLoadFromJson(this.jsonAction);
 
   @override
-  skeleton_action.Action load() {
-    return skeleton_action.Action(jsonAction.keys.first, _loadFunction());
+  SkAction load() {
+    return SkAction(jsonAction.keys.first, _loadFunction());
   }
 
   Function _loadFunction() {

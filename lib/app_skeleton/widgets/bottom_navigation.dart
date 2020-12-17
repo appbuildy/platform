@@ -7,19 +7,19 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-class BottomNavigation extends StatelessWidget {
+class AppBuildyBottomNavBar extends StatelessWidget {
   final List<TabNavigation> tabs;
 
-  const BottomNavigation(this.tabs);
+  const AppBuildyBottomNavBar(this.tabs);
 
-  factory BottomNavigation.fromJson(Map<String, dynamic> jsonNav) {
+  factory AppBuildyBottomNavBar.fromJson(Map<String, dynamic> jsonNav) {
     final tabs = jsonNav['tabs']
         .map<TabNavigation>(
           (dynamic tab) => TabNavigation.fromJson(tab),
         )
         .toList();
 
-    return BottomNavigation(tabs);
+    return AppBuildyBottomNavBar(tabs);
   }
 
   @override
@@ -31,6 +31,8 @@ class BottomNavigation extends StatelessWidget {
     return Positioned(
       bottom: 0,
       left: 0,
+      width: 375,
+      height: 82,
       child: isVisible
           ? DecoratedBox(
               decoration: BoxDecoration(
@@ -41,8 +43,6 @@ class BottomNavigation extends StatelessWidget {
                 )),
               ),
               child: Container(
-                width: 375,
-                height: 82,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   borderRadius: BorderRadius.zero,
@@ -53,7 +53,9 @@ class BottomNavigation extends StatelessWidget {
                     tabs: tabs,
                     theme: theme,
                     onTap: (tab) {
-                      store.setCurrentScreen(store.screens[tab.target]);
+                      store.setCurrentScreen(
+                        store.screens[tab.target],
+                      );
                     },
                   ),
                 ),

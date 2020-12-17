@@ -20,6 +20,6 @@ void main() {
     var application = loader.load();
 
     expect(application.screens.values.first.bottomNavigation,
-        isA<BottomNavigation>());
+        isA<AppBuildyBottomNavBar>());
   });
 }

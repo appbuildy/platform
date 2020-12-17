@@ -1,11 +1,10 @@
 import 'package:flutter_app/app_skeleton/application.dart';
+import 'package:flutter_app/app_skeleton/loading/i_loader.dart';
 import 'package:flutter_app/app_skeleton/screen.dart';
 import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
-import 'i_application_load.dart';
-
-class ApplicationLoadedFromJson implements IApplicationLoad {
+class ApplicationLoadedFromJson implements ILoader<Application> {
   Map<String, dynamic> jsonApp;
   ApplicationLoadedFromJson(this.jsonApp);
 
@@ -15,8 +14,10 @@ class ApplicationLoadedFromJson implements IApplicationLoad {
     return Application(screens: _loadScreens(bottomNav));
   }
 
-  BottomNavigation _loadBottomNavigation() {
-    return BottomNavigation.fromJson(jsonApp['canvas']['bottomNavigation']);
+  AppBuildyBottomNavBar _loadBottomNavigation() {
+    return AppBuildyBottomNavBar.fromJson(
+      jsonApp['canvas']['bottomNavigation'],
+    );
   }
 
   Map<RandomKey, Screen> _loadScreens(bottomNavigation) {
