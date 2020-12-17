@@ -11,14 +11,16 @@ class ScreenLoadFromJson implements IScreenLoad {
   @override
   Screen load([bottomNavigation, project]) {
     return Screen(
-        bottomNavigation: bottomNavigation, id: _id(), widgets: _loadWidgets());
+        bottomNavigation: bottomNavigation,
+        id: _id(),
+        widgets: _loadWidgets(project));
   }
 
   RandomKey _id() {
     return RandomKey.fromJson(jsonScreen['id']);
   }
 
-  List<WidgetDecorator> _loadWidgets() {
+  List<WidgetDecorator> _loadWidgets(project) {
     var widgets = jsonScreen['components']
         .map((component) {
           return WidgetDecorator.fromJson(component, project);

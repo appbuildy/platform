@@ -12,6 +12,6 @@ class BrowserPreview {
   Future<Widget> load() async {
     var project = await setupProject.setupPreview();
 
-    return ApplicationLoadedFromJson(project.data).load();
+    return ApplicationLoadedFromJson(project).load();
   }
 }
