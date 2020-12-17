@@ -34,7 +34,7 @@ class Screen extends StatelessWidget {
     final double navHeight = 84;
 
     final double heightWithoutNavigationFromConstructor = (screenHeightInConstructor - navHeight) * scaleFactor;
-    final double heightWithoutNavigationFromCurrentScreen= screenHeight - navHeight;
+    final double heightWithoutNavigationFromCurrentScreen = screenHeight - navHeight;
 
     return Scaffold(
       body: Column(
