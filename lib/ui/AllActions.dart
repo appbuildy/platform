@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/AddScreen.dart';
@@ -123,6 +123,49 @@ class _AllActionsState extends State<AllActions> {
     });
   }
 
+  Widget buildActionSelect() {
+    final actionsList = [
+      SelectOption(
+          'Navigate to',
+          SchemaActionType.goToScreen,
+          Image.network(
+            'assets/icons/meta/btn-action-navigate.svg',
+          )),
+      SelectOption('Open Link', SchemaActionType.openLink,
+          Image.network('assets/icons/meta/btn-action-link.svg')),
+      SelectOption('Make API Request', SchemaActionType.apiCall,
+          Image.network('assets/icons/meta/btn-action-api.svg')),
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 11.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            child: Text(
+              'Action',
+              style: MyTextStyle.regularCaption,
+            ),
+            width: 59,
+          ),
+          Expanded(
+            child: MyClickSelect(
+                placeholder: 'Select Action',
+                selectedValue: (widget.userActions.selectedNode().actions['Tap']
+                        as Functionable)
+                    .type,
+                onChange: (screen) {
+                  widget.userActions
+                      .changeActionTo(getActionByType(screen.value, null));
+                },
+                options: actionsList.toList()),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedNode = widget.userActions.selectedNode();
@@ -136,7 +179,7 @@ class _AllActionsState extends State<AllActions> {
               onTap: () {
                 setState(() {
                   if (isVisible) {
-                    widget.userActions.changeActionTo(MyDoNothingAction());
+                    widget.userActions.changeActionTo(MyDoNothingAction('Tap'));
                   } else {
                     if (selectedNode.type == SchemaNodeType.list) {
                       _createDetailedInfoForList(
@@ -157,39 +200,13 @@ class _AllActionsState extends State<AllActions> {
             ),
           ],
         ),
+        isVisible ? buildActionSelect() : Container(),
         isVisible
             ? Padding(
                 padding: const EdgeInsets.only(top: 11.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Navigate to',
-                      style: MyTextStyle.regularCaption,
-                    ),
-                    Container(
-                      width: 170,
-                      child: MyClickSelect(
-                          defaultIcon: SizedBox(
-                              width: 20.0,
-                              height: 16.0,
-                              child: Image.network(
-                                  'assets/icons/meta/btn-navigate.svg')),
-                          placeholder: 'Select Page',
-                          selectedValue:
-                              selectedNode.actions['Tap'].value ?? null,
-                          onChange: (screen) {
-                            print(screen.value.toString());
-                            widget.userActions.changeActionTo(
-                                GoToScreenAction('Tap', screen.value));
-                          },
-                          options: widget.userActions.screens.all.screens
-                              .map((element) =>
-                                  SelectOption(element.name, element.id))
-                              .toList()),
-                    )
-                  ],
-                ),
+                child: (widget.userActions.selectedNode().actions['Tap']
+                        as Functionable)
+                    .toEditProps(widget.userActions),
               )
             : Container()
       ],

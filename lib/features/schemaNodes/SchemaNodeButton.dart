@@ -43,7 +43,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Button'),
@@ -98,10 +98,10 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Button(
       properties: this.properties,
-      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
     );
   }

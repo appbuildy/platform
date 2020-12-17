@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 
 import 'Functionable.dart';
 
 class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
-  MyDoNothingAction() : super('', 'MyDoNothingAction') {
+  MyDoNothingAction(String name) : super(name, null) {
     this.type = SchemaActionType.doNothing;
   }
 
@@ -30,9 +31,14 @@ class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
 
   @override
   SchemaNodeProperty copy() {
-    return MyDoNothingAction();
+    return MyDoNothingAction(this.name);
   }
 
   @override
   SchemaActionType type;
+
+  @override
+  Widget toEditProps(UserActions userActions) {
+    return Container();
+  }
 }

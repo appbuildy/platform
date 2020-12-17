@@ -132,6 +132,7 @@ class ListTemplateSimple extends ListTemplate {
 
               renderedWidget = el.toWidgetWithReplacedData(
                 data: data,
+                theme: theme,
                 schemaNodeList: schemaNodeList,
                 isSelected: isSelected,
                 isPlayMode: isPlayMode,
@@ -139,6 +140,7 @@ class ListTemplateSimple extends ListTemplate {
             } else {
               renderedWidget = el.toWidget(
                 schemaNodeList: schemaNodeList,
+                theme: theme,
                 isSelected: isSelected,
                 isPlayMode: isPlayMode,
               );

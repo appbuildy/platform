@@ -595,7 +595,7 @@ class ListElementNode {
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
-      return this.node.toWidget(isPlayMode: isPlayMode);
+      return this.node.toWidget(theme: theme, isPlayMode: isPlayMode);
     }
 
     return GestureDetector(
@@ -625,6 +625,10 @@ class ListElementNode {
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
+      print('HERE');
+      print('HERE');
+      print(theme);
+      print('HERE');
       return (this.node as DataContainer).toWidgetWithReplacedData(
           theme: theme, data: data, isPlayMode: isPlayMode);
     }

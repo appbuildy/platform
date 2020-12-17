@@ -9,7 +9,7 @@ class ScreenLoadFromJson implements IScreenLoad {
   ScreenLoadFromJson(this.jsonScreen);
 
   @override
-  Screen load([bottomNavigation]) {
+  Screen load([bottomNavigation, project]) {
     return Screen(
         bottomNavigation: bottomNavigation, id: _id(), widgets: _loadWidgets());
   }
@@ -21,7 +21,7 @@ class ScreenLoadFromJson implements IScreenLoad {
   List<WidgetDecorator> _loadWidgets() {
     var widgets = jsonScreen['components']
         .map((component) {
-          return WidgetDecorator.fromJson(component);
+          return WidgetDecorator.fromJson(component, project);
         })
         .toList()
         .cast<WidgetDecorator>();
