@@ -6,29 +6,38 @@ import 'features/layout/ProjectLoadingMiddleware.dart';
 import 'features/services/project_parameters_from_browser_query.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ProjectParametersFromBrowserQuery(window).isPreviewMode
+        ? PreviewApp()
+        : BuilderApp(),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class PreviewApp extends StatelessWidget {
+  const PreviewApp({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    if (ProjectParametersFromBrowserQuery(window).isPreviewMode) {
-      return MaterialApp(
-        home: Scaffold(
-          body: ApplicationWidget(),
-        ),
-      );
-    } else {
-      return MaterialApp(
-        title: 'AppBuildy — create your apps',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Scaffold(
-          body: ProjectSetupMiddleware(),
-        ),
-      );
-    }
+    return MaterialApp(
+      home: Scaffold(
+        body: ApplicationWidget(),
+      ),
+    );
+  }
+}
+
+class BuilderApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'AppBuildy — create your apps',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: Scaffold(
+        body: ProjectSetupMiddleware(),
+      ),
+    );
   }
 }

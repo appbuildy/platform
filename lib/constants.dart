@@ -1,1 +1,1 @@
-final double headerHeight = 60.0;
+const double headerHeight = 60.0;
