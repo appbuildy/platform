@@ -35,6 +35,7 @@ class BottomNavigation extends StatelessWidget {
       child: isVisible
           ? Container(
               decoration: BoxDecoration(
+                color: theme.background.color,
                   border: Border(
                       top:
                           BorderSide(width: 1, color: theme.separators.color))),
