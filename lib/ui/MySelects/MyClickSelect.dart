@@ -191,7 +191,8 @@ class _MyClickSelectState extends State<MyClickSelect> {
 
     final windowSize = MediaQuery.of(context).size;
 
-    final calculatedHeight = ((size.height - 2) * widget.options.length) + size.height;
+    final calculatedHeight =
+        ((size.height - 2) * widget.options.length) + size.height;
     final calculatedSum = calculatedHeight + offset.dy;
 
     double yPosition = offset.dy;
@@ -209,7 +210,7 @@ class _MyClickSelectState extends State<MyClickSelect> {
               overflow: Overflow.visible,
               children: [
                 Positioned(
-                  child: GestureDetector(
+                    child: GestureDetector(
                   onTap: () {
                     this._overlayEntry.remove();
                     setState(() {
@@ -282,7 +283,9 @@ class _MyClickSelectState extends State<MyClickSelect> {
               isOverlayOpen = true;
             });
           },
-          child: widget.defaultPreview != null ? widget.defaultPreview : buildSelectPreview()),
+          child: widget.defaultPreview != null
+              ? widget.defaultPreview
+              : buildSelectPreview()),
     );
   }
 }

@@ -993,7 +993,7 @@ abstract class SchemaNode {
         'type': this.type.toString()
       };
 
-  Widget toWidget({bool isPlayMode});
+  Widget toWidget({bool isPlayMode, MyTheme theme});
 
   Widget toEditProps(
     Function wrapInRootProps,

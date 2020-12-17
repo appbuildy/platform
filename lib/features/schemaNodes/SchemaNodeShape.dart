@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 
 import 'SchemaNodeSpawner.dart';
@@ -26,7 +27,7 @@ class SchemaNodeShape extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': MyDoNothingAction()};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(
@@ -60,10 +61,10 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Shape(
       properties: properties,
-      theme: parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? parentSpawner.userActions.themeStore.currentTheme,
       size: size,
     );
   }

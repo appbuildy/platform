@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
@@ -16,7 +17,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentP
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaTextAlignProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 
 import 'SchemaNodeSpawner.dart';
 import 'my_do_nothing_action.dart';
@@ -62,12 +62,12 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
         default:
           {
             print('Failed to deserialize action: no deserializer');
-            return MyDoNothingAction();
+            return MyDoNothingAction('Tap');
           }
       }
     } catch (e) {
       print('Failed to deserialize action with exception: $e');
-      return MyDoNothingAction();
+      return MyDoNothingAction('Tap');
     }
   }
 

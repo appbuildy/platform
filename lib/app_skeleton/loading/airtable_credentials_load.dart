@@ -6,7 +6,8 @@ class AirtableCredentialsLoad {
 
   void load() {
     Client.credentials = {
-      'api_key': jsonData['airtable_credentials']['api_key']
+      'api_key': jsonData['airtable_credentials']['api_key'],
+      'base': jsonData['airtable_credentials']['base']
     };
   }
 }
