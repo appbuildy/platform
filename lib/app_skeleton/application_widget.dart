@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
 class ApplicationWidget extends StatefulWidget {
@@ -13,69 +14,25 @@ class ApplicationWidget extends StatefulWidget {
 }
 
 class _ApplicationWidgetState extends State<ApplicationWidget> {
-  final int minLoadingAnimationDurationTime = 1000;
-
-  BrowserPreview preview;
-  Widget application;
-  OverlayEntry _overlayEntry;
-  Stopwatch animationStopwatch;
-
-  void startLoadingAnimation({@required Function onStart}) {
-    this._overlayEntry = this._renderLoadingOverlay();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      try {
-        Overlay.of(context).insert(this._overlayEntry);
-
-        animationStopwatch = Stopwatch()..start();
-
-        onStart();
-      } catch (e) {
-        preview = widget.preview;
-        onStart();
-      }
-    });
-  }
-
-  OverlayEntry _renderLoadingOverlay() {
-    return OverlayEntry(
-        builder: (BuildContext context) => ProjectLoadingAnimation());
-  }
-
-  void endLoadingAnimation() async {
-    try {
-      int elapsedTime = animationStopwatch.elapsedMilliseconds;
-
-      if (elapsedTime < minLoadingAnimationDurationTime) {
-        await Future.delayed(Duration(
-            milliseconds: minLoadingAnimationDurationTime - elapsedTime));
-      }
-
-      _overlayEntry.remove();
-      animationStopwatch.stop();
-    } catch (e) {}
-  }
+  Widget body;
 
   @override
   void initState() {
-    preview ??= widget.preview;
-    this.startLoadingAnimation(onStart: this.initPreview);
-    application = Container();
     super.initState();
-  }
+    body = ProjectLoadingAnimation();
 
-  Future<void> initPreview() async {
-    try {
-      Widget applicationLoad = await preview.load();
-      setState(() {
-        application = applicationLoad;
-      });
-      endLoadingAnimation();
-    } catch (e) {}
+    /// wait until loaded or for minLoadingAnimationDuration
+    Future.wait([
+      Future.delayed(appConst.minLoadingDuration),
+      widget.preview.load().then(
+            (Widget loadedPreview) => body = loadedPreview,
+          ),
+    ]).then(
+      (_) =>
+          WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {})),
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-    return application;
-  }
+  Widget build(BuildContext context) => body;
 }
