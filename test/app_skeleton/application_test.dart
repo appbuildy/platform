@@ -294,11 +294,11 @@ void main() {
       ]
     }
   };
-  final loadedApp = ApplicationLoadedFromJson({"canvas": jsonApp}).load();
+  // final loadedApp = ApplicationLoadedFromJson({"canvas": jsonApp}).load();
 
   testWidgets('it changes screen with bottom navigation',
       (WidgetTester tester) async {
-    await tester.pumpWidget(loadedApp);
+    // await tester.pumpWidget(loadedApp);
     final textFinder = find.text('Button');
     expect(textFinder, findsOneWidget);
     await tester.tap(find.text('Page 2'));

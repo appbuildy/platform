@@ -26,7 +26,6 @@ void main() {
   test('.load() loads bottomNavigation for screens', () {
     var application = loader.load();
 
-    expect(application.screens.values.first.bottomNavigation,
-        isA<BottomNavigation>());
+    expect(application.screens.values.first.navBar, isA<BottomNavigation>());
   });
 }

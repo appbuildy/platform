@@ -15,11 +15,12 @@ class RandomKey {
   }
 
   @override
-  String toString() {
-    return value;
+  String toString() => value;
+
+  RandomKey.fromString(String value) {
+    this.value = value;
   }
 
-  bool operator ==(o) => o is RandomKey && o.value == this.value;
   String _initValue({int length = 30}) {
     const _chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -27,6 +28,13 @@ class RandomKey {
 
     return String.fromCharCodes(Iterable.generate(
         length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+  }
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is RandomKey && o.value == value;
   }
 
   @override

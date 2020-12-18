@@ -1,5 +1,5 @@
 import 'package:flutter_app/app_skeleton/application.dart';
-import 'package:flutter_app/app_skeleton/screen.dart';
+import 'package:flutter_app/app_skeleton/entities/skeleton_screen.dart';
 import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
@@ -22,12 +22,15 @@ class ApplicationLoadedFromJson implements IApplicationLoad {
     return BottomNavigation.fromJson(jsonApp['canvas']['bottomNavigation']);
   }
 
-  Map<RandomKey, Screen> _loadScreens(bottomNavigation) {
-    Map<RandomKey, Screen> map = {};
-    jsonApp['canvas']['screens'].forEach((screen) {
-      var deserializedScreen = Screen.fromJson(screen,
-          bottomNavigation: bottomNavigation, project: project);
-      map[deserializedScreen.id] = deserializedScreen;
+  Map<RandomKey, SkeletonScreen> _loadScreens(bottomNavigation) {
+    Map<RandomKey, SkeletonScreen> map = {};
+    jsonApp['canvas']['screens'].forEach((jsonScreen) {
+      map[jsonScreen['id']] = SkeletonScreen.fromJson(
+        json: jsonScreen,
+        navBar: bottomNavigation,
+        project: project,
+      );
+      ;
     });
     return map;
   }

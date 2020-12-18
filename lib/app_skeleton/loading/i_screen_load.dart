@@ -1,5 +1,5 @@
-import 'package:flutter_app/app_skeleton/screen.dart';
+import 'package:flutter_app/app_skeleton/entities/skeleton_screen.dart';
 
 abstract class IScreenLoad {
-  Screen load();
+  SkeletonScreen load();
 }

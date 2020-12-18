@@ -12,13 +12,13 @@ mixin _$ScreenStore on _ScreenStore, Store {
   final _$currentScreenAtom = Atom(name: '_ScreenStore.currentScreen');
 
   @override
-  Screen get currentScreen {
+  SkeletonScreen get currentScreen {
     _$currentScreenAtom.reportRead();
     return super.currentScreen;
   }
 
   @override
-  set currentScreen(Screen value) {
+  set currentScreen(SkeletonScreen value) {
     _$currentScreenAtom.reportWrite(value, super.currentScreen, () {
       super.currentScreen = value;
     });
@@ -27,7 +27,7 @@ mixin _$ScreenStore on _ScreenStore, Store {
   final _$_ScreenStoreActionController = ActionController(name: '_ScreenStore');
 
   @override
-  void setCurrentScreen(Screen screen) {
+  void setCurrentScreen(SkeletonScreen screen) {
     final _$actionInfo = _$_ScreenStoreActionController.startAction(
         name: '_ScreenStore.setCurrentScreen');
     try {

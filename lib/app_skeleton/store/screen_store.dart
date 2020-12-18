@@ -1,4 +1,4 @@
-import 'package:flutter_app/app_skeleton/screen.dart';
+import 'package:flutter_app/app_skeleton/entities/skeleton_screen.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 import 'package:mobx/mobx.dart';
 
@@ -10,15 +10,15 @@ abstract class _ScreenStore with Store {
   _ScreenStore(this.currentScreen, this.screens);
 
   @observable
-  Screen currentScreen;
+  SkeletonScreen currentScreen;
 
   @computed
   RandomKey get selectedScreenId => currentScreen.id;
 
-  Map<RandomKey, Screen> screens;
+  Map<RandomKey, SkeletonScreen> screens;
 
   @action
-  void setCurrentScreen(Screen screen) {
+  void setCurrentScreen(SkeletonScreen screen) {
     currentScreen = screen;
   }
 }
