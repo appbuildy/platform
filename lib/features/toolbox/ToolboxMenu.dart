@@ -33,7 +33,7 @@ class ToolboxMenu extends StatelessWidget {
       child: Cursor(
         cursor: isActive ? CursorEnum.defaultCursor : CursorEnum.pointer,
         child: Container(
-          width: 80,
+          width: toolboxMenuWidth,
           height: 90,
           child: HoverDecoration(
               defaultDecoration: isActive
@@ -76,7 +76,7 @@ class ToolboxMenu extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 80,
+          width: toolboxMenuWidth,
           height: headerHeight,
           child: Image.network('assets/icons/meta/logo.svg'),
           decoration: BoxDecoration(
