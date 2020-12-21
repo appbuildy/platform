@@ -4,10 +4,12 @@ import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
 class ApplicationWidget extends StatefulWidget {
-  BrowserPreview preview;
-  ApplicationWidget({Key key, BrowserPreview preview}) : super(key: key) {
-    this.preview = preview ?? BrowserPreview();
-  }
+  final BrowserPreview preview;
+  ApplicationWidget({
+    Key key,
+    BrowserPreview preview = const BrowserPreview(),
+  })  : this.preview = preview ?? BrowserPreview(),
+        super(key: key);
 
   @override
   _ApplicationWidgetState createState() => _ApplicationWidgetState();

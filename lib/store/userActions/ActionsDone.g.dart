@@ -12,9 +12,10 @@ mixin _$ActionsDone on _ActionsDone, Store {
   Computed<bool> _$isActionsEmptyComputed;
 
   @override
-  bool get isActionsEmpty =>
-      (_$isActionsEmptyComputed ??= Computed<bool>(() => super.isActionsEmpty,
-              name: '_ActionsDone.isActionsEmpty'))
+  bool get isActionsEmpty => (_$isActionsEmptyComputed ??= Computed<bool>(
+        () => super.isActionsEmpty,
+        name: '_ActionsDone.isActionsEmpty',
+      ))
           .value;
 
   final _$actionsAtom = Atom(name: '_ActionsDone.actions');
