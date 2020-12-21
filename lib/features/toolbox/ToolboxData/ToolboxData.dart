@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 
 import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
+
+import 'package:flutter_app/constants.dart';
+import 'package:flutter_app/ui/IFrame/IFrame.dart';
 
 class ToolboxData extends StatefulWidget {
   final UserActions userActions;
@@ -37,14 +41,56 @@ class _ToolboxDataState extends State<ToolboxData> {
     );
   }
 
+  OverlayEntry renderBaseViewOverlayEntry(base) {
+    return OverlayEntry(
+        builder: (context) {
+          var screenSize = MediaQuery.of(context).size;
+
+          return Padding(
+            padding: EdgeInsets.only(left: toolboxMenuWidth),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+              ),
+              width: screenSize.width - toolboxMenuWidth,
+              height: screenSize.height,
+              child: IFrame(
+                key: UniqueKey(),
+                src: 'https://airtable.com/embed/$base',
+              ),
+            ),
+          );
+        }
+    );
+  }
+
+  OverlayEntry baseViewOverlayEntry;
+
+  @override
+  void dispose() {
+    this.baseViewOverlayEntry?.remove();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final Project project =  widget.userActions.currentUserStore.project;
+    final bool isBaseSet = project != null && project.base != null;
+
+    if (isBaseSet) {
+      this.baseViewOverlayEntry = this.renderBaseViewOverlayEntry(project.base);
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Overlay.of(context).insert(this.baseViewOverlayEntry);
+      });
+
+      return Container();
+    }
+
     return Container(
-        width: toolboxWidth,
-        height: MediaQuery.of(context).size.height,
-        child: (widget.userActions.currentUserStore.project != null &&
-                widget.userActions.currentUserStore.project.base != null)
-            ? Container()
-            : buildConnectAirtable());
+      width: toolboxWidth,
+      height: MediaQuery.of(context).size.height,
+      child: buildConnectAirtable(),
+    );
   }
 }
