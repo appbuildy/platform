@@ -94,7 +94,7 @@ void main() {
   };
 
   test('.fromJson()', () {
-    var widget = WidgetDecorator.fromJson(jsonComponent);
+    var widget = WidgetDecorator.fromJson(jsonComponent: jsonComponent);
     expect(widget.widget, isA<Button>());
   });
 }

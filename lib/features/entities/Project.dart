@@ -23,7 +23,7 @@ class Project {
     http.Client client,
     CurrentUserStore userStore,
     ProjectParametersFromBrowserQuery settings,
-    RemoteAttributes attributes
+    RemoteAttributes attributes,
   }) async {
     return await SetupProject(userStore: userStore, attributes: attributes)
         .setup(auth, client);
@@ -43,7 +43,7 @@ class Project {
   Map<String, dynamic> get data => _fetchedData ?? {};
 
   Map<String, dynamic> get airtableCredentials =>
-      _fetchedData['airtable_credentials'] ?? {};
+      data['airtable_credentials'] ?? {};
 
   List<AirtableTable> get airtableTables => _fetchedData['tables']
       .map((r) => AirtableTable(r['name'].toString(), r['base']))
@@ -61,7 +61,10 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
-      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
+      setAirtableCredentials(
+        apiKey: _fetchedData['airtable_credentials']['api_key'],
+        base: _fetchedData['airtable_credentials']['base'],
+      );
 //print(this.base);
       return data;
     } catch (e) {

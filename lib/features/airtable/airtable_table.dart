@@ -10,6 +10,7 @@ class AirtableTable implements IRemoteTable {
 
   @override
   Future<Map<String, dynamic>> records() async {
-    return await Client.defaultClient(table: table, base: base).records();
+    return await AirtableClient.defaultClient(table: table, base: base)
+        .records();
   }
 }

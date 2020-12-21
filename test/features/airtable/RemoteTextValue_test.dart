@@ -3,7 +3,7 @@ import 'package:flutter_app/features/airtable/RemoteTextValue.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockClient extends Mock implements Client {
+class MockClient extends Mock implements AirtableClient {
   Future<Map<String, dynamic>> record(String id) async {
     return {
       "fields": {'Button': 322}

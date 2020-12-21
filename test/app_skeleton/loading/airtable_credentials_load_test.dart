@@ -13,7 +13,7 @@ void main() {
 
     var loader = AirtableCredentialsLoad(data);
     loader.load();
-    expect(Client.credentials['api_key'],
+    expect(AirtableClient.credentials['api_key'],
         equals(data['airtable_credentials']['api_key']));
   });
 }

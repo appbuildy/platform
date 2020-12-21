@@ -4,10 +4,10 @@ import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/ProjectLoading/ProjectLoadingAnimation.dart';
 
 class ApplicationWidget extends StatefulWidget {
-  BrowserPreview preview;
-  ApplicationWidget({Key key, BrowserPreview preview}) : super(key: key) {
-    this.preview = preview ?? BrowserPreview();
-  }
+  final BrowserPreview preview;
+  const ApplicationWidget({Key key, BrowserPreview preview})
+      : this.preview = preview ?? const BrowserPreview(),
+        super(key: key);
 
   @override
   _ApplicationWidgetState createState() => _ApplicationWidgetState();
@@ -19,6 +19,7 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
   @override
   void initState() {
     super.initState();
+
     body = ProjectLoadingAnimation();
 
     /// wait until loaded or for minLoadingAnimationDuration
@@ -28,8 +29,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
             (Widget loadedPreview) => body = loadedPreview,
           ),
     ]).then(
-      (_) =>
-          WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {})),
+      (_) => WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) setState(() {});
+      }),
     );
   }
 

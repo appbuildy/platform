@@ -20,6 +20,8 @@ class SkeletonScreen {
   /// body layout
   final List<WidgetDecorator> widgets;
 
+  final Project project;
+
   /// bottom navigation bar, if any
   final BottomNavigation navBar;
   bool get showNavBar => navBar != null;
@@ -29,6 +31,7 @@ class SkeletonScreen {
     @required this.widgets,
     this.navBar,
     this.screenSize = defaultSkeletonScreenSize,
+    this.project,
   });
 
   /// parse jsonified widgets data
@@ -42,7 +45,9 @@ class SkeletonScreen {
       id: RandomKey.fromJson(json['id']),
       widgets: json['components']
           .map<WidgetDecorator>(
-            (component) => WidgetDecorator.fromJson(component),
+            (component) => WidgetDecorator.fromJson(
+              jsonComponent: component,
+            ),
           )
           .toList(),
       navBar: navBar,
@@ -56,6 +61,7 @@ class SkeletonScreen {
     return SkeletonScreen.fromJson(
       json: project.data,
       navBar: navBar,
+      project: project,
     );
   }
   // return ScreenLoadFromJson(jsonScreen).load(

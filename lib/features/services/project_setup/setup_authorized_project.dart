@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/airtable/Client.dart' as airtable;
+import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
@@ -39,7 +39,7 @@ class SetupAuthorizedProject {
   }
 
   void _setProjectCredentials(project) {
-    airtable.Client.credentials = project.airtableCredentials;
+    AirtableClient.credentials = project.airtableCredentials;
   }
 
   Future<void> _fetchTables(List<IRemoteTable> tables) async {

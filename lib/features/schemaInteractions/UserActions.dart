@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
-import 'package:flutter_app/features/airtable/Client.dart' as airtable;
+import 'package:flutter_app/features/airtable/Client.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/airtable/RemoteList.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';
@@ -61,7 +61,7 @@ class UserActions {
     _currentNode = CurrentEditingNode();
     _bottomNavigation = bottomNavigationStore;
     _remoteAttributes = RemoteAttributes();
-    _bindings = RemoteSchemaPropertiesBinding(airtable.Client.defaultClient());
+    _bindings = RemoteSchemaPropertiesBinding(AirtableClient.defaultClient());
     _theme = themeStore;
     _screens = screens;
     _currentUserStore = currentUserStore;
@@ -166,7 +166,7 @@ class UserActions {
       );
 
   void saveProject() {
-    _currentUserStore.project.save(converter, client: http.Client());
+    _currentUserStore.project?.save(converter, client: http.Client());
   }
 
   void startAutoSave() {

@@ -16,7 +16,7 @@ void main() {
         return http.Response(responseBody, 200, request: request);
       });
 
-      final client = Client(
+      final client = AirtableClient(
           table: 't1', apiKey: '123', base: '322', httpClient: mockClient);
       final record = await client.record('1');
       expect(record['id'], equals('recAn1qY01DxTcfJj'));
@@ -30,7 +30,7 @@ void main() {
         return http.Response(responseString, 200, request: request);
       });
 
-      final client = Client(
+      final client = AirtableClient(
           table: 't1', apiKey: '123', base: '322', httpClient: mockClient);
 
       final records = await client.records();
