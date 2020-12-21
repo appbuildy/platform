@@ -1,3 +1,5 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/Cursor.dart';
@@ -75,13 +77,21 @@ class ToolboxMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: toolboxMenuWidth,
-          height: headerHeight,
-          child: Image.network('assets/icons/meta/logo.svg'),
-          decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(width: 1, color: MyColors.gray))),
+        GestureDetector(
+          onTap: () {
+            html.window.open('/', '_self');
+          },
+          child: Cursor(
+            cursor: CursorEnum.pointer,
+            child: Container(
+              width: toolboxMenuWidth,
+              height: headerHeight,
+              child: Image.network('assets/icons/meta/logo.svg'),
+              decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: 1, color: MyColors.gray))),
+            ),
+          ),
         ),
         buildOption(ToolboxStates.pages),
         buildOption(ToolboxStates.layout),
