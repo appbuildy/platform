@@ -36,30 +36,32 @@ class _MyHoverSelectState extends State<MyHoverSelect> {
         .first;
 
     return Cursor(
-        cursor: CursorEnum.pointer,
-        child: Container(
-          decoration: defaultDecoration,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(top: 9, bottom: 8, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    child: Text(
-                  selectedOption.name.length < 22
-                      ? selectedOption.name
-                      : '${selectedOption.name.substring(0, 20)}...',
-                  style: MyTextStyle.regularTitle,
-                )),
-                Image.network(
-                  'assets/icons/meta/expand-vertical.svg',
-                  color: MyColors.iconGray,
-                ),
-              ],
+      cursor: CursorEnum.pointer,
+      child: Container(
+        height: 36,
+        width: 250,
+        decoration: defaultDecoration,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(
+                selectedOption.name,
+                // : '${selectedOption.name.substring(0, 20)}...',
+                overflow: TextOverflow.ellipsis,
+                style: MyTextStyle.regularTitle,
+              ),
             ),
-          ),
-        ));
+            Image.network(
+              'assets/icons/meta/expand-vertical.svg',
+              color: MyColors.iconGray,
+            ),
+          ],
+          // ),
+        ),
+      ),
+    );
   }
 
   Widget buildOption(SelectOption option, {bool isFirst, bool isLast}) {

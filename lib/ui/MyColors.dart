@@ -103,6 +103,7 @@ class MyTextStyle {
   static TextStyle regularTitle = TextStyle(
     color: MyColors.black,
     fontSize: 16,
+    height: 20 / 16,
   );
 
   static TextStyle regularTitleWhite = TextStyle(

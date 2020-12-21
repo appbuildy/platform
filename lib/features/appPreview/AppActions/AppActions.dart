@@ -145,41 +145,46 @@ class AppActions extends StatelessWidget {
           border: Border(
               left: BorderSide(width: 1, color: MyColors.gray),
               bottom: BorderSide(width: 1, color: MyColors.gray))),
-      child: Padding(
-        padding: const EdgeInsets.only(
-            left: 13.0, right: 13.0, top: 10.0, bottom: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            UndoRedo(
-              userActions: userActions,
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Flexible(
+            child: SizedBox(
+              width: 94,
+              child: UndoRedo(
+                userActions: userActions,
+              ),
             ),
-            Observer(
-              builder: (_) => Container(
-                  width: 200,
-                  child: MyHoverSelect(
-                      selectedValue: userActions.screens.current.id,
-                      onChange: (option) {
-                        userActions.screens.selectById(option.value);
-                        userActions.selectNodeForEdit(null);
-                      },
-                      onAdd: () {
-                        userActions.screens
-                            .create(moveToLastAfterCreated: true);
-                        userActions.selectNodeForEdit(null);
-                      },
-                      options: userActions.screens.all.screens
-                          .map((element) =>
-                              SelectOption(element.name, element.id))
-                          .toList())),
+          ),
+          Flexible(
+            // flex: 2,
+            child: Observer(
+                builder: (_) => MyHoverSelect(
+                    selectedValue: userActions.screens.current.id,
+                    onChange: (option) {
+                      userActions.screens.selectById(option.value);
+                      userActions.selectNodeForEdit(null);
+                    },
+                    onAdd: () {
+                      userActions.screens.create(moveToLastAfterCreated: true);
+                      userActions.selectNodeForEdit(null);
+                    },
+                    options: userActions.screens.all.screens
+                        .map(
+                            (element) => SelectOption(element.name, element.id))
+                        .toList())),
+          ),
+          Flexible(
+            child: MyShareButton(
+              onTap: () {
+                _showShareModal(context);
+              },
+              text: 'Share',
             ),
-            MyShareButton(
-                onTap: () {
-                  _showShareModal(context);
-                },
-                text: 'Share'),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -206,27 +211,31 @@ class MyShareButton extends StatelessWidget {
       gradient: MyGradients.lightBlue,
     );
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Cursor(
-        cursor: CursorEnum.pointer,
-        child: HoverDecoration(
-          defaultDecoration: defaultDecoration,
-          hoverDecoration: hoverDecoration,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(top: 8, bottom: 7, left: 16, right: 16),
+    return SizedBox(
+      width: 94,
+      height: 36,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Cursor(
+          cursor: CursorEnum.pointer,
+          child: HoverDecoration(
+            defaultDecoration: defaultDecoration,
+            hoverDecoration: hoverDecoration,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   text,
                   style: TextStyle(
-                      color: MyColors.textBlue,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
+                    color: MyColors.textBlue,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 20 / 16,
+                  ),
                 ),
                 SizedBox(
-                  width: 5,
+                  width: 7,
                 ),
                 Image.network('assets/icons/meta/btn-share.svg')
               ],

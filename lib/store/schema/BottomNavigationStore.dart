@@ -47,8 +47,7 @@ abstract class _BottomNavigationStore with Store {
   @action
   void deleteTab(TabNavigation tab) {
     log('delete tab');
-    final index = tabs.indexWhere((element) => element.id == tab.id);
-    tabs.removeAt(index);
+    tabs.removeWhere((element) => element.id == tab.id);
   }
 
   @action

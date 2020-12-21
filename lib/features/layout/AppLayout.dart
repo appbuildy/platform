@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:flutter_app/features/appPreview/AppActions/AppActions.dart';
 import 'package:flutter_app/features/appPreview/AppPreview.dart';
-
 import 'package:flutter_app/features/layout/PlayModeSwitch.dart';
 import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
@@ -42,7 +42,6 @@ class _AppLayoutState extends State<AppLayout> {
     _focusNodeAttachment = _focusNode.attach(context, onKey: _handleKeyPress);
     toolboxState = ToolboxStates.layout;
 
-
     _focusNode.requestFocus();
   }
 
@@ -79,27 +78,25 @@ class _AppLayoutState extends State<AppLayout> {
       if (e.logicalKey == LogicalKeyboardKey.arrowUp ||
           e.logicalKey == LogicalKeyboardKey.arrowDown) {
         selectedNode.onUpOrDownPressed(
-          isUp: e.logicalKey == LogicalKeyboardKey.arrowUp,
-          currentScreenWorkspaceSize: widget.userActions.screens.currentScreenWorkspaceSize,
-          repositionAndResize: widget.userActions.repositionAndResize
-        );
+            isUp: e.logicalKey == LogicalKeyboardKey.arrowUp,
+            currentScreenWorkspaceSize:
+                widget.userActions.screens.currentScreenWorkspaceSize,
+            repositionAndResize: widget.userActions.repositionAndResize);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.arrowLeft ||
           e.logicalKey == LogicalKeyboardKey.arrowRight) {
         selectedNode.onLeftOrRightPressed(
             isLeft: e.logicalKey == LogicalKeyboardKey.arrowLeft,
-            currentScreenWorkspaceSize: widget.userActions.screens.currentScreenWorkspaceSize,
-            repositionAndResize: widget.userActions.repositionAndResize
-        );
+            currentScreenWorkspaceSize:
+                widget.userActions.screens.currentScreenWorkspaceSize,
+            repositionAndResize: widget.userActions.repositionAndResize);
       }
 
       if (e.logicalKey == LogicalKeyboardKey.backspace) {
         selectedNode.onDeletePressed(onDelete: widget.userActions.deleteNode);
-      } else if (
-      (e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed)
-      || (e.logicalKey == LogicalKeyboardKey.keyC && e.isControlPressed)
-      ) {
+      } else if ((e.logicalKey == LogicalKeyboardKey.keyD && e.isMetaPressed) ||
+          (e.logicalKey == LogicalKeyboardKey.keyC && e.isControlPressed)) {
         selectedNode.onCopyPressed(onCopy: widget.userActions.copyNode);
       }
 
@@ -164,7 +161,7 @@ class _AppLayoutState extends State<AppLayout> {
                         child: Container(
                           color: MyColors.lightGray,
                           child: Stack(
-                            overflow: Overflow.visible,
+                            clipBehavior: Clip.none,
                             children: [
                               Align(
                                 alignment: Alignment.center,
@@ -214,7 +211,8 @@ class _AppLayoutState extends State<AppLayout> {
                                           isPlayMode = newIsPlayMode;
 
                                           if (newIsPlayMode) {
-                                            widget.userActions.selectNodeForEdit(null);
+                                            widget.userActions
+                                                .selectNodeForEdit(null);
                                           }
                                         });
                                       },
