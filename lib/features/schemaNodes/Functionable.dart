@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/ApiCallAction.dart';
 import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
+import 'package:flutter_app/features/schemaNodes/OpenLinkAction.dart';
 
 enum SchemaActionType {
   doNothing,
@@ -24,9 +26,9 @@ dynamic getActionByType(SchemaActionType type, dynamic value) {
   if (type == SchemaActionType.goToScreen) {
     action = GoToScreenAction('Tap', value);
   } else if (type == SchemaActionType.openLink) {
-    action = GoToScreenAction('Tap', value);
+    action = OpenLinkAction('Tap', value);
   } else if (type == SchemaActionType.apiCall) {
-    action = GoToScreenAction('Tap', value);
+    action = ApiCallAction('Tap', value);
   }
 
   return action;

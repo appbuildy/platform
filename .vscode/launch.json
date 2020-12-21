@@ -4,7 +4,26 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        // ?projectId=bitter-breeze-341&preview_mode=enabled&url=http://www.appbuildy.com#/
+        
+            {
+                "name": "web-server",
+                "type": "dart",
+                "request": "launch",
+                "args": ["-d", "web-server", "--web-hostname", "127.0.0.1", "--web-port", "4242"],
+                "program": "lib/main.dart"
+            },
+        
+            {
+                "name": "web-server-out",
+                "type": "dart",
+                "request": "launch",
+                "args": ["-d", "web-server", "--web-hostname", "192.168.0.100", "--web-port", "4242"],
+                "program": "lib/main.dart"
+            },
         {
+
+            
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",

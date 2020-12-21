@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
 import 'package:flutter_app/shared_widgets/button.dart';
 import 'package:flutter_app/shared_widgets/icon.dart' as shared_widgets;
@@ -16,10 +17,10 @@ class WidgetDecorator extends StatelessWidget {
   final Offset position;
   final Function onTap;
 
-  factory WidgetDecorator.fromJson(
-    Map<String, dynamic> jsonComponent,
-    // project,
-  ) {
+  factory WidgetDecorator.fromJson({
+    @required Map<String, dynamic> jsonComponent,
+    Project project,
+  }) {
     var theme = MyThemes.allThemes['blue'];
     //todo: add schemaNodeSpawner to args
     var componentProperties = ComponentProperties(jsonComponent);
