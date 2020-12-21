@@ -56,7 +56,7 @@ class _ToolboxDataState extends State<ToolboxData> {
               height: screenSize.height,
               child: IFrame(
                 key: UniqueKey(),
-                src: 'https://airtable.com/$base',
+                src: 'https://airtable.com/embed/$base',
               ),
             ),
           );
