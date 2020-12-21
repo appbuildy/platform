@@ -41,8 +41,8 @@ class _ToolboxDataState extends State<ToolboxData> {
     );
   }
 
-  void renderBaseViewOverlayEntry(base) {
-    this.baseViewOverlayEntry =  OverlayEntry(
+  OverlayEntry renderBaseViewOverlayEntry(base) {
+    return OverlayEntry(
         builder: (context) {
           var screenSize = MediaQuery.of(context).size;
 
@@ -78,7 +78,7 @@ class _ToolboxDataState extends State<ToolboxData> {
     final bool isBaseSet = project != null && project.base != null;
 
     if (isBaseSet) {
-      this.renderBaseViewOverlayEntry(project.base);
+      this.baseViewOverlayEntry = this.renderBaseViewOverlayEntry(project.base);
 
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Overlay.of(context).insert(this.baseViewOverlayEntry);
