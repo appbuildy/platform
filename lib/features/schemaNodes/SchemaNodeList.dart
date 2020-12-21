@@ -132,6 +132,7 @@ class SchemaNodeList extends SchemaNode {
     Offset size,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
+    bool isSmall,
   }) : super() {
     final items = SchemaStringListProperty.sample();
 
@@ -179,12 +180,14 @@ class SchemaNodeList extends SchemaNode {
       listElements = ListElements.withSimpleListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
-          listItemSize: listItemSize);
+          listItemSize: listItemSize,
+          isSmall: isSmall);
     } else if (listTemplateType == ListTemplateType.cards) {
       listElements = ListElements.withCardListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
-          listItemSize: listItemSize);
+          listItemSize: listItemSize,
+          isSmall: isSmall);
     }
 
     this.properties['Elements'] =

@@ -114,7 +114,10 @@ class ListElements {
         this.listElements = listElements ?? [];
 
   ListElements.withSimpleListTemplate(
-      {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+      {allColumns,
+      SchemaNodeSpawner schemaNodeSpawner,
+      Offset listItemSize,
+      bool isSmall}) {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
 
@@ -191,7 +194,10 @@ class ListElements {
   }
 
   ListElements.withCardListTemplate(
-      {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+      {allColumns,
+      SchemaNodeSpawner schemaNodeSpawner,
+      Offset listItemSize,
+      bool isSmall}) {
     this.allColumns = allColumns ?? [];
 
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
@@ -625,10 +631,7 @@ class ListElementNode {
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
-      print('HERE');
-      print('HERE');
       print(theme);
-      print('HERE');
       return (this.node as DataContainer).toWidgetWithReplacedData(
           theme: theme, data: data, isPlayMode: isPlayMode);
     }

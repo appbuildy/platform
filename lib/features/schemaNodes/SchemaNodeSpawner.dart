@@ -83,6 +83,7 @@ class SchemaNodeSpawner {
     Offset size,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
+    bool isSmall = false,
   }) {
     return SchemaNodeList.withTemplate(
       parent: this,
