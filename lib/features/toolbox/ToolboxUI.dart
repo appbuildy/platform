@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 
-const toolboxWidth = 311.0;
-
 class ToolboxTitle extends StatelessWidget {
   final String title;
 

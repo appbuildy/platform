@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/TabSelected.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/Tabs.dart';
@@ -170,7 +171,7 @@ class _ToolboxPagesState extends State<ToolboxPages>
                 ? Container()
                 : Container(
                     color: MyColors.white,
-                    width: toolboxWidth,
+                    width: builderConst.toolboxWidth,
                     child: _buildMain())),
       ),
       Positioned(
@@ -180,7 +181,7 @@ class _ToolboxPagesState extends State<ToolboxPages>
                 ? Container()
                 : Container(
                     color: MyColors.white,
-                    width: toolboxWidth,
+                    width: builderConst.toolboxWidth,
                     child: _buildSelectedTab())),
       )
     ]);

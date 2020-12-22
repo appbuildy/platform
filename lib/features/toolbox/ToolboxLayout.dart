@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/constants.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
@@ -29,7 +30,7 @@ class ToolboxLayout extends StatelessWidget {
     final MyModal modal = MyModal();
 
     return Container(
-      width: toolboxWidth,
+      width: builderConst.toolboxWidth,
       height: MediaQuery.of(context).size.height,
       child: Container(
         child: Column(

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:toast/toast.dart';
 
 class ShowToast {

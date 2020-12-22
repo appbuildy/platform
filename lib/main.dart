@@ -1,34 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/ui/app_builder/app_builder.dart';
 import 'package:universal_html/html.dart';
 
-import 'app_skeleton/application_widget.dart';
-import 'features/layout/ProjectLoadingMiddleware.dart';
-import 'features/services/project_parameters_from_browser_query.dart';
+import 'ui/app_preview/application_preview_app.dart';
+import 'features/services/browser_query_data.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    /// wrap into Mock Browser Query Data in tests instead
+    BrowserQueryData(
+      window: window,
+      child: SharedApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class SharedApp extends StatelessWidget {
+  const SharedApp({Key key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    if (ProjectParametersFromBrowserQuery(window).isPreviewMode) {
-      return MaterialApp(
-        home: Scaffold(
-          body: ApplicationWidget(),
-        ),
-      );
-    } else {
-      return MaterialApp(
-        title: 'AppBuildy — create your apps',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: Scaffold(
-          body: ProjectSetupMiddleware(),
-        ),
-      );
-    }
-  }
+  Widget build(BuildContext context) => BrowserQueryData.of(context).isPreview
+      ? const ApplicationPreviewApp()
+      : const ApplicationBuilderApp();
 }

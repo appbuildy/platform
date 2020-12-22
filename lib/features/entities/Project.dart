@@ -4,7 +4,7 @@ import 'package:flutter_app/features/airtable/airtable_table.dart';
 import 'package:flutter_app/features/entities/User.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/services/SetupProject.dart';
-import 'package:flutter_app/features/services/project_parameters_from_browser_query.dart';
+import 'package:flutter_app/features/services/browser_query_data.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';
 import 'package:flutter_app/store/userActions/RemoteAttributes.dart';
 import 'package:flutter_app/utils/SchemaConverter.dart';
@@ -22,7 +22,7 @@ class Project {
     AuthenticationService auth,
     http.Client client,
     CurrentUserStore userStore,
-    ProjectParametersFromBrowserQuery settings,
+    // BrowserQueryData settings,
     RemoteAttributes attributes,
   }) async {
     return await SetupProject(userStore: userStore, attributes: attributes)

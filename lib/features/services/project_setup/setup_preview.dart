@@ -2,21 +2,21 @@ import 'package:flutter_app/features/entities/Project.dart';
 import 'package:universal_html/html.dart';
 
 import 'package:flutter_app/features/airtable/Client.dart';
-import 'package:flutter_app/features/services/project_parameters_from_browser_query.dart';
+import 'package:flutter_app/features/services/browser_query_data.dart';
 import 'package:http/http.dart' as http;
 
 class SetupPreview {
-  ProjectParametersFromBrowserQuery settings;
+  // BrowserQueryData settings;
   http.Client client;
 
   SetupPreview({settings, client}) {
-    this.settings = settings ?? ProjectParametersFromBrowserQuery(window);
+    // this.settings = settings ?? BrowserQueryData(window);
     this.client = client ?? http.Client();
   }
 
   Future<Project> setup() async {
     print('setup preview start');
-    final project = Project(settings.projectUrl);
+    final project = Project(browserData.projectUrl);
     print('getting project data');
     await project.getData(client);
     print('populating airtable creds');
