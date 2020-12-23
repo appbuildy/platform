@@ -6,7 +6,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MySlider.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 

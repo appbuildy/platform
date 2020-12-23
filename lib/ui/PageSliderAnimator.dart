@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'MyColors.dart';
+import '../config/colors.dart';
 
 typedef BuildWidgetFunction = Widget Function();
 
@@ -21,9 +21,9 @@ class PageSliderController<T> {
     @required Map<T, BuildWidgetFunction> buildPages,
   }) {
     this.controller = AnimationController(
-        value: 1,
-        vsync: vsync,
-        duration: Duration(milliseconds: 250),
+      value: 1,
+      vsync: vsync,
+      duration: Duration(milliseconds: 250),
     );
 
     this.animation = CurvedAnimation(
@@ -36,7 +36,8 @@ class PageSliderController<T> {
     this.pages = buildPages;
   }
 
-  Widget getSelectedPage() => _selectedPage != null ? _selectedPage() : Container();
+  Widget getSelectedPage() =>
+      _selectedPage != null ? _selectedPage() : Container();
 
   void _replacePage(T) {
     if (_selectedPage == pages[T]) return;
@@ -81,31 +82,30 @@ class PageSliderAnimator extends StatelessWidget {
     @required this.slidesWidth,
   });
 
-
   Widget buildMain(slideFirst, slideSecond) {
     return Stack(
       children: [
         Positioned(
           child: Transform(
-              transform: Matrix4.identity()..translate(slideFirst),
-              child: pageSliderController.animation.value < 0.4
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: slidesWidth,
-                      child: pageSliderController.buildRootPage(),
+            transform: Matrix4.identity()..translate(slideFirst),
+            child: pageSliderController.animation.value < 0.4
+                ? Container()
+                : Container(
+                    color: MyColors.white,
+                    width: slidesWidth,
+                    child: pageSliderController.buildRootPage(),
                   ),
           ),
         ),
         Positioned(
           child: Transform(
-              transform: Matrix4.identity()..translate(slideSecond),
-              child: pageSliderController.animation.value == 1
-                  ? Container()
-                  : Container(
-                      color: MyColors.white,
-                      width: slidesWidth,
-                      child: pageSliderController.getSelectedPage(),
+            transform: Matrix4.identity()..translate(slideSecond),
+            child: pageSliderController.animation.value == 1
+                ? Container()
+                : Container(
+                    color: MyColors.white,
+                    width: slidesWidth,
+                    child: pageSliderController.getSelectedPage(),
                   ),
           ),
         )
@@ -121,7 +121,8 @@ class PageSliderAnimator extends StatelessWidget {
         double slideFirst = (-maxSlide / 2) * reversedValue;
         double slideSecond = maxSlide * (pageSliderController.animation.value);
 
-        if (pageSliderController.animation.value > 0.09 && pageSliderController.animation.value < 0.8) {
+        if (pageSliderController.animation.value > 0.09 &&
+            pageSliderController.animation.value < 0.8) {
           return Container(
             child: ClipRect(
               child: buildMain(slideFirst, slideSecond),

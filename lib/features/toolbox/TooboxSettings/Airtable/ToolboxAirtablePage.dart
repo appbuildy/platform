@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 

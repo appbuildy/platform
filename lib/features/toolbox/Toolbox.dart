@@ -5,7 +5,7 @@ import 'package:flutter_app/features/toolbox/ToolboxData/ToolboxData.dart';
 import 'package:flutter_app/features/toolbox/ToolboxLayout.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/ToolboxPages.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 
 class Toolbox extends StatelessWidget {
   final UserActions userActions;
@@ -15,10 +15,7 @@ class Toolbox extends StatelessWidget {
   final Function(ToolboxStates) selectState;
 
   const Toolbox(
-      {Key key,
-      this.userActions,
-      this.toolboxState,
-      this.selectState})
+      {Key key, this.userActions, this.toolboxState, this.selectState})
       : super(key: key);
 
   Widget buildWidgetOnState() {
@@ -26,8 +23,7 @@ class Toolbox extends StatelessWidget {
       case ToolboxStates.settings:
         return ToolboxSettings(userActions: userActions);
       case ToolboxStates.layout:
-        return ToolboxLayout(
-            userActions: userActions);
+        return ToolboxLayout(userActions: userActions);
       case ToolboxStates.pages:
         return ToolboxPages(
           userActions: userActions,

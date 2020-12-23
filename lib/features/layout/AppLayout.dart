@@ -9,7 +9,7 @@ import 'package:flutter_app/features/rightToolbox/RightToolbox.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/Toolbox.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 
 class AppLayout extends StatefulWidget {
   final UserActions userActions;

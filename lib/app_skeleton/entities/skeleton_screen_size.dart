@@ -1,4 +1,4 @@
-/// class for screen size data of the skeleton app
+/// screen size data of the skeleton app
 class SkeletonScreenSize {
   /// iphone X screen size
   static const iphoneX = const SkeletonScreenSize(

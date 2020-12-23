@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 
 class ColumnDivider extends StatelessWidget {
   final String name;
@@ -16,7 +16,9 @@ class ColumnDivider extends StatelessWidget {
             name,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
-          SizedBox(width: name.length == 0 ? 0 : 15,),
+          SizedBox(
+            width: name.length == 0 ? 0 : 15,
+          ),
           Expanded(
             child: Container(
               height: 1,

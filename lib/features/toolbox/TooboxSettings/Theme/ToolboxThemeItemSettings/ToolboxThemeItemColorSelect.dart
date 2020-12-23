@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/utils/DarkenColor.dart';
 import 'package:flutter_app/utils/StringExtentions/FromSnakeCase.dart';
 

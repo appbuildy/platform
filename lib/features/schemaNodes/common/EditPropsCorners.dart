@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MySlider.dart';
 
 class EditPropsCorners extends StatelessWidget {

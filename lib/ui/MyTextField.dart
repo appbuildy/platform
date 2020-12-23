@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
+import 'package:flutter_app/config/text_styles.dart';
 
 class MyTextField extends StatefulWidget {
   final String placeholder;
@@ -49,7 +50,10 @@ class _MyTextFieldState extends State<MyTextField> {
           padding:
               const EdgeInsets.only(top: 9, bottom: 8, left: 16, right: 16),
           style: MyTextStyle.regularTitle,
-          placeholderStyle: TextStyle(color: Color(0xFF777777), fontSize: 16, fontWeight: FontWeight.w500),
+          placeholderStyle: TextStyle(
+              color: Color(0xFF777777),
+              fontSize: 16,
+              fontWeight: FontWeight.w500),
           cursorColor: MyColors.black,
           cursorRadius: Radius.circular(0),
           decoration: widget.disabled

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_app/constants.dart';
+import 'package:flutter_app/config/constants.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 
 class MyModal {

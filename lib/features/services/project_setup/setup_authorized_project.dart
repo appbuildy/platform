@@ -30,7 +30,9 @@ class SetupAuthorizedProject {
     await userStore.tryLogIn(
       auth ??
           AuthenticationService.defaultAuth(
-              jwt: browserData.jwt, url: browserData.userUrl),
+            jwt: browserData.jwt,
+            url: browserData.userUrl,
+          ),
     );
 
     final project = Project(browserData.projectUrl, userStore.currentUser);

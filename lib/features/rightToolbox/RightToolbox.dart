@@ -3,7 +3,7 @@ import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/rightToolbox/EditProps.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxMenu.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 
 class RightToolbox extends StatelessWidget {
   final UserActions userActions;

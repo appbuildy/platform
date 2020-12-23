@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyButton.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MyLink.dart';
 import 'package:flutter_app/ui/MyModal.dart';
 import 'package:flutter_app/ui/MyTextField.dart';

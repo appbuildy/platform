@@ -31,7 +31,7 @@ class WidgetDecorator extends StatelessWidget {
         {
           print(componentProperties);
           return WidgetDecorator(
-              onTap: previewActions['Tap'].functionAction,
+              onTap: previewActions['Tap'].onLaunch,
               position: componentProperties.position,
               widget: Button(
                   properties: componentProperties.properties,

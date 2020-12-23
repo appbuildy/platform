@@ -1,6 +1,5 @@
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
-import 'package:flutter_app/features/services/browser_query_data.dart';
 import 'package:flutter_app/features/services/project_setup/setup_authorized_project.dart';
 import 'package:flutter_app/features/services/project_setup/setup_preview.dart';
 import 'package:flutter_app/store/schema/CurrentUserStore.dart';

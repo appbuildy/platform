@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/iconsList.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SelectIconList extends StatelessWidget {

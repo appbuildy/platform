@@ -3,7 +3,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/ui/IconHover.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/utils/DarkenColor.dart';
 
 class ToolboxThemeItem extends StatefulWidget {
@@ -42,19 +42,19 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
   Widget build(BuildContext context) {
     final defaultDecoration = widget.isActive
         ? BoxDecoration(
-        gradient: MyGradients.lightBlue,
-        borderRadius: BorderRadius.circular(8))
+            gradient: MyGradients.lightBlue,
+            borderRadius: BorderRadius.circular(8))
         : BoxDecoration(
-        gradient: MyGradients.plainWhite,
-        borderRadius: BorderRadius.circular(8));
+            gradient: MyGradients.plainWhite,
+            borderRadius: BorderRadius.circular(8));
 
     final hoverDecoration = widget.isActive
         ? BoxDecoration(
-        gradient: MyGradients.lightBlue,
-        borderRadius: BorderRadius.circular(8))
+            gradient: MyGradients.lightBlue,
+            borderRadius: BorderRadius.circular(8))
         : BoxDecoration(
-        gradient: MyGradients.lightGray,
-        borderRadius: BorderRadius.circular(8));
+            gradient: MyGradients.lightGray,
+            borderRadius: BorderRadius.circular(8));
 
     return GestureDetector(
       onTap: () {
@@ -77,8 +77,8 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
           },
           child: HoverDecoration(
             child: Padding(
-              padding:
-              const EdgeInsets.only(left: 16, top: 11, bottom: 11, right: 16),
+              padding: const EdgeInsets.only(
+                  left: 16, top: 11, bottom: 11, right: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -102,7 +102,8 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
                               decoration: BoxDecoration(
                                   color: widget.theme.secondary.color,
                                   border: Border.all(
-                                      width: 1, color: widget.theme.separators.color),
+                                      width: 1,
+                                      color: widget.theme.separators.color),
                                   borderRadius: BorderRadius.only(
                                     bottomLeft: Radius.circular(6),
                                     bottomRight: Radius.circular(6),
@@ -132,27 +133,33 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
                                 buildCircle(widget.theme.primary.color),
                                 Positioned(
                                   left: 14,
-                                  child: buildCircle(widget.theme.secondary.color),
+                                  child:
+                                      buildCircle(widget.theme.secondary.color),
                                 ),
                                 Positioned(
                                   left: 28,
-                                  child: buildCircle(widget.theme.general.color),
+                                  child:
+                                      buildCircle(widget.theme.general.color),
                                 ),
                                 Positioned(
                                   left: 42,
-                                  child: buildCircle(widget.theme.generalSecondary.color),
+                                  child: buildCircle(
+                                      widget.theme.generalSecondary.color),
                                 ),
                                 Positioned(
                                   left: 56,
-                                  child: buildCircle(widget.theme.generalInverted.color),
+                                  child: buildCircle(
+                                      widget.theme.generalInverted.color),
                                 ),
                                 Positioned(
                                   left: 70,
-                                  child: buildCircle(widget.theme.separators.color),
+                                  child: buildCircle(
+                                      widget.theme.separators.color),
                                 ),
                                 Positioned(
                                   left: 84,
-                                  child: buildCircle(widget.theme.background.color),
+                                  child: buildCircle(
+                                      widget.theme.background.color),
                                 ),
                               ],
                             ),
@@ -168,8 +175,9 @@ class _ToolboxThemeItemState extends State<ToolboxThemeItem> {
                       },
                       child: Cursor(
                           cursor: CursorEnum.pointer,
-                          child: IconHover(assetPath: 'assets/icons/settings/action-edit-highlighted.svg')
-                      ),
+                          child: IconHover(
+                              assetPath:
+                                  'assets/icons/settings/action-edit-highlighted.svg')),
                     ),
                 ],
               ),

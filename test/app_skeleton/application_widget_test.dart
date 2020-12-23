@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/app_skeleton/application_widget.dart';
-import 'package:flutter_app/app_skeleton/loading/browser_preview.dart';
+import 'package:flutter_app/ui/app_preview/application_preview_app.dart';
+import 'package:flutter_app/ui/app_preview/browser_preview.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

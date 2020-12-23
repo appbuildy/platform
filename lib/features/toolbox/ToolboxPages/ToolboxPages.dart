@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:flutter_app/constants.dart';
+import 'package:flutter_app/config/constants.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/TabSelected.dart';
 import 'package:flutter_app/features/toolbox/ToolboxPages/BottomNavigation/Tabs.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_app/features/toolbox/ToolboxUI.dart';
 import 'package:flutter_app/store/schema/bottom_navigation/tab_navigation.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyButton.dart';
-import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

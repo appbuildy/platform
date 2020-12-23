@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_app/app_skeleton/loading/application_loaded_from_json.dart';
-import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
+import 'package:flutter_app/app_skeleton/ui/navbar.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_test/flutter_test.dart';
 

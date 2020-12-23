@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/ui/Cursor.dart';
 
-import 'MyColors.dart';
+import '../config/colors.dart';
 
 class MySwitch extends StatefulWidget {
   final bool value;

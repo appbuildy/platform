@@ -60,7 +60,7 @@ void main() {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        '/': (context) => FirstScreen(loadedAction.functionAction),
+        '/': (context) => FirstScreen(loadedAction.onLaunch),
         '5GsO8z9I0kdzQuENP0WOxVa960ZSIT': (context) => SecondScreen()
       },
     );
