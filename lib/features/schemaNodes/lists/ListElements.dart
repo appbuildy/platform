@@ -20,6 +20,8 @@ import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
 
+import 'ListTemplates/ListTemplate.dart';
+
 class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty(String name, ListElements value)
       : super(name, value);
@@ -117,22 +119,35 @@ class ListElements {
       {allColumns,
       SchemaNodeSpawner schemaNodeSpawner,
       Offset listItemSize,
-      bool isSmall}) {
+      ListTemplateStyle listTemplateStyle}) {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
 
-    final double imageNodeXYOffset = 22;
-    final double imageNodeWidthHeight = 56;
-    final double textNodeHeight = 28;
+    double imageNodeXYOffset = 22;
+    double imageNodeWidthHeight = 56;
+    double textNodeHeight = 28;
+    double leftOffset = null;
+
+    if (listTemplateStyle == ListTemplateStyle.compact) {
+      imageNodeXYOffset = 10;
+      leftOffset = 22;
+      imageNodeWidthHeight = 28;
+      textNodeHeight = 22;
+    }
 
     final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
       size: Offset(imageNodeWidthHeight, imageNodeWidthHeight),
-      position: Offset(imageNodeXYOffset, imageNodeXYOffset),
+      position: Offset(leftOffset ?? imageNodeXYOffset, imageNodeXYOffset),
     );
 
-    imageNode.setProperty(
-        'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
+    if (listTemplateStyle == ListTemplateStyle.compact) {
+      imageNode.setProperty(
+          'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 50));
+    } else {
+      imageNode.setProperty(
+          'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
+    }
 
     final ListElementNode imageListElement = ListElementNode(
         node: imageNode,
@@ -149,7 +164,10 @@ class ListElements {
           listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
           textNodeHeight),
       position: Offset(
-          imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset),
+          leftOffset != null
+              ? imageNodeWidthHeight + leftOffset * 1.5
+              : imageNodeWidthHeight + imageNodeXYOffset * 2,
+          imageNodeXYOffset),
     );
 
     final ListElementNode titleListElement = ListElementNode(
@@ -161,43 +179,45 @@ class ListElements {
         onListElementsUpdate: () {},
         columnRelation: 'house_price');
 
-    final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
-      id: UniqueKey(),
-      size: Offset(
-          listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
-          textNodeHeight),
-      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2,
-          imageNodeXYOffset + textNodeHeight),
-    );
-
-    descriptionNode.setProperty(
-        'FontColor',
-        SchemaMyThemePropProperty(
-            'FontColor',
-            schemaNodeSpawner
-                .userActions.themeStore.currentTheme.generalSecondary));
-
-    descriptionNode.setProperty('FontSize', SchemaIntProperty('FontSize', 14));
-
-    final ListElementNode descriptionListElement = ListElementNode(
-        node: descriptionNode,
-        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
-        name: 'Text',
-        id: descriptionNode.id,
-        changePropertyTo: this.changePropertyTo,
-        onListElementsUpdate: () {},
-        columnRelation: 'house_address');
-
     this.listElements.add(imageListElement);
     this.listElements.add(titleListElement);
-    this.listElements.add(descriptionListElement);
+    if (listTemplateStyle == ListTemplateStyle.basic) {
+      final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
+        id: UniqueKey(),
+        size: Offset(
+            listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
+            textNodeHeight),
+        position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2,
+            imageNodeXYOffset + textNodeHeight),
+      );
+
+      descriptionNode.setProperty(
+          'FontColor',
+          SchemaMyThemePropProperty(
+              'FontColor',
+              schemaNodeSpawner
+                  .userActions.themeStore.currentTheme.generalSecondary));
+
+      descriptionNode.setProperty(
+          'FontSize', SchemaIntProperty('FontSize', 14));
+      final ListElementNode descriptionListElement = ListElementNode(
+          node: descriptionNode,
+          iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+          name: 'Text',
+          id: descriptionNode.id,
+          changePropertyTo: this.changePropertyTo,
+          onListElementsUpdate: () {},
+          columnRelation: 'house_address');
+
+      this.listElements.add(descriptionListElement);
+    }
   }
 
   ListElements.withCardListTemplate(
       {allColumns,
       SchemaNodeSpawner schemaNodeSpawner,
       Offset listItemSize,
-      bool isSmall}) {
+      ListTemplateStyle listTemplateStyle}) {
     this.allColumns = allColumns ?? [];
 
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();

@@ -127,12 +127,12 @@ class SchemaNodeList extends SchemaNode {
   SchemaNodeList.withTemplate({
     @required SchemaNodeSpawner parent,
     @required ListTemplateType listTemplateType,
+    @required ListTemplateStyle listTemplateStyle,
     UniqueKey id,
     Offset position,
     Offset size,
     Map<String, SchemaNodeProperty> properties,
     Map<String, SchemaNodeProperty> actions,
-    bool isSmall,
   }) : super() {
     final items = SchemaStringListProperty.sample();
 
@@ -162,10 +162,13 @@ class SchemaNodeList extends SchemaNode {
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
           'ListItemHeight': SchemaDoubleProperty(
-              'ListItemHeight', getListItemHeightByType(listTemplateType)),
+              'ListItemHeight',
+              getListItemHeightByTypeAndStyle(
+                  listTemplateType, listTemplateStyle)),
           'ListItemPadding': SchemaDoubleProperty(
               'ListItemPadding', getListItemPaddingByType(listTemplateType)),
-          'ListItemsPerRow': SchemaIntProperty('ListItemsPerRow', 1),
+          'ListItemsPerRow': SchemaIntProperty('ListItemsPerRow',
+              listTemplateStyle == ListTemplateStyle.cards ? 2 : 1),
         };
 
     final double listItemWidth =
@@ -181,13 +184,13 @@ class SchemaNodeList extends SchemaNode {
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
           listItemSize: listItemSize,
-          isSmall: isSmall);
+          listTemplateStyle: listTemplateStyle);
     } else if (listTemplateType == ListTemplateType.cards) {
       listElements = ListElements.withCardListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
           listItemSize: listItemSize,
-          isSmall: isSmall);
+          listTemplateStyle: listTemplateStyle);
     }
 
     this.properties['Elements'] =

@@ -82,39 +82,40 @@ class ToolboxLayout extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ToolboxComponent(
+                            defaultTitle: 'Compact',
+                            iconPath: 'assets/icons/layout/listCompact.svg',
+                            defaultType: SchemaNodeType.listDefault,
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeListWithTemplate(
+                                    listTemplateType: ListTemplateType.simple,
+                                    listTemplateStyle:
+                                        ListTemplateStyle.compact),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ToolboxComponent(
                             defaultTitle: 'Basic',
                             iconPath: 'assets/icons/layout/listBasic.svg',
                             defaultType: SchemaNodeType.listDefault,
                             schemaNode: userActions.schemaNodeSpawner
                                 .spawnSchemaNodeListWithTemplate(
                               listTemplateType: ListTemplateType.simple,
-                              isSmall: true,
+                              listTemplateStyle: ListTemplateStyle.basic,
                             ),
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
-                            defaultTitle: 'Rich',
-                            iconPath: 'assets/icons/layout/listRich.svg',
-                            defaultType: SchemaNodeType.listDefault,
-                            schemaNode: userActions.schemaNodeSpawner
-                                .spawnSchemaNodeListWithTemplate(
-                              listTemplateType: ListTemplateType.simple,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          ToolboxComponent(
-                            defaultTitle: 'Tiles',
-                            iconPath: 'assets/icons/layout/listTiles.svg',
-                            defaultType: SchemaNodeType.listCards,
-                            schemaNode: userActions.schemaNodeSpawner
-                                .spawnSchemaNodeListWithTemplate(
-                              listTemplateType: ListTemplateType.cards,
-                            ),
-                          )
+                              defaultTitle: 'Tiles',
+                              iconPath: 'assets/icons/layout/listTiles.svg',
+                              defaultType: SchemaNodeType.listCards,
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeListWithTemplate(
+                                listTemplateType: ListTemplateType.cards,
+                                listTemplateStyle: ListTemplateStyle.tiles,
+                              ))
                         ],
                       ),
                       Row(
@@ -126,12 +127,9 @@ class ToolboxLayout extends StatelessWidget {
                               defaultType: SchemaNodeType.listCards,
                               schemaNode: userActions.schemaNodeSpawner
                                   .spawnSchemaNodeListWithTemplate(
-                                listTemplateType: ListTemplateType.cards,
-                                isSmall: true,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
+                                      listTemplateType: ListTemplateType.cards,
+                                      listTemplateStyle:
+                                          ListTemplateStyle.cards),
                             ),
                           ])
                     ],
