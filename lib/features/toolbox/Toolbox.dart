@@ -47,8 +47,11 @@ class Toolbox extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SingleChildScrollView(
-              child:
-                  ToolboxMenu(state: toolboxState, selectState: selectState)),
+            child: ToolboxMenu(
+              state: toolboxState,
+              selectState: selectState,
+            ),
+          ),
           SingleChildScrollView(child: buildWidgetOnState()),
           Column(
             children: [],

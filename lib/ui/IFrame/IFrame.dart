@@ -20,6 +20,7 @@ class _IFrameState extends State<IFrame> {
   @override
   void initState() {
     super.initState();
+    print('init');
 
     _iframeElement.height = '500';
     _iframeElement.width = '500';
@@ -27,14 +28,15 @@ class _IFrameState extends State<IFrame> {
     _iframeElement.src = widget.src;
     _iframeElement.style.border = 'none';
 
+    final UniqueKey key = UniqueKey();
     ui.platformViewRegistry.registerViewFactory(
-      'iframeElement',
+      'iframeElement$key',
       (int viewId) => _iframeElement,
     );
 
     _iframeWidget = HtmlElementView(
       key: UniqueKey(),
-      viewType: 'iframeElement',
+      viewType: 'iframeElement$key',
     );
   }
 

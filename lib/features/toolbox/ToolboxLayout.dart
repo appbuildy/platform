@@ -195,6 +195,7 @@ class ToolboxLayout extends StatelessWidget {
                                               right: 0,
                                             ),
                                             child: IFrame(
+                                              key: UniqueKey(),
                                               src:
                                                   'https://www.appbuildy.com/upvoty',
                                             ),
