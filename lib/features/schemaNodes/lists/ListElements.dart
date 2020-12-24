@@ -8,6 +8,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'ListTemplates/ListTemplate.dart';
 
@@ -123,22 +125,27 @@ class ListElements {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
 
-    double imageNodeXYOffset = 22;
-    double imageNodeWidthHeight = 56;
-    double textNodeHeight = 28;
-    double leftOffset = null;
+    double textNodeHeight = 22;
+    double imageSize = 36.0;
+    double offsetX = 24.0;
+    double offsetYImage = 15.0;
+    double offsetY = 12.0;
+    double iconOffsetY = 20.0;
 
     if (listTemplateStyle == ListTemplateStyle.compact) {
-      imageNodeXYOffset = 10;
-      leftOffset = 22;
-      imageNodeWidthHeight = 28;
       textNodeHeight = 22;
+      imageSize = 28.0;
+      offsetX = 20.0;
+      offsetYImage = 9.0;
+      offsetY = 12.0;
+      textNodeHeight = 22;
+      iconOffsetY = 15.0;
     }
 
     final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
-      size: Offset(imageNodeWidthHeight, imageNodeWidthHeight),
-      position: Offset(leftOffset ?? imageNodeXYOffset, imageNodeXYOffset),
+      size: Offset(imageSize, imageSize),
+      position: Offset(offsetX, offsetYImage),
     );
 
     if (listTemplateStyle == ListTemplateStyle.compact) {
@@ -160,14 +167,9 @@ class ListElements {
 
     final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(
-          listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
+      size: Offset(listItemSize.dx - imageSize - offsetX - (offsetX / 2),
           textNodeHeight),
-      position: Offset(
-          leftOffset != null
-              ? imageNodeWidthHeight + leftOffset * 1.5
-              : imageNodeWidthHeight + imageNodeXYOffset * 2,
-          imageNodeXYOffset),
+      position: Offset(imageSize + offsetX + (offsetX / 2), offsetY),
     );
 
     final ListElementNode titleListElement = ListElementNode(
@@ -181,14 +183,44 @@ class ListElements {
 
     this.listElements.add(imageListElement);
     this.listElements.add(titleListElement);
+
+    final SchemaNode iconNode = schemaNodeSpawner.spawnSchemaNodeIcon(
+      id: UniqueKey(),
+      size: Offset(22, 22),
+      position: Offset(listItemSize.dx - (offsetX * 1.1), iconOffsetY),
+    );
+
+    iconNode.setProperty('IconSize', SchemaIntProperty('IconSize', 18));
+    iconNode.setProperty(
+        'Icon', SchemaIconProperty('Icon', FontAwesomeIcons.chevronRight));
+    iconNode.setProperty(
+        'IconColor',
+        SchemaMyThemePropProperty(
+            'IconColor',
+            schemaNodeSpawner
+                .userActions.themeStore.currentTheme.generalSecondary));
+
+    final ListElementNode iconListElement = ListElementNode(
+        node: iconNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.icon'),
+        name: 'Icon',
+        id: iconNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: '');
+
+    this.listElements.add(iconListElement);
+
     if (listTemplateStyle == ListTemplateStyle.basic) {
       final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
         id: UniqueKey(),
-        size: Offset(
-            listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
+        size: Offset(listItemSize.dx - imageSize - offsetX - (offsetX / 2),
             textNodeHeight),
-        position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2,
-            imageNodeXYOffset + textNodeHeight),
+        position: Offset(
+            imageSize + offsetX + (offsetX / 2),
+            offsetY +
+                textNodeHeight -
+                3), // - 3 because it has to overlap title a bit
       );
 
       descriptionNode.setProperty(

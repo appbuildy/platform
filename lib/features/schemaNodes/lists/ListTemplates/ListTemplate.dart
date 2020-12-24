@@ -61,7 +61,7 @@ double getListItemHeightByTypeAndStyle(
     if (style == ListTemplateStyle.compact) {
       return 45.0;
     } else {
-      return 100.0;
+      return 65.0;
     }
   } else if (type == ListTemplateType.cards) {
     return 150.0;
