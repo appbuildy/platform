@@ -15,10 +15,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 class ToolboxLayout extends StatelessWidget {
   final UserActions userActions;
 
-  const ToolboxLayout(
-      {Key key,
-      this.userActions})
-      : super(key: key);
+  const ToolboxLayout({Key key, this.userActions}) : super(key: key);
 
   Widget buildTitle(String title) {
     return Padding(
@@ -52,51 +49,89 @@ class ToolboxLayout extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ToolboxComponent(
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeButton(),
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeButton(),
                           ),
                           ToolboxComponent(
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeText(),
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeText(),
                           ),
                           ToolboxComponent(
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeIcon(),
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeIcon(),
                           ),
                         ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ToolboxComponent(schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeImage()),
+                          ToolboxComponent(
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeImage()),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeShape(),
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeShape(),
                           ),
                         ],
                       ),
-                      ToolBoxCaption('Listing'),
+                      ToolBoxCaption('Lists'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           ToolboxComponent(
-                            defaultTitle: 'List',
+                            defaultTitle: 'Compact',
+                            iconPath: 'assets/icons/layout/listCompact.svg',
                             defaultType: SchemaNodeType.listDefault,
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeListWithTemplate(
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeListWithTemplate(
+                                    listTemplateType: ListTemplateType.simple,
+                                    listTemplateStyle:
+                                        ListTemplateStyle.compact),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ToolboxComponent(
+                            defaultTitle: 'Basic',
+                            iconPath: 'assets/icons/layout/listBasic.svg',
+                            defaultType: SchemaNodeType.listDefault,
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeListWithTemplate(
                               listTemplateType: ListTemplateType.simple,
+                              listTemplateStyle: ListTemplateStyle.basic,
                             ),
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           ToolboxComponent(
-                            defaultTitle: 'Cards',
-                            defaultType: SchemaNodeType.listCards,
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeListWithTemplate(
-                              listTemplateType: ListTemplateType.cards,
-                            ),
-                          )
+                              defaultTitle: 'Tiles',
+                              iconPath: 'assets/icons/layout/listTiles.svg',
+                              defaultType: SchemaNodeType.listCards,
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeListWithTemplate(
+                                listTemplateType: ListTemplateType.cards,
+                                listTemplateStyle: ListTemplateStyle.tiles,
+                              ))
                         ],
                       ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ToolboxComponent(
+                              defaultTitle: 'Cards',
+                              iconPath: 'assets/icons/layout/listCards.svg',
+                              defaultType: SchemaNodeType.listCards,
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeListWithTemplate(
+                                      listTemplateType: ListTemplateType.cards,
+                                      listTemplateStyle:
+                                          ListTemplateStyle.cards),
+                            ),
+                          ])
                     ],
                   ),
                 ),
@@ -149,26 +184,25 @@ class ToolboxLayout extends StatelessWidget {
                               child: GestureDetector(
                                 onTap: () {
                                   modal.show(
-                                    context: context,
-                                    child: Container(
-                                        height: MediaQuery.of(context)
-                                            .size
-                                            .height,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 20,
-                                            right: 0,
-                                          ),
-                                          child: IFrame(
-                                            key: UniqueKey(),
-                                            src:
-                                                'https://www.appbuildy.com/upvoty',
-                                          ),
-                                        )),
-                                    onClose: () {
-                                      print('kekmek');
-                                    }
-                                  );
+                                      context: context,
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 20,
+                                              right: 0,
+                                            ),
+                                            child: IFrame(
+                                              key: UniqueKey(),
+                                              src:
+                                                  'https://www.appbuildy.com/upvoty',
+                                            ),
+                                          )),
+                                      onClose: () {
+                                        print('kekmek');
+                                      });
                                 },
                                 child: HoverOpacity(
                                   child: Container(
@@ -216,9 +250,14 @@ class ToolboxComponent extends StatelessWidget {
   final SchemaNode schemaNode;
   final String defaultTitle;
   final SchemaNodeType defaultType;
+  final String iconPath;
 
   const ToolboxComponent(
-      {Key key, this.defaultType, this.schemaNode, this.defaultTitle})
+      {Key key,
+      this.defaultType,
+      this.schemaNode,
+      this.defaultTitle,
+      this.iconPath = null})
       : super(key: key);
 
   Widget buildComponent() {
@@ -253,7 +292,7 @@ class ToolboxComponent extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.network(
-                    'assets/icons/layout/$type.svg',
+                    iconPath ?? 'assets/icons/layout/$type.svg',
                   ),
                   Text(name),
                 ],

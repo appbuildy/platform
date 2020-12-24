@@ -7,6 +7,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsPrope
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 enum ListTemplateType { simple, cards }
+enum ListTemplateStyle { compact, basic, tiles, cards }
 
 abstract class ListTemplate {
   ListTemplateType getType();
@@ -46,17 +47,22 @@ ListTemplate getListTemplateByType(ListTemplateType type) {
 
 double getListHeightByType(ListTemplateType type) {
   if (type == ListTemplateType.simple) {
-    return 195.0;
+    return 520.0;
   } else if (type == ListTemplateType.cards) {
-    return 480.0;
+    return 520.0;
   } else {
     return 195.0;
   }
 }
 
-double getListItemHeightByType(ListTemplateType type) {
+double getListItemHeightByTypeAndStyle(
+    ListTemplateType type, ListTemplateStyle style) {
   if (type == ListTemplateType.simple) {
-    return 100.0;
+    if (style == ListTemplateStyle.compact) {
+      return 45.0;
+    } else {
+      return 65.0;
+    }
   } else if (type == ListTemplateType.cards) {
     return 150.0;
   } else {
