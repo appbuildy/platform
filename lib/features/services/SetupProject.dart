@@ -1,3 +1,4 @@
+import 'package:flutter_app/app_skeleton/entities/skeleton_entities.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';
 import 'package:flutter_app/features/services/project_setup/setup_authorized_project.dart';
@@ -30,9 +31,5 @@ class SetupProject {
       client: client,
       // settings: settings,
     ).setup();
-  }
-
-  Future<Project> setupPreview() async {
-    return await SetupPreview().setup();
   }
 }

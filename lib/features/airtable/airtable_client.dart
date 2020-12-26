@@ -12,7 +12,13 @@ class AirtableClient implements IRemoteTable {
   String apiUrl;
   Client httpClient;
   static Map<String, dynamic> credentials = {};
-
+  static setCredentialsFromMap (Map<String, dynamic> map) {
+    credentials = {
+      'api_key': map['airtable_credentials']['api_key'],
+      'base': map['airtable_credentials']['base']
+    };
+  }
+  
   factory AirtableClient.defaultClient({
     String table = 'Table 1',
     String apiKey,

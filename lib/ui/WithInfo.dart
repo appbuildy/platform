@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/ui/HoverDecoration.dart';
 import 'package:flutter_app/config/colors.dart';
 
@@ -108,7 +109,7 @@ class _WithInfoState extends State<WithInfo> {
 
     return OverlayEntry(
         builder: (context) => Stack(
-              overflow: Overflow.visible,
+          clipBehavior: Clip.none,
               children: [
                 GestureDetector(
                   onTap: () {

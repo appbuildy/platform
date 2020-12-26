@@ -3,6 +3,7 @@ import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/config/constants.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/features/appPreview/AppActions/UndoRedo.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/Cursor.dart';

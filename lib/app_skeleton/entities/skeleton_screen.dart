@@ -11,7 +11,7 @@ class SkeletonScreen {
   final RandomKey id;
 
   /// props of layout from builder
-  final SkeletonScreenSize screenSize;
+  final SkeletonScreenSize size;
 
   /// body layout
   final List<SkeletonWidget> widgets;
@@ -24,7 +24,7 @@ class SkeletonScreen {
     this.id,
     @required this.widgets,
     this.navBar,
-    this.screenSize = defaultSkeletonScreenSize,
+    this.size = defaultSkeletonScreenSize,
   });
 
   /// parse jsonified widgets data
@@ -49,14 +49,4 @@ class SkeletonScreen {
   }) {
     return SkeletonScreen.fromMap(map: json.decode(source), navBar: navBar);
   }
-
-  // factory SkeletonScreen.fromProject(
-  //   Project project, {
-  //   BottomNavigation navBar,
-  // }) {
-  //   return SkeletonScreen.fromJson(
-  //     json: project.data,
-  //     navBar: navBar,
-  //   );
-  // }
 }

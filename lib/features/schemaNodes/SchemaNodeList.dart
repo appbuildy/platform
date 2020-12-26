@@ -1,6 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';

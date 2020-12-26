@@ -11,6 +11,7 @@ class PreviewStateStore = _PreviewStateStore with _$PreviewStateStore;
 
 abstract class _PreviewStateStore with Store {
   final SkeletonProject project;
+  
   RandomKey initialKey;
   SkeletonScreen get initialScreen => project.screens[initialKey];
   @observable

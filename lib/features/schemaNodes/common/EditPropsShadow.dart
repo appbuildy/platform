@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MySlider.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 

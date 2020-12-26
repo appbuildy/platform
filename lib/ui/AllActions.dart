@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
@@ -8,7 +9,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProp
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
 import 'package:flutter_app/store/userActions/AddScreen.dart';
-import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 import 'package:flutter_app/utils/ShowToast.dart';

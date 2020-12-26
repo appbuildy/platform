@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/toolbox/TooboxSettings/Airtable/ToolboxAirtablePage.dart';
 import 'package:flutter_app/features/toolbox/TooboxSettings/Information/ToolboxInformationPage.dart';

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter_app/app_skeleton/entities/skeleton_entities.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
-/// project data
+/// project data: screens and navBar data
 class SkeletonProject {
   final Map<RandomKey, SkeletonScreen> screens;
   final SkeletonNavBar navBar;

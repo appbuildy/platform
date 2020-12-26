@@ -10,15 +10,15 @@ import 'package:flutter_app/app_skeleton/preview_ui/state/preview_state_store.da
 
 import 'scaling_screen_scaffold.dart';
 
-class Application extends StatefulWidget {
+class SkeletonPreview extends StatefulWidget {
   final SkeletonProject project;
 
-  const Application({Key key, @required this.project}) : super(key: key);
+  const SkeletonPreview({Key key, @required this.project}) : super(key: key);
   @override
-  _ApplicationState createState() => _ApplicationState();
+  _SkeletonPreviewState createState() => _SkeletonPreviewState();
 }
 
-class _ApplicationState extends State<Application> {
+class _SkeletonPreviewState extends State<SkeletonPreview> {
   PreviewStateStore stateStore;
 
   @override
@@ -28,7 +28,7 @@ class _ApplicationState extends State<Application> {
   }
 
   WidgetBuilder buildScreen({SkeletonScreen screenData}) =>
-      (BuildContext context) => ScalingScreenScaffold(screenData: screenData);
+      (BuildContext context) => ScalingScreenScaffold(screen: screenData);
 
   Route<dynamic> onGenerateRoute(RouteSettings settings) {
     if (settings.name == '/') {

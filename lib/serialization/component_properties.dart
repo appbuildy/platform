@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/app_skeleton/loading/action_load_from_json.dart';
+import 'package:flutter_app/app_skeleton/entities/skeleton_entities.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/app_skeleton/entities/skeleton_action.dart'
-    as skeleton_action;
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/project_load/properties_loader.dart';
 
@@ -11,7 +9,7 @@ class ComponentProperties {
   Offset size;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> actions;
-  Map<String, skeleton_action.SkeletonAction> previewActions;
+  Map<String, SkeletonAction> previewActions;
   Map<String, dynamic> jsonComponent;
 
   ComponentProperties(jsonComponent, {SchemaNodeSpawner schemaNodeSpawner}) {
@@ -41,9 +39,9 @@ class ComponentProperties {
   }
 
   void _loadPreviewActions() {
-    final Map<String, skeleton_action.SkeletonAction> deserialized = {};
+    final Map<String, SkeletonAction> deserialized = {};
     jsonComponent['actions'].forEach((key, val) {
-      deserialized[key] = ActionLoadFromJson({key: val}).load();
+      deserialized[key] = SkeletonAction.fromMap(val);
     });
     previewActions = deserialized;
   }

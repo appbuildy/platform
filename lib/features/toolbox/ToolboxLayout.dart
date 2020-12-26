@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/config/constants.dart';
+import 'package:flutter_app/config/text_styles.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
@@ -11,7 +12,7 @@ import 'package:flutter_app/ui/IFrame/IFrame.dart';
 import 'package:flutter_app/config/colors.dart';
 import 'package:flutter_app/ui/MyModal.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
+
 
 class ToolboxLayout extends StatelessWidget {
   final UserActions userActions;

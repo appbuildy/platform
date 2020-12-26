@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/config/constants.dart';
 import 'package:flutter_app/config/colors.dart';
+import 'package:flutter_app/config/text_styles.dart';
 
 class ToolboxTitle extends StatelessWidget {
   final String title;
