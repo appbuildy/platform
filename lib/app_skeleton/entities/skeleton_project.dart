@@ -9,17 +9,18 @@ class SkeletonProject {
   final SkeletonNavBar navBar;
   const SkeletonProject({this.screens, this.navBar});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'canvas': {
-        'screens': screens?.map((x) => x?.toMap())?.toList(),
-        'bottomNavigation': navBar?.toMap(),
-      }
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'canvas': {
+  //       'screens': screens?.map((x) => x?.toMap())?.toList(),
+  //       'bottomNavigation': navBar?.toMap(),
+  //     }
+  //   };
+  // }
 
   factory SkeletonProject.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+    if (map == null) {
+      return null;}
 
     // unpack nav bar
     final SkeletonNavBar navBar =
@@ -28,17 +29,17 @@ class SkeletonProject {
     return SkeletonProject(
       screens: Map<RandomKey, SkeletonScreen>.fromIterable(
             map['canvas']['screens']?.map<SkeletonScreen>(
-                (dynamic screenData) =>
+                ( screenData) =>
                     SkeletonScreen.fromMap(map: screenData, navBar: navBar)),
-            key: (dynamic screen) => screen.id,
-            value: (dynamic screen) => screen,
+            key: ( screen) => screen.id,
+            value: ( screen) => screen,
           ) ??
           <RandomKey, SkeletonScreen>{},
       navBar: navBar,
     );
   }
 
-  String toJson() => json.encode(toMap());
+  // String toJson() => json.encode(toMap());
 
   factory SkeletonProject.fromJson(String source) =>
       SkeletonProject.fromMap(json.decode(source));

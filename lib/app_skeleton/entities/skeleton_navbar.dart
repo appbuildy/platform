@@ -10,14 +10,16 @@ class SkeletonNavBar {
     this.tabs,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'tabs': tabs?.map((x) => x?.toMap())?.toList(),
-    };
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'tabs': tabs?.map((x) => x?.toMap())?.toList(),
+  //   };
+  // }
 
   factory SkeletonNavBar.fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
+    if (map == null) {
+      return null;
+      }
 
     return SkeletonNavBar(
       tabs: List<TabNavigation>.from(
@@ -26,8 +28,8 @@ class SkeletonNavBar {
     );
   }
 
-  String toJson() => json.encode(toMap());
+  // String toJson() => json.encode(toMap());
 
   factory SkeletonNavBar.fromJson(String source) =>
-      SkeletonNavBar.fromMap(json.decode(source));
+      SkeletonNavBar.fromMap(json.decode(source),);
 }

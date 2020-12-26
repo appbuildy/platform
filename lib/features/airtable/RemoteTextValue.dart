@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/airtable/airtable_client.dart';
 import 'package:flutter_app/features/schemaNodes/IRemoteValue.dart';
 
 class RemoteTextValue implements IRemoteValue<String> {

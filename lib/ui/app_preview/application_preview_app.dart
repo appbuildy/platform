@@ -8,7 +8,8 @@ class ApplicationPreviewApp extends StatelessWidget {
   const ApplicationPreviewApp({Key key}) : super(key: key);
 
   Future<Widget> loadPreview() async {
-    SkeletonProject  project = await const SetupProject().setupPreview();
+    AppBuildyCredentials
+    SkeletonProject  project = await getSkeletonProject();
     
     return SkeletonPreview(project: project);
   }

@@ -1,6 +1,6 @@
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 
-import 'Client.dart';
+import 'airtable_client.dart';
 
 class AirtableTable implements IRemoteTable {
   @override

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_app/app_skeleton/loading/application_loaded_from_json.dart';
 import 'package:flutter_app/app_skeleton/ui/navbar.dart';
 import 'package:flutter_app/features/entities/Project.dart';
+import 'package:flutter_app/features/schemaInteractions/BottomNavigation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class FakeProject extends Project {
@@ -17,13 +18,13 @@ void main() {
   var project = FakeProject(jsonApp);
   var loader = ApplicationLoadedFromJson(project);
 
-  test('.load() loads application', () {
+  test(".load() loads application", () {
     var application = loader.load();
 
     expect(application.screens.length, equals(1));
   });
 
-  test('.load() loads bottomNavigation for screens', () {
+  test(".load() loads bottomNavigation for screens", () {
     var application = loader.load();
 
     expect(application.screens.values.first.navBar, isA<BottomNavigation>());

@@ -1,4 +1,4 @@
-import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/airtable/airtable_client.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/services/AuthenticationService.dart';

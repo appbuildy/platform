@@ -1,7 +1,7 @@
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:universal_html/html.dart';
 
-import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/airtable/airtable_client.dart';
 import 'package:flutter_app/features/services/browser_query_data.dart';
 import 'package:http/http.dart' as http;
 

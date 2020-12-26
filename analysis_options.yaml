@@ -1,3 +1,72 @@
+# added some rules from https://dart-lang.github.io/linter/lints/
+
 analyzer:
   errors:
     undefined_prefixed_name: ignore
+
+linter:
+  rules:
+    - avoid_empty_else
+    - await_only_futures
+    -  annotate_overrides
+    -  avoid_annotating_with_dynamic
+    -  avoid_as
+    -  always_put_control_body_on_new_line
+    -  avoid_bool_literals_in_conditional_expressions
+    - avoid_positional_boolean_parameters
+    -  avoid_renaming_method_parameters
+    -  avoid_return_types_on_setters
+    -  avoid_redundant_argument_values
+    -  avoid_returning_null_for_void
+    -  avoid_shadowing_type_parameters
+    -  avoid_unnecessary_containers
+    -  avoid_void_async
+    - camel_case_types
+    - constant_identifier_names
+
+    -  avoid_escaping_inner_quotes
+    -  avoid_init_to_null
+    - curly_braces_in_flow_control_structures
+    -  empty_catches
+    - file_names
+    -  exhaustive_cases
+    - cancel_subscriptions
+    - close_sinks
+    - comment_references
+    - lines_longer_than_80_chars
+    -  non_constant_identifier_names
+    -  one_member_abstracts
+    -  prefer_collection_literals
+    -  prefer_conditional_assignment
+    - prefer_const_constructors
+    -  prefer_const_declarations
+    -  prefer_contains
+    - prefer_final_fields
+    -  prefer_is_empty
+    -  prefer_is_not_empty
+    -  prefer_is_not_operator
+    # -  prefer_double_quotes
+    -  prefer_spread_collections
+    -  unnecessary_await_in_return
+    -  unnecessary_const
+    -  unnecessary_getters_setters
+    -  unnecessary_new
+    -  unnecessary_lambdas
+    -  unnecessary_null_aware_assignments
+    -  unnecessary_overrides
+
+    - unnecessary_parenthesis
+    -  unnecessary_string_escapes
+    -  unnecessary_this
+    - use_full_hex_values_for_flutter_colors
+    -  use_is_even_rather_than_modulo
+    -  use_rethrow_when_possible
+    -  void_checks
+    - empty_statements
+    - hash_and_equals
+    - iterable_contains_unrelated_type
+    - list_remove_unrelated_type
+    - no_duplicate_case_values
+    - unnecessary_statements
+    -  unrelated_type_equality_checks
+    -  use_key_in_widget_constructors

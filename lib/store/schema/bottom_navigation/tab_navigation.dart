@@ -8,15 +8,17 @@ class TabNavigation {
   RandomKey target;
   RandomKey id;
 
-  TabNavigation({this.target, this.label, this.icon, this.id}) {
-    this.id = id ?? RandomKey();
+  TabNavigation({this.target, this.label, this.icon, this.id}){
+
+
+    id ??= RandomKey();
   }
 
   TabNavigation.fromJson(Map<String, dynamic> jsonVal) {
-    this.label = jsonVal['label'];
-    this.target = RandomKey.fromJson(jsonVal['target']);
-    this.id = RandomKey.fromJson(jsonVal['id']);
-    this.icon = JsonSerializationIconData.fromJson(jsonVal['icon']);
+    label = jsonVal['label'];
+    target = RandomKey.fromJson(jsonVal['target']);
+    id = RandomKey.fromJson(jsonVal['id']);
+    icon = JsonSerializationIconData.fromJson(jsonVal['icon']);
   }
 
   Map<String, dynamic> toJson() {

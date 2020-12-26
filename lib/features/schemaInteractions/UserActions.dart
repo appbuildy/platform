@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
-import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/airtable/airtable_client.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/airtable/RemoteList.dart';
 import 'package:flutter_app/features/schemaInteractions/BaseAction.dart';

@@ -4,7 +4,6 @@ import 'package:flutter_app/app_skeleton/entities/skeleton_entities.dart';
 import 'package:flutter_app/app_skeleton/preview_ui/state/preview_state_store.dart';
 import 'package:flutter_app/features/appPreview/AppTabs.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatelessWidget {

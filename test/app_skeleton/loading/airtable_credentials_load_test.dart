@@ -1,5 +1,5 @@
 import 'package:flutter_app/app_skeleton/loading/airtable_credentials_load.dart';
-import 'package:flutter_app/features/airtable/Client.dart';
+import 'package:flutter_app/features/airtable/airtable_client.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
