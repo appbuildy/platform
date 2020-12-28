@@ -23,6 +23,22 @@ class Shape extends StatelessWidget {
               theme,
               properties['Color'],
             ),
+            border: properties['Border'].value
+                ? Border.all(
+                    width: properties['BorderWidth'].value,
+                    color: getThemeColor(theme, properties['BorderColor']))
+                : null,
+            boxShadow: properties['BoxShadow'].value
+                ? [
+                    BoxShadow(
+                        color: getThemeColor(
+                                theme, properties['BoxShadowColor'])
+                            .withOpacity(properties['BoxShadowOpacity'].value),
+                        blurRadius: properties['BoxShadowBlur'].value,
+                        offset: Offset(0.0, 2.0),
+                        spreadRadius: 0)
+                  ]
+                : [],
             borderRadius:
                 BorderRadius.circular(properties['BorderRadiusValue'].value)),
       ),
