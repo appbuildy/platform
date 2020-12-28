@@ -97,12 +97,12 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
 
   Widget toWidgetWithReplacedData(
       {bool isPlayMode, String data, MyTheme theme = null}) {
-    print("DATA");
-    print("DATA");
-    print("DATA");
-    print(theme);
-    print("DATA");
-    print("DATA");
+    // print("DATA");
+    // print("DATA");
+    // print("DATA");
+    // print(theme);
+    // print("DATA");
+    // print("DATA");
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
