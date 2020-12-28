@@ -22,7 +22,7 @@ class OpenLinkAction extends SchemaNodeProperty<String>
   @override
   Map<String, dynamic> toJson() {
     return {
-      'propertyClass': 'GoToScreenAction',
+      'propertyClass': 'OpenLinkAction',
       'action': this.name,
       'type': this.type.toString(),
       'value': this.value == null ? null : this.value

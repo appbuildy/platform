@@ -28,6 +28,13 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
     };
   }
 
+  GoToScreenAction.fromJson(Map<String, dynamic> jsonVal)
+      : super('Prop', null) {
+    this.name = jsonVal['action'];
+    this.type = SchemaActionType.goToScreen;
+    this.value = RandomKey.fromJson(jsonVal['value']);
+  }
+
   Function toFunction(UserActions userActions) {
     return ([Map<String, ListItem> rowData]) {
       if (rowData != null) {
@@ -69,13 +76,6 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
 
   @override
   SchemaActionType type;
-
-  GoToScreenAction.fromJson(Map<String, dynamic> jsonVal)
-      : super('Prop', null) {
-    this.name = jsonVal['action'];
-    this.type = SchemaActionType.goToScreen;
-    this.value = RandomKey.fromJson(jsonVal['value']);
-  }
 
   @override
   Widget toEditProps(UserActions userActions) {

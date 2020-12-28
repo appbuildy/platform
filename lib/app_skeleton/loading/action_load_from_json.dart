@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/app_skeleton/entities/action.dart'
     as skeleton_action;
 import 'package:flutter_app/app_skeleton/loading/i_action_load.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ActionLoadFromJson implements IActionLoad {
   Map<String, dynamic> jsonAction;
-  ActionLoadFromJson(this.jsonAction);
+  Function urlLauncher;
+  ActionLoadFromJson(this.jsonAction, [this.urlLauncher = launch]);
 
   @override
   skeleton_action.Action load() {
@@ -20,6 +22,12 @@ class ActionLoadFromJson implements IActionLoad {
         {
           return (BuildContext context) => () =>
               {Navigator.pushNamed(context, actionValue['value']['value'])};
+        }
+        break;
+      case 'SchemaActionType.openLink':
+        {
+          return (BuildContext context) =>
+              () => {urlLauncher(actionValue['value'])};
         }
         break;
       default:
