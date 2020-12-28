@@ -1,5 +1,11 @@
 import 'package:flutter_app/app_skeleton/loading/application_loaded_from_json.dart';
+import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+class FakeProject extends Project {
+  Map<String, dynamic> data;
+  FakeProject(this.data) : super('123');
+}
 
 void main() {
   final Map<String, dynamic> jsonApp = {
@@ -294,7 +300,8 @@ void main() {
       ]
     }
   };
-  final loadedApp = ApplicationLoadedFromJson({"canvas": jsonApp}).load();
+  final loadedApp =
+      ApplicationLoadedFromJson(FakeProject({"canvas": jsonApp})).load();
 
   testWidgets('it changes screen with bottom navigation',
       (WidgetTester tester) async {

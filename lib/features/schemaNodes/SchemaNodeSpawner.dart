@@ -98,6 +98,7 @@ class SchemaNodeSpawner {
 
   SchemaNodeList spawnSchemaNodeListWithTemplate({
     @required ListTemplateType listTemplateType,
+    @required ListTemplateStyle listTemplateStyle,
     UniqueKey id,
     Offset position,
     Offset size,
@@ -107,6 +108,7 @@ class SchemaNodeSpawner {
     return SchemaNodeList.withTemplate(
       parent: this,
       listTemplateType: listTemplateType,
+      listTemplateStyle: listTemplateStyle,
       id: id,
       position: position,
       size: size,
