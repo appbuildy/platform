@@ -14,6 +14,11 @@ class Text extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double lineHeight = 1.5;
+    final double padding = 2.0;
+
+    int maxLines = ((size.dy - padding * 2) / (properties['FontSize'].value * lineHeight)).floor();
+
     return Container(
       width: size.dx,
       height: size.dy,
@@ -22,15 +27,23 @@ class Text extends StatelessWidget {
         crossAxisAlignment: properties['CrossAlignment'].value,
         children: [
           Padding(
-            padding: EdgeInsets.all(2.0),
+            padding: EdgeInsets.all(padding),
             child: Opacity(
               opacity: properties['FontOpacity'].value,
-              child: Cupertino.Text(
-                properties['Text'].value,
-                style: TextStyle(
+              child: Container(
+                child: Cupertino.Text(
+                  properties['Text'].value,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.justify,
+                  maxLines: maxLines,
+                  softWrap: true,
+                  style: TextStyle(
                     fontSize: properties['FontSize'].value,
                     fontWeight: properties['FontWeight'].value,
-                    color: getThemeColor(theme, properties['FontColor'])),
+                    color: getThemeColor(theme, properties['FontColor']),
+                    height: lineHeight,
+                  ),
+                ),
               ),
             ),
           ),
