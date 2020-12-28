@@ -215,6 +215,7 @@ class _WithInfoState extends State<WithInfo> {
                                           ),
                                           title: 'Duplicate',
                                           isFirst: true,
+                                          isLast: widget.onDelete == null,
                                         ))
                                     : Container(),
                                 widget.onDelete != null

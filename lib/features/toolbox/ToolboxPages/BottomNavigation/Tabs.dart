@@ -69,7 +69,7 @@ class TabItem extends StatelessWidget {
               userActions.bottomNavigation.addTab(TabNavigation(
                   icon: tab.icon, label: tab.label, target: tab.target));
             },
-            onDelete: () {
+            onDelete: userActions.bottomNavigation.tabs.length == 1 ? null : () {
               userActions.bottomNavigation.deleteTab(tab);
             },
             position: Offset(10.0, 1.0),
