@@ -121,6 +121,7 @@ enum SchemaNodeType {
   button,
   text,
   shape,
+  form,
   image,
   icon,
   list,

@@ -97,7 +97,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
   Widget toEditProps(wrapInRootProps,
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(Column(children: [
-      ColumnDivider(name: 'Edit Data'),
+      ColumnDivider(name: 'Edit Url'),
       EditPropsText(
         title: 'Url',
         id: id,

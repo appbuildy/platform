@@ -28,7 +28,6 @@ class SchemaStringListProperty
           SchemaListItemsProperty(record['id'], mapProps);
     });
 
-    print('MISHANYA');
     return schemaStringListProperty;
   }
 

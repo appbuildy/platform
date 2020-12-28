@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
@@ -51,7 +50,7 @@ class EditProps extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   border:
-                  Border(left: BorderSide(width: 1, color: MyColors.gray))),
+                      Border(left: BorderSide(width: 1, color: MyColors.gray))),
               child: ToolboxHeader(
                   padding: const EdgeInsets.only(
                     left: 10.0,
@@ -90,10 +89,11 @@ class EditProps extends StatelessWidget {
                         height: 38,
                         color: Colors.transparent,
                       )),
-                  title: selectedNode.type.toString().split('.')[1].capitalize()),
+                  title:
+                      selectedNode.type.toString().split('.')[1].capitalize()),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Column(
                 children: [
                   AllActions(
@@ -102,43 +102,42 @@ class EditProps extends StatelessWidget {
                     screens: screens,
                   ),
                   detailedInfo != null &&
-                      selectedNode.properties['Column'] != null
+                          selectedNode.properties['Column'] != null
                       ? Column(
-                    children: [
-                      ColumnDivider(name: 'Data Source'),
-                      Row(
-                        children: [
-                          SizedBox(
-                            child: Text('Column'),
-                            width: 59,
-                          ),
-                          Expanded(
-                              child: MyClickSelect(
-                                placeholder: 'Select Column',
-                                selectedValue:
-                                selectedNode.properties['Column'].value,
-                                defaultIcon: Container(
-                                    child: Image.network(
-                                      'assets/icons/meta/btn-detailed-info-big.svg',
-                                      fit: BoxFit.contain,
-                                    )),
-                                onChange: (SelectOption element) {
-                                  userActions.changePropertyTo(
-                                      SchemaStringProperty(
-                                          'Column', element.value));
-                                  (selectedNode as dynamic)
-                                      .updateOnColumnDataChange(
-                                      detailedInfo
-                                          .rowData[element.value].data);
-                                },
-                                options: columns
-                                    .map((e) => SelectOption(e, e))
-                                    .toList(),
-                              ))
-                        ],
-                      )
-                    ],
-                  )
+                          children: [
+                            ColumnDivider(name: 'Data Source'),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  child: Text('Column'),
+                                  width: 59,
+                                ),
+                                Expanded(
+                                    child: MyClickSelect(
+                                  placeholder: 'Select Column',
+                                  selectedValue:
+                                      selectedNode.properties['Column'].value,
+                                  defaultIcon: Container(
+                                      child: Image.network(
+                                    'assets/icons/meta/btn-detailed-info-big.svg',
+                                    fit: BoxFit.contain,
+                                  )),
+                                  onChange: (SelectOption element) {
+                                    userActions.changePropertyTo(
+                                        SchemaStringProperty(
+                                            'Column', element.value));
+                                    (selectedNode as dynamic)
+                                        .updateOnColumnDataChange(detailedInfo
+                                            .rowData[element.value].data);
+                                  },
+                                  options: columns
+                                      .map((e) => SelectOption(e, e))
+                                      .toList(),
+                                ))
+                              ],
+                            )
+                          ],
+                        )
                       : Container(),
                   child,
                 ],
