@@ -22,7 +22,7 @@ class Pages extends StatelessWidget {
                     userActions.screens.selectById(element.id);
                     userActions.selectNodeForEdit(null);
                   },
-                  onDelete: () {
+                  onDelete: userActions.screens.all.screens.length == 1 ? null : () {
                     userActions.screens.delete(element);
                   },
                   onDuplicate: () {
