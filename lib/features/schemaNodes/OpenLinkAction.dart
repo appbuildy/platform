@@ -1,5 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
@@ -31,8 +31,13 @@ class OpenLinkAction extends SchemaNodeProperty<String>
 
   Function toFunction(UserActions userActions) {
     return ([Map<String, ListItem> rowData]) {
-      js.context.callMethod('open', [this.value]);
+      _launchUrl();
     };
+  }
+
+  _launchUrl() async {
+    final url = this.value;
+    launch(url);
   }
 
   @override
