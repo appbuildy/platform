@@ -86,9 +86,6 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           onClose: () {});
     } else {
       try {
-        print(token);
-        print(base);
-
         widget.userActions.setAirtableCredentials(token, base);
 
         // final project = widget.userActions.currentUserStore.project;

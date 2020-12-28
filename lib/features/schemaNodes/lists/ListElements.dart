@@ -66,7 +66,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
 
   @override
   SchemaListElementsProperty copy() {
-    return SchemaListElementsProperty(this.name, value);
+    return SchemaListElementsProperty(this.name, value.copy());
   }
 }
 
@@ -117,13 +117,15 @@ class ListElements {
       : this.allColumns = allColumns ?? [],
         this.listElements = listElements ?? [];
 
-  ListElements.withSimpleListTemplate(
-      {allColumns,
-      SchemaNodeSpawner schemaNodeSpawner,
-      Offset listItemSize,
-      ListTemplateStyle listTemplateStyle}) {
+  ListElements.withSimpleListTemplate({
+    allColumns,
+    SchemaNodeSpawner schemaNodeSpawner,
+    Offset listItemSize,
+    ListTemplateStyle listTemplateStyle,
+  }) {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
+    print('new');
 
     double textNodeHeight = 22;
     double imageSize = 36.0;
@@ -310,6 +312,13 @@ class ListElements {
     this.listElements.add(imageListElement);
     this.listElements.add(titleListElement);
     this.listElements.add(descriptionListElement);
+  }
+
+  ListElements copy() {
+    return ListElements(
+      listElements: this.listElements.map((e) => e.copy()).toList(),
+      allColumns: [...this.allColumns],
+    );
   }
 
   _buildOptionPreview(String nodeType) {
