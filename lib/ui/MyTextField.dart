@@ -47,9 +47,12 @@ class _MyTextFieldState extends State<MyTextField> {
           placeholder: widget.placeholder,
           maxLines: widget.maxLines,
           padding:
-              const EdgeInsets.only(top: 9, bottom: 8, left: 16, right: 16),
+              const EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
           style: MyTextStyle.regularTitle,
-          placeholderStyle: TextStyle(color: Color(0xFF777777), fontSize: 16, fontWeight: FontWeight.w500),
+          placeholderStyle: TextStyle(
+              color: Color(0xFF777777),
+              fontSize: 16,
+              fontWeight: FontWeight.w500),
           cursorColor: MyColors.black,
           cursorRadius: Radius.circular(0),
           decoration: widget.disabled

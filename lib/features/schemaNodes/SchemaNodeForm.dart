@@ -13,12 +13,12 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsOpacity.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaArrayOfStringsProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaListOfStringsProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
@@ -183,10 +183,10 @@ class SchemaNodeForm extends SchemaNode {
     }
 
     return Shared.Form(
-      properties: this.properties,
-      theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
-      size: this.size,
-    );
+        properties: this.properties,
+        theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
+        size: this.size,
+        isInputsDisabled: !isPlayMode);
   }
 
   _buildInputsSelect() {
@@ -360,15 +360,15 @@ class SchemaNodeForm extends SchemaNode {
               ),
             )
           ]),
-          SizedBox(
-            height: 15,
-          ),
-          EditPropsCorners(
-            value: properties['ItemRadiusValue'].value,
-            onChanged: (int value) {
-              changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
-            },
-          ),
+//          SizedBox(
+//            height: 15,
+//          ),
+//          EditPropsCorners(
+//            value: properties['ItemRadiusValue'].value,
+//            onChanged: (int value) {
+//              changePropertyTo(SchemaIntProperty('ItemRadiusValue', value));
+//            },
+//          ),
           ColumnDivider(name: 'Button Settings'),
           EditPropsText(
             id: id,

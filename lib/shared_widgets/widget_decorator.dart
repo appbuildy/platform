@@ -3,6 +3,7 @@ import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_rec
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
 import 'package:flutter_app/shared_widgets/button.dart';
+import 'package:flutter_app/shared_widgets/form.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/icon.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/image.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/list.dart' as shared_widgets;
@@ -99,7 +100,17 @@ class WidgetDecorator extends StatelessWidget {
         break;
       case 'SchemaNodeType.form':
         {
-          var dataProvider = CreatedDataProviderRecord.airtable('tableName');
+          var dataProvider = CreatedDataProviderRecord.airtable(
+              componentProperties.properties['Table'].value);
+
+          return WidgetDecorator(
+              onTap: () => {},
+              position: componentProperties.position,
+              widget: shared_widgets.Form(
+                  properties: componentProperties.properties,
+                  onCreate: dataProvider.create,
+                  size: componentProperties.size,
+                  theme: theme));
         }
     }
     return WidgetDecorator(
