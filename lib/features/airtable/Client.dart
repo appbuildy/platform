@@ -31,6 +31,22 @@ class Client implements IRemoteTable {
 
   String get requestUrl => '${this.apiUrl}${this.base}/${this.table}';
 
+  Future<Map<String, dynamic>> create(Map<String, dynamic> records) async {
+    Map<String, dynamic> fields = {"fields": {}};
+
+    records.forEach((k, v) {
+      fields["fields"][k] = v;
+    });
+
+    final response = await this.httpClient.post(requestUrl,
+        body: jsonEncode({
+          'records': [fields]
+        }),
+        headers: {HttpHeaders.authorizationHeader: "Bearer ${this.apiKey}"});
+
+    return json.decode(response.body);
+  }
+
   @override
   Future<Map<String, dynamic>> records() async {
     final response = await this.httpClient.get(requestUrl,

@@ -8,6 +8,22 @@ class MockedClient extends MockClient {
 }
 
 void main() {
+  group('create', () {
+    final responseBody =
+        '{"records":[{"id":"recMrhtPLVin9sWrH","fields":{"Name":"Test","Button":"FCK"},"createdTime":"2020-12-29T13:46:31.000Z"},{"id":"rec74gv0jkCvqcz7s","fields":{"Name":"Test 2","Button":"Kek"},"createdTime":"2020-12-29T13:46:31.000Z"}]}';
+
+    test('it sends reqest to create records', () async {
+      final mockClient = MockedClient((request) async {
+        return http.Response(responseBody, 200, request: request);
+      });
+
+      final client = Client(
+          table: 't1', apiKey: '123', base: '322', httpClient: mockClient);
+
+      await client.create({"Field 1": "22"});
+    });
+  });
+
   group('record', () {
     test('requests record', () async {
       final responseBody =
