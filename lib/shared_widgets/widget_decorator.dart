@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_record.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
 import 'package:flutter_app/shared_widgets/button.dart';
@@ -86,14 +87,20 @@ class WidgetDecorator extends StatelessWidget {
         }
         break;
       case 'SchemaNodeType.image':
-        return WidgetDecorator(
-            onTap: () => {},
-            position: componentProperties.position,
-            widget: shared_widgets.Image(
-                properties: componentProperties.properties,
-                size: componentProperties.size,
-                theme: theme));
+        {
+          return WidgetDecorator(
+              onTap: () => {},
+              position: componentProperties.position,
+              widget: shared_widgets.Image(
+                  properties: componentProperties.properties,
+                  size: componentProperties.size,
+                  theme: theme));
+        }
         break;
+      case 'SchemaNodeType.form':
+        {
+          var dataProvider = CreatedDataProviderRecord.airtable('tableName');
+        }
     }
     return WidgetDecorator(
         onTap: () => {},

@@ -31,6 +31,7 @@ class Client implements IRemoteTable {
 
   String get requestUrl => '${this.apiUrl}${this.base}/${this.table}';
 
+  @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> records) async {
     Map<String, dynamic> fields = {"fields": {}};
 

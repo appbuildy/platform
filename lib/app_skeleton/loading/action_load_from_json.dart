@@ -16,10 +16,18 @@ class ActionLoadFromJson implements IActionLoad {
 
   Function _loadFunction() {
     var actionValue = jsonAction.values.first;
+    print('ACTION VALUE');
+    print('ACTION VALUE');
+    print('ACTION VALUE');
+    print(actionValue);
+    print('------ACTION VALUE');
+    print('ACTION VALUE');
     if (actionValue['value'] == null) return _emptyFunction();
+    print('------ACTION VALUE');
     switch (actionValue['type']) {
       case 'SchemaActionType.goToScreen':
         {
+          print('GO TO SCREEN LOADED');
           return (BuildContext context) => () =>
               {Navigator.pushNamed(context, actionValue['value']['value'])};
         }
