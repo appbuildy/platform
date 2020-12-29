@@ -123,7 +123,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(Column(
       children: [
-        ColumnDivider(name: 'Edit Data'),
+        ColumnDivider(name: 'Edit Title'),
         EditPropsText(
           id: id,
           properties: properties,

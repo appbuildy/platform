@@ -75,6 +75,13 @@ class ToolboxLayout extends StatelessWidget {
                             schemaNode: userActions.schemaNodeSpawner
                                 .spawnSchemaNodeShape(),
                           ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          ToolboxComponent(
+                            schemaNode: userActions.schemaNodeSpawner
+                                .spawnSchemaNodeForm(),
+                          ),
                         ],
                       ),
                       ToolBoxCaption('Lists'),

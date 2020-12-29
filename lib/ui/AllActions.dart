@@ -170,46 +170,54 @@ class _AllActionsState extends State<AllActions> {
   Widget build(BuildContext context) {
     final selectedNode = widget.userActions.selectedNode();
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            MySwitch(
-              value: isVisible,
-              onTap: () {
-                setState(() {
-                  if (isVisible) {
-                    widget.userActions.changeActionTo(MyDoNothingAction('Tap'));
-                  } else {
-                    if (selectedNode.type == SchemaNodeType.list) {
-                      _createDetailedInfoForList(
-                          selectedNode, selectedNode.properties['Table'].value);
-                      Future.delayed(Duration(milliseconds: 50), () {
-                        widget.userActions.selectNodeForEdit(null);
-                      });
+    if (selectedNode.type == SchemaNodeType.form) {
+      return Container();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 24.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              MySwitch(
+                value: isVisible,
+                onTap: () {
+                  setState(() {
+                    if (isVisible) {
+                      widget.userActions
+                          .changeActionTo(MyDoNothingAction('Tap'));
+                    } else {
+                      if (selectedNode.type == SchemaNodeType.list) {
+                        _createDetailedInfoForList(selectedNode,
+                            selectedNode.properties['Table'].value);
+                        Future.delayed(Duration(milliseconds: 50), () {
+                          widget.userActions.selectNodeForEdit(null);
+                        });
+                      }
                     }
-                  }
-                  isVisible = !isVisible;
-                });
-              },
-            ),
-            SizedBox(width: 11),
-            Text(
-              'Actions on Tap',
-              style: MyTextStyle.regularTitle,
-            ),
-          ],
-        ),
-        isVisible ? buildActionSelect() : Container(),
-        isVisible
-            ? Padding(
-                padding: const EdgeInsets.only(top: 11.0),
-                child: (widget.userActions.selectedNode().actions['Tap']
-                        as Functionable)
-                    .toEditProps(widget.userActions),
-              )
-            : Container()
-      ],
+                    isVisible = !isVisible;
+                  });
+                },
+              ),
+              SizedBox(width: 11),
+              Text(
+                'Actions on Tap',
+                style: MyTextStyle.regularTitle,
+              ),
+            ],
+          ),
+          isVisible ? buildActionSelect() : Container(),
+          isVisible
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 11.0),
+                  child: (widget.userActions.selectedNode().actions['Tap']
+                          as Functionable)
+                      .toEditProps(widget.userActions),
+                )
+              : Container()
+        ],
+      ),
     );
   }
 }

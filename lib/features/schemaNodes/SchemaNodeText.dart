@@ -122,7 +122,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     log(parentSpawner.userActions.remoteAttributeList().toString());
     return wrapInRootProps(Column(children: [
-      ColumnDivider(name: 'Edit Data'),
+      ColumnDivider(name: 'Edit Text'),
       EditPropsText(
         id: id,
         properties: properties,
