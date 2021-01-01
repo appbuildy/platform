@@ -27,6 +27,7 @@ import 'package:flutter_app/shared_widgets/form.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/Counter.dart';
+import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
@@ -190,8 +191,21 @@ class SchemaNodeForm extends SchemaNode {
   }
 
   _buildInputsSelect() {
-    final isNotEmpty = properties['SelectedColumns'].value.length > 0 &&
-        properties['Table'].value != null;
+    final allColumns = properties['AllColumns'].value;
+    final selectedColumns = properties['SelectedColumns'].value;
+
+    final isNotEmpty =
+        selectedColumns.length > 0 && properties['Table'].value != null;
+
+    final diffColumns = allColumns.toList().fold([], (prev, elem) {
+      if (selectedColumns.toList().contains(elem)) {
+        return prev;
+      } else {
+        return [...prev, elem];
+      }
+    });
+
+    print('diffColumns $diffColumns');
 
     return Column(
         children: isNotEmpty
@@ -199,8 +213,36 @@ class SchemaNodeForm extends SchemaNode {
                 ColumnDivider(
                   name: 'Inputs',
                 ),
-                ...properties['SelectedColumns']
-                    .value
+                (selectedColumns.length == allColumns.length)
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
+                        child: GestureDetector(
+                          onTap: () {},
+                          child: MyClickSelect(
+                            selectedValue: null,
+                            dropDownOnLeftSide: true,
+                            options: diffColumns
+                                .map((c) => SelectOption(c, c))
+                                .toList()
+                                .cast<SelectOption>(),
+                            onChange: (SelectOption option) {
+                              parentSpawner.userActions.changePropertyTo(
+                                  SchemaListOfStringsProperty(
+                                      'SelectedColumns',
+                                      [...selectedColumns, option.value]
+                                          .toList()
+                                          .cast<String>()));
+                            },
+                            defaultPreview: MyButtonUI(
+                              text: 'Add Input',
+                              icon: Image.network(
+                                  'assets/icons/meta/btn-plus.svg'),
+                            ),
+                          ),
+                        ),
+                      ),
+                ...selectedColumns
                     .map((input) => Padding(
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
@@ -210,8 +252,7 @@ class SchemaNodeForm extends SchemaNode {
                                 parentSpawner.userActions.changePropertyTo(
                                     SchemaListOfStringsProperty(
                                         'SelectedColumns',
-                                        properties['SelectedColumns']
-                                            .value
+                                        selectedColumns
                                             .where((i) => i != input)
                                             .toList()
                                             .cast<String>()));

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
@@ -101,6 +102,13 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
   Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Button(
       properties: this.properties,
+      onTap: () {
+        if (isPlayMode) {
+          // opacityButton blocks top gesture detectors
+          (actions['Tap'] as Functionable)
+              .toFunction(this.parentSpawner.userActions)();
+        }
+      },
       theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
       isOpacityEnabled: isPlayMode,

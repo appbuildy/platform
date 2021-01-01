@@ -4,17 +4,21 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/OpacityButton.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
+void emptyFunction() {}
+
 class Button extends StatelessWidget {
   const Button(
       {Key key,
       this.theme,
       this.size,
       this.properties,
-      this.isOpacityEnabled = true})
+      this.isOpacityEnabled = true,
+      this.onTap})
       : super(key: key);
 
   final Map<String, SchemaNodeProperty> properties;
   final Offset size;
+  final Function onTap;
   final MyTheme theme;
   final bool isOpacityEnabled;
 
@@ -25,6 +29,7 @@ class Button extends StatelessWidget {
 
     return OpacityButton(
       enabled: isOpacityEnabled,
+      onTap: onTap,
       child: Opacity(
         opacity: opacity,
         child: Container(

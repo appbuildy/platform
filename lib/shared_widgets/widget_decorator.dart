@@ -34,6 +34,7 @@ class WidgetDecorator extends StatelessWidget {
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: Button(
+                  onTap: previewActions['Tap'].functionAction,
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: theme));
@@ -42,7 +43,7 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.text':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: shared_widgets.Text(
                   properties: componentProperties.properties,
@@ -54,7 +55,7 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.shape':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: Shape(
                   properties: componentProperties.properties,
@@ -66,7 +67,7 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.icon':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: shared_widgets.Icon(
                   properties: componentProperties.properties,
@@ -78,7 +79,7 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.list':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: shared_widgets.List(
                   properties: componentProperties.properties,
@@ -90,7 +91,7 @@ class WidgetDecorator extends StatelessWidget {
       case 'SchemaNodeType.image':
         {
           return WidgetDecorator(
-              onTap: () => {},
+              onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: shared_widgets.Image(
                   properties: componentProperties.properties,
@@ -114,7 +115,7 @@ class WidgetDecorator extends StatelessWidget {
         }
     }
     return WidgetDecorator(
-        onTap: () => {},
+        onTap: previewActions['Tap'].functionAction,
         position: componentProperties.position,
         widget: shared_widgets.Image(
             properties: componentProperties.properties,

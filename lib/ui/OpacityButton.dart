@@ -100,6 +100,7 @@ class _OpacityButtonState extends State<OpacityButton>
       onTapDown: enabled ? _handleTapDown : null,
       onTapUp: enabled ? _handleTapUp : null,
       onTapCancel: enabled ? _handleTapCancel : null,
+      onTap: enabled ? widget.onTap : null,
       child: FadeTransition(
         opacity: _opacityAnimation,
         child: widget.child,

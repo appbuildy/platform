@@ -44,10 +44,10 @@ class MyButtonUI extends StatelessWidget {
               ),
               this.icon != null
                   ? Positioned(
-                left: 13,
-                top: 1,
-                child: Center(child: this.icon),
-              )
+                      left: 13,
+                      top: 1,
+                      child: Center(child: this.icon),
+                    )
                   : Container(),
             ],
           ),
@@ -67,7 +67,6 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onTap,
       child: MyButtonUI(text: this.text, icon: this.icon),
