@@ -3,6 +3,7 @@ import 'package:flutter_app/app_skeleton/entities/action.dart'
     as skeleton_action;
 import 'package:flutter_app/app_skeleton/loading/i_action_load.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class ActionLoadFromJson implements IActionLoad {
   Map<String, dynamic> jsonAction;
@@ -16,18 +17,17 @@ class ActionLoadFromJson implements IActionLoad {
 
   Function _loadFunction() {
     var actionValue = jsonAction.values.first;
-    print('ACTION VALUE');
-    print('ACTION VALUE');
-    print('ACTION VALUE');
-    print(actionValue);
-    print('------ACTION VALUE');
-    print('ACTION VALUE');
     if (actionValue['value'] == null) return _emptyFunction();
-    print('------ACTION VALUE');
     switch (actionValue['type']) {
+      case 'SchemaActionType.apiCall':
+        {
+          var httpClient = http.Client();
+          return (BuildContext context) =>
+              () => {httpClient.get(actionValue['value'])};
+        }
+        break;
       case 'SchemaActionType.goToScreen':
         {
-          print('GO TO SCREEN LOADED');
           return (BuildContext context) => () =>
               {Navigator.pushNamed(context, actionValue['value']['value'])};
         }
