@@ -2,9 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
+import 'package:flutter_app/features/schemaNodes/airtable_modal_stub.dart'
+    if (dart.library.js) 'ConnectAirtableModal.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
@@ -247,6 +248,7 @@ class SchemaNodeForm extends SchemaNode {
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
                             child: WithInfo(
+                              isShowAlways: true,
                               isOnLeft: true,
                               onDelete: () {
                                 parentSpawner.userActions.changePropertyTo(
@@ -350,7 +352,9 @@ class SchemaNodeForm extends SchemaNode {
                 _buildInputsSelect(),
               ],
             )
-          : ConnectAirtableModal(),
+          : ConnectAirtableModal(
+              userActions: parentSpawner.userActions,
+            ),
       Column(
         children: [
           ColumnDivider(

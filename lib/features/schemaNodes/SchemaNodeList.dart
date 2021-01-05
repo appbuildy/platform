@@ -605,7 +605,7 @@ class _ListToEditPropsState extends State<ListToEditProps>
                 )
               ],
             )
-          : ConnectAirtableModal(),
+          : ConnectAirtableModal(userActions: userActions),
       if (isItemsNotEmpty)
         Column(
           children: [
