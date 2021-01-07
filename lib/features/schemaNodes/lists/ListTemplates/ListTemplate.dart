@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateCards.dart';
+import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateHorizontal.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplateSimple.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
-enum ListTemplateType { simple, cards }
-enum ListTemplateStyle { compact, basic, tiles, cards }
+enum ListTemplateType { simple, cards, horizontal }
+enum ListTemplateStyle { compact, basic, tiles, cards, horizontalBasic }
 
 abstract class ListTemplate {
   ListTemplateType getType();
@@ -40,6 +41,8 @@ ListTemplate getListTemplateByType(ListTemplateType type) {
     return ListTemplateSimple();
   } else if (type == ListTemplateType.cards) {
     return ListTemplateCards();
+  } else if (type == ListTemplateType.horizontal) {
+    return ListTemplateHorizontal();
   } else {
     return ListTemplateSimple();
   }
@@ -65,6 +68,8 @@ double getListItemHeightByTypeAndStyle(
     }
   } else if (type == ListTemplateType.cards) {
     return 150.0;
+  } else if (type == ListTemplateType.horizontal) {
+    return 290.0;
   } else {
     return 100.0;
   }
@@ -75,21 +80,36 @@ double getListItemPaddingByType(ListTemplateType type) {
     return 0.0;
   } else if (type == ListTemplateType.cards) {
     return 15.0;
+  } else if (type == ListTemplateType.horizontal) {
+    return 15.0;
   } else {
     return 0.0;
   }
 }
 
 double getAspectRatio(
-    {Offset size, Map<String, SchemaNodeProperty> properties}) {
-  final width = size.dx - properties['ListItemPadding'].value * 2;
+    {Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    bool isReversed = false}) {
   final additionalPaddings = (properties['ListItemsPerRow'].value - 1) *
       properties['ListItemPadding'].value;
-  final height = properties['ListItemHeight'].value;
+  double aspectRatio = 1;
 
-  final aspectRatio =
-      ((width - additionalPaddings) / properties['ListItemsPerRow'].value) /
-          height;
+  if (isReversed) {
+    final height = size.dy - properties['ListItemPadding'].value * 2;
+    final width = properties['ListItemHeight'].value;
+
+    aspectRatio =
+        ((height - additionalPaddings) / properties['ListItemsPerRow'].value) /
+            width;
+  } else {
+    final width = size.dx - properties['ListItemPadding'].value * 2;
+    final height = properties['ListItemHeight'].value;
+    aspectRatio =
+        ((width - additionalPaddings) / properties['ListItemsPerRow'].value) /
+            height;
+  }
+  print('aspect ration $aspectRatio');
 
   return aspectRatio;
 }

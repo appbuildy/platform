@@ -191,6 +191,12 @@ class SchemaNodeList extends SchemaNode {
           schemaNodeSpawner: parent,
           listItemSize: listItemSize,
           listTemplateStyle: listTemplateStyle);
+    } else if (listTemplateType == ListTemplateType.horizontal) {
+      listElements = ListElements.withCardListTemplate(
+          allColumns: listColumnsSample,
+          schemaNodeSpawner: parent,
+          listItemSize: listItemSize,
+          listTemplateStyle: listTemplateStyle);
     }
 
     this.properties['Elements'] =
@@ -666,7 +672,10 @@ class _ListToEditPropsState extends State<ListToEditProps>
               SizedBox(
                 width: 59,
                 child: Text(
-                  'Height',
+                  widget.schemaNodeList.listTemplateType ==
+                          ListTemplateType.horizontal
+                      ? 'Width'
+                      : 'Height',
                   style: MyTextStyle.regularCaption,
                 ),
               ),
