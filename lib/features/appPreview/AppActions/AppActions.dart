@@ -69,6 +69,45 @@ class AppActions extends StatelessWidget {
                             ),
                           ),
                           Expanded(child: Container()),
+                          Row(
+                            children: [
+                              Image.network(
+                                'assets/icons/meta/ios.svg',
+                                fit: BoxFit.contain,
+                                width: 24,
+                                height: 24,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Image.network(
+                                'assets/icons/meta/android.svg',
+                                fit: BoxFit.contain,
+                                width: 24,
+                                height: 24,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Coming Soon',
+                                style: MyTextStyle.regularCaption,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          MyButton(
+                            text: 'Export to iOS & Android',
+                            disabled: true,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           MyButton(
                               onTap: () {
                                 js.context.callMethod('open', [
@@ -77,7 +116,7 @@ class AppActions extends StatelessWidget {
                                       ''
                                 ]);
                               },
-                              text: 'Navigate to the Web App')
+                              text: 'Open Web App in New Tab'),
                         ],
                       ),
                     )),
