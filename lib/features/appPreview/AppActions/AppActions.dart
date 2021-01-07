@@ -74,8 +74,8 @@ class AppActions extends StatelessWidget {
                               Image.network(
                                 'assets/icons/meta/ios.svg',
                                 fit: BoxFit.contain,
-                                width: 24,
-                                height: 24,
+                                width: 26,
+                                height: 26,
                               ),
                               SizedBox(
                                 width: 5,
@@ -83,8 +83,8 @@ class AppActions extends StatelessWidget {
                               Image.network(
                                 'assets/icons/meta/android.svg',
                                 fit: BoxFit.contain,
-                                width: 24,
-                                height: 24,
+                                width: 26,
+                                height: 26,
                               ),
                               SizedBox(
                                 width: 10,
