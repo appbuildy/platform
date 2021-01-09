@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/airtable/IRemoteTable.dart';
+import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListTemplates/ListTemplate.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 void emptyFunc() {}
@@ -16,6 +19,7 @@ class List extends StatelessWidget {
       this.onListClick = emptyFunc,
       this.isPlayMode = false,
       this.isSelected = false,
+      this.project = null,
       this.isBuild = false})
       : super(key: key);
 
@@ -27,9 +31,15 @@ class List extends StatelessWidget {
   final bool isSelected;
   final bool isPlayMode;
   final bool isBuild;
+  final Project project;
+
+  IRemoteTable get remoteTable => project.airtableTables
+      .firstWhere((table) => table.table == properties['Table'].value);
 
   @override
   Widget build(BuildContext context) {
+    //properties['Items'] = SchemaStringListProperty.fromRemoteTable(remoteTable);
+
     return Container(
       width: size.dx,
       height: size.dy,

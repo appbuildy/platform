@@ -82,6 +82,7 @@ class WidgetDecorator extends StatelessWidget {
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: shared_widgets.List(
+                  project: project,
                   properties: componentProperties.properties,
                   isBuild: true,
                   size: componentProperties.size,
