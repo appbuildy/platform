@@ -49,7 +49,7 @@ class _ListState extends State<List> {
   void initState() {
     newProperties = widget.properties;
 
-    if (widget.isBuild) {
+    if (widget.isBuild && widget.properties['Table'].value != null) {
       super.initState();
       SchemaStringListProperty.fromRemoteTable(remoteTable).then((value) {
         setState(() {
