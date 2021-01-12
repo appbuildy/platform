@@ -11,13 +11,12 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsPrope
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/utils/getThemeColor.dart';
 
-import '../../Functionable.dart';
-
 class ListTemplateHorizontal extends ListTemplate {
   ListTemplateType getType() => ListTemplateType.cards;
 
   Widget toWidget({
     @required Function onListClick, // should mock it in skeleton
+    @required Function onListItemClick, // should mock it in skeleton
     @required MyTheme theme,
     @required Offset size,
     @required Map<String, SchemaNodeProperty> properties,
@@ -50,9 +49,7 @@ class ListTemplateHorizontal extends ListTemplate {
                   if (isPlayMode) {
                     return GestureDetector(
                       onTap: () {
-                        (schemaNodeList.actions['Tap'] as Functionable)
-                            .toFunction(schemaNodeList
-                                .parentSpawner.userActions)(item.value);
+                        onListItemClick(item.value);
                       },
                       child: widgetFor(
                         item: item,

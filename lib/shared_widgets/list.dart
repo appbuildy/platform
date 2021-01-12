@@ -17,6 +17,7 @@ class List extends StatefulWidget {
       this.properties,
       this.schemaNodeList = null,
       this.onListClick = emptyFunc,
+      this.onListItemClick = emptyFunc,
       this.isPlayMode = false,
       this.isSelected = false,
       this.project = null,
@@ -28,6 +29,7 @@ class List extends StatefulWidget {
   final MyTheme theme;
   final SchemaNodeList schemaNodeList; // needs to correct work in AppPreview
   final Function onListClick;
+  final Function onListItemClick;
   final bool isSelected;
   final bool isPlayMode;
   final bool isBuild;
@@ -47,12 +49,14 @@ class _ListState extends State<List> {
   void initState() {
     newProperties = widget.properties;
 
-    super.initState();
-    SchemaStringListProperty.fromRemoteTable(remoteTable).then((value) {
-      setState(() {
-        newProperties['Items'] = value;
+    if (widget.isBuild) {
+      super.initState();
+      SchemaStringListProperty.fromRemoteTable(remoteTable).then((value) {
+        setState(() {
+          newProperties['Items'] = value;
+        });
       });
-    });
+    }
   }
 
   @override
@@ -64,6 +68,7 @@ class _ListState extends State<List> {
         schemaNodeList: widget.schemaNodeList,
         size: widget.size,
         onListClick: widget.onListClick,
+        onListItemClick: widget.onListItemClick,
         theme: widget.theme,
         properties: newProperties,
         isSelected: widget.isSelected,

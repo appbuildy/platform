@@ -15,6 +15,7 @@ abstract class ListTemplate {
 
   Widget toWidget({
     @required Function onListClick, // should mock it in skeleton
+    @required Function onListItemClick, // should mock it in skeleton
     @required MyTheme theme,
     @required Offset size,
     @required Map<String, SchemaNodeProperty> properties,

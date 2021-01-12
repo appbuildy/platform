@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/airtable_modal_stub.dart'
@@ -233,6 +234,11 @@ class SchemaNodeList extends SchemaNode {
     }
   }
 
+  void onListItemClick(value) {
+    (actions['Tap'] as Functionable)
+        .toFunction(parentSpawner.userActions)(value);
+  }
+
   void selectListElementNode(ListElementNode listElementNode) {
     this.selectedListElementNode = listElementNode;
 
@@ -412,6 +418,7 @@ class SchemaNodeList extends SchemaNode {
       size: this.size,
       schemaNodeList: this,
       onListClick: this.onListClick,
+      onListItemClick: this.onListItemClick,
       theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       properties: this.properties,
       isSelected: this.isSelected,
@@ -426,13 +433,19 @@ class SchemaNodeList extends SchemaNode {
     print("Client: $client");
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
 
-    final columnNames = newProp.value[newProp.value.keys.first].value.keys.toList().reversed.toList(); // приходят почему-то в обратном порядке
+    final columnNames = newProp.value[newProp.value.keys.first].value.keys
+        .toList()
+        .reversed
+        .toList(); // приходят почему-то в обратном порядке
 
-    (this.properties['Elements'].value as ListElements).allColumns = columnNames;
+    (this.properties['Elements'].value as ListElements).allColumns =
+        columnNames;
 
-    final List<ListElementNode> listElementNodes = (this.properties['Elements'].value as ListElements).listElements;
+    final List<ListElementNode> listElementNodes =
+        (this.properties['Elements'].value as ListElements).listElements;
 
-    bool shouldUpdateColumns = columnNames.isNotEmpty && listElementNodes.isNotEmpty;
+    bool shouldUpdateColumns =
+        columnNames.isNotEmpty && listElementNodes.isNotEmpty;
 
     if (shouldUpdateColumns) {
       int key = 0;
@@ -444,7 +457,8 @@ class SchemaNodeList extends SchemaNode {
         });
       } else {
         listElementNodes.forEach((ListElementNode listElementNode) {
-          listElementNode.columnRelation = key > columnNames.length - 1 ? columnNames[0] : columnNames[key];
+          listElementNode.columnRelation =
+              key > columnNames.length - 1 ? columnNames[0] : columnNames[key];
 
           key += 1;
         });
