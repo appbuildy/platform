@@ -9,7 +9,7 @@ import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 void emptyFunc() {}
 
-class List extends StatelessWidget {
+class List extends StatefulWidget {
   const List(
       {Key key,
       this.theme,
@@ -33,24 +33,41 @@ class List extends StatelessWidget {
   final bool isBuild;
   final Project project;
 
-  IRemoteTable get remoteTable => project.airtableTables
-      .firstWhere((table) => table.table == properties['Table'].value);
+  @override
+  _ListState createState() => _ListState();
+}
+
+class _ListState extends State<List> {
+  IRemoteTable get remoteTable => widget.project.airtableTables
+      .firstWhere((table) => table.table == widget.properties['Table'].value);
+
+  Map<String, SchemaNodeProperty> newProperties;
+
+  @override
+  void initState() {
+    newProperties = widget.properties;
+
+    super.initState();
+    SchemaStringListProperty.fromRemoteTable(remoteTable).then((value) {
+      setState(() {
+        newProperties['Items'] = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //properties['Items'] = SchemaStringListProperty.fromRemoteTable(remoteTable);
-
     return Container(
-      width: size.dx,
-      height: size.dy,
-      child: (properties['Template'].value as ListTemplate).toWidget(
-        schemaNodeList: schemaNodeList,
-        size: size,
-        onListClick: onListClick,
-        theme: theme,
-        properties: properties,
-        isSelected: isSelected,
-        isPlayMode: isPlayMode || isBuild,
+      width: widget.size.dx,
+      height: widget.size.dy,
+      child: (widget.properties['Template'].value as ListTemplate).toWidget(
+        schemaNodeList: widget.schemaNodeList,
+        size: widget.size,
+        onListClick: widget.onListClick,
+        theme: widget.theme,
+        properties: newProperties,
+        isSelected: widget.isSelected,
+        isPlayMode: widget.isPlayMode || widget.isBuild,
       ),
     );
   }
