@@ -15,7 +15,7 @@ class WidgetDecorator extends StatelessWidget {
   const WidgetDecorator({Key key, this.onTap, this.widget, this.position})
       : super(key: key);
 
-  final Widget widget;
+  final Widget Function(BuildContext) widget;
   final Offset position;
   final Function onTap;
 
@@ -33,8 +33,10 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
-              widget: Button(
-                  onTap: previewActions['Tap'].functionAction,
+              widget: (context) => Button(
+                  onTap: () {
+                    previewActions['Tap'].functionAction(context)();
+                  },
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: theme));
@@ -45,7 +47,7 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
-              widget: shared_widgets.Text(
+              widget: (context) => shared_widgets.Text(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: theme));
@@ -57,7 +59,7 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
-              widget: Shape(
+              widget: (context) => Shape(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: theme));
@@ -69,7 +71,7 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
-              widget: shared_widgets.Icon(
+              widget: (context) => shared_widgets.Icon(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: theme));
@@ -81,7 +83,7 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
-              widget: shared_widgets.List(
+              widget: (context) => shared_widgets.List(
                   project: project,
                   properties: componentProperties.properties,
                   isBuild: true,
@@ -94,7 +96,7 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
-              widget: shared_widgets.Image(
+              widget: (context) => shared_widgets.Image(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: theme));
@@ -108,7 +110,7 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: () => {},
               position: componentProperties.position,
-              widget: shared_widgets.Form(
+              widget: (context) => shared_widgets.Form(
                   properties: componentProperties.properties,
                   onCreate: dataProvider.create,
                   size: componentProperties.size,
@@ -118,7 +120,7 @@ class WidgetDecorator extends StatelessWidget {
     return WidgetDecorator(
         onTap: previewActions['Tap'].functionAction,
         position: componentProperties.position,
-        widget: shared_widgets.Image(
+        widget: (context) => shared_widgets.Image(
             properties: componentProperties.properties,
             size: componentProperties.size,
             theme: theme));
@@ -139,6 +141,7 @@ class WidgetDecorator extends StatelessWidget {
     return Positioned(
         left: position.dx,
         top: position.dy,
-        child: GestureDetector(onTap: _onTap(context), child: this.widget));
+        child: GestureDetector(
+            onTap: _onTap(context), child: this.widget(context)));
   }
 }

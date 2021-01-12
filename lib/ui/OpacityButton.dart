@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class OpacityButton extends StatefulWidget {
   final Widget child;
-  final dynamic onTap;
+  final Function onTap;
   final double pressedOpacity;
   final bool enabled;
 
@@ -80,6 +80,10 @@ class _OpacityButtonState extends State<OpacityButton>
     }
   }
 
+  void _handleOnTap() {
+    widget.onTap();
+  }
+
   void _animate() {
     if (_animationController.isAnimating) return;
     final bool wasHeldDown = _buttonHeldDown;
@@ -100,7 +104,7 @@ class _OpacityButtonState extends State<OpacityButton>
       onTapDown: enabled ? _handleTapDown : null,
       onTapUp: enabled ? _handleTapUp : null,
       onTapCancel: enabled ? _handleTapCancel : null,
-      onTap: enabled ? widget.onTap : null,
+      onTap: enabled ? _handleOnTap : null,
       child: FadeTransition(
         opacity: _opacityAnimation,
         child: widget.child,
