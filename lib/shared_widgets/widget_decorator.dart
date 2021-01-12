@@ -86,6 +86,9 @@ class WidgetDecorator extends StatelessWidget {
               widget: (context) => shared_widgets.List(
                   project: project,
                   properties: componentProperties.properties,
+                  onListItemClick: (value) {
+                    previewActions['Tap'].functionAction(context)();
+                  },
                   isBuild: true,
                   size: componentProperties.size,
                   theme: theme));
