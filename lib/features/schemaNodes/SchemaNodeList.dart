@@ -425,13 +425,35 @@ class SchemaNodeList extends SchemaNode {
         .firstWhere((element) => element.table == tableName);
     print("Client: $client");
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
-    (this.properties['Elements'].value as ListElements).allColumns =
-        newProp.value[newProp.value.keys.first].value.keys.toList();
-    (this.properties['Elements'].value as ListElements)
-        .listElements
-        .forEach((ListElementNode listElementNode) {
-      listElementNode.columnRelation = null;
-    });
+
+    final columnNames = newProp.value[newProp.value.keys.first].value.keys.toList().reversed.toList(); // приходят почему-то в обратном порядке
+
+    (this.properties['Elements'].value as ListElements).allColumns = columnNames;
+
+    final List<ListElementNode> listElementNodes = (this.properties['Elements'].value as ListElements).listElements;
+
+    bool shouldUpdateColumns = columnNames.isNotEmpty && listElementNodes.isNotEmpty;
+
+    if (shouldUpdateColumns) {
+      int key = 0;
+      if (columnNames.length - listElementNodes.length >= 0) {
+        listElementNodes.forEach((ListElementNode listElementNode) {
+          listElementNode.columnRelation = columnNames[key];
+
+          key += 1;
+        });
+      } else {
+        listElementNodes.forEach((ListElementNode listElementNode) {
+          listElementNode.columnRelation = key > columnNames.length - 1 ? columnNames[0] : columnNames[key];
+
+          key += 1;
+        });
+      }
+    } else {
+      listElementNodes.forEach((ListElementNode listElementNode) {
+        listElementNode.columnRelation = null;
+      });
+    }
 
     userActions.changePropertyTo(newProp);
     userActions.changePropertyTo(SchemaStringProperty('Table', tableName));
