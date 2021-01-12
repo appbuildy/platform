@@ -28,10 +28,9 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty(String name, ListElements value)
       : super(name, value);
 
-  SchemaListElementsProperty.fromJson(
-    Map<String, dynamic> jsonVal,
-    SchemaNodeSpawner schemaNodeSpawner,
-  ) : super('Elements', null) {
+  SchemaListElementsProperty.fromJson(Map<String, dynamic> jsonVal,
+      [SchemaNodeSpawner schemaNodeSpawner])
+      : super('Elements', null) {
     this.name = jsonVal['name'];
 
     this.value = ListElements(
@@ -396,7 +395,7 @@ class ListElements {
   }
 
   ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement,
-      SchemaNodeSpawner schemaNodeSpawner) {
+      [SchemaNodeSpawner schemaNodeSpawner]) {
     final SchemaNode deserializedNode = ComponentLoadedFromJson(
             jsonComponent: jsonListElement['node'],
             schemaNodeSpawner:
