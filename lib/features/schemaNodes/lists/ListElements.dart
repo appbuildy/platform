@@ -125,7 +125,6 @@ class ListElements {
   }) {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
-    print('new');
 
     double textNodeHeight = 22;
     double imageSize = 36.0;
@@ -253,7 +252,6 @@ class ListElements {
       Offset listItemSize,
       ListTemplateStyle listTemplateStyle}) {
     this.allColumns = allColumns ?? [];
-
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
@@ -425,6 +423,7 @@ class ListElements {
 
     this.listElements.forEach((element) {
       element.onListElementsUpdate = onListElementsUpdate;
+      element.changePropertyTo = this.changePropertyTo;
     });
 
     return Column(
@@ -497,7 +496,7 @@ class ListElementNode {
 
   final String name;
   final UniqueKey id;
-  final Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
+  Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
   final Widget iconPreview;
 
   Function onListElementsUpdate;
@@ -509,8 +508,8 @@ class ListElementNode {
     @required this.iconPreview,
     @required this.name,
     @required this.id,
-    @required this.changePropertyTo,
     @required this.onListElementsUpdate,
+    this.changePropertyTo = null,
     this.columnRelation = null,
   });
 
@@ -523,7 +522,6 @@ class ListElementNode {
       iconPreview: this.iconPreview,
       name: this.name,
       id: nodeCopy.id,
-      changePropertyTo: this.changePropertyTo,
       onListElementsUpdate: this.onListElementsUpdate,
       columnRelation: this.columnRelation,
     );
@@ -692,11 +690,9 @@ class ListElementNode {
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
-      print(theme);
       return (this.node as DataContainer).toWidgetWithReplacedData(
           theme: theme, data: data, isPlayMode: isPlayMode);
     }
-
     return GestureDetector(
         onTap: () {
           schemaNodeList.selectListElementNode(this);
