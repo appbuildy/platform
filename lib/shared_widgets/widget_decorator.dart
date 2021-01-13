@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/app_skeleton/application.dart';
 import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
 import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
 import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_record.dart';
 import 'package:flutter_app/features/entities/Project.dart';
+import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
 import 'package:flutter_app/shared_widgets/button.dart';
 import 'package:flutter_app/shared_widgets/form.dart' as shared_widgets;
@@ -14,12 +16,14 @@ import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class WidgetDecorator extends StatelessWidget {
-  const WidgetDecorator({Key key, this.onTap, this.widget, this.position})
+  const WidgetDecorator(
+      {Key key, this.onTap, this.widget, this.position, this.props})
       : super(key: key);
 
   final Widget Function(BuildContext) widget;
   final Offset position;
   final Function onTap;
+  final Map<String, SchemaNodeProperty> props;
 
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent,
       {Project project, IElementData elementData}) {
@@ -86,11 +90,15 @@ class WidgetDecorator extends StatelessWidget {
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
+              props: componentProperties.properties,
               widget: (context) => shared_widgets.List(
                   project: project,
                   properties: componentProperties.properties,
                   onListItemClick: (value) {
                     try {
+                      var screen = Application.allScreens[
+                          previewActions['Tap'].metadata['screenKey']];
+                      screen.widgets.forEach((widget) {});
                       var loadedProperty = elementData.getFor(DetailedInfoKey(
                           propertyClass: "SchemaStringProperty",
                           loadedPropertyName: componentProperties.propertyName,

@@ -13,7 +13,6 @@ class ScreenLoadFromJson implements IScreenLoad {
 
   @override
   Screen load([bottomNavigation, project, IElementData elementData]) {
-    print('LOAD');
     return Screen(
       bottomNavigation: bottomNavigation,
       bottomTabsVisible: jsonScreen['bottomTabsVisible'],

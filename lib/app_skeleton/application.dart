@@ -7,6 +7,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
 class Application extends StatefulWidget {
+  static Map<RandomKey, Screen> allScreens;
+  static Map<RandomKey, Screen> getScreens() => allScreens;
   final Map<RandomKey, Screen> screens;
 
   Application({Key key, this.screens}) : super(key: key);
@@ -20,6 +22,7 @@ class _ApplicationState extends State<Application> {
     var routes = widget.screens.map((key, screen) {
       return MapEntry(key.toString(), (context) => screen);
     });
+    Application.allScreens = widget.screens;
     final screenStore =
         ScreenStore(widget.screens.values.first, widget.screens);
     return MultiProvider(
