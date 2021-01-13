@@ -25,6 +25,10 @@ class ScreenLoadFromJson implements IScreenLoad {
   }
 
   _loadDetailedInfo() {
+    if (jsonScreen['detailedInfo'] == null ||
+        jsonScreen['detailedInfo']['rowData'] == null) {
+      return null;
+    }
     return DetailedInfo.fromJson(jsonScreen['detailedInfo']);
   }
 
