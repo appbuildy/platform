@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
 import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_record.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
@@ -12,12 +13,14 @@ import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 class WidgetDecorator extends StatelessWidget {
-  const WidgetDecorator({Key key, this.onTap, this.widget, this.position})
+  const WidgetDecorator(
+      {Key key, this.onTap, this.widget, this.position, this.elementData})
       : super(key: key);
 
   final Widget Function(BuildContext) widget;
   final Offset position;
   final Function onTap;
+  final IElementData elementData;
 
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent,
       [Project project]) {

@@ -1,7 +1,8 @@
+import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
-import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 
+import 'i_data_element_key.dart';
 import 'i_element_data.dart';
 
 class DataFromDetailedInfo implements IElementData {
@@ -9,17 +10,14 @@ class DataFromDetailedInfo implements IElementData {
   DataFromDetailedInfo(this.detailedInfo);
 
   @override
-  SchemaNodeProperty getFor(Map<String, dynamic> key) {
+  SchemaNodeProperty getFor(IDataElementKey key) {
     if (detailedInfo == null || key == null) return null;
+    var localKey = (key as DetailedInfoKey);
 
     return SchemaNodeProperty.deserializeFromJson({
-      "propertyClass": key['propertyClass'],
-      "name": _nameFor(key),
-      "value": detailedInfo.rowData[key['value']].data
+      "propertyClass": localKey.propertyClass,
+      "name": localKey.loadedPropertyName,
+      "value": detailedInfo.rowData[localKey.rowDataKey].data
     });
-  }
-
-  _nameFor(key) {
-    return key['loadedPropertyName'] ?? 'Text';
   }
 }
