@@ -5,11 +5,6 @@ import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  var column = {
-    "name": "Column",
-    "value": "house_description",
-    "propertyClass": "SchemaStringProperty"
-  };
   var house_description = 'RANDOM';
   var detailedInfoJson = {
     "rowData": {
