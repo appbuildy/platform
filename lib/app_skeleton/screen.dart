@@ -7,6 +7,7 @@ import 'package:flutter_app/app_skeleton/previewScreens/phonescreen_with_descrip
 import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
+import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
 class Screen extends StatelessWidget {
@@ -14,12 +15,15 @@ class Screen extends StatelessWidget {
   final RandomKey id;
   final BottomNavigation bottomNavigation;
   final bool bottomTabsVisible;
+  final DetailedInfo detailedInfo;
+
   Screen(
       {Key key,
       this.widgets,
       this.id,
       this.bottomNavigation,
-      this.bottomTabsVisible})
+        this.bottomTabsVisible,
+        this.detailedInfo})
       : super(key: key);
 
   factory Screen.fromJson(Map<String, dynamic> jsonScreen,
