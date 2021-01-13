@@ -9,12 +9,13 @@ import 'package:flutter_app/features/services/project_load/properties_loader.dar
 class ComponentProperties {
   Offset position;
   Offset size;
+  String propertyName;
   Map<String, SchemaNodeProperty> properties;
   Map<String, SchemaNodeProperty> actions;
   Map<String, skeleton_action.Action> previewActions;
   Map<String, dynamic> jsonComponent;
 
-  ComponentProperties(jsonComponent, { SchemaNodeSpawner schemaNodeSpawner}) {
+  ComponentProperties(jsonComponent, {SchemaNodeSpawner schemaNodeSpawner}) {
     this.jsonComponent = jsonComponent;
 
     _loadPosition();
@@ -22,6 +23,11 @@ class ComponentProperties {
     _loadProperies(schemaNodeSpawner);
     _loadActions();
     _loadPreviewActions();
+    _loadLoadedPropertyName();
+  }
+
+  void _loadLoadedPropertyName() {
+    propertyName = properties["LoadedPropertyName"]?.value;
   }
 
   void _loadPosition() {

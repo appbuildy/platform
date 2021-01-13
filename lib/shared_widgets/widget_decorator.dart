@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
+import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
 import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_record.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
@@ -20,10 +22,11 @@ class WidgetDecorator extends StatelessWidget {
   final Function onTap;
 
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent,
-      [Project project]) {
+      {Project project, IElementData elementData}) {
     var theme = MyThemes.allThemes['blue'];
     //todo: add schemaNodeSpawner to args
     var componentProperties = ComponentProperties(jsonComponent);
+
     var previewActions = componentProperties.previewActions;
 
     switch (jsonComponent['type']) {
@@ -87,6 +90,20 @@ class WidgetDecorator extends StatelessWidget {
                   project: project,
                   properties: componentProperties.properties,
                   onListItemClick: (value) {
+                    try {
+                      var loadedProperty = elementData.getFor(DetailedInfoKey(
+                          propertyClass: "SchemaStringProperty",
+                          loadedPropertyName: componentProperties.propertyName,
+                          rowDataKey:
+                              componentProperties.properties['Column']?.value));
+
+                      if (loadedProperty != null) {
+                        componentProperties.properties[loadedProperty.name] =
+                            loadedProperty;
+                      }
+                    } catch (e) {
+                      print(e);
+                    }
                     previewActions['Tap'].functionAction(context)();
                   },
                   isBuild: true,

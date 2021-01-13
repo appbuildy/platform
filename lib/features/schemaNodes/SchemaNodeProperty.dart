@@ -72,8 +72,8 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
     }
   }
 
-  static SchemaNodeProperty deserializeFromJson(
-      Map<String, dynamic> targetJson, SchemaNodeSpawner schemaNodeSpawner) {
+  static SchemaNodeProperty deserializeFromJson(Map<String, dynamic> targetJson,
+      [SchemaNodeSpawner schemaNodeSpawner]) {
     try {
       switch (targetJson['propertyClass']) {
         case 'SchemaFontWeightProperty':

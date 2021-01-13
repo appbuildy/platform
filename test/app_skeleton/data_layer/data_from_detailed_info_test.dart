@@ -1,13 +1,9 @@
 import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
+import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  var column = {
-    "name": "Column",
-    "value": "house_description",
-    "propertyClass": "SchemaStringProperty"
-  };
   var house_description = 'RANDOM';
   var detailedInfoJson = {
     "rowData": {
@@ -27,8 +23,12 @@ void main() {
   };
   var detailedInfo = DetailedInfo.fromJson(detailedInfoJson);
   var dataSource = DataFromDetailedInfo(detailedInfo);
+  var key = DetailedInfoKey(
+      loadedPropertyName: 'Text',
+      propertyClass: 'SchemaStringProperty',
+      rowDataKey: 'house_description');
 
   test('getFor() gets data from detailed info', () {
-    expect(dataSource.getFor(column).value, equals(house_description));
+    expect(dataSource.getFor(key).value, equals(house_description));
   });
 }
