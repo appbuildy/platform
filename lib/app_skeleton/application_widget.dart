@@ -31,6 +31,7 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
 
         onStart();
       } catch (e) {
+        print(e);
         preview = widget.preview;
         onStart();
       }
@@ -53,7 +54,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
 
       _overlayEntry.remove();
       animationStopwatch.stop();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -71,7 +74,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
         application = applicationLoad;
       });
       endLoadingAnimation();
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
