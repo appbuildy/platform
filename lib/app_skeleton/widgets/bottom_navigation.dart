@@ -35,7 +35,7 @@ class BottomNavigation extends StatelessWidget {
       child: isVisible
           ? Container(
               decoration: BoxDecoration(
-                color: theme.background.color,
+                  color: theme.background.color,
                   border: Border(
                       top:
                           BorderSide(width: 1, color: theme.separators.color))),
@@ -47,6 +47,10 @@ class BottomNavigation extends StatelessWidget {
                     theme: theme,
                     onTap: (tab) {
                       store.setCurrentScreen(store.screens[tab.target]);
+                      Navigator.pushReplacementNamed(
+                        context,
+                        '/',
+                      );
                     },
                   ),
                 ),

@@ -20,19 +20,17 @@ class Screens {
 
   Screens(
     this.all,
-    this._current,
-  {
+    this._current, {
     double screenWidth = 375.0,
     double screenHeight = 812.0,
     this.screenTabsHeight = 84,
-  }
-  ) : this._screenWidth = screenWidth,
+  })  : this._screenWidth = screenWidth,
         this._screenHeight = screenHeight;
 
   Offset get currentScreenWorkspaceSize => Offset(
-    this._screenWidth,
-    this._screenHeight - this.screenTabsHeight,
-  );
+        this._screenWidth,
+        this._screenHeight - this.screenTabsHeight,
+      );
 
   BaseAction create({
     bool moveToLastAfterCreated = false,
@@ -60,6 +58,7 @@ class Screens {
       name: name,
       detailedInfo: detailedInfo,
       backgroundColor: _current.currentScreen.backgroundColor,
+      bottomTabsVisible: false,
     );
     action.execute();
 

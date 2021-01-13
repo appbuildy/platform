@@ -11,9 +11,11 @@ class ScreenLoadFromJson implements IScreenLoad {
   @override
   Screen load([bottomNavigation, project]) {
     return Screen(
-        bottomNavigation: bottomNavigation,
-        id: _id(),
-        widgets: _loadWidgets(project));
+      bottomNavigation: bottomNavigation,
+      bottomTabsVisible: jsonScreen['bottomTabsVisible'],
+      id: _id(),
+      widgets: _loadWidgets(project),
+    );
   }
 
   RandomKey _id() {
