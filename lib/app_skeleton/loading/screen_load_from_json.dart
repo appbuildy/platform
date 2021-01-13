@@ -16,7 +16,7 @@ class ScreenLoadFromJson implements IScreenLoad {
       bottomTabsVisible: jsonScreen['bottomTabsVisible'],
       id: _id(),
       detailedInfo: _loadDetailedInfo(),
-        widgets: _loadWidgets(project),
+      widgets: _loadWidgets(project),
     );
   }
 

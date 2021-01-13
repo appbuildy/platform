@@ -22,8 +22,8 @@ class Screen extends StatelessWidget {
       this.widgets,
       this.id,
       this.bottomNavigation,
-        this.bottomTabsVisible,
-        this.detailedInfo})
+      this.bottomTabsVisible,
+      this.detailedInfo})
       : super(key: key);
 
   factory Screen.fromJson(Map<String, dynamic> jsonScreen,
