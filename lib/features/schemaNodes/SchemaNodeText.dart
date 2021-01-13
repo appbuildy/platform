@@ -46,6 +46,8 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),
+          'LoadedPropertyName': SchemaStringProperty('LoadedPropertyName',
+              'Text'), // needed to match Text to airtable data on skeleton
           'FontColor': SchemaMyThemePropProperty('FontColor',
               color ?? parent.userActions.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', fontSize ?? 16),

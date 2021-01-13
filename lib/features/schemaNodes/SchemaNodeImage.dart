@@ -43,6 +43,8 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
     this.properties = properties ??
         {
           'Url': SchemaStringProperty('Url', url ?? defaultPicture),
+          'LoadedPropertyName': SchemaStringProperty('LoadedPropertyName',
+              'DataValue'), // needed to match Text to airtable data on skeleton
           'Column': SchemaStringProperty('Column', column ?? null),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Fit': SchemaStringProperty('Fit', 'Cover'),
