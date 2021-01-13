@@ -1,6 +1,5 @@
 import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
 import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
-import 'package:flutter_app/app_skeleton/data_layer/i_data_element_key.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_test/flutter_test.dart';
 
