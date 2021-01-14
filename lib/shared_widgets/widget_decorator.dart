@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app_skeleton/actions/detailed_screen_navigaton.dart';
 import 'package:flutter_app/app_skeleton/application.dart';
 import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
 import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
@@ -104,21 +105,11 @@ class WidgetDecorator extends StatelessWidget {
                   onListItemClick: (value) {
                     Screen screen = Application.allScreens[
                         previewActions['Tap'].metadata['screenKey']];
-                    IElementData elementDataForScreen = DataFromDetailedInfo(
-                        DetailedInfo(
-                            screenId: RandomKey(),
-                            tableName: 'name',
-                            rowData: value));
-
-                    Screen tempScreen =
-                        ScreenLoadFromJson(screen.serializedJson).load(
-                            screen.bottomNavigation,
-                            project,
-                            elementDataForScreen);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => tempScreen),
-                    );
+                    DetailedScreenNavigation(
+                            targetScreen: screen,
+                            valuesForScreen: value,
+                            project: project)
+                        .navigate(context);
                   },
                   isBuild: true,
                   size: componentProperties.size,
