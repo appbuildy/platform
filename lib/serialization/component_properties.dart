@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
+import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
+import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
 import 'package:flutter_app/app_skeleton/loading/action_load_from_json.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/app_skeleton/entities/action.dart'
@@ -14,20 +17,38 @@ class ComponentProperties {
   Map<String, SchemaNodeProperty> actions;
   Map<String, skeleton_action.Action> previewActions;
   Map<String, dynamic> jsonComponent;
+  IElementData elementData;
 
-  ComponentProperties(jsonComponent, {SchemaNodeSpawner schemaNodeSpawner}) {
+  ComponentProperties(jsonComponent,
+      {IElementData elementData, SchemaNodeSpawner schemaNodeSpawner}) {
     this.jsonComponent = jsonComponent;
+    this.elementData = elementData;
 
     _loadPosition();
     _loadSize();
     _loadProperies(schemaNodeSpawner);
     _loadActions();
     _loadPreviewActions();
-    _loadLoadedPropertyName();
+    _loadPropertyFromDataSource();
   }
 
-  void _loadLoadedPropertyName() {
+  void _loadPropertyFromDataSource() {
     propertyName = properties["LoadedPropertyName"]?.value;
+    if (propertyName == null) {
+      return;
+    }
+
+    var prop = elementData?.getFor(DetailedInfoKey(
+        propertyClass: 'SchemaStringProperty',
+        loadedPropertyName: propertyName,
+        rowDataKey: properties['Column']?.value));
+
+    if (prop != null) {
+      var info = elementData as DataFromDetailedInfo;
+      info.detailedInfo.rowData.values.forEach((rd) => print(rd.toJson()));
+      print("PROP: $propertyName ${prop.value}");
+      properties[prop.name] = prop;
+    }
   }
 
   void _loadPosition() {

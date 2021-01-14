@@ -132,6 +132,5 @@ void main() {
     var loader = ScreenLoadFromJson(jsonScreen);
     var screen = loader.load();
     expect(screen.widgets.first, isA<WidgetDecorator>());
-    expect(screen.detailedInfo, isA<DetailedInfo>());
   });
 }

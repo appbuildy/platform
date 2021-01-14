@@ -38,6 +38,9 @@ class DetailedInfo {
       {@required String tableName,
       @required RandomKey screenId,
       @required Map<String, ListItem> rowData}) {
+    rowData.values.forEach((val) {
+      print(val.toJson());
+    });
     this.tableName = tableName;
     this.screenId = screenId;
     this.rowData = rowData;

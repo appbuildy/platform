@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/application.dart';
+import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
 import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
 import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
 import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_record.dart';
+import 'package:flutter_app/app_skeleton/loading/screen_load_from_json.dart';
+import 'package:flutter_app/app_skeleton/screen.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/serialization/component_properties.dart';
@@ -13,7 +17,9 @@ import 'package:flutter_app/shared_widgets/image.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/list.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/shape.dart';
 import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
+import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
+import 'package:flutter_app/utils/RandomKey.dart';
 
 class WidgetDecorator extends StatelessWidget {
   const WidgetDecorator(
@@ -29,7 +35,8 @@ class WidgetDecorator extends StatelessWidget {
       {Project project, IElementData elementData}) {
     var theme = MyThemes.allThemes['blue'];
     //todo: add schemaNodeSpawner to args
-    var componentProperties = ComponentProperties(jsonComponent);
+    var componentProperties =
+        ComponentProperties(jsonComponent, elementData: elementData);
 
     var previewActions = componentProperties.previewActions;
 
@@ -95,24 +102,23 @@ class WidgetDecorator extends StatelessWidget {
                   project: project,
                   properties: componentProperties.properties,
                   onListItemClick: (value) {
-                    try {
-                      var screen = Application.allScreens[
-                          previewActions['Tap'].metadata['screenKey']];
-                      screen.widgets.forEach((widget) {});
-                      var loadedProperty = elementData.getFor(DetailedInfoKey(
-                          propertyClass: "SchemaStringProperty",
-                          loadedPropertyName: componentProperties.propertyName,
-                          rowDataKey:
-                              componentProperties.properties['Column']?.value));
+                    Screen screen = Application.allScreens[
+                        previewActions['Tap'].metadata['screenKey']];
+                    IElementData elementDataForScreen = DataFromDetailedInfo(
+                        DetailedInfo(
+                            screenId: RandomKey(),
+                            tableName: 'name',
+                            rowData: value));
 
-                      if (loadedProperty != null) {
-                        componentProperties.properties[loadedProperty.name] =
-                            loadedProperty;
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
-                    previewActions['Tap'].functionAction(context)();
+                    Screen tempScreen =
+                        ScreenLoadFromJson(screen.serializedJson).load(
+                            screen.bottomNavigation,
+                            project,
+                            elementDataForScreen);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => tempScreen),
+                    );
                   },
                   isBuild: true,
                   size: componentProperties.size,

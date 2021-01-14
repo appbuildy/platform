@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/loading/screen_load_from_json.dart';
+import 'package:flutter_app/app_skeleton/loading/widgets_loader_for_screen.dart';
 import 'package:flutter_app/app_skeleton/previewScreens/fullscreen_app.dart';
 import 'package:flutter_app/app_skeleton/previewScreens/phonescreen_app.dart';
 import 'package:flutter_app/app_skeleton/previewScreens/phonescreen_with_description_app.dart';
@@ -15,19 +16,23 @@ class Screen extends StatelessWidget {
   final RandomKey id;
   final BottomNavigation bottomNavigation;
   final bool bottomTabsVisible;
+  final Map<String, dynamic> serializedJson;
 
-  Screen({
-    Key key,
-    this.widgets,
-    this.id,
-    this.bottomNavigation,
-    this.bottomTabsVisible,
-  }) : super(key: key);
+  Screen(
+      {Key key,
+      this.widgets,
+      this.id,
+      this.bottomNavigation,
+      this.bottomTabsVisible,
+      this.serializedJson})
+      : super(key: key);
 
   factory Screen.fromJson(Map<String, dynamic> jsonScreen,
       {BottomNavigation bottomNavigation, Project project}) {
     return ScreenLoadFromJson(jsonScreen).load(bottomNavigation, project);
   }
+
+  Screen reload(project, elementData) {}
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
 import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
+import 'package:flutter_app/app_skeleton/loading/widgets_loader_for_screen.dart';
 import 'package:flutter_app/app_skeleton/screen.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
@@ -14,10 +15,11 @@ class ScreenLoadFromJson implements IScreenLoad {
   @override
   Screen load([bottomNavigation, project, IElementData elementData]) {
     return Screen(
+      serializedJson: jsonScreen,
       bottomNavigation: bottomNavigation,
       bottomTabsVisible: jsonScreen['bottomTabsVisible'],
       id: _id(),
-      widgets: _loadWidgets(project, DataFromDetailedInfo(_loadDetailedInfo())),
+      widgets: _loadWidgets(project, elementData),
     );
   }
 
@@ -26,22 +28,13 @@ class ScreenLoadFromJson implements IScreenLoad {
   }
 
   _loadDetailedInfo() {
-    if (jsonScreen['detailedInfo'] == null ||
-        jsonScreen['detailedInfo']['rowData'] == null) {
+    if (jsonScreen['detailedInfo'] == null) {
       return null;
     }
     return DetailedInfo.fromJson(jsonScreen['detailedInfo']);
   }
 
   List<WidgetDecorator> _loadWidgets(project, elementData) {
-    var widgets = jsonScreen['components']
-        .map((component) {
-          return WidgetDecorator.fromJson(component,
-              project: project, elementData: elementData);
-        })
-        .toList()
-        .cast<WidgetDecorator>();
-
-    return widgets;
+    return WidgetsLoaderForScreen(jsonScreen).load(project, elementData);
   }
 }
