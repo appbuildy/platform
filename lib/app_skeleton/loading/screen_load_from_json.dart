@@ -27,13 +27,6 @@ class ScreenLoadFromJson implements IScreenLoad {
     return RandomKey.fromJson(jsonScreen['id']);
   }
 
-  _loadDetailedInfo() {
-    if (jsonScreen['detailedInfo'] == null) {
-      return null;
-    }
-    return DetailedInfo.fromJson(jsonScreen['detailedInfo']);
-  }
-
   List<WidgetDecorator> _loadWidgets(project, elementData) {
     return WidgetsLoaderForScreen(jsonScreen).load(project, elementData);
   }
