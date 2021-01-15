@@ -29,7 +29,8 @@ class Client implements IRemoteTable {
       this.base,
       this.httpClient});
 
-  String get requestUrl => '${this.apiUrl}${this.base}/${this.table}';
+  String get requestUrl =>
+      '${this.apiUrl}${this.base}/${this.table}?view=Grid%20view';
 
   @override
   Future<Map<String, dynamic>> create(Map<String, dynamic> records) async {

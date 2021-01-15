@@ -47,16 +47,27 @@ class _ListState extends State<List> {
 
   @override
   void initState() {
+    super.initState();
     newProperties = widget.properties;
 
     if (widget.isBuild && widget.properties['Table'].value != null) {
-      super.initState();
       SchemaStringListProperty.fromRemoteTable(remoteTable).then((value) {
         setState(() {
           newProperties['Items'] = value;
         });
       });
     }
+  }
+
+  @override
+  void didUpdateWidget(covariant List oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    final prevItems = newProperties['Items'];
+    setState(() {
+      newProperties = widget.properties;
+      newProperties['Items'] = prevItems;
+    });
   }
 
   @override
