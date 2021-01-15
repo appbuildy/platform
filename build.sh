@@ -8,6 +8,7 @@ cp build/web/main.dart.js ~/projects/nocode/master_of_puppets/public/projects/.
 
 cp -r assets/icons/ ~/projects/nocode/master_of_puppets/public/projects/.
 cp -r assets/icons/ ~/projects/nocode/master_of_puppets/public/app_build/.
+cp -r assets/icons/layout/ ~/projects/nocode/master_of_puppets/public/app_build/icons/layout/.
 
 cd ~/projects/nocode/master_of_puppets
 sed -i '' 's/assets\//https:\/\/www.appbuildy.com\/app_build\//g' ~/projects/nocode/master_of_puppets/public/app_build/main.dart.js
