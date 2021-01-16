@@ -1,6 +1,11 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/previewScreens/phonescreen_app.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+
+var url = window.location.href;
 
 class PhoneScreenWithDescription extends StatelessWidget {
   final Size targetScreenSize;
@@ -22,6 +27,12 @@ class PhoneScreenWithDescription extends StatelessWidget {
     return Stack(
       children: [
         Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    'https://www.appbuildy.com/images/hero_bg.svg',
+                  ))),
           width: double.infinity,
           child: Center(
             child: Container(
@@ -35,22 +46,41 @@ class PhoneScreenWithDescription extends StatelessWidget {
                     nav: nav,
                     widgets: widgets,
                   ),
-                  SizedBox(width: 10),
-                  Flexible(child: Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut felis odio. Aliquam vulputate pellentesque tellus sollicitudin laoreet. Nunc libero metus, aliquam ut neque sed, tincidunt aliquet urna. Phasellus in arcu in nisi semper rhoncus. Aliquam quis feugiat velit, ac suscipit felis. Vestibulum fringilla arcu vitae ante hendrerit efficitur. Phasellus viverra at urna quis commodo. Suspendisse quam libero, lobortis sit amet dapibus eu, lacinia at lorem.')),
+                  SizedBox(width: 40),
+                  Flexible(
+                      child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: QrImage(
+                              data: window.location.href,
+                              version: QrVersions.auto,
+                              padding: EdgeInsets.zero,
+                              size: 130,
+                              gapless: true,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                              'Point your camera\nto the QR code\nto install the app')
+                        ],
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  )),
                 ],
               ),
             ),
           ),
         ),
         Positioned(
-          top: 15,
-          right: 15,
-          child: Text('THIS IS QR CODE'),
-        ),
-        Positioned(
           bottom: 15,
           right: 15,
-          child: Text('mAkE yOuR ApP'),
+          child: Image.network('https://www.appbuildy.com/images/logotype.svg'),
         ),
       ],
     );

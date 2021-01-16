@@ -29,38 +29,33 @@ class BottomNavigation extends StatelessWidget {
     var isVisible = true;
     final store = Provider.of<ScreenStore>(context);
 
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      child: isVisible
-          ? Container(
-              decoration: BoxDecoration(
-                  color: theme.background.color,
-                  border: Border(
-                      top:
-                          BorderSide(width: 1, color: theme.separators.color))),
-              child: Container(
-                child: Observer(
-                  builder: (_) => AppTabs(
-                    selectedScreenId: store.selectedScreenId,
-                    tabs: tabs,
-                    theme: theme,
-                    onTap: (tab) {
-                      store.setCurrentScreen(store.screens[tab.target]);
-                      Navigator.pushReplacementNamed(
-                        context,
-                        '/',
-                      );
-                    },
-                  ),
+    return isVisible
+        ? Container(
+            decoration: BoxDecoration(
+                color: theme.background.color,
+                border: Border(
+                    top: BorderSide(width: 1, color: theme.separators.color))),
+            child: Container(
+              child: Observer(
+                builder: (_) => AppTabs(
+                  selectedScreenId: store.selectedScreenId,
+                  tabs: tabs,
+                  theme: theme,
+                  onTap: (tab) {
+                    store.setCurrentScreen(store.screens[tab.target]);
+                    Navigator.pushReplacementNamed(
+                      context,
+                      '/',
+                    );
+                  },
                 ),
-                width: 375,
-                height: 82,
-                decoration: BoxDecoration(
-                    color: Colors.transparent, borderRadius: BorderRadius.zero),
               ),
-            )
-          : Container(),
-    );
+              width: 375,
+              height: 82,
+              decoration: BoxDecoration(
+                  color: Colors.transparent, borderRadius: BorderRadius.zero),
+            ),
+          )
+        : Container();
   }
 }

@@ -75,7 +75,7 @@ class AppActions extends StatelessWidget {
                           Row(
                             children: [
                               Image.network(
-                                'assets/icons/meta/ios.svg',
+                                'assets/icons/meta/preview-ios.svg',
                                 fit: BoxFit.contain,
                                 width: 26,
                                 height: 26,
@@ -84,7 +84,7 @@ class AppActions extends StatelessWidget {
                                 width: 5,
                               ),
                               Image.network(
-                                'assets/icons/meta/android.svg',
+                                'assets/icons/meta/preview-android.svg',
                                 fit: BoxFit.contain,
                                 width: 26,
                                 height: 26,
