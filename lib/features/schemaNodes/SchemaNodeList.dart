@@ -433,10 +433,8 @@ class SchemaNodeList extends SchemaNode {
     print("Client: $client");
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
 
-    final columnNames = newProp.value[newProp.value.keys.first].value.keys
-        .toList()
-        .reversed
-        .toList(); // приходят почему-то в обратном порядке
+    final columnNames =
+        newProp.value[newProp.value.keys.first].value.keys.toList();
 
     (this.properties['Elements'].value as ListElements).allColumns =
         columnNames;
