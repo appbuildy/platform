@@ -30,7 +30,16 @@ class _MyTextFieldState extends State<MyTextField> {
   void initState() {
     super.initState();
     _textEditingController =
-        TextEditingController(text: widget.defaultValue ?? '');
+        TextEditingController(text: widget.defaultValue ?? widget.value ?? '');
+  }
+
+  @override
+  void didUpdateWidget(covariant MyTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.value != null && widget.value != _textEditingController.text) {
+      _textEditingController.text = widget.value;
+    }
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
@@ -29,6 +30,9 @@ class EditProps extends StatelessWidget {
         final screens = userActions.screens.all.screens;
         final detailedInfo = userActions.currentScreen.detailedInfo;
         var columns = [];
+
+        print(
+            '${userActions.screens.current.components.length}'); // DO NOT DELETE THIS, NEEDS TO MAKE OBSERVER WORK (width, height)
 
         if (detailedInfo != null) {
           columns = detailedInfo.tableName != null
@@ -139,6 +143,50 @@ class EditProps extends StatelessWidget {
                           ],
                         )
                       : Container(),
+                  Column(
+                    children: [
+                      ColumnDivider(name: 'Size'),
+                      Row(
+                        children: [
+                          SizedBox(
+                            child: Text('Width'),
+                            width: 59,
+                          ),
+                          Expanded(
+                              child: MyTextField(
+                                  value: selectedNode.size.dx.toString(),
+                                  onChanged: (String value) {
+                                    selectedNode.size = Offset(
+                                        double.parse(value),
+                                        selectedNode.size.dy);
+                                    userActions
+                                        .repositionAndResize(selectedNode);
+                                  }))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            child: Text('Height'),
+                            width: 59,
+                          ),
+                          Expanded(
+                              child: MyTextField(
+                                  value: selectedNode.size.dy.toString(),
+                                  onChanged: (String value) {
+                                    selectedNode.size = Offset(
+                                        selectedNode.size.dx,
+                                        double.parse(value));
+                                    userActions
+                                        .repositionAndResize(selectedNode);
+                                  }))
+                        ],
+                      )
+                    ],
+                  ),
                   child,
                 ],
               ),
