@@ -76,6 +76,7 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
       endLoadingAnimation();
     } catch (e) {
       print(e);
+      endLoadingAnimation();
     }
   }
 
