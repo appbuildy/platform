@@ -43,9 +43,13 @@ class BottomNavigation extends StatelessWidget {
                   theme: theme,
                   onTap: (tab) {
                     store.setCurrentScreen(store.screens[tab.target]);
-                    Navigator.pushReplacementNamed(
+
+                    Navigator.push(
                       context,
-                      '/',
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => store.currentScreen,
+                        transitionDuration: Duration(seconds: 0),
+                      ),
                     );
                   },
                 ),
