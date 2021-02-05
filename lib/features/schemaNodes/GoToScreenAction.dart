@@ -16,6 +16,7 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
     this.type = SchemaActionType.goToScreen;
     this.name = name;
     this.value = value;
+    this.column = null;
   }
 
   @override
@@ -24,7 +25,8 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
       'propertyClass': 'GoToScreenAction',
       'action': this.name,
       'type': this.type.toString(),
-      'value': this.value == null ? null : this.value.toJson()
+      'value': this.value == null ? null : this.value.toJson(),
+      'column': this.column,
     };
   }
 
@@ -33,6 +35,7 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
     this.name = jsonVal['action'];
     this.type = SchemaActionType.goToScreen;
     this.value = RandomKey.fromJson(jsonVal['value']);
+    this.column = jsonVal['column'];
   }
 
   Function toFunction(UserActions userActions) {
@@ -76,6 +79,9 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
 
   @override
   SchemaActionType type;
+
+  @override
+  String column;
 
   @override
   Widget toEditProps(UserActions userActions) {

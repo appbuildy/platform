@@ -14,6 +14,7 @@ class ApiCallAction extends SchemaNodeProperty<String> implements Functionable {
     this.type = SchemaActionType.apiCall;
     this.name = name;
     this.value = value;
+    this.column = column;
   }
 
   @override
@@ -22,7 +23,8 @@ class ApiCallAction extends SchemaNodeProperty<String> implements Functionable {
       'propertyClass': 'GoToScreenAction',
       'action': this.name,
       'type': this.type.toString(),
-      'value': this.value == null ? null : this.value
+      'value': this.value == null ? null : this.value,
+      'column': this.column
     };
   }
 
@@ -40,10 +42,14 @@ class ApiCallAction extends SchemaNodeProperty<String> implements Functionable {
   @override
   SchemaActionType type;
 
+  @override
+  String column;
+
   ApiCallAction.fromJson(Map<String, dynamic> jsonVal) : super('Prop', null) {
     this.name = jsonVal['action'];
     this.type = SchemaActionType.apiCall;
     this.value = jsonVal['value'];
+    this.column = jsonVal['column'];
   }
 
   @override
@@ -64,7 +70,7 @@ class ApiCallAction extends SchemaNodeProperty<String> implements Functionable {
                 key: userActions.selectedNode().id,
                 placeholder:
                     'https://hooks.zapier.com/hooks/catch/8579222/oc5n0se/',
-                defaultValue: this.value,
+                value: this.value,
                 onChanged: (newText) {
                   this.value = newText;
                 },

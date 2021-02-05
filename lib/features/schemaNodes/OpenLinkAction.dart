@@ -1,6 +1,4 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'package:url_launcher/url_launcher.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
@@ -8,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'lists/ListItem.dart';
 
@@ -17,6 +16,7 @@ class OpenLinkAction extends SchemaNodeProperty<String>
     this.type = SchemaActionType.openLink;
     this.name = name;
     this.value = value;
+    this.column = null;
   }
 
   @override
@@ -25,7 +25,8 @@ class OpenLinkAction extends SchemaNodeProperty<String>
       'propertyClass': 'OpenLinkAction',
       'action': this.name,
       'type': this.type.toString(),
-      'value': this.value == null ? null : this.value
+      'value': this.value == null ? null : this.value,
+      'column': this.column,
     };
   }
 
@@ -48,10 +49,14 @@ class OpenLinkAction extends SchemaNodeProperty<String>
   @override
   SchemaActionType type;
 
+  @override
+  String column;
+
   OpenLinkAction.fromJson(Map<String, dynamic> jsonVal) : super('Prop', null) {
     this.name = jsonVal['action'];
     this.type = SchemaActionType.openLink;
     this.value = jsonVal['value'];
+    this.column = jsonVal['column'];
   }
 
   @override
@@ -71,7 +76,7 @@ class OpenLinkAction extends SchemaNodeProperty<String>
               child: MyTextField(
                 key: userActions.selectedNode().id,
                 placeholder: 'https://producthunt.com',
-                defaultValue: this.value,
+                value: this.value,
                 onChanged: (newText) {
                   this.value = newText;
                 },
