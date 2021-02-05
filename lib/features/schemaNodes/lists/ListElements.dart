@@ -252,9 +252,14 @@ class ListElements {
       ListTemplateStyle listTemplateStyle}) {
     this.allColumns = allColumns ?? [];
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
+
+    final elementsSize = listTemplateStyle == ListTemplateStyle.cards
+        ? (listItemSize.dx ~/ 2) - 5
+        : listItemSize.dx;
+
     final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx, 80),
+      size: Offset(elementsSize, 80),
       position: Offset(0, 0),
     );
 
@@ -269,7 +274,7 @@ class ListElements {
 
     final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx, 28),
+      size: Offset(elementsSize, 28),
       position: Offset(0, 90),
     );
 
@@ -284,7 +289,7 @@ class ListElements {
 
     final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx, 28),
+      size: Offset(elementsSize, 28),
       position: Offset(0, 120),
     );
 
