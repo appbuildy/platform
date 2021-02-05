@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/loading/screen_load_from_json.dart';
-import 'package:flutter_app/app_skeleton/loading/widgets_loader_for_screen.dart';
 import 'package:flutter_app/app_skeleton/previewScreens/fullscreen_app.dart';
-import 'package:flutter_app/app_skeleton/previewScreens/phonescreen_app.dart';
-import 'package:flutter_app/app_skeleton/previewScreens/phonescreen_with_description_app.dart';
 import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
-import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
 class Screen extends StatelessWidget {
@@ -48,42 +44,13 @@ class Screen extends StatelessWidget {
 
     Widget screen;
 
-    if (currentScreenSize.width > 0 && currentScreenSize.width < 600) {
-      screen = Fullscreen(
+    screen = Fullscreen(
         targetScreenSize: currentScreenSize,
         screenSizeInConstructor:
             Size(screenWidthInConstructor, screenHeightInConstructor),
         navHeight: navHeight,
         widgets: widgets,
-        nav: bottomNav,
-      );
-    }
-
-    if (currentScreenSize.width >= 600 && currentScreenSize.width < 800) {
-      screen = Center(
-        child: PhoneScreen(
-          targetScreenSize:
-              Size(currentScreenSize.width, currentScreenSize.height - 30),
-          screenSizeInConstructor:
-              Size(screenWidthInConstructor, screenHeightInConstructor),
-          navHeight: navHeight,
-          widgets: widgets,
-          nav: bottomNav,
-        ),
-      );
-    }
-
-    if (currentScreenSize.width >= 800) {
-      screen = PhoneScreenWithDescription(
-        targetScreenSize:
-            Size(currentScreenSize.width, currentScreenSize.height - 30),
-        screenSizeInConstructor:
-            Size(screenWidthInConstructor, screenHeightInConstructor),
-        navHeight: navHeight,
-        widgets: widgets,
-        nav: bottomNav,
-      );
-    }
+        nav: bottomNav);
 
     return Scaffold(
       body: screen,
