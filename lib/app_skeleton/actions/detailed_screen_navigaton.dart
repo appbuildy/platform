@@ -30,7 +30,9 @@ class DetailedScreenNavigation {
   }
 
   Screen _loadTempScreen() {
-    return ScreenLoadFromJson(targetScreen.serializedJson)
-        .load(targetScreen.bottomNavigation, project, elementDataForScreen);
+    return ScreenLoadFromJson(targetScreen.serializedJson).load(
+        bottomNavigation: targetScreen.bottomNavigation,
+        project: project,
+        elementData: elementDataForScreen);
   }
 }

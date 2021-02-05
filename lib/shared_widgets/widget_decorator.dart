@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app_skeleton/actions/detailed_screen_navigaton.dart';
 import 'package:flutter_app/app_skeleton/application.dart';
-import 'package:flutter_app/app_skeleton/data_layer/data_from_detailed_info.dart';
-import 'package:flutter_app/app_skeleton/data_layer/detailed_info_key.dart';
 import 'package:flutter_app/app_skeleton/data_layer/i_element_data.dart';
 import 'package:flutter_app/app_skeleton/data_provider/created_data_provider_record.dart';
-import 'package:flutter_app/app_skeleton/loading/screen_load_from_json.dart';
 import 'package:flutter_app/app_skeleton/screen.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -18,9 +15,7 @@ import 'package:flutter_app/shared_widgets/image.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/list.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/shape.dart';
 import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
-import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
-import 'package:flutter_app/utils/RandomKey.dart';
 
 class WidgetDecorator extends StatelessWidget {
   const WidgetDecorator(
@@ -33,8 +28,8 @@ class WidgetDecorator extends StatelessWidget {
   final Map<String, SchemaNodeProperty> props;
 
   factory WidgetDecorator.fromJson(Map<String, dynamic> jsonComponent,
-      {Project project, IElementData elementData}) {
-    var theme = MyThemes.allThemes['blue'];
+      {Project project, IElementData elementData, MyTheme theme}) {
+    var currentTheme = theme ?? MyThemes.allThemes['blue'];
     //todo: add schemaNodeSpawner to args
     var componentProperties =
         ComponentProperties(jsonComponent, elementData: elementData);
@@ -54,7 +49,7 @@ class WidgetDecorator extends StatelessWidget {
                   },
                   properties: componentProperties.properties,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
         break;
       case 'SchemaNodeType.text':
@@ -65,7 +60,7 @@ class WidgetDecorator extends StatelessWidget {
               widget: (context) => shared_widgets.Text(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
         break;
 
@@ -77,7 +72,7 @@ class WidgetDecorator extends StatelessWidget {
               widget: (context) => Shape(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
         break;
 
@@ -89,7 +84,7 @@ class WidgetDecorator extends StatelessWidget {
               widget: (context) => shared_widgets.Icon(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
         break;
 
@@ -113,7 +108,7 @@ class WidgetDecorator extends StatelessWidget {
                   },
                   isBuild: true,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
         break;
       case 'SchemaNodeType.image':
@@ -124,7 +119,7 @@ class WidgetDecorator extends StatelessWidget {
               widget: (context) => shared_widgets.Image(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
         break;
       case 'SchemaNodeType.form':
@@ -139,7 +134,7 @@ class WidgetDecorator extends StatelessWidget {
                   properties: componentProperties.properties,
                   onCreate: dataProvider.create,
                   size: componentProperties.size,
-                  theme: theme));
+                  theme: currentTheme));
         }
     }
     return WidgetDecorator(
@@ -148,7 +143,7 @@ class WidgetDecorator extends StatelessWidget {
         widget: (context) => shared_widgets.Image(
             properties: componentProperties.properties,
             size: componentProperties.size,
-            theme: theme));
+            theme: currentTheme));
   }
 
   _onTap(context) {

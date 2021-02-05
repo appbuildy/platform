@@ -5,6 +5,7 @@ import 'package:flutter_app/app_skeleton/previewScreens/fullscreen_app.dart';
 import 'package:flutter_app/app_skeleton/widgets/bottom_navigation.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/shared_widgets/widget_decorator.dart';
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
 class Screen extends StatelessWidget {
@@ -13,6 +14,7 @@ class Screen extends StatelessWidget {
   final BottomNavigation bottomNavigation;
   final bool bottomTabsVisible;
   final Map<String, dynamic> serializedJson;
+  final MyTheme theme;
 
   Screen(
       {Key key,
@@ -20,15 +22,17 @@ class Screen extends StatelessWidget {
       this.id,
       this.bottomNavigation,
       this.bottomTabsVisible,
+      this.theme,
       this.serializedJson})
       : super(key: key);
 
   factory Screen.fromJson(Map<String, dynamic> jsonScreen,
-      {BottomNavigation bottomNavigation, Project project}) {
-    return ScreenLoadFromJson(jsonScreen).load(bottomNavigation, project);
+      {BottomNavigation bottomNavigation,
+      Project project,
+      MyTheme theme = null}) {
+    return ScreenLoadFromJson(jsonScreen).load(
+        bottomNavigation: bottomNavigation, project: project, theme: theme);
   }
-
-  Screen reload(project, elementData) {}
 
   @override
   Widget build(BuildContext context) {

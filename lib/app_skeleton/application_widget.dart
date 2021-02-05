@@ -30,8 +30,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
         animationStopwatch = Stopwatch()..start();
 
         onStart();
-      } catch (e) {
+      } catch (e, stacktrace) {
         print(e);
+        print(stacktrace);
         preview = widget.preview;
         onStart();
       }
@@ -74,8 +75,9 @@ class _ApplicationWidgetState extends State<ApplicationWidget> {
         application = applicationLoad;
       });
       endLoadingAnimation();
-    } catch (e) {
+    } catch (e, trace) {
       print(e);
+      print(trace);
       endLoadingAnimation();
     }
   }
