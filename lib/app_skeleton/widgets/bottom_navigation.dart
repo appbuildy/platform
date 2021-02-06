@@ -9,10 +9,12 @@ import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
   final List<TabNavigation> tabs;
+  final MyTheme currentTheme;
 
-  const BottomNavigation(this.tabs);
+  const BottomNavigation(this.tabs, this.currentTheme);
 
-  factory BottomNavigation.fromJson(Map<String, dynamic> jsonNav) {
+  factory BottomNavigation.fromJson(Map<String, dynamic> jsonNav,
+      {MyTheme currentTheme}) {
     var tabs = jsonNav['tabs']
         .map((tab) {
           return TabNavigation.fromJson(tab);
@@ -20,12 +22,12 @@ class BottomNavigation extends StatelessWidget {
         .toList()
         .cast<TabNavigation>();
 
-    return BottomNavigation(tabs);
+    return BottomNavigation(tabs, currentTheme);
   }
 
   @override
   Widget build(BuildContext context) {
-    var theme = MyThemes.allThemes['blue'];
+    var theme = currentTheme ?? MyThemes.allThemes['blue'];
     var isVisible = true;
     final store = Provider.of<ScreenStore>(context);
 
