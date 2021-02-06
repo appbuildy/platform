@@ -31,6 +31,7 @@ class DetailedScreenNavigation {
 
   Screen _loadTempScreen() {
     return ScreenLoadFromJson(targetScreen.serializedJson).load(
+        theme: targetScreen.theme,
         bottomNavigation: targetScreen.bottomNavigation,
         project: project,
         elementData: elementDataForScreen);

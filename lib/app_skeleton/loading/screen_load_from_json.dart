@@ -29,13 +29,6 @@ class ScreenLoadFromJson implements IScreenLoad {
   }
 
   List<WidgetDecorator> _loadWidgets(project, elementData, theme) {
-    print('LOADED');
-    print('LOADED');
-    print('LOADED');
-    print('LOADED');
-    print(theme);
-    print('LOADED');
-    print('LOADED');
     return WidgetsLoaderForScreen(jsonScreen)
         .load(project: project, elementData: elementData, theme: theme);
   }
