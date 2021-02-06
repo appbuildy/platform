@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
@@ -44,6 +45,7 @@ class _ListState extends State<List> {
       .firstWhere((table) => table.table == widget.properties['Table'].value);
 
   Map<String, SchemaNodeProperty> newProperties;
+  bool isLoading;
 
   @override
   void initState() {
@@ -51,11 +53,15 @@ class _ListState extends State<List> {
     newProperties = widget.properties;
 
     if (widget.isBuild && widget.properties['Table'].value != null) {
+      isLoading = true;
       SchemaStringListProperty.fromRemoteTable(remoteTable).then((value) {
         setState(() {
           newProperties['Items'] = value;
+          isLoading = false;
         });
       });
+    } else {
+      isLoading = false;
     }
   }
 
@@ -75,16 +81,25 @@ class _ListState extends State<List> {
     return Container(
       width: widget.size.dx,
       height: widget.size.dy,
-      child: (widget.properties['Template'].value as ListTemplate).toWidget(
-        schemaNodeList: widget.schemaNodeList,
-        size: widget.size,
-        onListClick: widget.onListClick,
-        onListItemClick: widget.onListItemClick,
-        theme: widget.theme,
-        properties: newProperties,
-        isSelected: widget.isSelected,
-        isPlayMode: widget.isPlayMode || widget.isBuild,
-      ),
+      child: isLoading
+          ? Center(
+              child: SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation(widget.theme.primary.color),
+                  )))
+          : (widget.properties['Template'].value as ListTemplate).toWidget(
+              schemaNodeList: widget.schemaNodeList,
+              size: widget.size,
+              onListClick: widget.onListClick,
+              onListItemClick: widget.onListItemClick,
+              theme: widget.theme,
+              properties: newProperties,
+              isSelected: widget.isSelected,
+              isPlayMode: widget.isPlayMode || widget.isBuild,
+            ),
     );
   }
 }
