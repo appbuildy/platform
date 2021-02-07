@@ -415,6 +415,7 @@ class SchemaNodeList extends SchemaNode {
   @override
   Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.List(
+      key: Key(this.id.toString()),
       size: this.size,
       schemaNodeList: this,
       onListClick: this.onListClick,
