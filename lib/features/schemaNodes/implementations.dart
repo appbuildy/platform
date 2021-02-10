@@ -6,6 +6,5 @@ abstract class DataContainer {
   Widget toWidgetWithReplacedData(
       {bool isPlayMode, String data, MyTheme theme = null});
 
-  Widget toEditOnlyStyle(
-      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo);
+  //Widget toEditOnlyStyle(Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo);
 }

@@ -13,6 +13,7 @@ import 'package:flutter_app/shared_widgets/form.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/icon.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/image.dart' as shared_widgets;
 import 'package:flutter_app/shared_widgets/list.dart' as shared_widgets;
+import 'package:flutter_app/shared_widgets/map_view.dart';
 import 'package:flutter_app/shared_widgets/shape.dart';
 import 'package:flutter_app/shared_widgets/text.dart' as shared_widgets;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -70,6 +71,18 @@ class WidgetDecorator extends StatelessWidget {
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
               widget: (context) => Shape(
+                  properties: componentProperties.properties,
+                  size: componentProperties.size,
+                  theme: currentTheme));
+        }
+        break;
+
+      case 'SchemaNodeType.map':
+        {
+          return WidgetDecorator(
+              onTap: previewActions['Tap'].functionAction,
+              position: componentProperties.position,
+              widget: (context) => MapView(
                   properties: componentProperties.properties,
                   size: componentProperties.size,
                   theme: currentTheme));

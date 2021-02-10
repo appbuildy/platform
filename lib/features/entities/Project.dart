@@ -74,6 +74,7 @@ class Project {
     if (_projectDataNotSet) return false;
 
     final serialiedProject = converter.toJson();
+    print(jsonEncode(serialiedProject));
     if (this.apiKey != null && this.base != null) {
       serialiedProject['airtable_credentials'] = {
         'api_key': apiKey,

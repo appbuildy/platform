@@ -85,6 +85,8 @@ String getNodeIconPath(String nodeType) {
       return 'assets/icons/layout/shape.svg';
     case 'SchemaNodeType.image':
       return 'assets/icons/layout/image.svg';
+  case 'SchemaNodeType.map':
+    return 'assets/icons/layout/map.svg';
     default:
       return 'assets/icons/layout/button.svg';
   }
@@ -103,6 +105,8 @@ Function getSpawnFunction({SchemaNodeSpawner schemaNodeSpawner, nodeType}) {
       return spawner.spawnSchemaNodeShape;
     case 'SchemaNodeType.image':
       return spawner.spawnSchemaNodeImage;
+    case 'SchemaNodeType.map':
+      return spawner.spawnSchemaNodeMap;
     default:
       return spawner.spawnSchemaNodeButton;
   }

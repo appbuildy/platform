@@ -20,6 +20,16 @@ class ComponentLoadedFromJson implements IComponentLoader {
         schemaNodeSpawner: schemaNodeSpawner);
 
     switch (jsonComponent['type']) {
+      case 'SchemaNodeType.map':
+        {
+          return schemaNodeSpawner.spawnSchemaNodeMap(
+            position: componentProperties.position,
+            size: componentProperties.size,
+            properties: componentProperties.properties,
+            actions: componentProperties.actions,
+          );
+        }
+
       case 'SchemaNodeType.button':
         {
           return schemaNodeSpawner.spawnSchemaNodeButton(

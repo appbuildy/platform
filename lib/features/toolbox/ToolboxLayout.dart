@@ -78,10 +78,6 @@ class ToolboxLayout extends StatelessWidget {
                           SizedBox(
                             width: 10,
                           ),
-                          ToolboxComponent(
-                            schemaNode: userActions.schemaNodeSpawner
-                                .spawnSchemaNodeForm(),
-                          ),
                         ],
                       ),
                       ToolBoxCaption('Lists'),
@@ -152,6 +148,22 @@ class ToolboxLayout extends StatelessWidget {
                                           ListTemplateType.horizontal,
                                       listTemplateStyle:
                                           ListTemplateStyle.tiles),
+                            ),
+                          ]),
+                      ToolBoxCaption('Other'),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ToolboxComponent(
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeForm(),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ToolboxComponent(
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeMap(),
                             ),
                           ])
                     ],
