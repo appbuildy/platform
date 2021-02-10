@@ -125,9 +125,7 @@ class _WithInfoState extends State<WithInfo> {
                   left: widget.isOnLeft
                       ? offset.dx - 125
                       : offset.dx + size.width - 7,
-                  top: widget.isOnLeft
-                      ? offset.dy + size.width - 7
-                      : offset.dy - 15,
+                  top: offset.dy - 15,
                   width: 170,
                   child: GestureDetector(
                     onTap: () {
@@ -215,6 +213,7 @@ class _WithInfoState extends State<WithInfo> {
                                           ),
                                           title: 'Duplicate',
                                           isFirst: true,
+                                          isLast: widget.onDelete == null,
                                         ))
                                     : Container(),
                                 widget.onDelete != null

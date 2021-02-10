@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
@@ -17,7 +16,6 @@ import 'package:flutter_app/features/schemaInteractions/SelectNodeForPropsEdit.d
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/RemoteSchemaPropertiesBinding.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/services/projects/LoadedProject.dart';
 import 'package:flutter_app/store/schema/BottomNavigationStore.dart';
@@ -53,12 +51,11 @@ class UserActions {
   SchemaNodeSpawner schemaNodeSpawner;
   Debouncer<SchemaNode> debouncer;
 
-  UserActions({
-    Screens screens,
-    CurrentUserStore currentUserStore,
-    BottomNavigationStore bottomNavigationStore,
-    AppThemeStore themeStore
-  }) {
+  UserActions(
+      {Screens screens,
+      CurrentUserStore currentUserStore,
+      BottomNavigationStore bottomNavigationStore,
+      AppThemeStore themeStore}) {
     _actionsDone = new ActionsDone(actions: []);
     _actionsUndone = new ActionsUndone(actions: []);
     _currentNode = CurrentEditingNode();
@@ -116,10 +113,14 @@ class UserActions {
       _bottomNavigation = loadedProject.bottomNav;
       print(_bottomNavigation.toJson());
 
-      screens.all.screens.forEach((screen) {
-        _screens.all.createScreen(screen);
-        _screens.selectByName(screen.name);
-      });
+      if (screens.all.screens.length > 0) {
+        _screens.all.deleteScreen(_screens.current);
+        screens.all.screens.forEach((screen) {
+          _screens.all.createScreen(screen);
+          _screens.selectByName(screen.name);
+        });
+      }
+
       print(currentUserStore.project.airtableTables);
     } catch (e) {
       print('loadProject() error $e');
@@ -138,8 +139,6 @@ class UserActions {
         node: selectedNode(),
         newProp: prop);
 
-    print('332323');
-    print(prop.value);
     action.execute(prevValue);
     if (isAddedToDoneActions) {
       _actionsDone.add(action);
@@ -165,10 +164,10 @@ class UserActions {
   }
 
   SchemaConverter get converter => SchemaConverter(
-      bottomNavigationStore: _bottomNavigation,
-      screens: screens.all,
-      theme: _theme.currentTheme,
-  );
+        bottomNavigationStore: _bottomNavigation,
+        screens: screens.all,
+        theme: _theme.currentTheme,
+      );
 
   void saveProject() {
     _currentUserStore.project.save(converter, client: http.Client());
@@ -180,10 +179,8 @@ class UserActions {
     });
   }
 
-  void changePropertyTo(
-    ChangeableProperty prop,
-    [bool isAddedToDoneActions = true, prevValue]
-  ) {
+  void changePropertyTo(ChangeableProperty prop,
+      [bool isAddedToDoneActions = true, prevValue]) {
     final action = ChangeNodeProperty(
         selectNodeForEdit: this.selectNodeForEdit,
         schemaStore: currentScreen,
@@ -253,8 +250,8 @@ class UserActions {
 
   void repositionAndResize(SchemaNode updatedNode,
       {bool isAddedToDoneActions = true, SchemaNode prevValue}) {
-
-    if (selectedNode().id != updatedNode.id) this.selectNodeForEdit(updatedNode);
+    if (selectedNode().id != updatedNode.id)
+      this.selectNodeForEdit(updatedNode);
 
     final action = RepositionAndResize(
       schemaStore: currentScreen,
@@ -310,9 +307,11 @@ class UserActions {
     List<PositionAndSize> nodesPositionAndSize = [];
 
     this.currentScreen.components.forEach((SchemaNode node) {
-      if (this.selectedNode().id != null && node.id == this.selectedNode().id) return;
+      if (this.selectedNode().id != null && node.id == this.selectedNode().id)
+        return;
 
-      nodesPositionAndSize.add(PositionAndSize(id: node.id, position: node.position, size: node.size));
+      nodesPositionAndSize.add(PositionAndSize(
+          id: node.id, position: node.position, size: node.size));
     });
 
     if (screenPaddingPositionAndSize != null) {
@@ -325,12 +324,10 @@ class UserActions {
   void selectNodeForEdit(SchemaNode node, [reselectForUpdateToolbox = false]) {
     SelectNodeForPropsEdit(node, _currentNode).execute();
 
-
     // if (selectedNode() != null && selectedNode() is SchemaNodeList) {
     //   print((selectedNode() as SchemaNodeList).listTemplateType);
     //   print((selectedNode() as SchemaNodeList).selectedListElementNode);
     // }
-
 
     if (node != null) {
       if (!reselectForUpdateToolbox) {

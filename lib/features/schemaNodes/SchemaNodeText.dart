@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProperty.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/text.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -42,10 +42,12 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),
+          'LoadedPropertyName': SchemaStringProperty('LoadedPropertyName',
+              'Text'), // needed to match Text to airtable data on skeleton
           'FontColor': SchemaMyThemePropProperty('FontColor',
               color ?? parent.userActions.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', fontSize ?? 16),
@@ -87,22 +89,22 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({bool isPlayMode, MyTheme theme}) {
     return Shared.Text(
       properties: this.properties,
-      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
     );
   }
 
   Widget toWidgetWithReplacedData(
       {bool isPlayMode, String data, MyTheme theme = null}) {
-    print("DATA");
-    print("DATA");
-    print("DATA");
-    print(theme);
-    print("DATA");
-    print("DATA");
+    // print("DATA");
+    // print("DATA");
+    // print("DATA");
+    // print(theme);
+    // print("DATA");
+    // print("DATA");
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
@@ -122,7 +124,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     log(parentSpawner.userActions.remoteAttributeList().toString());
     return wrapInRootProps(Column(children: [
-      ColumnDivider(name: 'Edit Data'),
+      ColumnDivider(name: 'Edit Text'),
       EditPropsText(
         id: id,
         properties: properties,

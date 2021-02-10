@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
+import 'package:flutter_app/ui/MyColors.dart';
+import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
+import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
 
 import 'lists/ListItem.dart';
@@ -12,6 +16,7 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
     this.type = SchemaActionType.goToScreen;
     this.name = name;
     this.value = value;
+    this.column = null;
   }
 
   @override
@@ -20,8 +25,17 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
       'propertyClass': 'GoToScreenAction',
       'action': this.name,
       'type': this.type.toString(),
-      'value': this.value == null ? null : this.value.toJson()
+      'value': this.value == null ? null : this.value.toJson(),
+      'column': this.column,
     };
+  }
+
+  GoToScreenAction.fromJson(Map<String, dynamic> jsonVal)
+      : super('Prop', null) {
+    this.name = jsonVal['action'];
+    this.type = SchemaActionType.goToScreen;
+    this.value = RandomKey.fromJson(jsonVal['value']);
+    this.column = jsonVal['column'];
   }
 
   Function toFunction(UserActions userActions) {
@@ -43,7 +57,8 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
             Future.delayed(Duration(milliseconds: 0), () {
               userActions.selectNodeForEdit(
                   component); // TODO refac из-за того что в changePropertyTo нельзя прокинуть редактируемую ноду, надо выбирать текущий скрин
-              (component as dynamic).updateOnColumnDataChange(rowData[component.properties['Column'].value].data);
+              (component as dynamic).updateOnColumnDataChange(
+                  rowData[component.properties['Column'].value].data);
             });
           }
         });
@@ -65,10 +80,38 @@ class GoToScreenAction extends SchemaNodeProperty<RandomKey>
   @override
   SchemaActionType type;
 
-  GoToScreenAction.fromJson(Map<String, dynamic> jsonVal)
-      : super('Prop', null) {
-    this.name = jsonVal['action'];
-    this.type = SchemaActionType.goToScreen;
-    this.value = RandomKey.fromJson(jsonVal['value']);
+  @override
+  String column;
+
+  @override
+  Widget toEditProps(UserActions userActions) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Navigate to',
+              style: MyTextStyle.regularCaption,
+            ),
+            Container(
+              width: 170,
+              child: MyClickSelect(
+                  placeholder: 'Select Page',
+                  selectedValue:
+                      userActions.selectedNode().actions['Tap'].value ?? null,
+                  onChange: (screen) {
+                    print(screen.value.toString());
+                    userActions
+                        .changeActionTo(GoToScreenAction('Tap', screen.value));
+                  },
+                  options: userActions.screens.all.screens
+                      .map((element) => SelectOption(element.name, element.id))
+                      .toList()),
+            )
+          ],
+        )
+      ],
+    );
   }
 }

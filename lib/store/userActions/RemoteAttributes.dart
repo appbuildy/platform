@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/AirtableColumn.dart';
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';

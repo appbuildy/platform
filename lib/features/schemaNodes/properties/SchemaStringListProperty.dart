@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_app/features/airtable/IRemoteTable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListItem.dart';
@@ -22,22 +20,14 @@ class SchemaStringListProperty
         'Items', Map<String, SchemaListItemsProperty>());
 
     records['records'].forEach((record) {
-
       final mapProps = Map<String, ListItem>();
       record['fields'].forEach((key, value) {
         mapProps[key] = ListItem(column: key, data: record['fields'][key]);
       });
-      schemaStringListProperty.value[record['id']] = SchemaListItemsProperty(record['id'], mapProps);
-      //result.value[record['id']] = prop;
+      schemaStringListProperty.value[record['id']] =
+          SchemaListItemsProperty(record['id'], mapProps);
     });
 
-
-
-    // for (var value in result.value.keys) {
-    //
-    //   print(result.value[value].value);
-    //   print(value);
-    // }
     return schemaStringListProperty;
   }
 

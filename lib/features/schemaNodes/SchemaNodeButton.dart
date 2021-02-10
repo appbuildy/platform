@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_app/features/schemaNodes/common/EditPropsFontStyle.dart'
 import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsText.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaCrossAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
@@ -17,7 +19,6 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.da
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/button.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
@@ -43,7 +44,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(335.0, 50.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Button'),
@@ -56,12 +57,12 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
               'MainAlignment', MainAxisAlignment.center),
           'CrossAlignment': SchemaCrossAlignmentProperty(
               'CrossAlignment', CrossAxisAlignment.center),
+          'BackgroundColor': SchemaMyThemePropProperty('BackgroundColor',
+              parent.userActions.themeStore.currentTheme.primary),
           'Border': SchemaBoolProperty('Border', false),
           'BorderColor': SchemaMyThemePropProperty('BorderColor',
               parent.userActions.themeStore.currentTheme.primary),
           'BorderWidth': SchemaIntProperty('BorderWidth', 1),
-          'BackgroundColor': SchemaMyThemePropProperty('BackgroundColor',
-              parent.userActions.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 9),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty('BoxShadowColor',
@@ -98,11 +99,19 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Button(
       properties: this.properties,
-      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      onTap: () {
+        if (isPlayMode) {
+          // opacityButton blocks top gesture detectors
+          (actions['Tap'] as Functionable)
+              .toFunction(this.parentSpawner.userActions)();
+        }
+      },
+      theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
+      isOpacityEnabled: isPlayMode,
     );
   }
 
@@ -123,7 +132,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(Column(
       children: [
-        ColumnDivider(name: 'Edit Data'),
+        ColumnDivider(name: 'Edit Title'),
         EditPropsText(
           id: id,
           properties: properties,

@@ -8,6 +8,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/implementations.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/services/project_load/ComponentLoadedFromJson.dart';
@@ -19,15 +20,17 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MyClickSelect.dart';
 import 'package:flutter_app/ui/MySelects/SelectOption.dart';
 import 'package:flutter_app/ui/PageSliderAnimator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'ListTemplates/ListTemplate.dart';
 
 class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty(String name, ListElements value)
       : super(name, value);
 
-  SchemaListElementsProperty.fromJson(
-    Map<String, dynamic> jsonVal,
-    SchemaNodeSpawner schemaNodeSpawner,
-  ) : super('Elements', null) {
+  SchemaListElementsProperty.fromJson(Map<String, dynamic> jsonVal,
+      [SchemaNodeSpawner schemaNodeSpawner])
+      : super('Elements', null) {
     this.name = jsonVal['name'];
 
     this.value = ListElements(
@@ -62,7 +65,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
 
   @override
   SchemaListElementsProperty copy() {
-    return SchemaListElementsProperty(this.name, value);
+    return SchemaListElementsProperty(this.name, value.copy());
   }
 }
 
@@ -117,23 +120,45 @@ class ListElements {
       : this.allColumns = allColumns ?? [],
         this.listElements = listElements ?? [];
 
-  ListElements.withSimpleListTemplate(
-      {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
+  ListElements.withSimpleListTemplate({
+    allColumns,
+    SchemaNodeSpawner schemaNodeSpawner,
+    Offset listItemSize,
+    ListTemplateStyle listTemplateStyle,
+  }) {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
 
-    final double imageNodeXYOffset = 22;
-    final double imageNodeWidthHeight = 56;
-    final double textNodeHeight = 28;
+    double textNodeHeight = 22;
+    double imageSize = 36.0;
+    double offsetX = 24.0;
+    double offsetYImage = 15.0;
+    double offsetY = 12.0;
+    double iconOffsetY = 20.0;
+
+    if (listTemplateStyle == ListTemplateStyle.compact) {
+      textNodeHeight = 22;
+      imageSize = 28.0;
+      offsetX = 20.0;
+      offsetYImage = 9.0;
+      offsetY = 12.0;
+      textNodeHeight = 22;
+      iconOffsetY = 15.0;
+    }
 
     final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
-      size: Offset(imageNodeWidthHeight, imageNodeWidthHeight),
-      position: Offset(imageNodeXYOffset, imageNodeXYOffset),
+      size: Offset(imageSize, imageSize),
+      position: Offset(offsetX, offsetYImage),
     );
 
-    imageNode.setProperty(
-        'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
+    if (listTemplateStyle == ListTemplateStyle.compact) {
+      imageNode.setProperty(
+          'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 50));
+    } else {
+      imageNode.setProperty(
+          'BorderRadiusValue', SchemaIntProperty('BorderRadiusValue', 8));
+    }
 
     final ListElementNode imageListElement = ListElementNode(
         node: imageNode,
@@ -146,11 +171,115 @@ class ListElements {
 
     final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(
-          listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
+      size: Offset(listItemSize.dx - imageSize - offsetX - (offsetX / 2),
           textNodeHeight),
-      position: Offset(
-          imageNodeWidthHeight + imageNodeXYOffset * 2, imageNodeXYOffset),
+      position: Offset(imageSize + offsetX + (offsetX / 2), offsetY),
+    );
+
+    final ListElementNode titleListElement = ListElementNode(
+        node: titleNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+        name: 'Text',
+        id: titleNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_price');
+
+    this.listElements.add(imageListElement);
+    this.listElements.add(titleListElement);
+
+    final SchemaNode iconNode = schemaNodeSpawner.spawnSchemaNodeIcon(
+      id: UniqueKey(),
+      size: Offset(22, 22),
+      position: Offset(listItemSize.dx - (offsetX * 1.1), iconOffsetY),
+    );
+
+    iconNode.setProperty('IconSize', SchemaIntProperty('IconSize', 18));
+    iconNode.setProperty(
+        'Icon', SchemaIconProperty('Icon', FontAwesomeIcons.chevronRight));
+    iconNode.setProperty(
+        'IconColor',
+        SchemaMyThemePropProperty(
+            'IconColor',
+            schemaNodeSpawner
+                .userActions.themeStore.currentTheme.generalSecondary));
+
+    final ListElementNode iconListElement = ListElementNode(
+        node: iconNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.icon'),
+        name: 'Icon',
+        id: iconNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: '');
+
+    this.listElements.add(iconListElement);
+
+    if (listTemplateStyle == ListTemplateStyle.basic) {
+      final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
+        id: UniqueKey(),
+        size: Offset(listItemSize.dx - imageSize - offsetX - (offsetX / 2),
+            textNodeHeight),
+        position: Offset(
+            imageSize + offsetX + (offsetX / 2),
+            offsetY +
+                textNodeHeight -
+                3), // - 3 because it has to overlap title a bit
+      );
+
+      descriptionNode.setProperty(
+          'FontColor',
+          SchemaMyThemePropProperty(
+              'FontColor',
+              schemaNodeSpawner
+                  .userActions.themeStore.currentTheme.generalSecondary));
+
+      descriptionNode.setProperty(
+          'FontSize', SchemaIntProperty('FontSize', 14));
+      final ListElementNode descriptionListElement = ListElementNode(
+          node: descriptionNode,
+          iconPreview: _buildOptionPreview('SchemaNodeType.text'),
+          name: 'Text',
+          id: descriptionNode.id,
+          changePropertyTo: this.changePropertyTo,
+          onListElementsUpdate: () {},
+          columnRelation: 'house_address');
+
+      this.listElements.add(descriptionListElement);
+    }
+  }
+
+  ListElements.withCardListTemplate(
+      {allColumns,
+      SchemaNodeSpawner schemaNodeSpawner,
+      Offset listItemSize,
+      ListTemplateStyle listTemplateStyle}) {
+    this.allColumns = allColumns ?? [];
+    var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
+
+    final elementsSize = listTemplateStyle == ListTemplateStyle.cards
+        ? (listItemSize.dx ~/ 2) - 5
+        : listItemSize.dx;
+
+    final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
+      id: UniqueKey(),
+      size: Offset(elementsSize, 80),
+      position: Offset(0, 0),
+    );
+
+    final ListElementNode imageListElement = ListElementNode(
+        node: imageNode,
+        iconPreview: _buildOptionPreview('SchemaNodeType.image'),
+        name: 'Image',
+        id: imageNode.id,
+        changePropertyTo: this.changePropertyTo,
+        onListElementsUpdate: () {},
+        columnRelation: 'house_image');
+
+    final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
+      id: UniqueKey(),
+      size: Offset(elementsSize, 28),
+      position: Offset(0, 90),
     );
 
     final ListElementNode titleListElement = ListElementNode(
@@ -164,11 +293,8 @@ class ListElements {
 
     final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(
-          listItemSize.dx - imageNodeWidthHeight - imageNodeXYOffset * 2,
-          textNodeHeight),
-      position: Offset(imageNodeWidthHeight + imageNodeXYOffset * 2,
-          imageNodeXYOffset + textNodeHeight),
+      size: Offset(elementsSize, 28),
+      position: Offset(0, 120),
     );
 
     descriptionNode.setProperty(
@@ -194,68 +320,11 @@ class ListElements {
     this.listElements.add(descriptionListElement);
   }
 
-  ListElements.withCardListTemplate(
-      {allColumns, SchemaNodeSpawner schemaNodeSpawner, Offset listItemSize}) {
-    this.allColumns = allColumns ?? [];
-
-    var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
-    final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
-      id: UniqueKey(),
-      size: Offset(listItemSize.dx, 80),
-      position: Offset(0, 0),
+  ListElements copy() {
+    return ListElements(
+      listElements: this.listElements.map((e) => e.copy()).toList(),
+      allColumns: [...this.allColumns],
     );
-
-    final ListElementNode imageListElement = ListElementNode(
-        node: imageNode,
-        iconPreview: _buildOptionPreview('SchemaNodeType.image'),
-        name: 'Image',
-        id: imageNode.id,
-        changePropertyTo: this.changePropertyTo,
-        onListElementsUpdate: () {},
-        columnRelation: 'house_image');
-
-    final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
-      id: UniqueKey(),
-      size: Offset(listItemSize.dx, 28),
-      position: Offset(0, 90),
-    );
-
-    final ListElementNode titleListElement = ListElementNode(
-        node: titleNode,
-        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
-        name: 'Text',
-        id: titleNode.id,
-        changePropertyTo: this.changePropertyTo,
-        onListElementsUpdate: () {},
-        columnRelation: 'house_price');
-
-    final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
-      id: UniqueKey(),
-      size: Offset(listItemSize.dx, 28),
-      position: Offset(0, 120),
-    );
-
-    descriptionNode.setProperty(
-        'FontColor',
-        SchemaMyThemePropProperty(
-            'FontColor',
-            schemaNodeSpawner
-                .userActions.themeStore.currentTheme.generalSecondary));
-
-    descriptionNode.setProperty('FontSize', SchemaIntProperty('FontSize', 14));
-
-    final ListElementNode descriptionListElement = ListElementNode(
-        node: descriptionNode,
-        iconPreview: _buildOptionPreview('SchemaNodeType.text'),
-        name: 'Text',
-        id: descriptionNode.id,
-        changePropertyTo: this.changePropertyTo,
-        onListElementsUpdate: () {},
-        columnRelation: 'house_address');
-
-    this.listElements.add(imageListElement);
-    this.listElements.add(titleListElement);
-    this.listElements.add(descriptionListElement);
   }
 
   _buildOptionPreview(String nodeType) {
@@ -335,7 +404,7 @@ class ListElements {
   }
 
   ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement,
-      SchemaNodeSpawner schemaNodeSpawner) {
+      [SchemaNodeSpawner schemaNodeSpawner]) {
     final SchemaNode deserializedNode = ComponentLoadedFromJson(
             jsonComponent: jsonListElement['node'],
             schemaNodeSpawner:
@@ -362,6 +431,7 @@ class ListElements {
 
     this.listElements.forEach((element) {
       element.onListElementsUpdate = onListElementsUpdate;
+      element.changePropertyTo = this.changePropertyTo;
     });
 
     return Column(
@@ -434,7 +504,7 @@ class ListElementNode {
 
   final String name;
   final UniqueKey id;
-  final Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
+  Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
   final Widget iconPreview;
 
   Function onListElementsUpdate;
@@ -446,8 +516,8 @@ class ListElementNode {
     @required this.iconPreview,
     @required this.name,
     @required this.id,
-    @required this.changePropertyTo,
     @required this.onListElementsUpdate,
+    this.changePropertyTo = null,
     this.columnRelation = null,
   });
 
@@ -460,7 +530,6 @@ class ListElementNode {
       iconPreview: this.iconPreview,
       name: this.name,
       id: nodeCopy.id,
-      changePropertyTo: this.changePropertyTo,
       onListElementsUpdate: this.onListElementsUpdate,
       columnRelation: this.columnRelation,
     );
@@ -599,7 +668,7 @@ class ListElementNode {
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
-      return this.node.toWidget(isPlayMode: isPlayMode);
+      return this.node.toWidget(theme: theme, isPlayMode: isPlayMode);
     }
 
     return GestureDetector(
@@ -632,7 +701,6 @@ class ListElementNode {
       return (this.node as DataContainer).toWidgetWithReplacedData(
           theme: theme, data: data, isPlayMode: isPlayMode);
     }
-
     return GestureDetector(
         onTap: () {
           schemaNodeList.selectListElementNode(this);

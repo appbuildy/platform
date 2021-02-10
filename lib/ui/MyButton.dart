@@ -6,25 +6,38 @@ import 'package:flutter_app/ui/MyColors.dart';
 class MyButtonUI extends StatelessWidget {
   final String text;
   final Widget icon;
+  final bool disabled;
 
   MyButtonUI({
     @required this.text,
     this.icon,
+    this.disabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final defaultDecoration = BoxDecoration(
+    var defaultDecoration = BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         gradient: MyGradients.mainBlue,
         boxShadow: []);
-    final hoverDecoration = BoxDecoration(
+    var hoverDecoration = BoxDecoration(
         borderRadius: BorderRadius.circular(6),
         gradient: MyGradients.mainLightBlue,
         boxShadow: []);
 
+    if (disabled) {
+      defaultDecoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          gradient: MyGradients.disabledLightGray,
+          boxShadow: []);
+      hoverDecoration = BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          gradient: MyGradients.disabledLightGray,
+          boxShadow: []);
+    }
+
     return Cursor(
-      cursor: CursorEnum.pointer,
+      cursor: disabled ? CursorEnum.defaultCursor : CursorEnum.pointer,
       child: HoverDecoration(
         defaultDecoration: defaultDecoration,
         hoverDecoration: hoverDecoration,
@@ -44,10 +57,10 @@ class MyButtonUI extends StatelessWidget {
               ),
               this.icon != null
                   ? Positioned(
-                left: 13,
-                top: 1,
-                child: Center(child: this.icon),
-              )
+                      left: 13,
+                      top: 1,
+                      child: Center(child: this.icon),
+                    )
                   : Container(),
             ],
           ),
@@ -60,17 +73,23 @@ class MyButtonUI extends StatelessWidget {
 class MyButton extends StatelessWidget {
   final String text;
   final Widget icon;
+  final bool disabled;
   final Function onTap;
 
-  const MyButton({Key key, @required this.text, this.icon, this.onTap})
+  const MyButton(
+      {Key key,
+      @required this.text,
+      this.icon,
+      this.onTap,
+      this.disabled = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onTap,
-      child: MyButtonUI(text: this.text, icon: this.icon),
+      child:
+          MyButtonUI(text: this.text, icon: this.icon, disabled: this.disabled),
     );
   }
 }

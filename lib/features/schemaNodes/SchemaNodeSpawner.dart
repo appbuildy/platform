@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeIcon.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeMap.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 import 'SchemaNode.dart';
+import 'SchemaNodeForm.dart';
 import 'lists/ListTemplates/ListTemplate.dart';
 
 class SchemaNodeSpawner {
@@ -98,6 +99,7 @@ class SchemaNodeSpawner {
 
   SchemaNodeList spawnSchemaNodeListWithTemplate({
     @required ListTemplateType listTemplateType,
+    @required ListTemplateStyle listTemplateStyle,
     UniqueKey id,
     Offset position,
     Offset size,
@@ -107,6 +109,7 @@ class SchemaNodeSpawner {
     return SchemaNodeList.withTemplate(
       parent: this,
       listTemplateType: listTemplateType,
+      listTemplateStyle: listTemplateStyle,
       id: id,
       position: position,
       size: size,
@@ -123,6 +126,22 @@ class SchemaNodeSpawner {
     Map<String, SchemaNodeProperty> actions,
   }) {
     return SchemaNodeShape(
+      parent: this,
+      position: position,
+      size: size,
+      properties: properties,
+      actions: actions,
+    );
+  }
+
+  SchemaNodeForm spawnSchemaNodeForm({
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+  }) {
+    return SchemaNodeForm(
       parent: this,
       position: position,
       size: size,

@@ -22,7 +22,6 @@ class ApplicationMock extends StatelessWidget {
       ),
       home: Scaffold(body: Text('App is Rendered')),
     );
-    ;
   }
 }
 

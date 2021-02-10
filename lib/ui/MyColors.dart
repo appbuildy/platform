@@ -62,6 +62,14 @@ class MyGradients {
     ],
   );
 
+  static LinearGradient disabledLightGray = LinearGradient(
+      begin: AlignmentDirectional.topCenter,
+      end: AlignmentDirectional.bottomCenter,
+      colors: [
+        Color(0xFFB1E7F2).withOpacity(0.8),
+        Color(0xFF75A2BC).withOpacity(0.65)
+      ]);
+
   static LinearGradient mediumBlue = LinearGradient(
     begin: AlignmentDirectional.topCenter,
     end: AlignmentDirectional.bottomCenter,

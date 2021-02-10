@@ -12,4 +12,10 @@ class AirtableTable implements IRemoteTable {
   Future<Map<String, dynamic>> records() async {
     return await Client.defaultClient(table: table, base: base).records();
   }
+
+  @override
+  Future<Map<String, dynamic>> create(Map<String, dynamic> parameters) {
+    // TODO: implement create
+    throw UnimplementedError();
+  }
 }

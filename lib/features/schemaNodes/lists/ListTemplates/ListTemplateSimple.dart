@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
@@ -15,6 +14,7 @@ class ListTemplateSimple extends ListTemplate {
 
   Widget toWidget({
     @required Function onListClick, // should mock it in skeleton
+    @required Function onListItemClick, // should mock it in skeleton
     @required MyTheme theme,
     @required Offset size,
     @required Map<String, SchemaNodeProperty> properties,
@@ -44,9 +44,7 @@ class ListTemplateSimple extends ListTemplate {
                 if (isPlayMode) {
                   return GestureDetector(
                     onTap: () {
-                      (schemaNodeList.actions['Tap'] as Functionable)
-                          .toFunction(schemaNodeList
-                              .parentSpawner.userActions)(item.value);
+                      onListItemClick(item.value);
                     },
                     child: widgetFor(
                       item: item,
@@ -132,6 +130,7 @@ class ListTemplateSimple extends ListTemplate {
 
               renderedWidget = el.toWidgetWithReplacedData(
                 data: data,
+                theme: theme,
                 schemaNodeList: schemaNodeList,
                 isSelected: isSelected,
                 isPlayMode: isPlayMode,
@@ -139,6 +138,7 @@ class ListTemplateSimple extends ListTemplate {
             } else {
               renderedWidget = el.toWidget(
                 schemaNodeList: schemaNodeList,
+                theme: theme,
                 isSelected: isSelected,
                 isPlayMode: isPlayMode,
               );

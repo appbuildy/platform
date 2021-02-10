@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/shape.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 
 import 'SchemaNodeSpawner.dart';
 import 'common/EditPropsOpacity.dart';
+import 'my_do_nothing_action.dart';
 
 class SchemaNodeShape extends SchemaNode {
   SchemaNodeShape({
@@ -26,13 +30,22 @@ class SchemaNodeShape extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(375.0, 60.0);
     this.id = id ?? UniqueKey();
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Color': SchemaMyThemePropProperty(
               'Color', parent.userActions.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Opacity': SchemaDoubleProperty('Opacity', 1),
+          'Border': SchemaBoolProperty('Border', false),
+          'BorderColor': SchemaMyThemePropProperty('BorderColor',
+              parent.userActions.themeStore.currentTheme.primary),
+          'BorderWidth': SchemaIntProperty('BorderWidth', 1),
+          'BoxShadow': SchemaBoolProperty('BoxShadow', false),
+          'BoxShadowColor': SchemaMyThemePropProperty('BoxShadowColor',
+              parent.userActions.themeStore.currentTheme.general),
+          'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.5),
         };
   }
 
@@ -60,10 +73,10 @@ class SchemaNodeShape extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Shape(
       properties: properties,
-      theme: parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? parentSpawner.userActions.themeStore.currentTheme,
       size: size,
     );
   }
@@ -100,6 +113,23 @@ class SchemaNodeShape extends SchemaNode {
             changePropertyTo(SchemaDoubleProperty('Opacity', value));
           },
         ),
+        SizedBox(
+          height: 20,
+        ),
+        EditPropsBorder(
+          key: id,
+          properties: properties,
+          changePropertyTo: changePropertyTo,
+          currentTheme: parentSpawner.userActions.currentTheme,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        EditPropsShadow(
+          properties: properties,
+          changePropertyTo: changePropertyTo,
+          currentTheme: parentSpawner.userActions.currentTheme,
+        )
       ],
     ));
   }

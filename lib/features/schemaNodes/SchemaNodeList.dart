@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/features/schemaNodes/airtable_modal_stub.dart'
@@ -17,8 +18,8 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaListTemplatePr
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/list.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/Counter.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
@@ -30,6 +31,8 @@ import 'package:flutter_app/ui/PageSliderAnimator.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/Debouncer.dart';
+
+import 'my_do_nothing_action.dart';
 
 class EditPropsAnimation extends StatefulWidget {
   final BuildWidgetFunction rootPage;
@@ -90,10 +93,11 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.listTemplateType = listTemplateType;
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
+          'Base': SchemaStringProperty('Base', null),
           'Items': SchemaStringListProperty('Items', {}), //.sample()
           'Template': SchemaListTemplateProperty(
               'Template', getListTemplateByType(listTemplateType)),
@@ -124,6 +128,7 @@ class SchemaNodeList extends SchemaNode {
   SchemaNodeList.withTemplate({
     @required SchemaNodeSpawner parent,
     @required ListTemplateType listTemplateType,
+    @required ListTemplateStyle listTemplateStyle,
     UniqueKey id,
     Offset position,
     Offset size,
@@ -138,7 +143,7 @@ class SchemaNodeList extends SchemaNode {
     this.size = size ?? Offset(375.0, getListHeightByType(listTemplateType));
     this.id = id ?? UniqueKey();
     this.listTemplateType = listTemplateType;
-    this.actions = actions ?? {'Tap': GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Table': SchemaStringProperty('Table', null),
@@ -158,10 +163,13 @@ class SchemaNodeList extends SchemaNode {
           'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 6),
           'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.2),
           'ListItemHeight': SchemaDoubleProperty(
-              'ListItemHeight', getListItemHeightByType(listTemplateType)),
+              'ListItemHeight',
+              getListItemHeightByTypeAndStyle(
+                  listTemplateType, listTemplateStyle)),
           'ListItemPadding': SchemaDoubleProperty(
               'ListItemPadding', getListItemPaddingByType(listTemplateType)),
-          'ListItemsPerRow': SchemaIntProperty('ListItemsPerRow', 1),
+          'ListItemsPerRow': SchemaIntProperty('ListItemsPerRow',
+              listTemplateStyle == ListTemplateStyle.cards ? 2 : 1),
         };
 
     final double listItemWidth =
@@ -176,12 +184,20 @@ class SchemaNodeList extends SchemaNode {
       listElements = ListElements.withSimpleListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
-          listItemSize: listItemSize);
+          listItemSize: listItemSize,
+          listTemplateStyle: listTemplateStyle);
     } else if (listTemplateType == ListTemplateType.cards) {
       listElements = ListElements.withCardListTemplate(
           allColumns: listColumnsSample,
           schemaNodeSpawner: parent,
-          listItemSize: listItemSize);
+          listItemSize: listItemSize,
+          listTemplateStyle: listTemplateStyle);
+    } else if (listTemplateType == ListTemplateType.horizontal) {
+      listElements = ListElements.withCardListTemplate(
+          allColumns: listColumnsSample,
+          schemaNodeSpawner: parent,
+          listItemSize: listItemSize,
+          listTemplateStyle: listTemplateStyle);
     }
 
     this.properties['Elements'] =
@@ -216,6 +232,11 @@ class SchemaNodeList extends SchemaNode {
     } else {
       parentSpawner.userActions.selectNodeForEdit(this);
     }
+  }
+
+  void onListItemClick(value) {
+    (actions['Tap'] as Functionable)
+        .toFunction(parentSpawner.userActions)(value);
   }
 
   void selectListElementNode(ListElementNode listElementNode) {
@@ -392,12 +413,14 @@ class SchemaNodeList extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.List(
+      key: Key(this.id.toString()),
       size: this.size,
       schemaNodeList: this,
       onListClick: this.onListClick,
-      theme: this.parentSpawner.userActions.themeStore.currentTheme,
+      onListItemClick: this.onListItemClick,
+      theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       properties: this.properties,
       isSelected: this.isSelected,
       isPlayMode: isPlayMode,
@@ -410,13 +433,40 @@ class SchemaNodeList extends SchemaNode {
         .firstWhere((element) => element.table == tableName);
     print("Client: $client");
     final newProp = await SchemaStringListProperty.fromRemoteTable(client);
-    (this.properties['Elements'].value as ListElements).allColumns =
+
+    final columnNames =
         newProp.value[newProp.value.keys.first].value.keys.toList();
-    (this.properties['Elements'].value as ListElements)
-        .listElements
-        .forEach((ListElementNode listElementNode) {
-      listElementNode.columnRelation = null;
-    });
+
+    (this.properties['Elements'].value as ListElements).allColumns =
+        columnNames;
+
+    final List<ListElementNode> listElementNodes =
+        (this.properties['Elements'].value as ListElements).listElements;
+
+    bool shouldUpdateColumns =
+        columnNames.isNotEmpty && listElementNodes.isNotEmpty;
+
+    if (shouldUpdateColumns) {
+      int key = 0;
+      if (columnNames.length - listElementNodes.length >= 0) {
+        listElementNodes.forEach((ListElementNode listElementNode) {
+          listElementNode.columnRelation = columnNames[key];
+
+          key += 1;
+        });
+      } else {
+        listElementNodes.forEach((ListElementNode listElementNode) {
+          listElementNode.columnRelation =
+              key > columnNames.length - 1 ? columnNames[0] : columnNames[key];
+
+          key += 1;
+        });
+      }
+    } else {
+      listElementNodes.forEach((ListElementNode listElementNode) {
+        listElementNode.columnRelation = null;
+      });
+    }
 
     userActions.changePropertyTo(newProp);
     userActions.changePropertyTo(SchemaStringProperty('Table', tableName));
@@ -596,7 +646,7 @@ class _ListToEditPropsState extends State<ListToEditProps>
                 )
               ],
             )
-          : ConnectAirtableModal(),
+          : ConnectAirtableModal(userActions: userActions),
       if (isItemsNotEmpty)
         Column(
           children: [
@@ -657,7 +707,10 @@ class _ListToEditPropsState extends State<ListToEditProps>
               SizedBox(
                 width: 59,
                 child: Text(
-                  'Height',
+                  widget.schemaNodeList.listTemplateType ==
+                          ListTemplateType.horizontal
+                      ? 'Width'
+                      : 'Height',
                   style: MyTextStyle.regularCaption,
                 ),
               ),

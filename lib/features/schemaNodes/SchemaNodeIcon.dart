@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
+import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/SelectIconList.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,6 +15,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'SchemaNodeSpawner.dart';
 import 'common/EditPropsIconStyle.dart';
 import 'common/EditPropsOpacity.dart';
+import 'my_do_nothing_action.dart';
 
 class SchemaNodeIcon extends SchemaNode {
   SchemaNodeIcon({
@@ -32,8 +34,7 @@ class SchemaNodeIcon extends SchemaNode {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(40.0, 40.0);
     this.id = id ?? UniqueKey();
-    this.actions =
-        actions ?? {'Tap': tapAction ?? GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': tapAction ?? MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Icon':
@@ -73,10 +74,10 @@ class SchemaNodeIcon extends SchemaNode {
   }
 
   @override
-  Widget toWidget({bool isPlayMode}) {
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Icon(
       properties: properties,
-      theme: parentSpawner.userActions.themeStore.currentTheme,
+      theme: theme ?? parentSpawner.userActions.themeStore.currentTheme,
       size: size,
     );
   }

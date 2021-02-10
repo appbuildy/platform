@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
@@ -11,12 +12,12 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProp
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaListOfStringsProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListTemplateProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaTextAlignProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 
 import 'SchemaNodeSpawner.dart';
 import 'my_do_nothing_action.dart';
@@ -62,17 +63,17 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
         default:
           {
             print('Failed to deserialize action: no deserializer');
-            return MyDoNothingAction();
+            return MyDoNothingAction('Tap');
           }
       }
     } catch (e) {
       print('Failed to deserialize action with exception: $e');
-      return MyDoNothingAction();
+      return MyDoNothingAction('Tap');
     }
   }
 
-  static SchemaNodeProperty deserializeFromJson(
-      Map<String, dynamic> targetJson, SchemaNodeSpawner schemaNodeSpawner) {
+  static SchemaNodeProperty deserializeFromJson(Map<String, dynamic> targetJson,
+      [SchemaNodeSpawner schemaNodeSpawner]) {
     try {
       switch (targetJson['propertyClass']) {
         case 'SchemaFontWeightProperty':
@@ -123,6 +124,11 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
         case 'SchemaStringProperty':
           {
             return SchemaStringProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaListOfStringsProperty':
+          {
+            return SchemaListOfStringsProperty.fromJson(targetJson);
           }
           break;
         case 'SchemaListTemplateProperty':

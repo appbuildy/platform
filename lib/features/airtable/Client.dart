@@ -15,7 +15,8 @@ class Client implements IRemoteTable {
 
   factory Client.defaultClient(
       {String table = 'Table 1', String apiKey, String base}) {
-    apiKey = credentials['api_key'];
+    apiKey = apiKey ?? credentials['api_key'];
+    base = base ?? credentials['base'];
 
     return Client(
         table: table, apiKey: apiKey, base: base, httpClient: http.Client());
@@ -28,7 +29,25 @@ class Client implements IRemoteTable {
       this.base,
       this.httpClient});
 
-  String get requestUrl => '${this.apiUrl}${this.base}/${this.table}';
+  String get requestUrl =>
+      '${this.apiUrl}${this.base}/${this.table}?view=Grid%20view';
+
+  @override
+  Future<Map<String, dynamic>> create(Map<String, dynamic> records) async {
+    Map<String, dynamic> fields = {"fields": {}};
+
+    records.forEach((k, v) {
+      fields["fields"][k] = v;
+    });
+
+    final response = await this.httpClient.post(requestUrl,
+        body: jsonEncode({
+          'records': [fields]
+        }),
+        headers: {HttpHeaders.authorizationHeader: "Bearer ${this.apiKey}"});
+
+    return json.decode(response.body);
+  }
 
   @override
   Future<Map<String, dynamic>> records() async {

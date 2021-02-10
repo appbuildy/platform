@@ -169,7 +169,7 @@ Map<String, dynamic> canvas = {
               "type": "SchemaActionType.doNothing",
               "value": null,
               "action": "",
-              "propertyClass": "myDoNothingAction"
+              "propertyClass": "MyDoNothingAction"
             }
           },
           "position": {"x": 20, "y": 170.8313530450874},
@@ -274,7 +274,7 @@ Map<String, dynamic> canvas = {
               "type": "SchemaActionType.doNothing",
               "value": null,
               "action": "",
-              "propertyClass": "myDoNothingAction"
+              "propertyClass": "MyDoNothingAction"
             }
           },
           "position": {"x": 20, "y": 152.6775582520188},

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/rightToolbox/EditPage.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
-import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringListProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaStringProperty.dart';
 import 'package:flutter_app/ui/AllActions.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/IconCircleButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
+import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_app/ui/WithInfo.dart';
 import 'package:flutter_app/utils/StringExtentions/CapitalizeString.dart';
@@ -31,6 +31,9 @@ class EditProps extends StatelessWidget {
         final detailedInfo = userActions.currentScreen.detailedInfo;
         var columns = [];
 
+        print(
+            '${userActions.screens.current.components.length}'); // DO NOT DELETE THIS, NEEDS TO MAKE OBSERVER WORK (width, height)
+
         if (detailedInfo != null) {
           columns = detailedInfo.tableName != null
               ? userActions
@@ -51,7 +54,7 @@ class EditProps extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   border:
-                  Border(left: BorderSide(width: 1, color: MyColors.gray))),
+                      Border(left: BorderSide(width: 1, color: MyColors.gray))),
               child: ToolboxHeader(
                   padding: const EdgeInsets.only(
                     left: 10.0,
@@ -90,10 +93,11 @@ class EditProps extends StatelessWidget {
                         height: 38,
                         color: Colors.transparent,
                       )),
-                  title: selectedNode.type.toString().split('.')[1].capitalize()),
+                  title:
+                      selectedNode.type.toString().split('.')[1].capitalize()),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 24.0, left: 20.0, right: 20.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Column(
                 children: [
                   AllActions(
@@ -102,44 +106,87 @@ class EditProps extends StatelessWidget {
                     screens: screens,
                   ),
                   detailedInfo != null &&
-                      selectedNode.properties['Column'] != null
+                          selectedNode.properties['Column'] != null
                       ? Column(
+                          children: [
+                            ColumnDivider(name: 'Data Source'),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  child: Text('Column'),
+                                  width: 59,
+                                ),
+                                Expanded(
+                                    child: MyClickSelect(
+                                  placeholder: 'Select Column',
+                                  selectedValue:
+                                      selectedNode.properties['Column'].value,
+                                  defaultIcon: Container(
+                                      child: Image.network(
+                                    'assets/icons/meta/btn-detailed-info-big.svg',
+                                    fit: BoxFit.contain,
+                                  )),
+                                  onChange: (SelectOption element) {
+                                    userActions.changePropertyTo(
+                                        SchemaStringProperty(
+                                            'Column', element.value));
+                                    (selectedNode as dynamic)
+                                        .updateOnColumnDataChange(detailedInfo
+                                            .rowData[element.value].data);
+                                  },
+                                  options: columns
+                                      .map((e) => SelectOption(e, e))
+                                      .toList(),
+                                ))
+                              ],
+                            )
+                          ],
+                        )
+                      : Container(),
+                  Column(
                     children: [
-                      ColumnDivider(name: 'Data Source'),
+                      ColumnDivider(name: 'Size'),
                       Row(
                         children: [
                           SizedBox(
-                            child: Text('Column'),
+                            child: Text('Width'),
                             width: 59,
                           ),
                           Expanded(
-                              child: MyClickSelect(
-                                placeholder: 'Select Column',
-                                selectedValue:
-                                selectedNode.properties['Column'].value,
-                                defaultIcon: Container(
-                                    child: Image.network(
-                                      'assets/icons/meta/btn-detailed-info-big.svg',
-                                      fit: BoxFit.contain,
-                                    )),
-                                onChange: (SelectOption element) {
-                                  userActions.changePropertyTo(
-                                      SchemaStringProperty(
-                                          'Column', element.value));
-                                  (selectedNode as dynamic)
-                                      .updateOnColumnDataChange(
-                                      detailedInfo
-                                          .rowData[element.value].data);
-                                },
-                                options: columns
-                                    .map((e) => SelectOption(e, e))
-                                    .toList(),
-                              ))
+                              child: MyTextField(
+                                  value: selectedNode.size.dx.toString(),
+                                  onChanged: (String value) {
+                                    selectedNode.size = Offset(
+                                        double.parse(value),
+                                        selectedNode.size.dy);
+                                    userActions
+                                        .repositionAndResize(selectedNode);
+                                  }))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(
+                            child: Text('Height'),
+                            width: 59,
+                          ),
+                          Expanded(
+                              child: MyTextField(
+                                  value: selectedNode.size.dy.toString(),
+                                  onChanged: (String value) {
+                                    selectedNode.size = Offset(
+                                        selectedNode.size.dx,
+                                        double.parse(value));
+                                    userActions
+                                        .repositionAndResize(selectedNode);
+                                  }))
                         ],
                       )
                     ],
-                  )
-                      : Container(),
+                  ),
                   child,
                 ],
               ),

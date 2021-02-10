@@ -41,7 +41,12 @@ class ChangeNodeProperty extends BaseAction {
 
 //    if (oldValue == null) return;
     executed = true;
-    propsOrActions[property.name].value = property.value;
+    if (changeAction == ChangeAction.properties) {
+      propsOrActions[property.name].value = property.value;
+    } else {
+      // в наших экшенах не только валю меняется, а еще тип и тд потому что они Functionable
+      propsOrActions[property.name] = property;
+    }
     selectNodeForEdit(
         node, true); // reselect node to updates be applied on the right bar
     schemaStore.update(node);
@@ -55,6 +60,11 @@ class ChangeNodeProperty extends BaseAction {
   @override
   void undo() {
     if (!executed) return;
+    if (changeAction == ChangeAction.properties) {
+      node.properties[property.name].value = oldValue;
+    } else {
+      node.properties[property.name] = oldValue;
+    }
     node.properties[property.name].value = oldValue;
     selectNodeForEdit(node, false);
     schemaStore.update(node);

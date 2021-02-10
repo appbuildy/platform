@@ -4,12 +4,12 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
-import 'package:flutter_app/shared_widgets/icon.dart' as Shared;
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -88,17 +88,19 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     this.position = position ?? Offset(0, 0);
     this.size = size ?? Offset(200, 200);
     this.id = id ?? UniqueKey();
-    this.actions =
-        actions ?? {'Tap': tapAction ?? GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Bearing': SchemaDoubleProperty('Bearing', _kLake.bearing),
-          'TargetLatitude': SchemaDoubleProperty('TargetLatitude', _kLake.target.latitude),
-          'TargetLongitude': SchemaDoubleProperty('TargetLongitude', _kLake.target.longitude),
+          'TargetLatitude':
+              SchemaDoubleProperty('TargetLatitude', _kLake.target.latitude),
+          'TargetLongitude':
+              SchemaDoubleProperty('TargetLongitude', _kLake.target.longitude),
           'Tilt': SchemaDoubleProperty('Tilt', _kLake.tilt),
           'Zoom': SchemaDoubleProperty('Zoom', _kLake.zoom),
           'Icon': SchemaIconProperty('Icon', FontAwesomeIcons.mapMarkerAlt),
-          'IconColor': SchemaMyThemePropProperty('IconColor', parent.userActions.currentTheme.primary),
+          'IconColor': SchemaMyThemePropProperty(
+              'IconColor', parent.userActions.currentTheme.primary),
         };
 
     this.setBitmapDescriptor();
@@ -136,9 +138,12 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
   }
 
   void updateCameraPosition(CameraPosition cameraPosition) {
-    this.properties['Bearing'] = SchemaDoubleProperty('Bearing', cameraPosition.bearing);
-    this.properties['TargetLatitude'] = SchemaDoubleProperty('TargetLatitude', cameraPosition.target.latitude);
-    this.properties['TargetLongitude'] = SchemaDoubleProperty('TargetLongitude', cameraPosition.target.longitude);
+    this.properties['Bearing'] =
+        SchemaDoubleProperty('Bearing', cameraPosition.bearing);
+    this.properties['TargetLatitude'] =
+        SchemaDoubleProperty('TargetLatitude', cameraPosition.target.latitude);
+    this.properties['TargetLongitude'] = SchemaDoubleProperty(
+        'TargetLongitude', cameraPosition.target.longitude);
     this.properties['Tilt'] = SchemaDoubleProperty('Tilt', cameraPosition.tilt);
     this.properties['Zoom'] = SchemaDoubleProperty('Zoom', cameraPosition.zoom);
   }
@@ -147,26 +152,24 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     updateMarkers();
 
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        bearing: this.properties['Bearing'].value,
-        target: latitudeLongitude,
-        tilt: this.properties['Tilt'].value,
-        zoom: this.properties['Zoom'].value,
-      )
-    ));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      bearing: this.properties['Bearing'].value,
+      target: latitudeLongitude,
+      tilt: this.properties['Tilt'].value,
+      zoom: this.properties['Zoom'].value,
+    )));
   }
 
   GlobalKey mapKey = GlobalKey();
 
   Marker get marker => Marker(
-    position: latitudeLongitude,
-    markerId: MarkerId('${UniqueKey()}'),
-    //icon: BitmapDescriptor.defaultMarker,
-    icon: _bitmapDescriptor == null
-      ? BitmapDescriptor.defaultMarker
-      : _bitmapDescriptor,
-  );
+        position: latitudeLongitude,
+        markerId: MarkerId('${UniqueKey()}'),
+        //icon: BitmapDescriptor.defaultMarker,
+        icon: _bitmapDescriptor == null
+            ? BitmapDescriptor.defaultMarker
+            : _bitmapDescriptor,
+      );
 
   void updateMarkers() {
     _markers.clear();
@@ -196,8 +199,7 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           fontFamily: icon.fontFamily,
           package: icon.fontPackage,
           color: (this.properties['IconColor'].value as MyThemeProp).color,
-        )
-    );
+        ));
     textPainter.layout();
     textPainter.paint(canvas, Offset(0.0, 0.0));
 
@@ -205,9 +207,10 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     final image = await picture.toImage(48, 48);
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
 
-    this._bitmapDescriptor = BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
+    this._bitmapDescriptor =
+        BitmapDescriptor.fromBytes(bytes.buffer.asUint8List());
 
-    this._markers = { marker };
+    this._markers = {marker};
 
     this.parentSpawner.userActions.rerenderNode();
   }
@@ -226,8 +229,7 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
   // }
 
   @override
-  Widget toWidget({ bool isPlayMode }) {
-
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return RepaintBoundary(
       key: mapKey,
       child: Container(
@@ -242,11 +244,11 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           rotateGesturesEnabled: false,
           markers: this._markers,
           initialCameraPosition: CameraPosition(
-            bearing: this.properties['Bearing'].value,
-            target: LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value),
-            tilt: this.properties['Tilt'].value,
-            zoom: this.properties['Zoom'].value
-          ),
+              bearing: this.properties['Bearing'].value,
+              target: LatLng(this.properties['TargetLatitude'].value,
+                  this.properties['TargetLongitude'].value),
+              tilt: this.properties['Tilt'].value,
+              zoom: this.properties['Zoom'].value),
           onCameraMove: this.updateCameraPosition,
           onMapCreated: (GoogleMapController controller) {
             _controller.complete(controller);
@@ -257,16 +259,20 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     );
   }
 
-  LatLng get latitudeLongitude => LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value);
+  LatLng get latitudeLongitude => LatLng(
+      this.properties['TargetLatitude'].value,
+      this.properties['TargetLongitude'].value);
 
   @override
-  Widget toWidgetWithReplacedData({bool isPlayMode, String data, MyTheme theme = null}) {
+  Widget toWidgetWithReplacedData(
+      {bool isPlayMode, String data, MyTheme theme = null}) {
     // TODO: implement toWidgetWithReplacedData
     return this.toWidget(isPlayMode: isPlayMode);
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  Widget toEditProps(wrapInRootProps,
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(
       Column(children: [
         ColumnDivider(name: 'Data'),
@@ -282,7 +288,8 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
             child: MyTextField(
                 defaultValue: properties['TargetLatitude'].value.toString(),
                 onChanged: (String value) {
-                  changePropertyTo(SchemaDoubleProperty('TargetLatitude', double.parse(value)));
+                  changePropertyTo(SchemaDoubleProperty(
+                      'TargetLatitude', double.parse(value)));
                   _goToLatLng(this.latitudeLongitude);
                 }),
           )
@@ -299,7 +306,8 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
             child: MyTextField(
                 defaultValue: properties['TargetLongitude'].value.toString(),
                 onChanged: (String value) {
-                  changePropertyTo(SchemaDoubleProperty('TargetLongitude', double.parse(value)));
+                  changePropertyTo(SchemaDoubleProperty(
+                      'TargetLongitude', double.parse(value)));
                   _goToLatLng(this.latitudeLongitude);
                 }),
           )
