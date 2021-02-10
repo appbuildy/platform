@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/GuidelinesManager.dart';
-import 'package:flutter_app/features/schemaInteractions/GuidelinesManager/PositionAndSize.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/store/schema/DetailedInfo.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
@@ -108,7 +106,7 @@ abstract class _SchemaStore with Store {
         'name': name,
         'backgroundColor': backgroundColor.toJson(),
         'id': id.toJson(),
-        'bottomTabsVisible': true,
+        'bottomTabsVisible': bottomTabsVisible,
         'detailedInfo': detailedInfo?.toJson(),
         'components': components
             .map((comp) => comp.toJson())

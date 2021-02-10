@@ -113,10 +113,14 @@ class UserActions {
       _bottomNavigation = loadedProject.bottomNav;
       print(_bottomNavigation.toJson());
 
-      screens.all.screens.forEach((screen) {
-        _screens.all.createScreen(screen);
-        _screens.selectByName(screen.name);
-      });
+      if (screens.all.screens.length > 0) {
+        _screens.all.deleteScreen(_screens.current);
+        screens.all.screens.forEach((screen) {
+          _screens.all.createScreen(screen);
+          _screens.selectByName(screen.name);
+        });
+      }
+
       print(currentUserStore.project.airtableTables);
     } catch (e) {
       print('loadProject() error $e');

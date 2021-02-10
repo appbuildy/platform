@@ -13,6 +13,7 @@ enum SchemaActionType {
 
 abstract class Functionable {
   SchemaActionType type;
+  String column;
   Function toFunction(
     UserActions userActions,
   );

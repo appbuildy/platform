@@ -12,6 +12,7 @@ import 'package:flutter_app/features/schemaNodes/properties/SchemaFontWeightProp
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIconProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListItemsProperty.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaListOfStringsProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaListTemplateProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMainAlignmentProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
@@ -71,8 +72,8 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
     }
   }
 
-  static SchemaNodeProperty deserializeFromJson(
-      Map<String, dynamic> targetJson, SchemaNodeSpawner schemaNodeSpawner) {
+  static SchemaNodeProperty deserializeFromJson(Map<String, dynamic> targetJson,
+      [SchemaNodeSpawner schemaNodeSpawner]) {
     try {
       switch (targetJson['propertyClass']) {
         case 'SchemaFontWeightProperty':
@@ -123,6 +124,11 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
         case 'SchemaStringProperty':
           {
             return SchemaStringProperty.fromJson(targetJson);
+          }
+          break;
+        case 'SchemaListOfStringsProperty':
+          {
+            return SchemaListOfStringsProperty.fromJson(targetJson);
           }
           break;
         case 'SchemaListTemplateProperty':

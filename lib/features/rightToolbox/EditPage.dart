@@ -9,8 +9,6 @@ import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/ui/ToolboxHeader.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import 'EditPageBackgroundColor.dart';
-
 class EditPage extends StatelessWidget {
   final UserActions userActions;
 
@@ -96,13 +94,33 @@ class EditPage extends StatelessWidget {
                   ColumnDivider(
                     name: 'Page Settings',
                   ),
-                  EditBackgroundColor(
-                    currentTheme: userActions.currentTheme,
-                    onChange: (SelectOption option) {
-                      currentScreen.setBackgroundColor(option.value);
-                    },
-                    selectedValue: currentScreen.backgroundColor,
+//                  EditBackgroundColor(
+//                    currentTheme: userActions.currentTheme,
+//                    onChange: (SelectOption option) {
+//                      currentScreen.setBackgroundColor(option.value);
+//                    },
+//                    selectedValue: currentScreen.backgroundColor,
+//                  ),
+//                  SizedBox(
+//                    height: 15,
+//                  ),
+                  Row(
+                    children: [
+                      MySwitch(
+                        value: currentScreen.bottomTabsVisible,
+                        onTap: () {
+                          currentScreen
+                              .setBottomTabs(!currentScreen.bottomTabsVisible);
+                        },
+                      ),
+                      SizedBox(width: 11),
+                      Text(
+                        'Bottom Tabs',
+                        style: MyTextStyle.regularTitle,
+                      ),
+                    ],
                   ),
+
                   SizedBox(
                     height: 15,
                   ),
@@ -126,25 +144,6 @@ class EditPage extends StatelessWidget {
                           ),
                         )
                       ]),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      MySwitch(
-                        value: currentScreen.bottomTabsVisible,
-                        onTap: () {
-                          currentScreen
-                              .setBottomTabs(!currentScreen.bottomTabsVisible);
-                        },
-                      ),
-                      SizedBox(width: 11),
-                      Text(
-                        'Bottom Tabs',
-                        style: MyTextStyle.regularTitle,
-                      ),
-                    ],
-                  ),
                 ],
               ),
             )

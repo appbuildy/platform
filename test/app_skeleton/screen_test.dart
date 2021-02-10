@@ -8,7 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   var button = SharedWidget.button(text: 'test');
-  final btn = WidgetDecorator(position: Offset(0, 0), widget: button);
+  final btn =
+      WidgetDecorator(position: Offset(0, 0), widget: (context) => button);
   final screen = Screen(id: RandomKey(), widgets: [btn]);
   final app = MaterialApp(
       title: 'Test',

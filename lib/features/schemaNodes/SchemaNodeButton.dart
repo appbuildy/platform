@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeProperty.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
@@ -56,12 +57,12 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
               'MainAlignment', MainAxisAlignment.center),
           'CrossAlignment': SchemaCrossAlignmentProperty(
               'CrossAlignment', CrossAxisAlignment.center),
+          'BackgroundColor': SchemaMyThemePropProperty('BackgroundColor',
+              parent.userActions.themeStore.currentTheme.primary),
           'Border': SchemaBoolProperty('Border', false),
           'BorderColor': SchemaMyThemePropProperty('BorderColor',
               parent.userActions.themeStore.currentTheme.primary),
           'BorderWidth': SchemaIntProperty('BorderWidth', 1),
-          'BackgroundColor': SchemaMyThemePropProperty('BackgroundColor',
-              parent.userActions.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 9),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
           'BoxShadowColor': SchemaMyThemePropProperty('BoxShadowColor',
@@ -101,8 +102,16 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
   Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Shared.Button(
       properties: this.properties,
+      onTap: () {
+        if (isPlayMode) {
+          // opacityButton blocks top gesture detectors
+          (actions['Tap'] as Functionable)
+              .toFunction(this.parentSpawner.userActions)();
+        }
+      },
       theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
+      isOpacityEnabled: isPlayMode,
     );
   }
 
@@ -123,7 +132,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(Column(
       children: [
-        ColumnDivider(name: 'Edit Data'),
+        ColumnDivider(name: 'Edit Title'),
         EditPropsText(
           id: id,
           properties: properties,

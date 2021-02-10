@@ -1,10 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:convert';
-import 'dart:io';
 import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/entities/Project.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/ui/MyButton.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -12,7 +9,6 @@ import 'package:flutter_app/ui/MyLink.dart';
 import 'package:flutter_app/ui/MyModal.dart';
 import 'package:flutter_app/ui/MyTextField.dart';
 import 'package:flutter_app/utils/ShowToast.dart';
-import 'package:http/http.dart' as http;
 
 class ConnectAirtableModal extends StatefulWidget {
   final bool isInToolbox;
@@ -21,7 +17,7 @@ class ConnectAirtableModal extends StatefulWidget {
   const ConnectAirtableModal({
     Key key,
     this.isInToolbox = false,
-    this.userActions,
+    @required this.userActions,
   }) : super(key: key);
 
   @override
@@ -86,9 +82,6 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
           onClose: () {});
     } else {
       try {
-        print(token);
-        print(base);
-
         widget.userActions.setAirtableCredentials(token, base);
 
         // final project = widget.userActions.currentUserStore.project;
@@ -106,7 +99,7 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
         // if (response.statusCode != 200)
         //   throw HttpException('${response.statusCode}');
 
-        ShowToast.info('All goodie', context);
+        ShowToast.info('Airtable successfully connected', context);
       } catch (e) {
         ShowToast.error('Error has occurred', context);
       }

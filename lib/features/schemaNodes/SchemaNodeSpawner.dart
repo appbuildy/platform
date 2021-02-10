@@ -7,6 +7,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeMap.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
 import 'SchemaNode.dart';
+import 'SchemaNodeForm.dart';
 import 'lists/ListTemplates/ListTemplate.dart';
 
 class SchemaNodeSpawner {
@@ -30,7 +31,6 @@ class SchemaNodeSpawner {
       position: position,
       size: size,
       properties: properties,
-      tapAction: tapAction,
       actions: actions,
     );
   }
@@ -125,6 +125,22 @@ class SchemaNodeSpawner {
     Map<String, SchemaNodeProperty> actions,
   }) {
     return SchemaNodeShape(
+      parent: this,
+      position: position,
+      size: size,
+      properties: properties,
+      actions: actions,
+    );
+  }
+
+  SchemaNodeForm spawnSchemaNodeForm({
+    UniqueKey id,
+    Offset position,
+    Offset size,
+    Map<String, SchemaNodeProperty> properties,
+    Map<String, SchemaNodeProperty> actions,
+  }) {
+    return SchemaNodeForm(
       parent: this,
       position: position,
       size: size,

@@ -9,10 +9,12 @@ import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
   final List<TabNavigation> tabs;
+  final MyTheme currentTheme;
 
-  const BottomNavigation(this.tabs);
+  const BottomNavigation(this.tabs, this.currentTheme);
 
-  factory BottomNavigation.fromJson(Map<String, dynamic> jsonNav) {
+  factory BottomNavigation.fromJson(Map<String, dynamic> jsonNav,
+      {MyTheme currentTheme}) {
     var tabs = jsonNav['tabs']
         .map((tab) {
           return TabNavigation.fromJson(tab);
@@ -20,43 +22,46 @@ class BottomNavigation extends StatelessWidget {
         .toList()
         .cast<TabNavigation>();
 
-    return BottomNavigation(tabs);
+    return BottomNavigation(tabs, currentTheme);
   }
 
   @override
   Widget build(BuildContext context) {
-    var theme = MyThemes.allThemes['blue'];
+    var theme = currentTheme ?? MyThemes.allThemes['blue'];
     var isVisible = true;
     final store = Provider.of<ScreenStore>(context);
 
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      child: isVisible
-          ? Container(
-              decoration: BoxDecoration(
+    return isVisible
+        ? Container(
+            decoration: BoxDecoration(
                 color: theme.background.color,
-                  border: Border(
-                      top:
-                          BorderSide(width: 1, color: theme.separators.color))),
-              child: Container(
-                child: Observer(
-                  builder: (_) => AppTabs(
-                    selectedScreenId: store.selectedScreenId,
-                    tabs: tabs,
-                    theme: theme,
-                    onTap: (tab) {
-                      store.setCurrentScreen(store.screens[tab.target]);
-                    },
-                  ),
+                border: Border(
+                    top: BorderSide(width: 1, color: theme.separators.color))),
+            child: Container(
+              child: Observer(
+                builder: (_) => AppTabs(
+                  selectedScreenId: store.selectedScreenId,
+                  tabs: tabs,
+                  theme: theme,
+                  onTap: (tab) {
+                    store.setCurrentScreen(store.screens[tab.target]);
+
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => store.currentScreen,
+                        transitionDuration: Duration(seconds: 0),
+                      ),
+                    );
+                  },
                 ),
-                width: 375,
-                height: 82,
-                decoration: BoxDecoration(
-                    color: Colors.transparent, borderRadius: BorderRadius.zero),
               ),
-            )
-          : Container(),
-    );
+              width: 375,
+              height: 82,
+              decoration: BoxDecoration(
+                  color: Colors.transparent, borderRadius: BorderRadius.zero),
+            ),
+          )
+        : Container();
   }
 }

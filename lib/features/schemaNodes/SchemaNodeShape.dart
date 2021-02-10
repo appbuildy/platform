@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsBorder.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsColor.dart';
 import 'package:flutter_app/features/schemaNodes/common/EditPropsCorners.dart';
+import 'package:flutter_app/features/schemaNodes/common/EditPropsShadow.dart';
+import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaIntProperty.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaMyThemePropProperty.dart';
@@ -34,6 +37,15 @@ class SchemaNodeShape extends SchemaNode {
               'Color', parent.userActions.themeStore.currentTheme.primary),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Opacity': SchemaDoubleProperty('Opacity', 1),
+          'Border': SchemaBoolProperty('Border', false),
+          'BorderColor': SchemaMyThemePropProperty('BorderColor',
+              parent.userActions.themeStore.currentTheme.primary),
+          'BorderWidth': SchemaIntProperty('BorderWidth', 1),
+          'BoxShadow': SchemaBoolProperty('BoxShadow', false),
+          'BoxShadowColor': SchemaMyThemePropProperty('BoxShadowColor',
+              parent.userActions.themeStore.currentTheme.general),
+          'BoxShadowBlur': SchemaIntProperty('BoxShadowBlur', 5),
+          'BoxShadowOpacity': SchemaDoubleProperty('BoxShadowOpacity', 0.5),
         };
   }
 
@@ -101,6 +113,23 @@ class SchemaNodeShape extends SchemaNode {
             changePropertyTo(SchemaDoubleProperty('Opacity', value));
           },
         ),
+        SizedBox(
+          height: 20,
+        ),
+        EditPropsBorder(
+          key: id,
+          properties: properties,
+          changePropertyTo: changePropertyTo,
+          currentTheme: parentSpawner.userActions.currentTheme,
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        EditPropsShadow(
+          properties: properties,
+          changePropertyTo: changePropertyTo,
+          currentTheme: parentSpawner.userActions.currentTheme,
+        )
       ],
     ));
   }

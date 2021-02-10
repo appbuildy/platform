@@ -7,6 +7,7 @@ import 'Functionable.dart';
 class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
   MyDoNothingAction(String name) : super(name, null) {
     this.type = SchemaActionType.doNothing;
+    this.column = null;
   }
 
   Map<String, dynamic> toJson() {
@@ -14,7 +15,8 @@ class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
       'propertyClass': 'MyDoNothingAction',
       'action': this.name,
       'type': this.type.toString(),
-      'value': null
+      'value': null,
+      'column': null
     };
   }
 
@@ -23,6 +25,7 @@ class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
     this.name = jsonVal['action'];
     this.type = SchemaActionType.doNothing;
     this.value = null;
+    this.column = jsonVal['column'];
   }
 
   Function toFunction(UserActions userActions) {
@@ -41,4 +44,7 @@ class MyDoNothingAction extends SchemaNodeProperty implements Functionable {
   Widget toEditProps(UserActions userActions) {
     return Container();
   }
+
+  @override
+  String column;
 }

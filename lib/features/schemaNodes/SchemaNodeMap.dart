@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
+import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
-import 'package:flutter_app/features/schemaNodes/schemaAction.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 import 'package:flutter_app/ui/ColumnDivider.dart';
 import 'package:flutter_app/ui/MyColors.dart';
@@ -21,21 +21,21 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     Offset position,
     Offset size,
     Map<String, SchemaNodeProperty> properties,
-    GoToScreenAction tapAction,
     Map<String, SchemaNodeProperty> actions,
   }) : super() {
     this.parentSpawner = parent;
     this.type = SchemaNodeType.map;
     this.position = position ?? Offset(0, 0);
-    this.size = size ?? Offset(200, 200);
+    this.size = size ?? Offset(375.0, 375.0);
     this.id = id ?? UniqueKey();
-    this.actions =
-        actions ?? {'Tap': tapAction ?? GoToScreenAction('Tap', null)};
+    this.actions = actions ?? {'Tap': MyDoNothingAction('Tap')};
     this.properties = properties ??
         {
           'Bearing': SchemaDoubleProperty('Bearing', _kLake.bearing),
-          'TargetLatitude': SchemaDoubleProperty('TargetLatitude', _kLake.target.latitude),
-          'TargetLongitude': SchemaDoubleProperty('TargetLongitude', _kLake.target.longitude),
+          'TargetLatitude':
+              SchemaDoubleProperty('TargetLatitude', _kLake.target.latitude),
+          'TargetLongitude':
+              SchemaDoubleProperty('TargetLongitude', _kLake.target.longitude),
           'Tilt': SchemaDoubleProperty('Tilt', _kLake.tilt),
           'Zoom': SchemaDoubleProperty('Zoom', _kLake.zoom),
         };
@@ -45,9 +45,9 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
 
   static final CameraPosition _kLake = CameraPosition(
       bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
+      target: LatLng(37.773972, -122.431297),
       tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+      zoom: 12.0);
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -75,9 +75,12 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
   }
 
   void updateCameraPosition(CameraPosition cameraPosition) {
-    this.properties['Bearing'] = SchemaDoubleProperty('Bearing', cameraPosition.bearing);
-    this.properties['TargetLatitude'] = SchemaDoubleProperty('TargetLatitude', cameraPosition.target.latitude);
-    this.properties['TargetLongitude'] = SchemaDoubleProperty('TargetLongitude', cameraPosition.target.longitude);
+    this.properties['Bearing'] =
+        SchemaDoubleProperty('Bearing', cameraPosition.bearing);
+    this.properties['TargetLatitude'] =
+        SchemaDoubleProperty('TargetLatitude', cameraPosition.target.latitude);
+    this.properties['TargetLongitude'] = SchemaDoubleProperty(
+        'TargetLongitude', cameraPosition.target.longitude);
     this.properties['Tilt'] = SchemaDoubleProperty('Tilt', cameraPosition.tilt);
     this.properties['Zoom'] = SchemaDoubleProperty('Zoom', cameraPosition.zoom);
   }
@@ -86,36 +89,32 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     updateMarkers();
 
     final GoogleMapController controller = await _controller.future;
-    print('kek');
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        bearing: this.properties['Bearing'].value,
-        target: this.latitudeLongitude,
-        tilt: this.properties['Tilt'].value,
-        zoom: this.properties['Zoom'].value,
-      )
-    ));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+      bearing: this.properties['Bearing'].value,
+      target: this.latitudeLongitude,
+      tilt: this.properties['Tilt'].value,
+      zoom: this.properties['Zoom'].value,
+    )));
   }
 
   void updateMarkers() {
-    if (_markers == null) _markers = { marker };
+    if (_markers == null) _markers = {marker};
     _markers.clear();
     _markers.add(marker);
   }
 
   Marker get marker => Marker(
-    position: latitudeLongitude,
-    markerId: MarkerId('${UniqueKey()}'),
-    icon: BitmapDescriptor.defaultMarker,
-  );
+        position: latitudeLongitude,
+        markerId: MarkerId('${UniqueKey()}'),
+        icon: BitmapDescriptor.defaultMarker,
+      );
 
   Set<Marker> _markers;
 
   UniqueKey mapKey = UniqueKey();
 
   @override
-  Widget toWidget({ bool isPlayMode }) {
-
+  Widget toWidget({MyTheme theme, bool isPlayMode}) {
     return Container(
       key: mapKey,
       width: this.size.dx,
@@ -133,11 +132,11 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           parentSpawner.userActions.selectNodeForEdit(this);
         },
         initialCameraPosition: CameraPosition(
-          bearing: this.properties['Bearing'].value,
-          target: LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value),
-          tilt: this.properties['Tilt'].value,
-          zoom: this.properties['Zoom'].value
-        ),
+            bearing: this.properties['Bearing'].value,
+            target: LatLng(this.properties['TargetLatitude'].value,
+                this.properties['TargetLongitude'].value),
+            tilt: this.properties['Tilt'].value,
+            zoom: this.properties['Zoom'].value),
         onCameraMove: this.updateCameraPosition,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -146,16 +145,20 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
     );
   }
 
-  LatLng get latitudeLongitude => LatLng(this.properties['TargetLatitude'].value, this.properties['TargetLongitude'].value);
+  LatLng get latitudeLongitude => LatLng(
+      this.properties['TargetLatitude'].value,
+      this.properties['TargetLongitude'].value);
 
   @override
-  Widget toWidgetWithReplacedData({bool isPlayMode, String data, MyTheme theme = null}) {
+  Widget toWidgetWithReplacedData(
+      {bool isPlayMode, String data, MyTheme theme = null}) {
     // TODO: implement toWidgetWithReplacedData
     return this.toWidget(isPlayMode: isPlayMode);
   }
 
   @override
-  Widget toEditProps(wrapInRootProps, Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
+  Widget toEditProps(wrapInRootProps,
+      Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     Widget renderInput({String name, String defaultValue, Function onChanged}) {
       return Row(children: [
         Text(
@@ -165,10 +168,7 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
         Expanded(child: Container()),
         Container(
           width: 170,
-          child: MyTextField(
-            defaultValue: defaultValue,
-            onChanged: onChanged
-          ),
+          child: MyTextField(defaultValue: defaultValue, onChanged: onChanged),
         )
       ]);
     }
@@ -180,7 +180,8 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           name: 'Latitude',
           defaultValue: properties['TargetLatitude'].value.toString(),
           onChanged: (String value) {
-            changePropertyTo(SchemaDoubleProperty('TargetLatitude', double.parse(value)));
+            changePropertyTo(
+                SchemaDoubleProperty('TargetLatitude', double.parse(value)));
             _updateCameraPosition();
           },
         ),
@@ -191,7 +192,8 @@ class SchemaNodeMap extends SchemaNode implements DataContainer {
           name: 'Longitude',
           defaultValue: properties['TargetLongitude'].value.toString(),
           onChanged: (String value) {
-            changePropertyTo(SchemaDoubleProperty('TargetLongitude', double.parse(value)));
+            changePropertyTo(
+                SchemaDoubleProperty('TargetLongitude', double.parse(value)));
             _updateCameraPosition();
           },
         ),

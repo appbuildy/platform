@@ -63,16 +63,21 @@ class ToolboxLayout extends StatelessWidget {
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ToolboxComponent(schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeImage()),
+                          ToolboxComponent(
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeImage()),
+                          SizedBox(
+                            width: 10,
+                          ),
                           ToolboxComponent(
                             schemaNode: userActions.schemaNodeSpawner
                                 .spawnSchemaNodeShape(),
                           ),
-                          ToolboxComponent(
-                            schemaNode: userActions.schemaNodeSpawner.spawnSchemaNodeMap(),
-                          )
+                          SizedBox(
+                            width: 10,
+                          ),
                         ],
                       ),
                       ToolBoxCaption('Lists'),
@@ -82,7 +87,7 @@ class ToolboxLayout extends StatelessWidget {
                           ToolboxComponent(
                             defaultTitle: 'Compact',
                             iconPath: 'assets/icons/layout/listCompact.svg',
-                            defaultType: SchemaNodeType.listDefault,
+                            defaultType: SchemaNodeType.list,
                             schemaNode: userActions.schemaNodeSpawner
                                 .spawnSchemaNodeListWithTemplate(
                                     listTemplateType: ListTemplateType.simple,
@@ -95,7 +100,7 @@ class ToolboxLayout extends StatelessWidget {
                           ToolboxComponent(
                             defaultTitle: 'Basic',
                             iconPath: 'assets/icons/layout/listBasic.svg',
-                            defaultType: SchemaNodeType.listDefault,
+                            defaultType: SchemaNodeType.list,
                             schemaNode: userActions.schemaNodeSpawner
                                 .spawnSchemaNodeListWithTemplate(
                               listTemplateType: ListTemplateType.simple,
@@ -108,7 +113,7 @@ class ToolboxLayout extends StatelessWidget {
                           ToolboxComponent(
                               defaultTitle: 'Tiles',
                               iconPath: 'assets/icons/layout/listTiles.svg',
-                              defaultType: SchemaNodeType.listCards,
+                              defaultType: SchemaNodeType.list,
                               schemaNode: userActions.schemaNodeSpawner
                                   .spawnSchemaNodeListWithTemplate(
                                 listTemplateType: ListTemplateType.cards,
@@ -122,12 +127,43 @@ class ToolboxLayout extends StatelessWidget {
                             ToolboxComponent(
                               defaultTitle: 'Cards',
                               iconPath: 'assets/icons/layout/listCards.svg',
-                              defaultType: SchemaNodeType.listCards,
+                              defaultType: SchemaNodeType.list,
                               schemaNode: userActions.schemaNodeSpawner
                                   .spawnSchemaNodeListWithTemplate(
                                       listTemplateType: ListTemplateType.cards,
                                       listTemplateStyle:
                                           ListTemplateStyle.cards),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ToolboxComponent(
+                              defaultTitle: 'Horizontal',
+                              iconPath:
+                                  'assets/icons/layout/listHorizontal.svg',
+                              defaultType: SchemaNodeType.list,
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeListWithTemplate(
+                                      listTemplateType:
+                                          ListTemplateType.horizontal,
+                                      listTemplateStyle:
+                                          ListTemplateStyle.tiles),
+                            ),
+                          ]),
+                      ToolBoxCaption('Other'),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ToolboxComponent(
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeForm(),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            ToolboxComponent(
+                              schemaNode: userActions.schemaNodeSpawner
+                                  .spawnSchemaNodeMap(),
                             ),
                           ])
                     ],

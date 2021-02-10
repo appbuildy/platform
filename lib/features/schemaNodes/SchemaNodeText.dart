@@ -46,6 +46,8 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
     this.properties = properties ??
         {
           'Text': SchemaStringProperty('Text', text ?? 'Text'),
+          'LoadedPropertyName': SchemaStringProperty('LoadedPropertyName',
+              'Text'), // needed to match Text to airtable data on skeleton
           'FontColor': SchemaMyThemePropProperty('FontColor',
               color ?? parent.userActions.themeStore.currentTheme.general),
           'FontSize': SchemaIntProperty('FontSize', fontSize ?? 16),
@@ -97,12 +99,12 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
 
   Widget toWidgetWithReplacedData(
       {bool isPlayMode, String data, MyTheme theme = null}) {
-    print("DATA");
-    print("DATA");
-    print("DATA");
-    print(theme);
-    print("DATA");
-    print("DATA");
+    // print("DATA");
+    // print("DATA");
+    // print("DATA");
+    // print(theme);
+    // print("DATA");
+    // print("DATA");
     var properties = this._copyProperties();
     properties['Text'] = SchemaStringProperty('Text', data ?? 'no_data');
 
@@ -122,7 +124,7 @@ class SchemaNodeText extends SchemaNode implements DataContainer {
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     log(parentSpawner.userActions.remoteAttributeList().toString());
     return wrapInRootProps(Column(children: [
-      ColumnDivider(name: 'Edit Data'),
+      ColumnDivider(name: 'Edit Text'),
       EditPropsText(
         id: id,
         properties: properties,

@@ -25,7 +25,7 @@ class AppActions extends StatelessWidget {
     modal.show(
         context: context,
         width: 750,
-        height: 350,
+        height: 370,
         child: Container(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +33,7 @@ class AppActions extends StatelessWidget {
               Flexible(
                 flex: 3,
                 child: Container(
-                    height: 350,
+                    height: 370,
                     child: Padding(
                       padding: const EdgeInsets.only(
                         top: 34.0,
@@ -59,7 +59,7 @@ class AppActions extends StatelessWidget {
                             height: 20,
                           ),
                           Container(
-                            width: 350,
+                            width: 370,
                             child: MyTextField(
                               onChanged: () {},
                               disabled: false,
@@ -69,6 +69,48 @@ class AppActions extends StatelessWidget {
                             ),
                           ),
                           Expanded(child: Container()),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Image.network(
+                                'assets/icons/meta/preview-ios.svg',
+                                fit: BoxFit.contain,
+                                width: 26,
+                                height: 26,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Image.network(
+                                'assets/icons/meta/preview-android.svg',
+                                fit: BoxFit.contain,
+                                width: 26,
+                                height: 26,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Coming Soon',
+                                style: MyTextStyle.regularCaption,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          MyButton(
+                            text: 'Export to iOS & Android',
+                            disabled: true,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           MyButton(
                               onTap: () {
                                 js.context.callMethod('open', [
@@ -77,7 +119,7 @@ class AppActions extends StatelessWidget {
                                       ''
                                 ]);
                               },
-                              text: 'Navigate to the Web App')
+                              text: 'Open Web App in New Tab'),
                         ],
                       ),
                     )),
@@ -85,7 +127,7 @@ class AppActions extends StatelessWidget {
               Flexible(
                 flex: 2,
                 child: Container(
-                  height: 350,
+                  height: 370,
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
                     begin: AlignmentDirectional.topCenter,

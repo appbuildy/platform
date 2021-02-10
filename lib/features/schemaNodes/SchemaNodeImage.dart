@@ -43,6 +43,8 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
     this.properties = properties ??
         {
           'Url': SchemaStringProperty('Url', url ?? defaultPicture),
+          'LoadedPropertyName': SchemaStringProperty('LoadedPropertyName',
+              'Url'), // needed to match Text to airtable data on skeleton
           'Column': SchemaStringProperty('Column', column ?? null),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'Fit': SchemaStringProperty('Fit', 'Cover'),
@@ -97,7 +99,7 @@ class SchemaNodeImage extends SchemaNode implements DataContainer {
   Widget toEditProps(wrapInRootProps,
       Function(SchemaNodeProperty, [bool, dynamic]) changePropertyTo) {
     return wrapInRootProps(Column(children: [
-      ColumnDivider(name: 'Edit Data'),
+      ColumnDivider(name: 'Edit Url'),
       EditPropsText(
         title: 'Url',
         id: id,

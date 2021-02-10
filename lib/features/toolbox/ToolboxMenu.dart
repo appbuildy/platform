@@ -79,7 +79,7 @@ class ToolboxMenu extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            html.window.open('/', '_self');
+            html.window.open('https://build.appbuildy.com', '_self');
           },
           child: Cursor(
             cursor: CursorEnum.pointer,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_app/ui/MyColors.dart';
 import 'package:flutter_app/ui/MySelects/MySelects.dart';
 import 'package:flutter_app/ui/MySwitch.dart';
 import 'package:flutter_app/utils/ShowToast.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobx/mobx.dart';
 
@@ -95,7 +97,7 @@ class _AllActionsState extends State<AllActions> {
           color: themeStore.currentTheme.generalSecondary,
           column: isInRange(1) ? listColumns[1] : listColumns[0]),
       widget.userActions.schemaNodeSpawner
-          .spawnSchemaNodeButton(position: Offset(14, 295), text: 'Contact Us'),
+          .spawnSchemaNodeButton(position: Offset(15, 295), text: 'Contact Us'),
       widget.userActions.schemaNodeSpawner.spawnSchemaNodeText(
           position: Offset(14, 360),
           size: Offset(343, 300),
@@ -166,50 +168,120 @@ class _AllActionsState extends State<AllActions> {
     );
   }
 
+  bool hasColumnSelectByType(SchemaActionType type) {
+    return ![SchemaActionType.doNothing, SchemaActionType.goToScreen]
+        .contains(type);
+  }
+
+  Widget buildColumnSelect(UserActions userActions) {
+    final selectedNode = userActions.selectedNode();
+    final screens = userActions.screens.all.screens;
+    final detailedInfo = userActions.currentScreen.detailedInfo;
+    var columns = detailedInfo.tableName != null
+        ? userActions
+            .columnsFor(detailedInfo.tableName)
+            .map((e) => e.name)
+            .toList()
+        : [...listColumnsSample];
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 11.0),
+      child: Row(
+        children: [
+          SizedBox(
+            child: Text('Column'),
+            width: 59,
+          ),
+          Expanded(
+              child: MyClickSelect(
+            placeholder: 'Select Column',
+            selectedValue: (selectedNode.actions['Tap'] as Functionable).column,
+            defaultIcon: Container(
+                child: Image.network(
+              'assets/icons/meta/btn-detailed-info-big.svg',
+              fit: BoxFit.contain,
+            )),
+            onChange: (SelectOption element) {
+              final currentAction =
+                  (selectedNode.actions['Tap'] as Functionable);
+              currentAction.column = element.value;
+
+              (currentAction as SchemaNodeProperty).value =
+                  detailedInfo.rowData[element.value].data;
+
+              userActions
+                  .changeActionTo(currentAction as ChangeableProperty<dynamic>);
+            },
+            options: columns.map((e) => SelectOption(e, e)).toList(),
+          ))
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final selectedNode = widget.userActions.selectedNode();
+    return Observer(
+      builder: (BuildContext context) {
+        final selectedNode = widget.userActions.selectedNode();
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            MySwitch(
-              value: isVisible,
-              onTap: () {
-                setState(() {
-                  if (isVisible) {
-                    widget.userActions.changeActionTo(MyDoNothingAction('Tap'));
-                  } else {
-                    if (selectedNode.type == SchemaNodeType.list) {
-                      _createDetailedInfoForList(
-                          selectedNode, selectedNode.properties['Table'].value);
-                      Future.delayed(Duration(milliseconds: 50), () {
-                        widget.userActions.selectNodeForEdit(null);
+        if (selectedNode.type == SchemaNodeType.form) {
+          return Container();
+        }
+        return Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  MySwitch(
+                    value: isVisible,
+                    onTap: () {
+                      setState(() {
+                        if (isVisible) {
+                          widget.userActions
+                              .changeActionTo(MyDoNothingAction('Tap'));
+                        } else {
+                          if (selectedNode.type == SchemaNodeType.list) {
+                            _createDetailedInfoForList(selectedNode,
+                                selectedNode.properties['Table'].value);
+                            Future.delayed(Duration(milliseconds: 50), () {
+                              widget.userActions.selectNodeForEdit(null);
+                            });
+                          }
+                        }
+                        isVisible = !isVisible;
                       });
-                    }
-                  }
-                  isVisible = !isVisible;
-                });
-              },
-            ),
-            SizedBox(width: 11),
-            Text(
-              'Actions on Tap',
-              style: MyTextStyle.regularTitle,
-            ),
-          ],
-        ),
-        isVisible ? buildActionSelect() : Container(),
-        isVisible
-            ? Padding(
-                padding: const EdgeInsets.only(top: 11.0),
-                child: (widget.userActions.selectedNode().actions['Tap']
-                        as Functionable)
-                    .toEditProps(widget.userActions),
-              )
-            : Container()
-      ],
+                    },
+                  ),
+                  SizedBox(width: 11),
+                  Text(
+                    'Actions on Tap',
+                    style: MyTextStyle.regularTitle,
+                  ),
+                ],
+              ),
+              isVisible ? buildActionSelect() : Container(),
+              isVisible &&
+                      widget.userActions.currentScreen.detailedInfo != null &&
+                      hasColumnSelectByType((widget.userActions
+                              .selectedNode()
+                              .actions['Tap'] as Functionable)
+                          .type)
+                  ? buildColumnSelect(widget.userActions)
+                  : Container(),
+              isVisible
+                  ? Padding(
+                      padding: const EdgeInsets.only(top: 11.0),
+                      child: (widget.userActions.selectedNode().actions['Tap']
+                              as Functionable)
+                          .toEditProps(widget.userActions),
+                    )
+                  : Container()
+            ],
+          ),
+        );
+      },
     );
   }
 }

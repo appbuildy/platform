@@ -28,10 +28,9 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
   SchemaListElementsProperty(String name, ListElements value)
       : super(name, value);
 
-  SchemaListElementsProperty.fromJson(
-    Map<String, dynamic> jsonVal,
-    SchemaNodeSpawner schemaNodeSpawner,
-  ) : super('Elements', null) {
+  SchemaListElementsProperty.fromJson(Map<String, dynamic> jsonVal,
+      [SchemaNodeSpawner schemaNodeSpawner])
+      : super('Elements', null) {
     this.name = jsonVal['name'];
 
     this.value = ListElements(
@@ -66,7 +65,7 @@ class SchemaListElementsProperty extends SchemaNodeProperty<ListElements> {
 
   @override
   SchemaListElementsProperty copy() {
-    return SchemaListElementsProperty(this.name, value);
+    return SchemaListElementsProperty(this.name, value.copy());
   }
 }
 
@@ -121,11 +120,12 @@ class ListElements {
       : this.allColumns = allColumns ?? [],
         this.listElements = listElements ?? [];
 
-  ListElements.withSimpleListTemplate(
-      {allColumns,
-      SchemaNodeSpawner schemaNodeSpawner,
-      Offset listItemSize,
-      ListTemplateStyle listTemplateStyle}) {
+  ListElements.withSimpleListTemplate({
+    allColumns,
+    SchemaNodeSpawner schemaNodeSpawner,
+    Offset listItemSize,
+    ListTemplateStyle listTemplateStyle,
+  }) {
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
     this.allColumns = allColumns ?? [];
 
@@ -255,11 +255,15 @@ class ListElements {
       Offset listItemSize,
       ListTemplateStyle listTemplateStyle}) {
     this.allColumns = allColumns ?? [];
-
     var spawner = schemaNodeSpawner ?? SchemaNodeSpawner();
+
+    final elementsSize = listTemplateStyle == ListTemplateStyle.cards
+        ? (listItemSize.dx ~/ 2) - 5
+        : listItemSize.dx;
+
     final SchemaNode imageNode = spawner.spawnSchemaNodeImage(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx, 80),
+      size: Offset(elementsSize, 80),
       position: Offset(0, 0),
     );
 
@@ -274,7 +278,7 @@ class ListElements {
 
     final SchemaNode titleNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx, 28),
+      size: Offset(elementsSize, 28),
       position: Offset(0, 90),
     );
 
@@ -289,7 +293,7 @@ class ListElements {
 
     final SchemaNode descriptionNode = schemaNodeSpawner.spawnSchemaNodeText(
       id: UniqueKey(),
-      size: Offset(listItemSize.dx, 28),
+      size: Offset(elementsSize, 28),
       position: Offset(0, 120),
     );
 
@@ -314,6 +318,13 @@ class ListElements {
     this.listElements.add(imageListElement);
     this.listElements.add(titleListElement);
     this.listElements.add(descriptionListElement);
+  }
+
+  ListElements copy() {
+    return ListElements(
+      listElements: this.listElements.map((e) => e.copy()).toList(),
+      allColumns: [...this.allColumns],
+    );
   }
 
   _buildOptionPreview(String nodeType) {
@@ -393,7 +404,7 @@ class ListElements {
   }
 
   ListElementNode fromJsonListElementNode(Map<String, dynamic> jsonListElement,
-      SchemaNodeSpawner schemaNodeSpawner) {
+      [SchemaNodeSpawner schemaNodeSpawner]) {
     final SchemaNode deserializedNode = ComponentLoadedFromJson(
             jsonComponent: jsonListElement['node'],
             schemaNodeSpawner:
@@ -420,6 +431,7 @@ class ListElements {
 
     this.listElements.forEach((element) {
       element.onListElementsUpdate = onListElementsUpdate;
+      element.changePropertyTo = this.changePropertyTo;
     });
 
     return Column(
@@ -492,7 +504,7 @@ class ListElementNode {
 
   final String name;
   final UniqueKey id;
-  final Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
+  Function(SchemaNodeProperty, UniqueKey, Function) changePropertyTo;
   final Widget iconPreview;
 
   Function onListElementsUpdate;
@@ -504,8 +516,8 @@ class ListElementNode {
     @required this.iconPreview,
     @required this.name,
     @required this.id,
-    @required this.changePropertyTo,
     @required this.onListElementsUpdate,
+    this.changePropertyTo = null,
     this.columnRelation = null,
   });
 
@@ -518,7 +530,6 @@ class ListElementNode {
       iconPreview: this.iconPreview,
       name: this.name,
       id: nodeCopy.id,
-      changePropertyTo: this.changePropertyTo,
       onListElementsUpdate: this.onListElementsUpdate,
       columnRelation: this.columnRelation,
     );
@@ -687,11 +698,9 @@ class ListElementNode {
     @required bool isPlayMode,
   }) {
     if (!isSelected) {
-      print(theme);
       return (this.node as DataContainer).toWidgetWithReplacedData(
           theme: theme, data: data, isPlayMode: isPlayMode);
     }
-
     return GestureDetector(
         onTap: () {
           schemaNodeList.selectListElementNode(this);

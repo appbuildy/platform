@@ -121,6 +121,7 @@ enum SchemaNodeType {
   button,
   text,
   shape,
+  form,
   image,
   icon,
   list,
@@ -200,10 +201,10 @@ abstract class SchemaNode {
 
   //double minimalSize = 30.0;
 
-  double get onTopResizeMinimalSize => 30.0;
-  double get onRightResizeMinimalSize => 30.0;
-  double get onBottomResizeMinimalSize => 30.0;
-  double get onLeftResizeMinimalSize => 30.0;
+  double get onTopResizeMinimalSize => 5.0;
+  double get onRightResizeMinimalSize => 5.0;
+  double get onBottomResizeMinimalSize => 5.0;
+  double get onLeftResizeMinimalSize => 5.0;
 
   static double demagnetizeSideDelta = 8;
 

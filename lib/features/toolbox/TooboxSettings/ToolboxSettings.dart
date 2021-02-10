@@ -29,9 +29,12 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
     super.initState();
 
     Map<SettingsEnum, BuildWidgetFunction> sliderAnimationPages = {
-      SettingsEnum.information: () => BuildToolboxInformationPage(goBackToSettings: goBack, userActions: widget.userActions),
-      SettingsEnum.theme: () => BuildToolboxThemePage(goBackToSettings: goBack, userActions: widget.userActions),
-      SettingsEnum.airtable: () => BuildToolboxAirtablePage(goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.information: () => BuildToolboxInformationPage(
+          goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.theme: () => BuildToolboxThemePage(
+          goBackToSettings: goBack, userActions: widget.userActions),
+      SettingsEnum.airtable: () => BuildToolboxAirtablePage(
+          goBackToSettings: goBack, userActions: widget.userActions),
     };
 
     pageSliderController = PageSliderController<SettingsEnum>(
@@ -97,9 +100,9 @@ class _ToolboxSettingsState extends State<ToolboxSettings>
           padding: EdgeInsets.only(top: 24.0, left: 20, right: 10),
           child: Column(
             children: [
-              buildItem(SettingsEnum.information),
+//              buildItem(SettingsEnum.information),
               buildItem(SettingsEnum.theme),
-              buildItem(SettingsEnum.airtable),
+//              buildItem(SettingsEnum.airtable),
             ],
           ),
         ),
@@ -144,36 +147,35 @@ class BuildThemeToolboxItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Image.network(
-                iconPath,
-                width: 38,
-                height: 38,
-              ),
-              SizedBox(
-                width: 12,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    title,
-                    style: MyTextStyle.regularTitle,
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    subtitle,
-                    style: MyTextStyle.regularCaption,
-                  ),
-                ],
-              )
-            ]
-          ),
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.network(
+                  iconPath,
+                  width: 38,
+                  height: 38,
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: MyTextStyle.regularTitle,
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      subtitle,
+                      style: MyTextStyle.regularCaption,
+                    ),
+                  ],
+                )
+              ]),
         ),
       ),
     );
