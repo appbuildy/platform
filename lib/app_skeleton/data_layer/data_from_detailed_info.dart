@@ -10,6 +10,9 @@ class DataFromDetailedInfo implements IElementData {
   DataFromDetailedInfo(this.detailedInfo);
 
   String getString(String key) {
+    if (key == null) {
+      return null;
+    }
     return detailedInfo.rowData[key].data;
   }
 

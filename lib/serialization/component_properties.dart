@@ -80,11 +80,12 @@ class ComponentProperties {
     jsonComponent['actions'].forEach((key, val) {
       var loadedAction = SchemaNodeProperty.deserializeActionFromJson(val);
 
-      if (val['column'] != null && elementData != null) {
+      if (elementData != null) {
         var data = (elementData as DataFromDetailedInfo);
         var dataFromProvider = data.getString(val['column']);
-        loadedAction.value = dataFromProvider;
+        loadedAction.value = dataFromProvider ?? loadedAction.value;
       }
+
       deserialized[key] = loadedAction;
     });
     actions = deserialized;
