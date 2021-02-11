@@ -9,6 +9,10 @@ class DataFromDetailedInfo implements IElementData {
   DetailedInfo detailedInfo;
   DataFromDetailedInfo(this.detailedInfo);
 
+  String getString(String key) {
+    return detailedInfo.rowData[key].data;
+  }
+
   @override
   SchemaNodeProperty getFor(IDataElementKey key) {
     if (detailedInfo == null || key == null) return null;
