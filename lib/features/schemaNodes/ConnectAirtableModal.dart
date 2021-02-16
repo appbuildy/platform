@@ -115,7 +115,6 @@ class _ConnectAirtableModalState extends State<ConnectAirtableModal> {
 //        print('there is an errror');
 //      });
       modal.close();
-      print('kek lol 4eba $base, $token');
     }
   }
 

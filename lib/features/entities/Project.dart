@@ -18,13 +18,12 @@ class Project {
 
   Project(this.url, [this.user]);
 
-  static Future<Project> setup({
-    AuthenticationService auth,
-    http.Client client,
-    CurrentUserStore userStore,
-    ProjectParametersFromBrowserQuery settings,
-    RemoteAttributes attributes
-  }) async {
+  static Future<Project> setup(
+      {AuthenticationService auth,
+      http.Client client,
+      CurrentUserStore userStore,
+      ProjectParametersFromBrowserQuery settings,
+      RemoteAttributes attributes}) async {
     return await SetupProject(userStore: userStore, attributes: attributes)
         .setup(auth, client);
   }
@@ -61,7 +60,9 @@ class Project {
       final response = await client.get(this.url, headers: user?.authHeaders());
       final data = json.decode(response.body);
       _fetchedData = data;
-      setAirtableCredentials(apiKey: _fetchedData['airtable_credentials']['api_key'], base: _fetchedData['airtable_credentials']['base']);
+      setAirtableCredentials(
+          apiKey: _fetchedData['airtable_credentials']['api_key'],
+          base: _fetchedData['airtable_credentials']['base']);
 //print(this.base);
       return data;
     } catch (e) {
@@ -74,7 +75,6 @@ class Project {
     if (_projectDataNotSet) return false;
 
     final serialiedProject = converter.toJson();
-    print(jsonEncode(serialiedProject));
     if (this.apiKey != null && this.base != null) {
       serialiedProject['airtable_credentials'] = {
         'api_key': apiKey,

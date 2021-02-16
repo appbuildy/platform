@@ -40,7 +40,6 @@ class WidgetDecorator extends StatelessWidget {
     switch (jsonComponent['type']) {
       case 'SchemaNodeType.button':
         {
-          print(componentProperties);
           return WidgetDecorator(
               onTap: previewActions['Tap'].functionAction,
               position: componentProperties.position,
