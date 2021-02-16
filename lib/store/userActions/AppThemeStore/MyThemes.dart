@@ -16,7 +16,7 @@ class MyThemeProp {
 
   MyThemeProp.fromJson(Map<String, dynamic> targetJson) {
     this.color = Color.fromRGBO(targetJson['red'], targetJson['green'],
-        targetJson['blue'], targetJson['opacity']);
+        targetJson['blue'], targetJson['opacity'].toDouble());
     this.name = targetJson['name'];
   }
 

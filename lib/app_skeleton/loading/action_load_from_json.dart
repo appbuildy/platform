@@ -15,11 +15,9 @@ class ActionLoadFromJson implements IActionLoad {
   skeleton_action.Action load() {
     var actionValue = jsonAction.values.first;
 
-    print(actionValue['value']);
-    print(actionValue['type'] == 'SchemaActionType.goToScreen');
-
     Map<String, dynamic> metadata =
-        actionValue['type'] == 'SchemaActionType.goToScreen'
+        actionValue['type'] == 'SchemaActionType.goToScreen' &&
+                actionValue['value'] != null
             ? {"screenKey": RandomKey.fromJson(actionValue['value'])}
             : {};
 
