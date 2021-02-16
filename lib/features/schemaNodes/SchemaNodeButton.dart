@@ -111,7 +111,7 @@ class SchemaNodeButton extends SchemaNode implements DataContainer {
       },
       theme: theme ?? this.parentSpawner.userActions.themeStore.currentTheme,
       size: this.size,
-      isOpacityEnabled: isPlayMode,
+      isOpacityEnabled: isPlayMode ?? false,
     );
   }
 

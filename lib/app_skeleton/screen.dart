@@ -21,7 +21,7 @@ class Screen extends StatelessWidget {
       this.widgets,
       this.id,
       this.bottomNavigation,
-      this.bottomTabsVisible,
+      this.bottomTabsVisible: false,
       this.theme,
       this.serializedJson})
       : super(key: key);
