@@ -9,8 +9,9 @@ class CurrentUser extends User {
   String _name;
   String _jwtToken;
   String dataUrl;
+  String email;
 
-  CurrentUser(this._name, this._jwtToken, this.dataUrl);
+  CurrentUser(this._name, this._jwtToken, this.dataUrl, {this.email: null});
 
   Map<String, String> authHeaders() {
     return {HttpHeaders.authorizationHeader: "Bearer ${this._jwtToken}"};

@@ -27,7 +27,8 @@ class AuthenticationService {
 
       if (response.statusCode == 200) {
         final parsed = json.decode(response.body);
-        return CurrentUser(parsed['name'], _jwtToken, this._url);
+        return CurrentUser(parsed['name'], _jwtToken, this._url,
+            email: parsed['email']);
       } else {
         return NotLoggedInUser();
       }
