@@ -28,6 +28,10 @@ class ToolboxLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final MyModal modal = MyModal();
 
+    final email = userActions.currentUserStore.currentUser != null
+        ? userActions.currentUserStore.currentUser.email
+        : '';
+
     return Container(
       width: toolboxWidth,
       height: MediaQuery.of(context).size.height,
@@ -229,10 +233,9 @@ class ToolboxLayout extends StatelessWidget {
                                               right: 0,
                                             ),
                                             child: IFrame(
-                                              key: UniqueKey(),
-                                              src:
-                                                  'https://www.appbuildy.com/upvoty',
-                                            ),
+                                                key: UniqueKey(),
+                                                src:
+                                                    'https://www.appbuildy.com/upvoty?email_id=${email}'),
                                           )),
                                       onClose: () {
                                         print('kekmek');

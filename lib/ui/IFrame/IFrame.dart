@@ -20,7 +20,6 @@ class _IFrameState extends State<IFrame> {
   @override
   void initState() {
     super.initState();
-    print('init');
 
     _iframeElement.height = '500';
     _iframeElement.width = '500';

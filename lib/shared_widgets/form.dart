@@ -68,7 +68,6 @@ class _FormState extends State<Form> {
                   )),
               GestureDetector(
                 onTap: () {
-                  print('ya pidoras');
                   widget.onCreate(formState);
                 },
                 child: Shared.Button(
