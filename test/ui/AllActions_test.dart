@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/Screens.dart';
 import 'package:flutter_app/features/schemaInteractions/SetupUserActions.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
+import 'package:flutter_app/features/schemaNodes/Functionable.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeSpawner.dart';
 import 'package:flutter_app/store/schema/SchemaStore.dart';
@@ -12,7 +13,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
-class MockAction extends Mock implements SchemaNodeProperty<String> {
+class MockAction extends Mock
+    implements SchemaNodeProperty<String>, Functionable {
   String value;
   bool isCalled = false;
   MockAction(this.value);
@@ -31,7 +33,8 @@ void main() {
     final allActions =
         AllActions(userActions: userActions, screens: screens.screens);
 
-    SchemaNodeSpawner nodeSpawner = SchemaNodeSpawner(userActions: setupUserActions());
+    SchemaNodeSpawner nodeSpawner =
+        SchemaNodeSpawner(userActions: setupUserActions());
 
     final SchemaNodeButton btn = nodeSpawner.spawnSchemaNodeButton(
         actions: {'Tap': action},
