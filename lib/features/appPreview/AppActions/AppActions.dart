@@ -72,42 +72,32 @@ class AppActions extends StatelessWidget {
                           SizedBox(
                             height: 20,
                           ),
-                          Row(
-                            children: [
-                              Image.network(
-                                'assets/icons/meta/preview-ios.svg',
-                                fit: BoxFit.contain,
-                                width: 26,
-                                height: 26,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Image.network(
-                                'assets/icons/meta/preview-android.svg',
-                                fit: BoxFit.contain,
-                                width: 26,
-                                height: 26,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Coming Soon',
-                                style: MyTextStyle.regularCaption,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
                           MyButton(
-                            text: 'Export to iOS & Android',
-                            disabled: true,
-                          ),
+                              icon: Row(
+                                children: [
+                                  Image.network(
+                                    'assets/icons/meta/preview-ios.svg',
+                                    fit: BoxFit.contain,
+                                    width: 18,
+                                    height: 18,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Image.network(
+                                    'assets/icons/meta/preview-android.svg',
+                                    fit: BoxFit.contain,
+                                    width: 18,
+                                    height: 18,
+                                  ),
+                                ],
+                              ),
+                              text: 'Export to iOS & Android',
+                              onTap: () {
+                                js.context.callMethod('open', [
+                                  'https://www.notion.so/appbuildy/Launch-your-app-to-App-Store-Google-Play-5043630d26854ccd979e009653704d89'
+                                ]);
+                              }),
                           SizedBox(
                             height: 10,
                           ),
