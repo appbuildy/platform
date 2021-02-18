@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/features/schemaInteractions/UserActions.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
 import 'package:flutter_app/features/schemaNodes/Functionable.dart';
+import 'package:flutter_app/features/schemaNodes/GoBackAction.dart';
 import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/my_do_nothing_action.dart';
@@ -75,7 +76,7 @@ class _AllActionsState extends State<AllActions> {
       ),
       widget.userActions.schemaNodeSpawner.spawnSchemaNodeIcon(
           position: Offset(14, 40),
-          tapAction: GoToScreenAction('Tap', detailedInfo.screenId),
+          tapAction: GoBackAction('Tap', detailedInfo.screenId),
           iconSize: 24,
           icon: FontAwesomeIcons.arrowLeft),
       widget.userActions.schemaNodeSpawner.spawnSchemaNodeText(
@@ -133,6 +134,12 @@ class _AllActionsState extends State<AllActions> {
           Image.network(
             'assets/icons/meta/btn-action-navigate.svg',
           )),
+      SelectOption(
+          'Go Back',
+          SchemaActionType.goBack,
+          Image.network(
+            'assets/icons/meta/btn-action-back.svg',
+          )),
       SelectOption('Open Link', SchemaActionType.openLink,
           Image.network('assets/icons/meta/btn-action-link.svg')),
       SelectOption('Make API Request', SchemaActionType.apiCall,
@@ -169,8 +176,11 @@ class _AllActionsState extends State<AllActions> {
   }
 
   bool hasColumnSelectByType(SchemaActionType type) {
-    return ![SchemaActionType.doNothing, SchemaActionType.goToScreen]
-        .contains(type);
+    return ![
+      SchemaActionType.doNothing,
+      SchemaActionType.goToScreen,
+      SchemaActionType.goBack
+    ].contains(type);
   }
 
   Widget buildColumnSelect(UserActions userActions) {

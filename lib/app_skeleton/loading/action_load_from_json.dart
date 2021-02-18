@@ -3,8 +3,8 @@ import 'package:flutter_app/app_skeleton/entities/action.dart'
     as skeleton_action;
 import 'package:flutter_app/app_skeleton/loading/i_action_load.dart';
 import 'package:flutter_app/utils/RandomKey.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class ActionLoadFromJson implements IActionLoad {
   Map<String, dynamic> jsonAction;
@@ -40,6 +40,11 @@ class ActionLoadFromJson implements IActionLoad {
         {
           return (BuildContext context) => () =>
               {Navigator.pushNamed(context, actionValue['value']['value'])};
+        }
+        break;
+      case 'SchemaActionType.goBack':
+        {
+          return (BuildContext context) => () => {Navigator.pop(context)};
         }
         break;
       case 'SchemaActionType.openLink':

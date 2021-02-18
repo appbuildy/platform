@@ -7,11 +7,13 @@ class MyButtonUI extends StatelessWidget {
   final String text;
   final Widget icon;
   final bool disabled;
+  final String type;
 
   MyButtonUI({
     @required this.text,
     this.icon,
     this.disabled = false,
+    this.type,
   });
 
   @override
@@ -25,6 +27,9 @@ class MyButtonUI extends StatelessWidget {
         gradient: MyGradients.mainLightBlue,
         boxShadow: []);
 
+    var textStyle = TextStyle(
+        color: MyColors.white, fontSize: 16, fontWeight: FontWeight.w500);
+
     if (disabled) {
       defaultDecoration = BoxDecoration(
           borderRadius: BorderRadius.circular(6),
@@ -34,6 +39,21 @@ class MyButtonUI extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           gradient: MyGradients.disabledLightGray,
           boxShadow: []);
+    }
+
+    if (type == 'white') {
+      defaultDecoration = BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: MyColors.mainBlue, width: 2),
+        gradient: MyGradients.plainWhite,
+      );
+      hoverDecoration = BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: MyColors.mainBlue, width: 2),
+        gradient: MyGradients.lightBlue,
+      );
+      textStyle = TextStyle(
+          color: MyColors.textBlue, fontSize: 16, fontWeight: FontWeight.w500);
     }
 
     return Cursor(
@@ -49,10 +69,7 @@ class MyButtonUI extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   this.text,
-                  style: TextStyle(
-                      color: MyColors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500),
+                  style: textStyle,
                 ),
               ),
               this.icon != null
@@ -73,6 +90,7 @@ class MyButtonUI extends StatelessWidget {
 class MyButton extends StatelessWidget {
   final String text;
   final Widget icon;
+  final String type;
   final bool disabled;
   final Function onTap;
 
@@ -81,15 +99,19 @@ class MyButton extends StatelessWidget {
       @required this.text,
       this.icon,
       this.onTap,
-      this.disabled = false})
+      this.disabled = false,
+      this.type})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child:
-          MyButtonUI(text: this.text, icon: this.icon, disabled: this.disabled),
+      child: MyButtonUI(
+          text: this.text,
+          icon: this.icon,
+          type: this.type,
+          disabled: this.disabled),
     );
   }
 }

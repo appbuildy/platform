@@ -69,9 +69,6 @@ class AppActions extends StatelessWidget {
                             ),
                           ),
                           Expanded(child: Container()),
-                          SizedBox(
-                            height: 20,
-                          ),
                           MyButton(
                               icon: Row(
                                 children: [
@@ -93,6 +90,7 @@ class AppActions extends StatelessWidget {
                                 ],
                               ),
                               text: 'Export to iOS & Android',
+                              type: 'white',
                               onTap: () {
                                 js.context.callMethod('open', [
                                   'https://www.notion.so/appbuildy/Launch-your-app-to-App-Store-Google-Play-5043630d26854ccd979e009653704d89'

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/features/airtable/RemoteAttribute.dart';
+import 'package:flutter_app/features/schemaNodes/ApiCallAction.dart';
 import 'package:flutter_app/features/schemaNodes/ChangeableProperty.dart';
+import 'package:flutter_app/features/schemaNodes/GoBackAction.dart';
 import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
 import 'package:flutter_app/features/schemaNodes/JsonConvertable.dart';
+import 'package:flutter_app/features/schemaNodes/OpenLinkAction.dart';
 import 'package:flutter_app/features/schemaNodes/lists/ListElements.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaColorProperty.dart';
@@ -58,6 +61,21 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
         case 'GoToScreenAction':
           {
             return GoToScreenAction.fromJson(targetJson);
+          }
+          break;
+        case 'GoBackAction':
+          {
+            return GoBackAction.fromJson(targetJson);
+          }
+          break;
+        case 'ApiCallAction':
+          {
+            return ApiCallAction.fromJson(targetJson);
+          }
+          break;
+        case 'OpenLinkAction':
+          {
+            return OpenLinkAction.fromJson(targetJson);
           }
           break;
         default:

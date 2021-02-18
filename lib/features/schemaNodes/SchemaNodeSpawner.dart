@@ -6,6 +6,7 @@ import 'package:flutter_app/features/schemaNodes/SchemaNodeList.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNodeMap.dart';
 import 'package:flutter_app/store/userActions/AppThemeStore/MyThemes.dart';
 
+import 'GoBackAction.dart';
 import 'SchemaNode.dart';
 import 'SchemaNodeForm.dart';
 import 'lists/ListTemplates/ListTemplate.dart';
@@ -59,7 +60,7 @@ class SchemaNodeSpawner {
     Offset position,
     Offset size,
     Map<String, SchemaNodeProperty> properties,
-    GoToScreenAction tapAction,
+    GoBackAction tapAction,
     IconData icon,
     Map<String, SchemaNodeProperty> actions,
     int iconSize,

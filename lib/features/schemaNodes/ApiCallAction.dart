@@ -20,7 +20,7 @@ class ApiCallAction extends SchemaNodeProperty<String> implements Functionable {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'propertyClass': 'GoToScreenAction',
+      'propertyClass': 'ApiCallAction',
       'action': this.name,
       'type': this.type.toString(),
       'value': this.value == null ? null : this.value,

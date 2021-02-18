@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/features/schemaNodes/GoToScreenAction.dart';
+import 'package:flutter_app/features/schemaNodes/GoBackAction.dart';
 import 'package:flutter_app/features/schemaNodes/SchemaNode.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaBoolPropery.dart';
 import 'package:flutter_app/features/schemaNodes/properties/SchemaDoubleProperty.dart';
@@ -24,7 +24,7 @@ class SchemaNodeIcon extends SchemaNode {
     Offset position,
     Offset size,
     Map<String, SchemaNodeProperty> properties,
-    GoToScreenAction tapAction,
+    GoBackAction tapAction,
     IconData icon,
     Map<String, SchemaNodeProperty> actions,
     int iconSize,
@@ -39,7 +39,8 @@ class SchemaNodeIcon extends SchemaNode {
         {
           'Icon':
               SchemaIconProperty('Icon', icon ?? FontAwesomeIcons.arrowRight),
-          'IconColor': SchemaMyThemePropProperty('IconColor', parent.userActions.currentTheme.primary),
+          'IconColor': SchemaMyThemePropProperty(
+              'IconColor', parent.userActions.currentTheme.primary),
           'IconSize': SchemaIntProperty('IconSize', iconSize ?? 36),
           'BorderRadiusValue': SchemaIntProperty('BorderRadiusValue', 0),
           'BoxShadow': SchemaBoolProperty('BoxShadow', false),
