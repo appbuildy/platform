@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ecommerce_cart/ecommerce_cart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app/features/airtable/AirtableAttribute.dart';
 import 'package:flutter_app/features/airtable/Client.dart' as airtable;
@@ -46,6 +47,7 @@ class UserActions {
   CurrentUserStore _currentUserStore;
   RemoteAttributes _remoteAttributes;
   RemoteSchemaPropertiesBinding _bindings;
+  EcommerceCart _cart;
 
   List<String> remoteTableNames;
   SchemaNodeSpawner schemaNodeSpawner;
@@ -65,11 +67,14 @@ class UserActions {
     _theme = themeStore;
     _screens = screens;
     _currentUserStore = currentUserStore;
+    _cart = EcommerceCart.build();
 
     schemaNodeSpawner = SchemaNodeSpawner(userActions: this);
   }
 
   GuidelinesManager guidelineManager = GuidelinesManager();
+
+  EcommerceCart get cart => _cart;
 
   SchemaStore get currentScreen => _screens.current;
 
@@ -194,7 +199,8 @@ class UserActions {
   }
 
   void rerenderNode([SchemaNode nodeToUpdate]) {
-    final SchemaNode node = nodeToUpdate == null ? selectedNode() : nodeToUpdate;
+    final SchemaNode node =
+        nodeToUpdate == null ? selectedNode() : nodeToUpdate;
 
     if (node != null) {
       currentScreen.update(node);
