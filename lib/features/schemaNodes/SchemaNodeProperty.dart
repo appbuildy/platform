@@ -186,7 +186,8 @@ class SchemaNodeProperty<T> implements ChangeableProperty<T>, JsonConvertable {
           }
       }
     } catch (e, stacktrace) {
-      print("Failed to deserialize SchemaNode: $targetJson");
+      var propClass = targetJson['propertyClass'];
+      print("Failed to deserialize propertyClass: $propClass");
       print(stacktrace);
       throw (e);
     }

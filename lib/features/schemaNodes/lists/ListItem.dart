@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app/features/airtable/values_cast.dart';
 
 class ListItem {
   String column;
@@ -18,6 +19,6 @@ class ListItem {
 
   ListItem.fromJson(Map<String, dynamic> targetJson) {
     this.column = targetJson['column'];
-    this.data = targetJson['data'];
+    this.data = ValuesCast(targetJson['data']).toString();
   }
 }

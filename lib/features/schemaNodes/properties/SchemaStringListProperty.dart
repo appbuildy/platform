@@ -111,9 +111,16 @@ class SchemaStringListProperty
     Map<String, SchemaListItemsProperty> innerValue = {};
 
     targetJson['value'].forEach((key, schemaListItemsTargetJson) {
+      print("==============================");
+      print("$key: $schemaListItemsTargetJson");
+      print("==============================");
       innerValue['$key'] =
           SchemaListItemsProperty.fromJson(schemaListItemsTargetJson);
     });
+
+    print("==============================");
+    print("inner value set");
+    print("==============================");
 
     this.value = innerValue;
   }
