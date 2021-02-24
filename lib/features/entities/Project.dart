@@ -15,9 +15,12 @@ class Project {
   String url;
   String apiKey;
   String base;
+  Map<String, dynamic> _fetchedData;
 
   Project(this.url, [this.user]);
-
+  Project.fromJson(Map<String, dynamic> canvas) {
+    _fetchedData = {'canvas': canvas};
+  }
   static Future<Project> setup(
       {AuthenticationService auth,
       http.Client client,
@@ -36,8 +39,6 @@ class Project {
 
   String get name => _fetchedData['name'] ?? null;
   int get id => _fetchedData['id'] ?? null;
-
-  Map<String, dynamic> _fetchedData;
 
   Map<String, dynamic> get data => _fetchedData ?? {};
 

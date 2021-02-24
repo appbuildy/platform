@@ -5,6 +5,6 @@ import 'app_skeleton/loading/application_loaded_from_json.dart';
 import 'build_data.dart' as data;
 
 void main() {
-  var project = Project(data);
-  runApp(ApplicationLoadedFromJson(data.data).load());
+  var project = Project.fromJson(data.canvas);
+  runApp(ApplicationLoadedFromJson(project).load());
 }
